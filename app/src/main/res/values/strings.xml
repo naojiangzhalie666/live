@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mine_guanzhu"><![CDATA[我关注的&关注我的]]></string>
+    <string name="level"><![CDATA[等级&特权]]></string>
+    <string name="follow_title"><![CDATA[我的关注&粉丝]]></string>
+
+    <!--dataPick-->
+    <string name="cancel">取消</string>
+    <string name="title">请选择时间</string>
+    <string name="confirm">确定</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
+    <string name="select_date">选择日期</string>
+    <string name="current_date">当前日期</string>
+    <string name="select_time">选择时间</string>
+    <string name="current_time">当前时间</string>
+    <string name="advice_miaoshu">1.图片均已添加水印 \n2.信息仅用于接口加密传输，验证并完成入网，已签署保密协议， 请大家放心使用</string>
+    // 云通信
+    <string name="chat_top">置顶聊天</string>
+    <string name="chat_delete">删除聊天</string>
+    <string name="quit_chat_top">取消置顶</string>
+    <string name="welcome_tip">欢迎加入云通信IM大家庭！</string>
+    <string name="test_custom_message">查看详情>></string>
+    <string name="no_support_msg">不支持的自定义消息</string>
+    <string name="test_custom_action">自定义消息</string>
+    <string name="online_fail">请求网络失败</string>
+    <string name="online">在线</string>
+    <string name="unknow_error">未知错误</string>
+    <string name="seat_lock">座位已锁定</string>
+    <string name="find_anchor">主播名还在查找</string>
+    <string name="you_app">您的应用</string>
+    <string name="low_version"> 版本太低，不支持打开该离线消息</string>
+    <string name="call_timeout">本次通话已超时</string>
+    <string name="call_notification">音视频邀请消息通知</string>
+    <string name="background_tip">当程序处于后台时新的来电消息会通过通知栏提醒用户</string>
+    <string name="new_msg_notification">新普通消息通知</string>
+    <string name="new_msg">收到一条新消息</string>
+    <string name="call_nos">通话失去响应</string>
+
+
+</resources>

@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:scrollbars="none"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dp_15"
+    tools:context=".fragment.setin.ManOneFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_20"
+        android:orientation="vertical">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_corner_white"
+            android:paddingLeft="@dimen/dp_15"
+            android:paddingRight="@dimen/dp_15"
+            android:paddingBottom="@dimen/dp_15">
+
+            <TextView
+                android:id="@+id/manone_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_6"
+                android:layout_marginTop="15dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="头像"
+                android:textColor="@color/black_oneeight"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/textView25"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:text="*"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/manone_tv" />
+
+            <TextView
+                android:id="@+id/textView45"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginTop="15dp"
+                android:text="姓名"
+                android:textColor="@color/black_oneeight"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/textView26"
+                app:layout_constraintTop_toBottomOf="@+id/textView42" />
+
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView45" />
+
+            <TextView
+                android:id="@+id/textView49"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginTop="15dp"
+                android:text="身份验证"
+                android:textColor="@color/black_oneeight"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/textView27"
+                app:layout_constraintTop_toBottomOf="@+id/textView43" />
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView49" />
+
+            <TextView
+                android:id="@+id/tvtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_5"
+                android:background="@null"
+                android:gravity="right"
+                android:hint="请上传自己的真实头像"
+                android:textColor="@color/black_oneeight"
+                android:textSize="14sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/manone_tv"
+                app:layout_constraintEnd_toStartOf="@+id/manone_head" />
+
+            <ImageView
+                android:id="@+id/manone_head"
+                android:layout_width="@dimen/dp_23"
+                android:layout_height="@dimen/dp_23"
+                android:layout_marginRight="@dimen/dp_5"
+                android:background="@drawable/bg_circle_solder_ef"
+                app:layout_constraintBottom_toBottomOf="@+id/tvtv"
+                app:layout_constraintEnd_toStartOf="@+id/tvone"
+                app:layout_constraintTop_toTopOf="@+id/tvtv" />
+
+            <ImageView
+                android:id="@+id/tvone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mine_next"
+                app:layout_constraintBottom_toBottomOf="@+id/tvtv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvtv" />
+
+            <EditText
+                android:id="@+id/manone_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="right"
+                android:hint="请填写自己的真实姓名"
+                android:textColor="@color/black_oneeight"
+                android:textSize="14sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView45"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <View
+                android:id="@+id/textView42"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_1_5"
+                android:layout_marginTop="@dimen/dp_15"
+                android:background="@drawable/line_dott"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/manone_tv" />
+
+            <View
+                android:id="@+id/textView43"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_1_5"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/line_dott"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.727"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView45" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/manone_confrond"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintEnd_toStartOf="@+id/manone_conback"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView49">
+
+                <TextView
+                    android:id="@+id/textView50"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    android:text="身份证正面"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/manone_frond" />
+
+                <ImageView
+                    android:id="@+id/manone_frond"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ruzhu_sfzfm"
+                    app:layout_constraintBottom_toTopOf="@+id/textView50"
+                    app:layout_constraintDimensionRatio="w,2:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/manone_conback"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="@dimen/dp_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/manone_confrond"
+                app:layout_constraintTop_toBottomOf="@+id/textView49">
+
+                <ImageView
+                    android:id="@+id/manone_back"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ruzhu_sfzzm"
+                    app:layout_constraintBottom_toTopOf="@+id/textView51"
+                    app:layout_constraintDimensionRatio="w,2:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView51"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    android:text="身份证背面"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/manone_back" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="@drawable/bg_corner_white"
+            android:paddingLeft="@dimen/dp_15"
+            android:paddingRight="@dimen/dp_15"
+            android:paddingBottom="@dimen/dp_20">
+
+            <TextView
+                android:id="@+id/manone_t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_6"
+                android:layout_marginTop="15dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="个人形象照"
+                android:textColor="@color/black_oneeight"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/textView28"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:text="*"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/manone_t" />
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="@dimen/dp_160"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginTop="15dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/login_bg"
+                app:layout_constraintEnd_toStartOf="@+id/textView41"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/manone_t" />
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ruzhu_next"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+                app:layout_constraintEnd_toStartOf="@+id/textView41"
+                app:layout_constraintStart_toEndOf="@+id/imageView8"
+                app:layout_constraintTop_toTopOf="@+id/imageView8" />
+
+            <TextView
+                android:id="@+id/textView41"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="@dimen/dp_160"
+                android:layout_marginRight="@dimen/dp_15"
+                android:background="@color/ftwo"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageView8"
+                app:layout_constraintTop_toTopOf="@+id/imageView8" />
+
+            <ImageView
+                android:id="@+id/manone_xxadd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ruzhu_add"
+                app:layout_constraintBottom_toBottomOf="@+id/textView41"
+                app:layout_constraintEnd_toEndOf="@+id/textView41"
+                app:layout_constraintStart_toStartOf="@+id/textView41"
+                app:layout_constraintTop_toTopOf="@+id/textView41" />
+                <ImageView
+                android:id="@+id/manone_xxpic"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@+id/textView41"
+                app:layout_constraintEnd_toEndOf="@+id/textView41"
+                app:layout_constraintStart_toStartOf="@+id/textView41"
+                app:layout_constraintTop_toTopOf="@+id/textView41" />
+
+            <TextView
+                android:id="@+id/textView46"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="参考案例"
+                android:textColor="@color/nineninenine"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView8"
+                app:layout_constraintStart_toStartOf="@+id/imageView8"
+                app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+
+            <TextView
+                android:id="@+id/textView53"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="上传照片"
+                android:textColor="@color/nineninenine"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/textView41"
+                app:layout_constraintStart_toStartOf="@+id/textView41"
+                app:layout_constraintTop_toBottomOf="@+id/textView41" />
+
+            <TextView
+                android:id="@+id/manone_"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_6"
+                android:layout_marginTop="15dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="个人简介"
+                android:textColor="@color/black_oneeight"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/textView29"
+                app:layout_constraintTop_toBottomOf="@+id/textView46" />
+
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:text="*"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/manone_" />
+
+            <EditText
+                android:id="@+id/manone_jianjie"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_corner_ft"
+                android:minHeight="@dimen/dp_80"
+                android:gravity="left|top"
+                android:textSize="14sp"
+                android:padding="@dimen/dp_8"
+                android:hint="这是一段自我介绍，建议50-100字："
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/manone_" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/setin_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_8"
+            android:background="@drawable/bg_circle_solder_setin"
+            android:text="下一页"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
+</ScrollView>

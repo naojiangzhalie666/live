@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/dp_12"
+    android:paddingTop="@dimen/dp_6"
+    android:paddingRight="@dimen/dp_12">
+
+    <TextView
+        android:id="@+id/item_wallet_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_3"
+        android:textSize="16sp"
+        android:textColor="@color/black_oneeight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="充值" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_wallet_con"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView62"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_wallet_ll">
+
+        <TextView
+            android:id="@+id/item_wallet_conorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/nineninenine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="订单号：124124124" />
+
+        <TextView
+            android:id="@+id/item_wallet_goods"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:textColor="@color/nineninenine"
+            app:layout_constraintStart_toStartOf="@+id/item_wallet_conorder"
+            app:layout_constraintTop_toBottomOf="@+id/item_wallet_conorder"
+            tools:text="商品名：直播疏解" />
+
+        <TextView
+            android:id="@+id/item_wallet_bz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:textColor="@color/nineninenine"
+            app:layout_constraintStart_toStartOf="@+id/item_wallet_goods"
+            app:layout_constraintTop_toBottomOf="@+id/item_wallet_goods"
+            tools:text="备注：此处展示用户ID " />
+
+        <TextView
+            android:id="@+id/item_wallet_contm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:paddingBottom="@dimen/dp_10"
+            android:textColor="@color/nineninenine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/item_wallet_bz"
+            app:layout_constraintTop_toBottomOf="@+id/item_wallet_bz"
+            tools:text="2021-0101 12:44:37(此处是结算时间）" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:id="@+id/item_wallet_ll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_wallet_type">
+
+        <TextView
+            android:id="@+id/item_wallet_lltm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/dp_20"
+            android:textColor="@color/nineninenine"
+            
+            tools:text="12:00  " />
+
+        <TextView
+            android:id="@+id/item_wallet_llorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/nineninenine"
+            
+            tools:text="订单号：124124124" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_wallet_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/dp_8"
+        android:text="+58"
+        android:textColor="@color/qings"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_wallet_img"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/item_wallet_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/item_wallet_money"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/item_wallet_money"
+        app:srcCompat="@drawable/wallet_bt" />
+
+    <View
+        android:id="@+id/textView62"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/ftwo"
+        android:paddingTop="@dimen/dp_8"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

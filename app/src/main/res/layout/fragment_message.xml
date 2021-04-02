@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ftwo"
+    android:orientation="vertical"
+    tools:context=".fragment.MessageFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_65"
+        android:background="@drawable/msg_tpbg"
+        android:paddingTop="@dimen/title_top">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="消息"
+            android:textColor="@color/login_txt"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/dp_12"
+            android:paddingLeft="@dimen/dp_8"
+            android:src="@drawable/msg_contact" />
+
+
+    </RelativeLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/msg_con"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_12"
+                android:src="@drawable/msg_note"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView54" />
+
+            <TextView
+                android:id="@+id/textView54"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:drawableRight="@drawable/mine_next"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_14"
+                android:paddingRight="@dimen/dp_12"
+                android:paddingBottom="@dimen/dp_14"
+                android:text="邀请信息"
+                android:textColor="@color/black_oneeight"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView10"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/textView55"
+                android:layout_width="@dimen/dp_3"
+                android:layout_height="@dimen/dp_3"
+                android:background="@drawable/bg_circle_red"
+                app:layout_constraintBottom_toTopOf="@+id/imageView10"
+                app:layout_constraintEnd_toEndOf="@+id/imageView10" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/imageView11"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:background="@drawable/bg_circle_solder_setin"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView58">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/mine_ruzhuleft" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dp_3"
+                    android:text="边框心理"
+                    android:textColor="@color/login_txt"
+                    android:textSize="6sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView58"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginTop="2dp"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_12"
+                android:text="通知"
+                android:textColor="@color/black_oneeight"
+                app:layout_constraintStart_toEndOf="@+id/imageView11"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_3"
+                android:paddingBottom="@dimen/dp_10"
+                android:text="【茄子老师 】邀请你进入"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView58"
+                app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_6"
+                android:paddingRight="@dimen/dp_12"
+                android:text="昨天"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView58" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/msg_conn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/imageView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_12"
+                android:src="@drawable/msg_mine"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView57" />
+
+            <TextView
+                android:id="@+id/textView57"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_12"
+                android:paddingBottom="@dimen/dp_10"
+                android:text="我的消息"
+                android:textColor="@color/black_oneeight"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView19"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/textView59"
+                android:layout_width="@dimen/dp_3"
+                android:layout_height="@dimen/dp_3"
+                android:background="@drawable/bg_circle_red"
+                app:layout_constraintBottom_toTopOf="@+id/imageView19"
+                app:layout_constraintEnd_toEndOf="@+id/imageView19" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.tencent.qcloud.tim.uikit.modules.conversation.ConversationLayout
+            android:id="@+id/conversation_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

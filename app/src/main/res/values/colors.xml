@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="black_oneeight">#181818</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="login_txt">#F7D4B6</color>
+    <color name="home_txt">#425C59</color>
+    <color name="threethree">#333333</color>
+    <color name="sixsixsix">#666666</color>
+    <color name="nineninenine">#999999</color>
+    <color name="bfivebfive">#B5B5B5</color>
+    <color name="ftwo">#F2F2F2</color>
+    <color name="find_green">#048B00</color>
+    <color name="setin_se">#417F77</color>
+    <color name="app_color_f6">#f6f6f6</color>
+    <color name="app_color_fa">#fafafa</color>
+    <color name="order_ef">#E53B60</color>
+    <color name="order_ye">#FFBE6E</color>
+    <color name="efiveefive">#E5E5E5</color>
+    <color name="identy_cbe">#CBE3E0</color>
+    <color name="qings">#39BFA4</color>
+    <!--dataPick-->
+    <color name="date_picker_bg">#FFFFFF</color>
+    <color name="date_picker_divider">#11112233</color>
+    <color name="date_picker_text_light">#425C59</color>
+    <color name="date_picker_text_dark">#333333</color>
+</resources>

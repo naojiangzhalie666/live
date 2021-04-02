@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_personone_tv"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/home_jiao"
+    android:gravity="center"
+    android:paddingLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
+    android:paddingTop="@dimen/dp_1"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_1"
+    android:text="心理疏导"
+    android:textColor="@color/login_txt"
+    android:textSize="10sp" />

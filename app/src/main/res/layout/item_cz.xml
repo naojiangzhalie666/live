@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dp_10"
+    android:background="@drawable/bg_corner_white">
+
+    <TextView
+        android:id="@+id/item_cz_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/sixsixsix"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_cz_head"
+        app:layout_constraintStart_toStartOf="@+id/item_cz_zsnum"
+        tools:text="订单编号：1156415616516516" />
+
+    <TextView
+        android:id="@+id/item_cz_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="畅聊充值包"
+        android:textColor="@color/black"
+
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_cz_topstate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_solder_nin"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingRight="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_2"
+        android:text="已完成"
+        android:textColor="@color/nineninenine"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/item_cz_title"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/item_cz_head"
+        android:layout_width="@dimen/dp_55"
+        android:layout_height="@dimen/dp_55"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_cz_title"
+        app:srcCompat="@drawable/man_se" />
+
+    <TextView
+        android:id="@+id/item_cz_zsnum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/item_cz_head"
+        app:layout_constraintTop_toTopOf="@+id/item_cz_head"
+        tools:text="钻石数量：500" />
+
+    <TextView
+        android:id="@+id/item_cz_creattime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/sixsixsix"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_cz_code"
+        app:layout_constraintStart_toStartOf="@+id/item_cz_zsnum"
+        app:layout_constraintTop_toBottomOf="@+id/item_cz_zsnum"
+        tools:text="创建时间：2021.03.27  8:36" />
+
+    <TextView
+        android:id="@+id/item_cz_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/red"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/item_cz_head"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="666" />
+
+    <TextView
+        android:id="@+id/textView36"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_2"
+        android:text="￥"
+        android:textColor="@color/red"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/item_cz_money"
+        app:layout_constraintEnd_toStartOf="@+id/item_cz_money" />
+
+    <TextView
+        android:id="@+id/item_cz_btstate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_circle_stoke_red"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_8"
+        android:textSize="12sp"
+        android:text="支付"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_cz_head" />
+</androidx.constraintlayout.widget.ConstraintLayout>

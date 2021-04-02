@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tab_icon_width">@dimen/dp_35</dimen>
+    <dimen name="tab_icon_height">@dimen/dp_35</dimen>
+    <dimen name="picker_view_height">160dp</dimen>
+    <dimen name="date_unit_text_size">18sp</dimen>
+    <dimen name="title_top">@dimen/dp_35</dimen>
+</resources>

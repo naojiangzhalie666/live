@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/dp_5">
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <com.example.myapplication.views.TabIconView
+            android:id="@+id/iv_tab_icon"
+            android:layout_width="@dimen/tab_icon_width"
+            android:layout_height="@dimen/tab_icon_height"
+            android:layout_gravity="center_horizontal|bottom"
+            tools:src="@drawable/home_se" />
+
+        <TextView
+            android:id="@+id/iv_tab_red"
+            android:layout_width="wrap_content"
+            android:minWidth="@dimen/dp_18"
+            android:minHeight="@dimen/dp_18"
+            android:visibility="gone"
+            android:padding="@dimen/dp_2"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/dp_25"
+            android:layout_marginTop="@dimen/dp_8"
+            android:background="@drawable/bg_circle_red"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            tools:text="3" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_tab_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frame"
+        tools:text="主页"
+        android:paddingTop="@dimen/dp_3"
+        android:textSize="12sp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:textColor="@color/gray" />
+
+</RelativeLayout>

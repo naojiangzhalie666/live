@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragment.FwFragment">
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="16dp"
+        android:text="服务订单"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fw_live"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_14"
+        android:layout_marginBottom="16dp"
+        android:drawableTop="@drawable/mine_live"
+        android:drawablePadding="@dimen/dp_4"
+        android:gravity="center"
+        android:text="直播数据"
+        android:textColor="@color/sixsixsix"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fw_speak"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <TextView
+        android:id="@+id/fw_speak"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/mine_speak"
+        android:drawablePadding="@dimen/dp_4"
+        android:gravity="center"
+        android:text="连线记录"
+        android:textColor="@color/sixsixsix"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/fw_live"
+        app:layout_constraintEnd_toStartOf="@+id/fw_fuchi"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/fw_live"
+        app:layout_constraintTop_toTopOf="@+id/fw_live"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/fw_fuchi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/mine_fuchi"
+        android:drawablePadding="@dimen/dp_4"
+        android:gravity="center"
+        android:text="官方支持"
+        android:textColor="@color/sixsixsix"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/fw_speak"
+        app:layout_constraintEnd_toStartOf="@+id/fw_shouyi"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/fw_speak"
+        app:layout_constraintTop_toTopOf="@+id/fw_speak" />
+
+    <TextView
+        android:id="@+id/fw_shouyi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/mine_shouy"
+        android:drawablePadding="@dimen/dp_4"
+        android:gravity="center"
+        android:text="收益兑钻"
+        android:textColor="@color/sixsixsix"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/fw_fuchi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/fw_fuchi"
+        app:layout_constraintTop_toTopOf="@+id/fw_fuchi" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

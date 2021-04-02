@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_nian_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp_12"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_margin="@dimen/dp_10"
+    android:layout_marginBottom="@dimen/dp_12"
+    android:background="@drawable/item_corner_man"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dp_8"
+    android:paddingBottom="@dimen/dp_8"
+    android:text="06后"
+    android:textColor="@color/home_txt"
+    android:textSize="20sp"
+    android:textStyle="bold" />

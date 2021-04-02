@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/dp_12"
+    android:layout_marginBottom="@dimen/dp_12">
+
+    <ImageView
+        android:id="@+id/item_homerecy_imgv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/home_grad"
+        app:layout_constraintDimensionRatio="h,17:20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_homerecy_biao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_3"
+        android:layout_marginTop="@dimen/dp_3"
+        android:background="@drawable/home_jiao"
+        android:paddingLeft="@dimen/dp_5"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingRight="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_2"
+        android:textSize="12sp"
+        android:textColor="@color/login_txt"
+        app:layout_constraintStart_toStartOf="@+id/item_homerecy_imgv"
+        app:layout_constraintTop_toTopOf="@+id/item_homerecy_imgv"
+        tools:text="人格心理" />
+
+    <LinearLayout
+        android:id="@+id/item_homelinear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_6"
+        android:background="@drawable/home_renqi"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_4"
+        android:paddingTop="@dimen/dp_1"
+        android:paddingRight="@dimen/dp_4"
+        android:paddingBottom="@dimen/dp_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/item_homerecy_biao">
+
+        <View
+            android:layout_width="@dimen/dp_3"
+            android:layout_height="@dimen/dp_3"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:background="@drawable/bg_circle_white" />
+
+        <TextView
+            android:id="@+id/item_homerecy_renqi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            tools:text="653人气" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_homerecy_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:drawableLeft="@drawable/login_select"
+        android:drawablePadding="@dimen/dp_3"
+        android:textColor="@color/login_txt"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_homerecy_title"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="心理咨询师-听雨" />
+
+    <TextView
+        android:id="@+id/item_homerecy_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginEnd="@dimen/dp_12"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_homerecy_imgv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="抑郁焦虑很无助，老师来 帮你" />
+
+    <ImageView
+        android:id="@+id/item_homerecy_imgvstate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/item_homerecy_imgv"
+        app:layout_constraintStart_toStartOf="@+id/item_homerecy_imgv"
+        app:layout_constraintTop_toTopOf="@+id/item_homerecy_imgv"
+        app:srcCompat="@drawable/home_media" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

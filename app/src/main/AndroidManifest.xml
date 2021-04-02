@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.myapplication">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name=".base.LiveApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.OranizeActivity"></activity>
+        <activity
+            android:name=".ui.LookPersonActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
+        <activity
+            android:name=".chat.ChatActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".ui.IdentyActivity" />
+        <activity android:name=".ui.BindWchatActivity" />
+        <activity android:name=".ui.ExchangeActivity" />
+        <activity android:name=".ui.AdviceActivity" />
+        <activity android:name=".ui.NormalActivity" />
+        <activity android:name=".ui.OrderListActivity" />
+        <activity android:name=".ui.FollowActivity" />
+        <activity android:name=".ui.EdtmsgActivity" />
+        <activity android:name=".ui.SetActivity" />
+        <activity android:name=".ui.SetInActivity" />
+        <activity android:name=".ui.FindActivity" />
+        <activity android:name=".ui.MsgInputActivity" />
+        <activity android:name=".ui.BindPhoneActivity" />
+        <activity android:name=".ui.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:launchMode="singleTask">
+
+            <!--
+              <intent-filter>
+                  <action android:name="android.intent.action.MAIN" />
+
+                  <category android:name="android.intent.category.LAUNCHER" />
+              </intent-filter>
+            -->
+        </activity>
+    </application>
+
+</manifest>

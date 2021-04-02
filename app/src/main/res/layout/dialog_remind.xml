@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_corner_white"
+    android:layout_width="match_parent"
+    android:paddingBottom="@dimen/dp_8"
+    android:layout_margin="@dimen/dp_40"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/dig_remind_close"
+        android:layout_width="wrap_content"
+        android:paddingRight="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingLeft="@dimen/dp_18"
+        android:layout_height="wrap_content"
+        android:src="@drawable/close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dig_remind_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_3"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/dig_remind_close"
+        tools:text="你确定要兑换吗？" />
+
+    <TextView
+        android:id="@+id/dig_remind_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_12"
+        android:background="@drawable/bg_circle_solder_ef"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
+        android:text="取消"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dig_remind_sub"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dig_remind_content" />
+
+    <TextView
+        android:id="@+id/dig_remind_sub"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_24"
+        android:background="@drawable/bg_circle_solder_setin"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
+        android:text="确定"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/dig_remind_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/dig_remind_content" />
+</androidx.constraintlayout.widget.ConstraintLayout>

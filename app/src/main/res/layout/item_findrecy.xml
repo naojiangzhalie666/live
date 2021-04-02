@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_corner_white"
+    android:layout_marginBottom="@dimen/dp_10"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/item_findrecy_imgv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@color/login_txt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_findrecy_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:lines="1"
+        tools:text="情感老师--嘿嘿嘿"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/item_findrecy_statetop"
+        app:layout_constraintStart_toEndOf="@+id/item_findrecy_imgv"
+        app:layout_constraintTop_toTopOf="@+id/item_findrecy_imgv" />
+
+    <TextView
+        android:id="@+id/item_findrecy_faverite"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/threethree"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/item_findrecy_title"
+        app:layout_constraintTop_toBottomOf="@+id/item_findrecy_title"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="擅长：水电费高，适度股份\n是大法官，安迪苏复古，苏打粉的" />
+
+    <TextView
+        android:id="@+id/item_findrecy_statetop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:drawableRight="@drawable/find_more"
+        android:drawablePadding="@dimen/dp_5"
+        android:textColor="#A0A0A0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/item_findrecy_imgv"
+        tools:text="去观看" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+
+        android:layout_marginEnd="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/item_findrecy_imgv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="2.6"
+        app:layout_constraintStart_toEndOf="@+id/item_findrecy_imgv">
+
+        <LinearLayout
+            android:id="@+id/item_findrecy_llnow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/dp_2"
+                android:paddingBottom="@dimen/dp_2"
+                android:text="["
+                android:textColor="@color/find_green"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/imgv_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_2"
+                android:src="@drawable/find_media" />
+
+            <TextView
+                android:id="@+id/item_findrecy_statebt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_2"
+                android:paddingBottom="@dimen/dp_2"
+                android:text="直播中"
+                android:textColor="@color/find_green"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_2"
+                android:paddingBottom="@dimen/dp_2"
+                android:text="]"
+                android:textColor="@color/find_green"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_findrecy_tvstate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_2"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            tools:text="[ 待上线 ]" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

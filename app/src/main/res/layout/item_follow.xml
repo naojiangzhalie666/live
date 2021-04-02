@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/dp_10"
+    android:paddingTop="@dimen/dp_6"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_6">
+
+    <ImageView
+        android:id="@+id/item_follow_imgv"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        app:srcCompat="@drawable/man_se" />
+
+    <TextView
+        android:id="@+id/item_follow_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="@dimen/dp_8"
+        android:textColor="@color/black"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/item_follow_talk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_circle_stoke_red"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_3"
+        android:text="私聊"
+        android:textColor="@color/red" />
+</LinearLayout>

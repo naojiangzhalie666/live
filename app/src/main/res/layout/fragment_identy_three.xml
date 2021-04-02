@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/denti_bgthree"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".fragment.identy.IdentyThreeFragment">
+
+    <ImageView
+        android:id="@+id/denty_three_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:src="@drawable/denti_cross" />
+
+    <TextView
+        android:id="@+id/denty_three_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:textColor="@color/black_oneeight"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:text="验证成功" />
+
+    <TextView
+        android:id="@+id/denty_three_miaoshu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        android:gravity="center"
+        android:textColor="@color/nineninenine"
+        tools:text="身份验证已通过\n请点击完成继续您的操作" />
+
+    <Button
+        android:id="@+id/identy_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_60"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/bg_circle_solder_setin"
+        android:text="完成"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/identy_cancel"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/bg_circle_stoke_gray"
+        android:text="退出验证"
+        android:textColor="@color/sixsixsix" />
+
+</LinearLayout>

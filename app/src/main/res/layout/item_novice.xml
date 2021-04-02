@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/item_novice_imgv"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/logo" />
+
+    <TextView
+        android:id="@+id/item_novice_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/item_novice_imgv"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="新手七天任务" />
+
+    <TextView
+        android:id="@+id/item_novice_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/sixsixsix"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/item_novice_muge"
+        app:layout_constraintTop_toBottomOf="@+id/item_novice_title"
+        tools:text="+赠送30级进场特效限时3天" />
+
+    <ImageView
+        android:id="@+id/item_novice_muge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/dp_8"
+        app:layout_constraintBottom_toBottomOf="@+id/item_novice_content"
+        app:layout_constraintStart_toStartOf="@+id/item_novice_title"
+        app:layout_constraintTop_toTopOf="@+id/item_novice_content"
+        app:srcCompat="@drawable/novice_muge" />
+
+    <TextView
+        android:id="@+id/item_novice_titleright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/nineninenine"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_novice_title"
+        app:layout_constraintStart_toEndOf="@+id/item_novice_title"
+        app:layout_constraintTop_toTopOf="@+id/item_novice_title"
+        tools:text="完成0/7" />
+
+    <TextView
+        android:id="@+id/item_novice_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_circle_stoke_red"
+        android:paddingTop="@dimen/dp_3"
+        android:paddingBottom="@dimen/dp_3"
+        android:text="前往"
+        android:gravity="center"
+        android:minWidth="@dimen/dp_80"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toTopOf="@+id/textView12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/item_novice_title" />
+
+    <View
+        android:id="@+id/textView12"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginTop="8dp"
+        android:background="@color/ftwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_novice_content" />
+</androidx.constraintlayout.widget.ConstraintLayout>

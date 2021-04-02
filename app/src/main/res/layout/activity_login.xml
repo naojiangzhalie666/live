@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
+    tools:context=".ui.LoginActivity">
+
+    <TextView
+        android:id="@+id/login_phonenum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/dp_85"
+        android:text="188****8888"
+        android:textColor="@color/login_txt"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="认证服务由中国移动提供"
+        android:textColor="@color/login_txt"
+        app:layout_constraintStart_toStartOf="@+id/login_phonenum"
+        app:layout_constraintTop_toBottomOf="@+id/login_phonenum" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="@dimen/dp_45"
+        android:background="@drawable/login_smbg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/login_loginthis"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_24"
+            android:background="@drawable/login_cle_bgtp"
+            android:gravity="center"
+            android:padding="@dimen/dp_16"
+            android:text="本机号码一键登录"
+            android:textColor="#F7D4B6"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/login_loginother"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_12"
+            android:layout_marginEnd="@dimen/dp_24"
+            android:layout_marginRight="@dimen/dp_24"
+            android:background="@drawable/login_cle_bgbt"
+            android:gravity="center"
+            android:padding="@dimen/dp_16"
+            android:text="其他手机号码登录"
+            android:textColor="#425C59"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_loginthis" />
+
+        <LinearLayout
+            android:id="@+id/ll_wx"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_12"
+            android:background="@drawable/login_cle_bgbt"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingRight="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_5"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="@+id/login_loginother"
+            app:layout_constraintStart_toStartOf="@+id/login_loginother"
+            app:layout_constraintTop_toBottomOf="@+id/login_loginother">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_wchat" />
+
+            <TextView
+                android:id="@+id/login_loginvchat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="微信一键登录"
+                android:textColor="#425C59"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/login_rela"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ll_wx"
+            app:layout_constraintTop_toBottomOf="@+id/ll_wx">
+
+            <FrameLayout
+                android:id="@+id/login_cbxieyi"
+                android:layout_width="@dimen/dp_13"
+                android:layout_height="@dimen/dp_13"
+                android:layout_alignTop="@+id/login_tvxieyi"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/login_circle"
+                android:button="@null"
+                android:clickable="false">
+
+                <ImageView
+                    android:id="@+id/login_imgv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/dp_3"
+                    android:src="@drawable/login_select"
+                     />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/login_tvxieyi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="@dimen/dp_24"
+                android:layout_toRightOf="@+id/login_cbxieyi"
+                android:paddingLeft="@dimen/dp_6"
+                android:text="我已阅读并同意《中国移动认证服务条款》和《用户协议》、 《隐私政策》"
+                android:textColor="#425C59"
+                android:textSize="11sp" />
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

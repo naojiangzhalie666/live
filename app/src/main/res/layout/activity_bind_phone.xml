@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.BindPhoneActivity">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/title_top"
+        android:paddingBottom="@dimen/dp_5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imgv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/title"
+            android:layout_alignBottom="@+id/title"
+            android:paddingLeft="@dimen/dp_12"
+            app:srcCompat="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="绑定手机"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/bindphone_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="50dp"
+        android:text="请输入手机号"
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+    <RelativeLayout
+        android:id="@+id/bindphone_rela"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="98dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/bindphone_note"
+        app:layout_constraintTop_toBottomOf="@+id/bindphone_note">
+
+
+        <TextView
+            android:id="@+id/bindphone_qu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dp_5"
+            android:text="+86"
+            android:textColor="@color/nineninenine"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/bindphone_sanjiao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/bindphone_qu"
+            app:srcCompat="@drawable/sanj_bt" />
+
+        <EditText
+            android:id="@+id/bindphone_phonenum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/bindphone_sanjiao"
+            android:background="@null"
+            android:hint="请输入你的手机号"
+            android:padding="@dimen/dp_5"
+            android:textColorHint="@color/nineninenine"
+            android:textSize="20sp" />
+
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"
+            android:layout_below="@+id/bindphone_phonenum"
+            android:background="#E5E5E5" />
+    </RelativeLayout>
+
+    <EditText
+        android:visibility="gone"
+        android:id="@+id/bindphone_yzm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:hint="请输入验证码"
+        app:layout_constraintBottom_toTopOf="@+id/bindphone_sub"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/bindphone_note"
+        app:layout_constraintTop_toBottomOf="@+id/bindphone_note" />
+
+    <Button
+        android:id="@+id/bindphone_sub"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/login_cle_bgtp"
+        android:text="获取验证码"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bindphone_rela" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

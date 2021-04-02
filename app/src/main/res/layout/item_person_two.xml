@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:id="@+id/con"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/item_persontwo_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:textColor="@color/threethree"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="听风一对一私人订制" />
+
+    <TextView
+        android:id="@+id/item_persontwo_zuan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:textColor="@color/threethree"
+        app:layout_constraintBottom_toTopOf="@+id/textView65"
+        app:layout_constraintStart_toStartOf="@+id/item_persontwo_title"
+        app:layout_constraintTop_toBottomOf="@+id/item_persontwo_title"
+        tools:text="600" />
+
+    <TextView
+        android:id="@+id/textView61"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:drawableLeft="@drawable/personal_zuan"
+        android:drawablePadding="@dimen/dp_5"
+        android:text="起"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/item_persontwo_zuan"
+        app:layout_constraintStart_toEndOf="@+id/item_persontwo_zuan" />
+
+    <ImageView
+        android:id="@+id/item_persontwo_imgv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="27dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"
+        android:visibility="gone"
+        app:srcCompat="@drawable/personal_se" />
+
+    <TextView
+        android:id="@+id/item_persontwo_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="27dp"
+        android:background="@drawable/personal_sure"
+        android:text="询问"
+        android:textSize="12sp"
+        tools:visibility="visible"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/textView65"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginEnd="12dp"
+        android:background="@color/ftwo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/denti_bg"
+    tools:context=".ui.IdentyActivity">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
+        app:layout_constraintBottom_toBottomOf="@+id/textView11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView11"
+        app:srcCompat="@drawable/back_ye" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/title_top"
+        android:text="身份认证"
+        android:textColor="@color/login_txt"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/identy_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/denti_se"
+        android:gravity="center"
+        android:text="1"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/identy_two"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+    <TextView
+        android:id="@+id/identy_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/denti_unse"
+        android:textColor="@color/sixsixsix"
+        android:gravity="center"
+        android:text="2"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+    <TextView
+        android:id="@+id/identy_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/denti_unse"
+        android:gravity="center"
+        android:textColor="@color/sixsixsix"
+        android:text="3"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/identy_two"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50121653" />
+
+    <View
+        android:id="@+id/identy_lineone"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_circle_solder_lotxt"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/identy_two"
+        app:layout_constraintStart_toEndOf="@+id/identy_one"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+    <View
+        android:id="@+id/identy_linetwo"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/home_ft"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/identy_three"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/identy_two"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15458277" />
+
+    <TextView
+        android:id="@+id/identy_tvone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="实名认证"
+        android:textColor="@color/login_txt"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
+        app:layout_constraintEnd_toEndOf="@+id/identy_one"
+        app:layout_constraintStart_toStartOf="@+id/identy_one" />
+
+    <TextView
+        android:id="@+id/identy_twtwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="绑定银行卡"
+        android:textColor="@color/nineninenine"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/identy_tvone"
+        app:layout_constraintEnd_toEndOf="@+id/identy_two"
+        app:layout_constraintStart_toStartOf="@+id/identy_two" />
+
+    <TextView
+        android:id="@+id/identy_twthree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="认证结果"
+        android:textColor="@color/nineninenine"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/identy_tvone"
+        app:layout_constraintEnd_toEndOf="@+id/identy_three"
+        app:layout_constraintStart_toStartOf="@+id/identy_three" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1997264" />
+
+
+    <FrameLayout
+        android:id="@+id/identy_fram"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_14"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline9" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

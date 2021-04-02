@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragment.XfFragment">
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="16dp"
+        android:text="消费订单"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/xf_cz"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_14"
+        android:layout_marginBottom="16dp"
+        android:drawableTop="@drawable/mine_chongzhi"
+        android:drawablePadding="@dimen/dp_4"
+        android:gravity="center"
+        android:text="充值订单"
+        android:textColor="@color/sixsixsix"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/xf_sj"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <TextView
+        android:id="@+id/xf_sj"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/mine_shujie"
+        android:drawablePadding="@dimen/dp_4"
+        android:gravity="center"
+        android:text="疏解记录"
+        android:textColor="@color/sixsixsix"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/xf_cz"
+        app:layout_constraintEnd_toStartOf="@+id/xf_pingjia"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/xf_cz"
+        app:layout_constraintTop_toTopOf="@+id/xf_cz" />
+
+    <TextView
+        android:id="@+id/xf_pingjia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/mine_flower"
+        android:drawablePadding="@dimen/dp_4"
+        android:gravity="center"
+        android:text="待评价"
+        android:textColor="@color/sixsixsix"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/xf_sj"
+        app:layout_constraintEnd_toStartOf="@+id/xf_level"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/xf_sj"
+        app:layout_constraintTop_toTopOf="@+id/xf_sj" />
+
+    <TextView
+        android:id="@+id/xf_level"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/mine_level"
+        android:drawablePadding="@dimen/dp_4"
+        android:gravity="center"
+        android:text="@string/level"
+        android:textColor="@color/sixsixsix"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/xf_pingjia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/xf_pingjia"
+        app:layout_constraintTop_toTopOf="@+id/xf_pingjia" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

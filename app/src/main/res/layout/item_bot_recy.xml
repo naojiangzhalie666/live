@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_bt_tv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp_7"
+    android:layout_marginRight="@dimen/dp_7"
+    android:layout_marginBottom="@dimen/dp_10"
+    android:background="@drawable/home_ft"
+    android:gravity="center"
+    android:paddingTop="@dimen/dp_10"
+    android:textColor="@color/sixsixsix"
+    android:paddingBottom="@dimen/dp_10"
+    android:text="05后">
+
+</TextView>
