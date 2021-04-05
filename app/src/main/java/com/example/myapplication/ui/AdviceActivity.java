@@ -163,10 +163,12 @@ public class AdviceActivity extends BaseActivity {
                 mAdviceConBtzuanshi.setVisibility(View.GONE);
                 break;
             case R.id.advice_bt_srdetail:
+                statActivity(IncomeDetailActivity.class);
                 ToastShow("收益明细");
                 break;
             case R.id.advice_bt_tixian:
             case R.id.advice_bt_txmoney:
+                statActivity(WithdrawalActivity.class);
                 ToastShow("去提现");
                 break;
             case R.id.advice_bt_duihuan:

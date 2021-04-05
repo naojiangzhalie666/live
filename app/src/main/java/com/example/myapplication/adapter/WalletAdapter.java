@@ -63,7 +63,7 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
             vh.mItemWalletLl.setVisibility(View.VISIBLE);
             vh.mItemWalletImg.setImageResource(R.drawable.wallet_bt);
         }
-        vh.mItemWalletMoney.setOnClickListener(new View.OnClickListener() {
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mOnItemClickListener != null)

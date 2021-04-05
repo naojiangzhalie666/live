@@ -40,9 +40,9 @@ public class LookPersonActivity extends BaseActivity {
     TextView mPersonalOnesure;
     @BindView(R.id.personal_onerecy)
     RecyclerView mPersonalOnerecy;
-    @BindView(R.id.personal_twoedt)
+    @BindView(R.id.showgoods_edt)
     ImageView mPersonalTwoedt;
-    @BindView(R.id.personal_twosure)
+    @BindView(R.id.showgoods_edtsure)
     TextView mPersonalTwosure;
     @BindView(R.id.personal_threeedt)
     ImageView mPersonalThreeedt;
@@ -56,6 +56,10 @@ public class LookPersonActivity extends BaseActivity {
     ImageView mPersonalFouredt;
     @BindView(R.id.personal_foursure)
     TextView mPersonalFoursure;
+    @BindView(R.id.look_btshare)
+    TextView mPersonalBtShare;
+    @BindView(R.id.look_bttalk)
+    TextView mPersonalBtTalk;
     @BindView(R.id.personal_thiredrecy)
     RecyclerView mPersonalThiredrecy;
 
@@ -88,12 +92,13 @@ public class LookPersonActivity extends BaseActivity {
         mPersonalId.setText("ID:1234123");
         mPersonalGeren.setText("就离开公司打卡记录的是干嘛了咯我就饿哦圣诞节快乐开了家公司大家快来噶大师金克拉撒旦给");
         mPersonalGeren.setEnabled(false);
-        if(is_user){
+        if (is_user) {
             mPersonalOneedt.setVisibility(View.GONE);
             mPersonalTwoedt.setVisibility(View.GONE);
             mPersonalThreeedt.setVisibility(View.GONE);
             mPersonalFouredt.setVisibility(View.GONE);
-
+            mPersonalBtShare.setVisibility(View.VISIBLE);
+            mPersonalBtTalk.setVisibility(View.VISIBLE);
         }
 
         /*第一个横向列表*/
@@ -153,7 +158,8 @@ public class LookPersonActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.personal_back, R.id.personal_share, R.id.personal_oneedt, R.id.personal_onesure, R.id.personal_twoedt, R.id.personal_twosure, R.id.personal_threeedt, R.id.personal_threesure, R.id.personal_fouredt, R.id.personal_foursure})
+    @OnClick({R.id.personal_back, R.id.personal_share, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt,
+            R.id.personal_threesure, R.id.personal_fouredt, R.id.personal_foursure, R.id.look_btshare, R.id.look_bttalk})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.personal_back:
@@ -161,6 +167,12 @@ public class LookPersonActivity extends BaseActivity {
                 break;
             case R.id.personal_share:
                 ToastShow("分享");
+                break;
+            case R.id.look_btshare:
+
+                break;
+            case R.id.look_bttalk:
+
                 break;
             case R.id.personal_oneedt:
                 mPersonalOnesure.setVisibility(View.VISIBLE);
@@ -172,14 +184,14 @@ public class LookPersonActivity extends BaseActivity {
                 mPersonalOneedt.setVisibility(View.VISIBLE);
                 ToastShow("个人不可编辑");
                 break;
-            case R.id.personal_twoedt:
+            case R.id.showgoods_edt:
                 mPersonalTwosure.setVisibility(View.VISIBLE);
                 mPersonalTwoedt.setVisibility(View.GONE);
                 ToastShow("相册可编辑");
                 mPersonImageAdapter.setCan_caozuo(true);
                 mPersonImageAdapter.setShow_add(true);
                 break;
-            case R.id.personal_twosure:
+            case R.id.showgoods_edtsure:
                 mPersonalTwosure.setVisibility(View.GONE);
                 mPersonalTwoedt.setVisibility(View.VISIBLE);
                 ToastShow("相册不可编辑");
@@ -217,16 +229,16 @@ public class LookPersonActivity extends BaseActivity {
         }
     }
 
-    private void toGetFuwu(){
-        List<Map<String,Object>> maps =new ArrayList<>();
+    private void toGetFuwu() {
+        List<Map<String, Object>> maps = new ArrayList<>();
         mStr_noSelects.clear();
         for (int i = 0; i < mStr_listtwos.size(); i++) {
-           boolean select = (boolean) mStr_listtwos.get(i).get("select");
-           if(select){
-               maps.add(mStr_listtwos.get(i));
-           }else{
-               mStr_noSelects.add(mStr_listtwos.get(i));
-           }
+            boolean select = (boolean) mStr_listtwos.get(i).get("select");
+            if (select) {
+                maps.add(mStr_listtwos.get(i));
+            } else {
+                mStr_noSelects.add(mStr_listtwos.get(i));
+            }
         }
         mStr_listtwos.clear();
         mStr_listtwos.addAll(maps);

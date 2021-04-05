@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_goods_con"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_8"
+        android:background="@drawable/bg_corner_six"
+        android:minWidth="@dimen/dp_125"
+        android:padding="@dimen/dp_8"
+        app:layout_constraintBottom_toTopOf="@+id/item_goods_num"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/item_goods_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="新用户" />
+
+        <TextView
+            android:id="@+id/item_goods_nametwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_goods_name"
+            tools:text="体验套餐" />
+
+        <TextView
+            android:id="@+id/item_goods_day"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/item_goods_nametwo"
+            app:layout_constraintEnd_toStartOf="@+id/textView69"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="3" />
+
+        <TextView
+            android:id="@+id/textView69"
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
+            android:background="@drawable/bg_circle_solder_lotxt"
+            android:gravity="center"
+            android:text="天"
+            android:textColor="@color/home_txt"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/item_goods_day"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/item_goods_note"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_13"
+            android:textColor="@color/login_txt"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_goods_nametwo"
+            tools:text="购买后仅需15元/天" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/item_goods_imgv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/personal_unse"
+        app:layout_constraintCircle="@+id/item_goods_con"
+        app:layout_constraintCircleAngle="57"
+        app:layout_constraintCircleRadius="@dimen/dp_68"
+        tools:layout_editor_absoluteX="125dp" />
+
+    <TextView
+        android:id="@+id/item_goods_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/threethree"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/item_goods_con"
+        app:layout_constraintStart_toStartOf="@+id/item_goods_con"
+        tools:text="600钻石" />
+</androidx.constraintlayout.widget.ConstraintLayout>

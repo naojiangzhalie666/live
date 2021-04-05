@@ -41,9 +41,9 @@ public class OranizeActivity extends BaseActivity {
     TextView mPersonalOnesure;
     @BindView(R.id.personal_onerecy)
     RecyclerView mPersonalOnerecy;
-    @BindView(R.id.personal_twoedt)
+    @BindView(R.id.showgoods_edt)
     ImageView mPersonalTwoedt;
-    @BindView(R.id.personal_twosure)
+    @BindView(R.id.showgoods_edtsure)
     TextView mPersonalTwosure;
     @BindView(R.id.personal_threeedt)
     ImageView mPersonalThreeedt;
@@ -167,7 +167,7 @@ public class OranizeActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.personal_back, R.id.personal_share, R.id.personal_oneedt, R.id.personal_onesure, R.id.personal_twoedt, R.id.personal_twosure, R.id.personal_threeedt, R.id.personal_threesure, R.id.personal_fouredt, R.id.personal_foursure, R.id.personal_fiveedt, R.id.personal_fivesure})
+    @OnClick({R.id.personal_back, R.id.personal_share, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt, R.id.personal_threesure, R.id.personal_fouredt, R.id.personal_foursure, R.id.personal_fiveedt, R.id.personal_fivesure})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.personal_back:
@@ -186,14 +186,14 @@ public class OranizeActivity extends BaseActivity {
                 mPersonalOneedt.setVisibility(View.VISIBLE);
                 ToastShow("个人不可编辑");
                 break;
-            case R.id.personal_twoedt:
+            case R.id.showgoods_edt:
                 mPersonalTwosure.setVisibility(View.VISIBLE);
                 mPersonalTwoedt.setVisibility(View.GONE);
                 ToastShow("相册可编辑");
                 mPersonImageAdapter.setShow_add(true);
                 mPersonImageAdapter.setCan_caozuo(true);
                 break;
-            case R.id.personal_twosure:
+            case R.id.showgoods_edtsure:
                 mPersonalTwosure.setVisibility(View.GONE);
                 mPersonalTwoedt.setVisibility(View.VISIBLE);
                 ToastShow("相册不可编辑");

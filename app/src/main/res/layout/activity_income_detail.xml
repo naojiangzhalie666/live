@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ftwo"
+    tools:context=".ui.IncomeDetailActivity">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="@dimen/title_top"
+        android:paddingBottom="@dimen/dp_5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imgv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/title"
+            android:layout_alignBottom="@+id/title"
+            android:paddingLeft="@dimen/dp_12"
+            app:srcCompat="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="收入明细"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_tp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circle_gray"
+            android:drawableLeft="@drawable/detail_search"
+            android:drawablePadding="@dimen/dp_5"
+            android:hint="搜索订单编号/下单人/用户ID"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingRight="@dimen/dp_4"
+            android:paddingBottom="@dimen/dp_4"
+            android:textColor="@color/black_oneeight"
+            android:textColorHint="@color/nineninenine"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@drawable/bg_circle_solder_setin"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingRight="10dp"
+            android:paddingBottom="@dimen/dp_4"
+            android:text="搜索"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/advice_con_btzuanshi"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_tp">
+
+
+        <TextView
+            android:id="@+id/normal_sttm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_corner_stoke_home"
+            android:drawableRight="@drawable/sanj_bt"
+            android:drawablePadding="@dimen/dp_2"
+            android:paddingLeft="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingRight="@dimen/dp_8"
+            android:paddingBottom="@dimen/dp_2"
+            android:text="2019年5月"
+            android:textColor="@color/home_txt"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/textView31"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_2"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/bg_circle_solder_setin"
+            app:layout_constraintBottom_toBottomOf="@+id/normal_sttm"
+            app:layout_constraintStart_toEndOf="@+id/normal_sttm"
+            app:layout_constraintTop_toTopOf="@+id/normal_sttm" />
+
+        <TextView
+            android:id="@+id/normal_edtm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/bg_corner_stoke_home"
+            android:drawableRight="@drawable/sanj_bt"
+            android:drawablePadding="@dimen/dp_2"
+            android:paddingLeft="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingRight="@dimen/dp_8"
+            android:paddingBottom="@dimen/dp_2"
+            android:text="2019年5月"
+            android:textColor="@color/home_txt"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/normal_sttm"
+            app:layout_constraintStart_toEndOf="@+id/textView31" />
+
+        <TextView
+            android:id="@+id/normal_shaixuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:drawableRight="@drawable/mine_next"
+            android:drawablePadding="@dimen/dp_5"
+            android:text="筛选"
+            android:textColor="@color/black_oneeight"
+            app:layout_constraintBaseline_toBaselineOf="@+id/normal_sttm"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/normal_recy"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/normal_sttm" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

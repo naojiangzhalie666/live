@@ -21,6 +21,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<String> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
+    private OnLastClickListener mOnLastClickListener;
 
     public HomeAdapter(Context context, List<String> stringList) {
         mContext = context;
@@ -30,6 +31,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
+    }
+
+    public void setOnLastClickListener(OnLastClickListener onLastClickListener) {
+        mOnLastClickListener = onLastClickListener;
     }
 
     @Override
@@ -81,6 +86,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     vh.mItemHomerecyTitle.setVisibility(View.GONE);
                     break;
             }
+            vh.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mOnItemClickListener!=null)
+                        mOnItemClickListener.onItemClickListener(position);
+                }
+            });
         } else {
             vh.mItemHomerecyImgv.setBackground(null);
             vh.mItemHomerecyImgv.setImageResource(R.drawable.home_more);
@@ -89,6 +101,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             vh.mItemHomerecyName.setVisibility(View.GONE);
             vh.mItemHomerecyTitle.setVisibility(View.GONE);
             vh.mItemHomerecyLinear.setVisibility(View.GONE);
+            vh.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mOnLastClickListener!=null)
+                        mOnLastClickListener.onLastClickListener();
+                }
+            });
         }
 
 
@@ -101,6 +120,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
         void onItemClickListener(int pos);
+    }
+
+    public interface OnLastClickListener{
+        void onLastClickListener();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

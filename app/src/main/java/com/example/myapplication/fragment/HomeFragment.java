@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.HomeAdapter;
-import com.example.myapplication.ui.OranizeActivity;
+import com.example.myapplication.ui.FindActivity;
+import com.example.myapplication.ui.LookPersonActivity;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.superc.yyfflibrary.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +63,9 @@ public class HomeFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.home_camera:
-//                startActivity(new Intent(getActivity(), LookPersonActivity.class));咨询师页面
-                startActivity(new Intent(getActivity(), OranizeActivity.class));//咨询机构页面
+                startActivity(new Intent(getActivity(), LookPersonActivity.class));//咨询师页面
+//                startActivity(new Intent(getActivity(), OranizeActivity.class));//咨询机构页面
+//                startActivity(new Intent(getActivity(), ShowGoodsActivity.class));//商品套餐页面
                 break;
             case R.id.home_chanpin:
                 break;
@@ -102,6 +105,18 @@ public class HomeFragment extends Fragment {
         };
         mHomeRecy.setLayoutManager(gridLayoutManager);
         mHomeRecy.setAdapter(mHomeAdapter);
+        mHomeAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClickListener(int pos) {
+                ToastUtil.showToast(getActivity(),"跳转"+pos);
+            }
+        });
+        mHomeAdapter.setOnLastClickListener(new HomeAdapter.OnLastClickListener() {
+            @Override
+            public void onLastClickListener() {
+                startActivity(new Intent(getActivity(), FindActivity.class));
+            }
+        });
 
 
     }

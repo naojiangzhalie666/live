@@ -39,7 +39,7 @@ public class PersonImageAdapter extends RecyclerView.Adapter<PersonImageAdapter.
     public static final int TYPE_PICTURE = 2;
     private LayoutInflater mInflater;
     private List<LocalMedia> list = new ArrayList<>();
-    private int selectMax = 9;
+    private int selectMax = 109;
     private boolean show_add = true;
     private boolean can_caozuo = false;
     private boolean show_zdy = false;
@@ -180,7 +180,7 @@ public class PersonImageAdapter extends RecyclerView.Adapter<PersonImageAdapter.
         } else {
             viewHolder.tvnum.setVisibility(position == 0&&!can_caozuo ? View.VISIBLE : View.GONE);
             viewHolder.tvnum.setText("+" + list.size());
-            viewHolder.edt.setText("情感咨询-"+"加价购"+position);
+            viewHolder.edt.setVisibility(View.GONE);
             viewHolder.mIvDel.setVisibility(!can_caozuo ? View.INVISIBLE : View.VISIBLE);
             viewHolder.mIvDel.setOnClickListener(view -> {
                 int index = viewHolder.getAdapterPosition();

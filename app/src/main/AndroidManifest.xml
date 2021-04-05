@@ -15,7 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.OranizeActivity"></activity>
+        <activity android:name=".ui.IncomeDetailActivity"></activity>
+        <activity android:name=".ui.WithdrawalActivity" />
+        <activity
+            android:name=".ui.ShowGoodsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name=".ui.OranizeActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".ui.LookPersonActivity"
             android:screenOrientation="portrait"
@@ -23,7 +31,7 @@
         <activity
             android:name=".chat.ChatActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity android:name=".ui.IdentyActivity" />
         <activity android:name=".ui.BindWchatActivity" />
         <activity android:name=".ui.ExchangeActivity" />

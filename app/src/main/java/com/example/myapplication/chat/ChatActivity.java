@@ -5,14 +5,15 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.myapplication.R;
-import com.example.myapplication.base.BaseChatActivity;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.utils.TitleUtils;
+import com.superc.yyfflibrary.base.BaseActivity;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 
 import static com.tencent.imsdk.v2.V2TIMManager.V2TIM_STATUS_LOGINED;
 
-public class ChatActivity extends BaseChatActivity {
+public class ChatActivity extends BaseActivity {
     private static final String TAG = ChatActivity.class.getSimpleName();
 
     private ChatFragment mChatFragment;
@@ -26,6 +27,7 @@ public class ChatActivity extends BaseChatActivity {
 
     @Override
     public void init() {
+        TitleUtils.setStatusTextColor(false,this);
         chat(getIntent());
     }
 

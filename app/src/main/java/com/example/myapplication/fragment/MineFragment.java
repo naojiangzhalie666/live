@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.VpAdapter;
+import com.example.myapplication.pop_dig.CodeDialog;
 import com.example.myapplication.ui.AdviceActivity;
 import com.example.myapplication.ui.FollowActivity;
 import com.example.myapplication.ui.NormalActivity;
@@ -80,6 +81,7 @@ public class MineFragment extends Fragment {
     private FwFragment mFwFragment;
     private List<Fragment> mFragments;
     private int mPower;
+    private CodeDialog mCodeDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,6 +128,7 @@ public class MineFragment extends Fragment {
                 startActivity(new Intent(getActivity(), FollowActivity.class));
                 break;
             case R.id.mine_guanzhugzongh:
+                mCodeDialog.show();
                 ToastUtil.showToast(getActivity(), "公众号关注");
                 break;
             case R.id.mine_help:
@@ -156,6 +159,7 @@ public class MineFragment extends Fragment {
     }
 
     private void init() {
+        mCodeDialog = new CodeDialog(getActivity());
         mFragments = new ArrayList<>();
         mXfFragment = new XfFragment();
         mPower = (int) ShareUtil.getInstance(getActivity()).get("power", 0);

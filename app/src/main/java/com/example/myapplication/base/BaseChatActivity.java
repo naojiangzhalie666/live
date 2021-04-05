@@ -2,14 +2,10 @@ package com.example.myapplication.base;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
 
-import com.example.myapplication.R;
 import com.example.myapplication.chat.BaseActivity;
 import com.example.myapplication.chat.ClickUtils;
 import com.example.myapplication.chat.UserInfo;
@@ -48,12 +44,12 @@ public abstract class BaseChatActivity extends AppCompatActivity {
         TitleUtils.getStatusBarHeight(this);
         super.onCreate(savedInstanceState);
         setContentView(LayoutInflater.from(this).inflate(getContentLayoutId(), null));
-//        TitleUtils.setStatusTextColor(false,this);
+        TitleUtils.setStatusTextColor(false,this);
         TAG = getLocalClassName();
         init();
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             getWindow().setStatusBarColor(getResources().getColor(R.color.home_txt));
             getWindow().setNavigationBarColor(getResources().getColor(R.color.navigation_bar_color));
@@ -61,7 +57,7 @@ public abstract class BaseChatActivity extends AppCompatActivity {
             vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             vis |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
             getWindow().getDecorView().setSystemUiVisibility(vis);
-        }
+        }*/
 
         TUIKit.addIMEventListener(mIMEventListener);
 

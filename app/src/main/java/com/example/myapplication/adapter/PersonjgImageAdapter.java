@@ -42,7 +42,7 @@ public class PersonjgImageAdapter extends RecyclerView.Adapter<PersonjgImageAdap
     public static final int TYPE_PICTURE = 2;
     private LayoutInflater mInflater;
     private List<JgBean> list = new ArrayList<>();
-    private int selectMax = 9;
+    private int selectMax = 109;
     private boolean show_add = true;
     private boolean can_caozuo = false;
     private boolean show_zdy = false;
