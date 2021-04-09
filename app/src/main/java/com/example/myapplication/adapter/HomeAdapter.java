@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.xzb.utils.onlinelive.TCVideoInfo;
 
 import java.util.List;
 
@@ -18,12 +19,12 @@ import butterknife.ButterKnife;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mLists;
+    private List<TCVideoInfo> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private OnLastClickListener mOnLastClickListener;
 
-    public HomeAdapter(Context context, List<String> stringList) {
+    public HomeAdapter(Context context, List<TCVideoInfo> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -47,7 +48,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
         if (position != mLists.size()) {
-            String bean = mLists.get(position);
+            TCVideoInfo bean = mLists.get(position);
             vh.mItemHomerecyBiao.setText("人气主播");
             vh.mItemHomerecyRenqi.setText("333");
             vh.mItemHomerecyName.setText("苏联军队攻克" + (position + 1));

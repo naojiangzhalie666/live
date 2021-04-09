@@ -1,27 +1,25 @@
 package com.example.myapplication.ui;
 
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.FIndAdapter;
-import com.example.myapplication.bean.GetConfigReq;
-import com.example.myapplication.pop_dig.CommonPopWindow;
-import com.example.myapplication.views.PickerScrollView;
+import com.example.myapplication.pop_dig.FavListDialog;
+import com.example.myapplication.utils.WheelPicker.picker.OptionPicker;
+import com.example.myapplication.utils.WheelPicker.widget.WheelView;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.superc.yyfflibrary.base.BaseActivity;
-import com.superc.yyfflibrary.utils.ToastUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,7 +34,7 @@ import butterknife.OnClick;
   @time: 2021/3/24 15:06
   @变更历史:
 ********************************************************************/
-public class FindActivity extends BaseActivity implements CommonPopWindow.ViewClickListener {
+public class FindActivity extends BaseActivity  {
     @BindView(R.id.find_type)
     TextView mFindType;
     @BindView(R.id.find_state)
@@ -45,12 +43,14 @@ public class FindActivity extends BaseActivity implements CommonPopWindow.ViewCl
     RecyclerView mFindRecy;
     @BindView(R.id.find_smart)
     SmartRefreshLayout mFindSmart;
-    private List<GetConfigReq.DatasBean> datasBeanList;
-    private String categoryName;
-    private int select_id = 0;
-    private String[][] mStrings = new String[][]{{"连线疏解中", "0"}, {"直播中", "1"}, {"在线", "2"}, {"离线", "3"},};
+    private int select_pos =1;
+    private String[][] mStrings = new String[][]{{"连线疏解中", "0"}, {"直播中", "1"}, {"在线", "2"}, {"离线", "3"}};
     private FIndAdapter mFIndAdapter;
     private List<String> mListStrings;
+    private String[] mStrings_fav = new String[]{"噶额问过我", "伟哥哥", "伟是哥哥", "山东噶问", "给收到哥", "大范围", "哇额发错", "乏味发速度", "啊哈哇额"};
+    private List<Map<String, Object>> mMapList;
+    private FavListDialog mFavListDialog;
+    private OptionPicker mPicker;
 
 
     @Override
@@ -62,6 +62,13 @@ public class FindActivity extends BaseActivity implements CommonPopWindow.ViewCl
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
+        mMapList = new ArrayList<>();
+        for (int i = 0; i < mStrings_fav.length; i++) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("title", mStrings_fav[i]);
+            mMapList.add(map);
+        }
+        mFavListDialog = new FavListDialog(this, mMapList);
         mFindSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -77,7 +84,7 @@ public class FindActivity extends BaseActivity implements CommonPopWindow.ViewCl
 
         initData();
         mListStrings = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 5; i++) {
             mListStrings.add("");
         }
         mFIndAdapter =new FIndAdapter(this,mListStrings);
@@ -91,80 +98,32 @@ public class FindActivity extends BaseActivity implements CommonPopWindow.ViewCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.find_type:
+                mFavListDialog.show();
                 break;
             case R.id.find_state:
-                setAddressSelectorPopup(view);
+                mPicker.show();
                 break;
         }
     }
 
     private void initData() {
-        datasBeanList = new ArrayList<>();
-        for (int i = 0; i < mStrings.length; i++) {
-            GetConfigReq.DatasBean bean = new GetConfigReq.DatasBean();
-            bean.setID(mStrings[i][1]);
-            bean.setState("1");
-            bean.setCategoryName(mStrings[i][0]);
-            datasBeanList.add(bean);
-        }
-    }
+        mPicker = new OptionPicker(this, new String[]{"连线疏解中", "直播中", "在线","离线"});
+        mPicker.setCanceledOnTouchOutside(false);
+        mPicker.setDividerRatio(WheelView.DividerConfig.FILL);
+//        picker.setShadowColor(Color.RED, 40);
+        mPicker.setSelectedIndex(select_pos);
+        mPicker.setCycleDisable(true);
+        mPicker.setTextSize(16);
+        mPicker.setSubmitTextColor(getResources().getColor(R.color.black));
+        mPicker.setCancelTextColor(getResources().getColor(R.color.black));
 
-    /**
-     * 将选择器放在底部弹出框
-     *
-     * @param v
-     */
-    private void setAddressSelectorPopup(View v) {
-        int screenHeigh = getResources().getDisplayMetrics().heightPixels;
-        CommonPopWindow.newBuilder()
-                .setView(R.layout.pop_picker_selector_bottom)
-//                .setAnimationStyle(R.style.AnimUp)
-                .setBackgroundDrawable(new BitmapDrawable())
-                .setSize(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(screenHeigh * 0.3f))
-                .setViewOnClickListener(this)
-                .setOutsideTouchable(false)
-                .setBackgroundDarkEnable(true)
-                .setBackgroundAlpha(0.7f)
-                .setBackgroundDrawable(new ColorDrawable(999999))
-                .build(this)
-                .showAsBottom(v);
-    }
-
-    @Override
-    public void getChildView(PopupWindow mPopupWindow, View view, int mLayoutResId) {
-        switch (mLayoutResId) {
-            case R.layout.pop_picker_selector_bottom:
-                TextView imageBtn = view.findViewById(R.id.img_guanbi);
-                TextView imageCacel = view.findViewById(R.id.img_cancel);
-                PickerScrollView addressSelector = view.findViewById(R.id.address);
-                // 设置数据，默认选择第一条
-                addressSelector.setData(datasBeanList);
-                addressSelector.setSelected(select_id);
-                //滚动监听
-                addressSelector.setOnSelectListener(new PickerScrollView.onSelectListener() {
-                    @Override
-                    public void onSelect(GetConfigReq.DatasBean pickers) {
-                        categoryName = pickers.getCategoryName();
-                        select_id = Integer.parseInt(pickers.getID());
-                    }
-                });
-                //完成按钮
-                imageBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mPopupWindow.dismiss();
-                        ToastUtil.showToast(FindActivity.this, categoryName);
-                    }
-                });
-                //取消按钮
-                imageCacel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mPopupWindow.dismiss();
-                    }
-                });
-                break;
-        }
+        mPicker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+            @Override
+            public void onOptionPicked(int index, String item) {
+                select_pos = index;
+                Toast.makeText(FindActivity.this,"index=" + index + ", item=" + item, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

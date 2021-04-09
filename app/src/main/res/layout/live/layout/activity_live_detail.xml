@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/ftwo"
+    android:orientation="vertical"
+    tools:context=".ui.LiveDetailActivity">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_75"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/livedetail_bg" />
+
+                <RelativeLayout
+                    android:id="@+id/live_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_75"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imageView5">
+
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:paddingTop="@dimen/title_top"
+                        android:text="直播数据"
+                        android:textColor="@color/login_txt"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:id="@+id/back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/dp_43"
+                        android:paddingLeft="@dimen/dp_16"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView11"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView11"
+                        app:srcCompat="@drawable/back_ye" />
+
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/livedetail_day"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/dp_6"
+                    android:text="日数据"
+                    android:textColor="@color/login_txt"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toStartOf="@+id/livedetail_month"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/live_ll" />
+
+                <TextView
+                    android:id="@+id/livedetail_month"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/dp_6"
+                    android:text="月数据"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/livedetail_day"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/livedetail_day" />
+
+                <View
+                    android:id="@+id/livedetail_line"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_2"
+                    android:background="@drawable/bg_circle_solder_lotxt"
+                    app:layout_constraintEnd_toEndOf="@+id/livedetail_day"
+                    app:layout_constraintStart_toStartOf="@+id/livedetail_day"
+                    app:layout_constraintTop_toBottomOf="@+id/livedetail_day" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_26"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_24"
+                    android:background="@drawable/bg_corner_tran"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/livedetail_line">
+
+                    <TextView
+                        android:id="@+id/livedetail_tvone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="直播时长(H)"
+                        android:textColor="@color/threethree"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/livedetail_tvtwo"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.497" />
+
+                    <TextView
+                        android:id="@+id/livedetail_onetv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/login_txt"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/livedetail_tvone"
+                        app:layout_constraintEnd_toEndOf="@+id/livedetail_tvone"
+                        app:layout_constraintStart_toStartOf="@+id/livedetail_tvone"
+                        tools:text="888" />
+
+                    <TextView
+                        android:id="@+id/livedetail_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_corner_tranl"
+                        android:drawableRight="@drawable/livedetail_white_tou"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:paddingLeft="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_3"
+                        android:paddingRight="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_3"
+                        android:text="2021.12.11"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/livedetail_twotv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/login_txt"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/livedetail_tvtwo"
+                        app:layout_constraintEnd_toEndOf="@+id/livedetail_tvtwo"
+                        app:layout_constraintStart_toStartOf="@+id/livedetail_tvtwo"
+                        tools:text="888" />
+
+                    <TextView
+                        android:id="@+id/livedetail_tvtwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="本月收益(元)"
+                        android:textColor="@color/threethree"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/livedetail_tvone"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/livedetail_tvthree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:text="直播天数"
+                        android:textColor="@color/threethree"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/livedetail_tvfour"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/livedetail_tvfour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="直播时长(H)"
+                        android:textColor="@color/threethree"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/livedetail_tvthree"
+                        app:layout_constraintEnd_toStartOf="@+id/livedetail_tvfive"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/livedetail_tvthree"
+                        app:layout_constraintTop_toTopOf="@+id/livedetail_tvthree" />
+
+                    <TextView
+                        android:id="@+id/livedetail_tvfive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="新增粉丝(人)"
+                        android:textColor="@color/threethree"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/livedetail_tvfour"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/livedetail_tvfour"
+                        app:layout_constraintTop_toTopOf="@+id/livedetail_tvfour" />
+
+                    <TextView
+                        android:id="@+id/livedetail_threetv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/login_txt"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/livedetail_tvthree"
+                        app:layout_constraintEnd_toEndOf="@+id/livedetail_tvthree"
+                        app:layout_constraintStart_toStartOf="@+id/livedetail_tvthree"
+                        tools:text="888" />
+
+                    <TextView
+                        android:id="@+id/livedetail_fourtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/login_txt"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/livedetail_tvfour"
+                        app:layout_constraintEnd_toEndOf="@+id/livedetail_tvfour"
+                        app:layout_constraintStart_toStartOf="@+id/livedetail_tvfour"
+                        tools:text="888" />
+
+                    <TextView
+                        android:id="@+id/livedetail_fivetv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/login_txt"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/livedetail_tvfive"
+                        app:layout_constraintEnd_toEndOf="@+id/livedetail_tvfive"
+                        app:layout_constraintStart_toStartOf="@+id/livedetail_tvfive"
+                        tools:text="888" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/livedetail_con_btzuanshi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <TextView
+                android:id="@+id/livedetail_sttm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_corner_stoke_home"
+                android:drawableRight="@drawable/sanj_bt"
+                android:drawablePadding="@dimen/dp_2"
+                android:paddingLeft="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_2"
+                android:paddingRight="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_2"
+                android:text="2019年5月"
+                android:textColor="@color/home_txt"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/textView31"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_2"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/bg_circle_solder_setin"
+                app:layout_constraintBottom_toBottomOf="@+id/livedetail_sttm"
+                app:layout_constraintStart_toEndOf="@+id/livedetail_sttm"
+                app:layout_constraintTop_toTopOf="@+id/livedetail_sttm" />
+
+            <TextView
+                android:id="@+id/livedetail_edtm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/bg_corner_stoke_home"
+                android:drawableRight="@drawable/sanj_bt"
+                android:drawablePadding="@dimen/dp_2"
+                android:paddingLeft="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_2"
+                android:paddingRight="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_2"
+                android:text="2019年5月"
+                android:textColor="@color/home_txt"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/livedetail_sttm"
+                app:layout_constraintStart_toEndOf="@+id/textView31" />
+
+            <TextView
+                android:id="@+id/livedetail_shaixuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:drawableRight="@drawable/mine_next"
+                android:drawablePadding="@dimen/dp_5"
+                android:text="筛选"
+                android:textColor="@color/black_oneeight"
+                app:layout_constraintBaseline_toBaselineOf="@+id/livedetail_sttm"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/con"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/fninfnie"
+                android:paddingTop="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/livedetail_sttm">
+
+                <TextView
+                    android:id="@+id/livedetail_bttv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="天数"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView112"
+                    app:layout_constraintEnd_toStartOf="@+id/textView110"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textView112"
+                    app:layout_constraintTop_toTopOf="@+id/textView112" />
+
+                <TextView
+                    android:id="@+id/textView112"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="直播日期"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/livedetail_bttv"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView110"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="时长(H)"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/livedetail_bttv"
+                    app:layout_constraintEnd_toStartOf="@+id/textView109"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/livedetail_bttv"
+                    app:layout_constraintTop_toTopOf="@+id/livedetail_bttv" />
+
+                <TextView
+                    android:id="@+id/textView109"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="收益(元)"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView110"
+                    app:layout_constraintEnd_toStartOf="@+id/textView113"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textView110"
+                    app:layout_constraintTop_toTopOf="@+id/textView110" />
+
+                <TextView
+                    android:id="@+id/textView113"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="新增粉丝(人)"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView109"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textView109"
+                    app:layout_constraintTop_toTopOf="@+id/textView109" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/livedetail_recy"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/con" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <RelativeLayout
+        android:id="@+id/live_lltp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_76"
+        android:visibility="gone"
+        android:background="@color/ftwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/title_top"
+            android:text="直播数据"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/backk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_43"
+            app:srcCompat="@drawable/back" />
+
+
+    </RelativeLayout>
+
+</FrameLayout>

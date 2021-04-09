@@ -51,11 +51,10 @@
         android:id="@+id/order_cz"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/dp_6"
         android:gravity="center"
         android:text="充值订单"
         android:textColor="@color/setin_se"
-        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/order_tsj"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +67,6 @@
         android:gravity="center"
         android:text="疏解记录"
         android:textColor="@color/black"
-        android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/order_cz"
         app:layout_constraintEnd_toStartOf="@+id/order_tpj"
         app:layout_constraintHorizontal_bias="0.5"
@@ -88,7 +86,7 @@
         android:id="@+id/smart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,8 +99,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/order_recy"
             android:layout_width="match_parent"
+            android:paddingLeft="@dimen/dp_12"
+            android:paddingRight="@dimen/dp_12"
+            android:paddingBottom="@dimen/dp_12"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dp_12" />
+             />
 
         <com.scwang.smart.refresh.footer.ClassicsFooter
             android:layout_width="match_parent"
@@ -116,7 +117,6 @@
         android:gravity="center"
         android:text="待评价"
         android:textColor="@color/black"
-        android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/order_tsj"
         app:layout_constraintEnd_toStartOf="@+id/order_fdj"
         app:layout_constraintHorizontal_bias="0.5"
@@ -129,7 +129,6 @@
         android:gravity="center"
         android:text="等级与特权"
         android:textColor="@color/black"
-        android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/order_tpj"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

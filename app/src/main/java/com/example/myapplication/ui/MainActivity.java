@@ -1,9 +1,6 @@
 package com.example.myapplication.ui;
 
-import android.util.Log;
-
 import com.example.myapplication.R;
-import com.example.myapplication.base.GenerateTestUserSig;
 import com.example.myapplication.fragment.FindFragment;
 import com.example.myapplication.fragment.HomeFragment;
 import com.example.myapplication.fragment.MessageFragment;
@@ -13,9 +10,6 @@ import com.example.myapplication.views.TabContainerView;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.superc.yyfflibrary.views.lowhurdles.TabFragmentAdapter;
-import com.tencent.qcloud.tim.uikit.TUIKit;
-import com.tencent.qcloud.tim.uikit.base.IUIKitCallBack;
-import com.tencent.qcloud.tim.uikit.utils.ToastUtil;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -43,7 +37,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
-        goLogin();
         mHomeFragment = new HomeFragment();
         mFindFragment = new FindFragment();
         mMessageFragment = new MessageFragment();
@@ -97,30 +90,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void onPageScrollStateChanged(int state) {
 
-    }
-    private void goLogin(){
-        // 获取userSig函数
-        String userSig = GenerateTestUserSig.genTestUserSig("yangfan");
-        TUIKit.login("yangfan", userSig, new IUIKitCallBack() {
-            @Override
-            public void onError(String module, final int code, final String desc) {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        ToastUtil.toastLongMessage("登录失败" + ", errCode = " + code + ", errInfo = " + desc);
-                    }
-                });
-                Log.e(TAG, "imLogin errorCode = " + code + ", errorInfo = " + desc);
-            }
-
-            @Override
-            public void onSuccess(Object data) {
-//                UserInfo.getInstance().setAutoLogin(true);
-//                Intent intent = new Intent(LoginForDevActivity.this, MainActivity.class);
-//                startActivity(intent);
-//                finish();
-                Log.e(TAG, "imLogin 登录成功");
-            }
-        });
     }
 
 

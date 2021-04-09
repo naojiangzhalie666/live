@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.myapplication.R;
 import com.example.myapplication.ui.ExchangeActivity;
+import com.example.myapplication.ui.LiveDetailActivity;
 
 import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
@@ -34,6 +35,8 @@ public class FwFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fw_live:
+                Intent live_intent =new Intent(getActivity(), LiveDetailActivity.class);
+                startActivity(live_intent);
                 break;
             case R.id.fw_speak:
                 break;

@@ -1,2 +1,2 @@
-include ':app', ':tuikit', ':qrcode'
+include ':app', ':tuikit', ':qrcode', ':audioeffectsettingkit', ':beautysettingkit', ':xzb'
 rootProject.name = "My Application"

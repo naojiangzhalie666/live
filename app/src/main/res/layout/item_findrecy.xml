@@ -9,16 +9,15 @@
 
     <ImageView
         android:id="@+id/item_findrecy_imgv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/dp_61"
+        android:layout_height="@dimen/dp_61"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
         android:background="@color/login_txt"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,13 +25,13 @@
         android:id="@+id/item_findrecy_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/dp_14"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:lines="1"
         tools:text="情感老师--嘿嘿嘿"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/item_findrecy_statetop"
         app:layout_constraintStart_toEndOf="@+id/item_findrecy_imgv"
         app:layout_constraintTop_toTopOf="@+id/item_findrecy_imgv" />
@@ -69,13 +68,11 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-
-        android:layout_marginEnd="12dp"
+        android:layout_marginStart="@dimen/dp_14"
+        android:layout_marginEnd="@dimen/dp_12"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/item_findrecy_imgv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="2.6"
         app:layout_constraintStart_toEndOf="@+id/item_findrecy_imgv">
 
         <LinearLayout

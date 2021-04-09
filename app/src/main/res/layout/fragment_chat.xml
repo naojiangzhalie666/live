@@ -56,6 +56,7 @@
             app:srcCompat="@drawable/talk_more" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/chat_tp_con"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/dp_15"

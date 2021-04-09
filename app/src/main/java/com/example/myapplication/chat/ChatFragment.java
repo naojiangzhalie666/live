@@ -10,13 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.TalkAdapter;
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.chat.helper.ChatLayoutHelper;
+import com.example.myapplication.pop_dig.BuyzDialog;
+import com.example.myapplication.pop_dig.HeadDialog;
+import com.example.myapplication.pop_dig.ServiceDialog;
 import com.example.myapplication.utils.FlowLayoutManager;
 import com.example.myapplication.utils.SpaceItemDecoration;
 import com.tencent.imsdk.v2.V2TIMConversation;
@@ -33,12 +35,16 @@ import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.input.InputLayout;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout;
 import com.tencent.qcloud.tim.uikit.modules.message.MessageInfo;
+import com.tencent.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,9 +68,15 @@ public class ChatFragment extends BaseFragment {
     private TextView mtv_state;
     private ImageView mimgv_head;
     private ImageView mimgv_back;
+    private ConstraintLayout mcon_tp;
     private TalkAdapter mTalkAdapter;
     private List<String> mStringList;
     private String[] mStrings = new String[]{"情感分析", "情感分析", "第三者问题", "未成年人心理", "未成年人心理"};
+    private ServiceDialog mServiceDialog;
+    private List<String> mService_strs;
+    private HeadDialog mHeadDialog;
+    private List<Map<String,Object>> mBuy_strs;
+    private BuyzDialog mBuyzDialog;
 
 
     @Override
@@ -82,6 +94,7 @@ public class ChatFragment extends BaseFragment {
 
     private void initMine(){
         mRecyclerView = mBaseView.findViewById(R.id.chat_recy);
+        mcon_tp = mBaseView.findViewById(R.id.chat_tp_con);
         mStringList = new ArrayList<>();
         for (int i = 0; i < mStrings.length; i++) {
             mStringList.add(mStrings[i]);
@@ -91,6 +104,36 @@ public class ChatFragment extends BaseFragment {
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(dp2px(2)));
         mRecyclerView.setLayoutManager(flowLayoutManager);
         mRecyclerView.setAdapter(mTalkAdapter);
+
+        mHeadDialog = new HeadDialog(getActivity());
+
+        mService_strs = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            mService_strs.add("");
+        }
+        mServiceDialog = new ServiceDialog(getActivity(),mService_strs);
+        mServiceDialog.setOnTalkClickListener(new ServiceDialog.OnTalkClickListener() {
+            @Override
+            public void onTalkClickListener(String content) {
+                MessageInfo info = MessageInfoUtil.buildTextMessage(content);
+                mChatLayout.sendMessage(info,false);
+            }
+        });
+
+        mcon_tp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mHeadDialog.show();
+            }
+        });
+
+        mBuy_strs = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            Map<String,Object> map =new HashMap<>();
+            map.put("select",false);
+            mBuy_strs.add(map);
+        }
+        mBuyzDialog = new BuyzDialog(getActivity(),mBuy_strs);
     }
 
 
@@ -109,12 +152,10 @@ public class ChatFragment extends BaseFragment {
         mtv_content.setText("关注方向");
         Glide.with(this).load(R.drawable.man_se).into(mimgv_head);
         mtv_state.setVisibility(VISIBLE);
-
-
-
-        TitleBarLayout titleBar = mChatLayout.getTitleBar();
-        titleBar.setVisibility(GONE);
-
+        /*
+        *聊天下方是否需要多展示（咨询师与用户展示不同）
+        * */
+        mChatLayout.getInputLayout().disableVideoRecordAction(false);//是否展示摄像
 
 
         //单聊组件的默认UI和交互初始化
@@ -127,7 +168,8 @@ public class ChatFragment extends BaseFragment {
 
         //获取单聊面板的标题栏
         mTitleBar = mChatLayout.getTitleBar();
-
+        /*隐藏原TitlBar*/
+        mTitleBar.setVisibility(GONE);
         //单聊面板标记栏返回按钮点击事件，这里需要开发者自行控制
         mTitleBar.setOnLeftClickListener(new View.OnClickListener() {
             @Override
@@ -189,12 +231,12 @@ public class ChatFragment extends BaseFragment {
         mChatLayout.getInputLayout().setOnNewAddClickListener(new InputLayout.onNewAddClickListener() {
             @Override
             public void onDiamondClickListener() {
-                Toast.makeText(ChatFragment.this.getActivity(), "充值钻石", Toast.LENGTH_SHORT).show();
+                mBuyzDialog.show();
             }
 
             @Override
             public void onSerViceCLickListener() {
-                Toast.makeText(ChatFragment.this.getActivity(), "服务项目咨询", Toast.LENGTH_SHORT).show();
+                mServiceDialog.show();
             }
         });
 

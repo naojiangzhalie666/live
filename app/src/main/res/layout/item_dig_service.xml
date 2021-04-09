@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp_3"
+    android:layout_marginTop="@dimen/dp_8"
+    android:layout_marginRight="@dimen/dp_3"
+    android:background="@drawable/bg_corner_white"
+    android:elevation="@dimen/dp_1"
+    android:padding="@dimen/dp_10">
+
+
+    <ImageView
+        android:id="@+id/item_service_head"
+        android:layout_width="@dimen/dp_55"
+        android:scaleType="fitXY"
+        android:layout_height="@dimen/dp_55"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/man_se" />
+
+    <TextView
+        android:id="@+id/item_service_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/black_oneeight"
+        app:layout_constraintStart_toEndOf="@+id/item_service_head"
+        app:layout_constraintTop_toTopOf="@+id/item_service_head"
+        tools:text="一对一专属咨询" />
+
+    <TextView
+        android:id="@+id/item_service_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:drawableRight="@drawable/talk_zuan"
+        android:drawablePadding="@dimen/dp_3"
+        android:textColor="@color/red_goods"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_service_head"
+        app:layout_constraintStart_toStartOf="@+id/item_service_title"
+        tools:text="600" />
+
+    <TextView
+        android:id="@+id/textView83"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_3"
+        android:text="起"
+        android:textColor="@color/nineninenine"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_service_num"
+        app:layout_constraintStart_toEndOf="@+id/item_service_num"
+        app:layout_constraintTop_toTopOf="@+id/item_service_num" />
+
+    <TextView
+        android:id="@+id/item_service_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/bg_ser_circle_red"
+        android:drawableLeft="@drawable/talk_service_talk"
+        android:drawablePadding="@dimen/dp_3"
+        android:paddingLeft="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_7"
+        android:paddingRight="@dimen/dp_12"
+        android:paddingBottom="@dimen/dp_7"
+        android:text="询问"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,9 +18,31 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+        flatDir{
+            dirs 'libs'
+        }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    compileSdkVersion = 25
+    buildToolsVersion = "28.0.3"
+    supportSdkVersion = "25.4.0"
+    minSdkVersion = 16
+    targetSdkVersion = 23
+    versionCode = 1
+    versionName = "v1.0"
+    proguard = true
+    rootPrj = "$projectDir/.."
+    ndkAbi = 'armeabi-v7a'//'armeabi'//, 'arm64-v8a'
+    noffmpeg = false
+    noijkplay = false
+    aekit_version = '1.0.19-cloud'
+    kotlin_version = "1.3.21"
+    liteavSdk='com.tencent.liteav:LiteAVSDK_Professional:latest.release'
+    imSdk='com.tencent.imsdk:imsdk:5.1.56'
 }

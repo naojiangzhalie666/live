@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.chat.ChatActivity;
+import com.example.myapplication.ui.MailListActivity;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.qcloud.tim.uikit.base.BaseFragment;
 import com.tencent.qcloud.tim.uikit.component.TitleBarLayout;
@@ -42,6 +44,7 @@ public class MessageFragment extends BaseFragment {
 
     private ConversationLayout mConversationLayout;
     private View mBaseView;
+    private ImageView mimg_mail;
     private ListView mConversationPopList;
     private PopDialogAdapter mConversationPopAdapter;
     private PopupWindow mConversationPopWindow;
@@ -58,6 +61,7 @@ public class MessageFragment extends BaseFragment {
     private void initView() {
         // 从布局文件中获取会话列表面板
         mConversationLayout = mBaseView.findViewById(R.id.conversation_layout);
+        mimg_mail = mBaseView.findViewById(R.id.message_maillist);
         TitleBarLayout titleBarLayout = mConversationLayout.findViewById(R.id.conversation_title);
         titleBarLayout.setVisibility(GONE);
         // 会话列表面板的默认UI和交互初始化
@@ -75,6 +79,12 @@ public class MessageFragment extends BaseFragment {
             @Override
             public void OnItemLongClick(View view, int position, ConversationInfo conversationInfo) {
                 startPopShow(view, position, conversationInfo);
+            }
+        });
+        mimg_mail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MailListActivity.class));
             }
         });
         initTitleAction();

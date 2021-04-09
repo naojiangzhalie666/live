@@ -52,6 +52,7 @@ public class OrderListActivity extends BaseActivity {
     private List<Map<String,Object>> mPjlists;
     private String mType = "0";
     private PjDialog mPjDialog;
+    private boolean is_first = true;
 
     @Override
     public int getContentLayoutId() {
@@ -228,6 +229,7 @@ public class OrderListActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        if(is_first){
         switch (mType) {
             case "0":
                 toGoAnima(mOrderCz);
@@ -242,5 +244,7 @@ public class OrderListActivity extends BaseActivity {
                 toGoAnima(mOrderFdj);
                 break;
         }
+        }
+        is_first = false;
     }
 }

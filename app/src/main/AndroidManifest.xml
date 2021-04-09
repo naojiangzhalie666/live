@@ -6,6 +6,15 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-feature android:name="android.hardware.Camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:name=".base.LiveApplication"
@@ -15,7 +24,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.IncomeDetailActivity"></activity>
+        <activity android:name=".ui.LiveDetailActivity"></activity>
+        <activity android:name=".live.PrepareActivity"></activity>
+        <activity android:name=".live.LiveActivity" />
+        <activity android:name=".ui.MailListActivity" />
+        <activity android:name=".ui.IncomeDetailActivity" />
         <activity android:name=".ui.WithdrawalActivity" />
         <activity
             android:name=".ui.ShowGoodsActivity"

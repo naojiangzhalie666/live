@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_5">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_buy_con"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buy_bg_unse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView99"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_7"
+            android:paddingTop="@dimen/dp_2"
+            android:textSize="10sp"
+            android:text="超值"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dig_buy_zuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_14"
+            android:drawableRight="@drawable/buy_zuan"
+            android:drawablePadding="@dimen/dp_5"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="180钻石" />
+
+        <TextView
+            android:id="@+id/dig_buy_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_14"
+            android:text="18元"
+            android:textColor="@color/nineninenine"
+            android:paddingTop="@dimen/dp_3"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/dig_buy_zuan"
+            app:layout_constraintStart_toStartOf="@+id/dig_buy_zuan"
+            app:layout_constraintTop_toBottomOf="@+id/dig_buy_zuan" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/dig_buy_rel"
+        android:layout_width="0dp"
+        android:visibility="gone"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_corner_jig"
+        app:layout_constraintBottom_toBottomOf="@+id/item_buy_con"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/item_buy_con"
+        app:layout_constraintTop_toTopOf="@+id/item_buy_con">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableRight="@drawable/mine_next"
+            android:drawablePadding="@dimen/dp_9"
+            android:gravity="center"
+            android:text="更多选择"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

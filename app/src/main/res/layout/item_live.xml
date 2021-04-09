@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dp_3"
+    android:paddingBottom="@dimen/dp_3"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/item_live_days"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/nineninenine"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/item_live_date"
+        app:layout_constraintEnd_toStartOf="@+id/item_live_time"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/item_live_date"
+        app:layout_constraintTop_toTopOf="@+id/item_live_date"
+        tools:text="1" />
+
+    <TextView
+        android:id="@+id/item_live_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/nineninenine"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_live_days"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2021.03.3" />
+
+    <TextView
+        android:id="@+id/item_live_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/nineninenine"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_live_days"
+        app:layout_constraintEnd_toStartOf="@+id/item_live_get"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/item_live_days"
+        app:layout_constraintTop_toTopOf="@+id/item_live_days"
+        tools:text="1sdf" />
+
+    <TextView
+        android:id="@+id/item_live_get"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/nineninenine"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_live_time"
+        app:layout_constraintEnd_toStartOf="@+id/item_live_people"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/item_live_time"
+        app:layout_constraintTop_toTopOf="@+id/item_live_time"
+        tools:text="100" />
+
+    <TextView
+        android:id="@+id/item_live_people"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/nineninenine"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_live_get"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/item_live_get"
+        app:layout_constraintTop_toTopOf="@+id/item_live_get"
+        tools:text="100" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

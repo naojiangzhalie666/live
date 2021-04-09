@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.HomeAdapter;
+import com.example.myapplication.live.PrepareActivity;
 import com.example.myapplication.ui.FindActivity;
 import com.example.myapplication.ui.LookPersonActivity;
+import com.example.xzb.utils.onlinelive.TCVideoInfo;
+import com.example.xzb.utils.onlinelive.TCVideoListMgr;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -41,7 +45,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.home_smart)
     SmartRefreshLayout mHomeSmart;
 
-    private List<String> mLists;
+    private List<TCVideoInfo> mLists;
     private HomeAdapter mHomeAdapter;
 
     private Unbinder unbinder;
@@ -94,7 +98,7 @@ public class HomeFragment extends Fragment {
 
         mLists = new ArrayList<>();
         for (int i = 0; i < 11; i++) {
-            mLists.add("");
+            mLists.add(new TCVideoInfo());
         }
         mHomeAdapter = new HomeAdapter(getActivity(), mLists);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2){
@@ -109,6 +113,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClickListener(int pos) {
                 ToastUtil.showToast(getActivity(),"跳转"+pos);
+                startActivity(new Intent(getActivity(), PrepareActivity.class));
             }
         });
         mHomeAdapter.setOnLastClickListener(new HomeAdapter.OnLastClickListener() {
@@ -119,6 +124,44 @@ public class HomeFragment extends Fragment {
         });
 
 
+
+    }
+
+    // TODO: 2021/4/9   获取直播数据
+    /*
+    * 现在报错--
+    * get_live_list error, code:202001, errInfo:[LiveRoom] getRoomList 失败[verify failed,please check your token![err=202001]]
+    * */
+    private void getLiveData(){
+        TCVideoListMgr.getInstance().fetchLiveList(getActivity(), new TCVideoListMgr.Listener() {
+            @Override
+            public void onVideoList(int retCode, ArrayList<TCVideoInfo> result, boolean refresh) {
+                onRefreshVideoList(retCode, result, refresh);
+            }
+        });
+    }
+
+    private void onRefreshVideoList(final int retCode, final ArrayList<TCVideoInfo> result, final boolean refresh) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (retCode == 0 ) {
+                        mLists.clear();
+                        if (result != null) {
+                            mLists.addAll((ArrayList<TCVideoInfo>)result.clone());
+                        }
+                        if (refresh) {
+                            mHomeAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "刷新列表失败", Toast.LENGTH_LONG).show();
+                    }
+                    /*mEmptyView.setVisibility(adapter.getCount() == 0? View.VISIBLE: View.GONE);
+                    mSwipeRefreshLayout.setRefreshing(false);*/
+                }
+            });
+        }
     }
 
     @Override
