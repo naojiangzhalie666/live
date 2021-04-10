@@ -1,0 +1,70 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.tencent.liteav.demo.beauty.test" >
+4
+5    <uses-sdk
+5-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:5:5-74
+6        android:minSdkVersion="16"
+6-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:5:15-41
+7        android:targetSdkVersion="23" />
+7-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:5:42-71
+8
+9    <instrumentation
+9-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:11:5-15:85
+10        android:name="android.test.InstrumentationTestRunner"
+10-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:11:22-75
+11        android:functionalTest="false"
+11-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:14:22-52
+12        android:handleProfiling="false"
+12-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:13:22-53
+13        android:label="Tests for com.tencent.liteav.demo.beauty.test"
+13-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:15:22-83
+14        android:targetPackage="com.tencent.liteav.demo.beauty.test" />
+14-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:12:22-81
+15    <!-- sdk 网络访问 -->
+16    <uses-permission android:name="android.permission.INTERNET" /> <!-- sdk 网络状态获取 -->
+16-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:12:5-67
+16-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:12:22-64
+17    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- sdk wifi状态获取 -->
+17-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:14:5-79
+17-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:14:22-76
+18    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- sdk log及配置文件 -->
+18-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:16:5-76
+18-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:16:22-73
+19    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+19-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:18:5-81
+19-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:18:22-78
+20    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 摄像头录制 -->
+20-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:19:5-80
+20-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:19:22-77
+21    <uses-permission android:name="android.permission.CAMERA" /> <!-- 音频录制 -->
+21-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:21:5-65
+21-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:21:22-62
+22    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 音频改变音量类型 -->
+22-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:23:5-71
+22-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:23:22-68
+23    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- 音频获取蓝牙耳机状态 -->
+23-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:25:5-80
+23-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:25:22-77
+24    <uses-permission android:name="android.permission.BLUETOOTH" />
+24-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:27:5-68
+24-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:27:22-65
+25
+26    <application
+26-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:7:5-9:19
+27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+27-->[androidx.core:core:1.0.0] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\607c3e85b216ba1410e4c67a1389515c\core-1.0.0\AndroidManifest.xml:22:18-86
+28        android:debuggable="true"
+28-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:7:18-43
+29        android:label="@string/app_name"
+29-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:30:9-41
+30        android:supportsRtl="true"
+30-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:31:9-35
+31        android:usesCleartextTraffic="true" >
+31-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:32:9-44
+32        <uses-library android:name="android.test.runner" />
+32-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:8:9-60
+32-->D:\workplace\live\beautysettingkit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8909549217683157282.xml:8:23-57
+33    </application>
+34
+35</manifest>

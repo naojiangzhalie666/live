@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.journeyapps.barcodescanner.BarcodeView
+        android:id="@+id/zxing_barcode_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:zxing_framing_rect_height="238dp"
+        app:zxing_framing_rect_width="238dp" />
+
+    <com.example.qrcode.ZxingViewFinderView
+        android:id="@+id/zxing_viewfinder_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:scannerBoundCornerColor="#07FEFE"
+        app:scannerBoundCornerHeight="24dp"
+        app:scannerBoundCornerWith="3dp"
+        app:scannerBoundWidth="0dp"
+        app:scannerLaserResId="@drawable/scan_icon_scanline"
+        app:scannerTipText="请对准二维码，即可自动扫描"
+        app:scannerTipTextColor="@android:color/white"
+        app:scannerTipTextGravity="true"
+        app:scannerTipTextMargin="43dp"
+        app:scannerTipTextSize="14sp"
+        />
+</merge>
