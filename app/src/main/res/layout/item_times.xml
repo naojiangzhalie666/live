@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp_4"
+    android:layout_marginTop="@dimen/dp_5"
+    android:layout_marginRight="@dimen/dp_4"
+    android:background="@drawable/bg_stroke_setin">
+
+    <ImageView
+        android:id="@+id/item_times_img"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_8"
+        app:layout_constraintDimensionRatio="w,1:1.6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mine_flower" />
+
+    <TextView
+        android:id="@+id/item_times_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_3"
+        android:layout_marginBottom="@dimen/dp_3"
+        android:textColor="@color/black_oneeight"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_times_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_times_img"
+        tools:text="玫瑰花" />
+
+    <TextView
+        android:id="@+id/item_times_num"
+        android:layout_width="@dimen/dp_14"
+        android:layout_height="@dimen/dp_14"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="3dp"
+        android:background="@drawable/bg_circle_giftran"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="99" />
+
+    <TextView
+        android:id="@+id/item_times_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_4"
+        android:layout_marginEnd="@dimen/dp_4"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:textSize="9sp"
+        android:background="@drawable/mine_grad"
+        android:padding="@dimen/dp_2"
+        android:text="1分数疏解"
+        android:textColor="@color/login_txt"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

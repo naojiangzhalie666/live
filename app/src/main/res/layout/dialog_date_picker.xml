@@ -15,9 +15,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="8dp"
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingRight="@dimen/dp_8"
+            android:paddingBottom="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_16"
             android:text="@string/cancel"
-            android:textColor="@color/home_txt"
+            android:textColor="@color/nineninenine"
             android:textSize="14sp" />
 
         <TextView
@@ -36,17 +39,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="8dp"
+            android:paddingLeft="@dimen/dp_8"
+            android:paddingRight="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_16"
             android:text="@string/confirm"
-            android:textColor="@color/home_txt"
+            android:textColor="@color/black_oneeight"
             android:textSize="14sp" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_8"
         android:layout_height="0.5dp"
-        android:background="@color/date_picker_divider" />
+        android:background="#DCDCDC" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,7 +79,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/year"
-            android:textColor="@color/date_picker_text_dark"
+            android:textColor="@color/date_picker_text_light"
             android:textSize="@dimen/date_unit_text_size" />
 
         <com.example.myapplication.utils.datepicker.PickerView
@@ -86,7 +94,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/month"
-            android:textColor="@color/date_picker_text_dark"
+            android:textColor="@color/date_picker_text_light"
             android:textSize="@dimen/date_unit_text_size" />
 
         <com.example.myapplication.utils.datepicker.PickerView
@@ -96,12 +104,13 @@
             android:layout_weight="2" />
 
         <TextView
+            android:id="@+id/tv_day_unit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/day"
-            android:textColor="@color/date_picker_text_dark"
+            android:textColor="@color/date_picker_text_light"
             android:textSize="@dimen/date_unit_text_size" />
 
         <com.example.myapplication.utils.datepicker.PickerView
@@ -117,7 +126,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/hour"
-            android:textColor="@color/date_picker_text_dark"
+            android:textColor="@color/date_picker_text_light"
             android:textSize="@dimen/date_unit_text_size" />
 
         <com.example.myapplication.utils.datepicker.PickerView
@@ -133,7 +142,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/minute"
-            android:textColor="@color/date_picker_text_dark"
+            android:textColor="@color/date_picker_text_light"
             android:textSize="@dimen/date_unit_text_size" />
 
     </LinearLayout>

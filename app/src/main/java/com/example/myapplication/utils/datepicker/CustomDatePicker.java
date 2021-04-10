@@ -32,7 +32,7 @@ public class CustomDatePicker implements View.OnClickListener, PickerView.OnSele
 
     private Dialog mPickerDialog;
     private PickerView mDpvYear, mDpvMonth, mDpvDay, mDpvHour, mDpvMinute;
-    private TextView mTvHourUnit, mTvMinuteUnit;
+    private TextView mTvHourUnit, mTvMinuteUnit,mDpvTvDay;
 
     private int mBeginYear, mBeginMonth, mBeginDay, mBeginHour, mBeginMinute,
             mEndYear, mEndMonth, mEndDay, mEndHour, mEndMinute;
@@ -131,6 +131,7 @@ public class CustomDatePicker implements View.OnClickListener, PickerView.OnSele
         mDpvYear.setOnSelectListener(this);
         mDpvMonth = mPickerDialog.findViewById(R.id.dpv_month);
         mDpvMonth.setOnSelectListener(this);
+        mDpvTvDay = mPickerDialog.findViewById(R.id.tv_day_unit);
         mDpvDay = mPickerDialog.findViewById(R.id.dpv_day);
         mDpvDay.setOnSelectListener(this);
         mDpvHour = mPickerDialog.findViewById(R.id.dpv_hour);
@@ -578,6 +579,20 @@ public class CustomDatePicker implements View.OnClickListener, PickerView.OnSele
             mTvMinuteUnit.setVisibility(View.GONE);
         }
         mCanShowPreciseTime = canShowPreciseTime;
+    }
+/**
+     * 设置日期控件是否显示天
+     */
+    public void setCanShowPreciseDay(boolean canShowPreciseDay) {
+        if (!canShow()) return;
+
+        if (!canShowPreciseDay) {
+            mDpvDay.setVisibility(View.GONE);
+            mDpvTvDay.setVisibility(View.GONE);
+        }else{
+            mDpvDay.setVisibility(View.VISIBLE);
+            mDpvTvDay.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initScrollUnit(Integer... units) {

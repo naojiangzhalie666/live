@@ -78,6 +78,7 @@ public class LiveDetailActivity extends BaseActivity {
     private int line_startDis = 0;
     private List<String> mlive_strs;
     private LivedeAdapter mLivedeAdapter;
+    private boolean is_day = true;
 
     @Override
     public int getContentLayoutId() {
@@ -91,7 +92,7 @@ public class LiveDetailActivity extends BaseActivity {
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (verticalOffset < dp2px(LiveDetailActivity.this,-200)) {
+                if (verticalOffset < dp2px(LiveDetailActivity.this,-130)) {
                     mRelativeLayout.setVisibility(View.VISIBLE);
                     TitleUtils.setStatusTextColor(true, LiveDetailActivity.this);
                 } else {
@@ -119,6 +120,7 @@ public class LiveDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.livedetail_day:
+                is_day = true;
                 toGoAnima(mLivedetailDay);
                 mLivedetailMonth.setTextColor(getResources().getColor(R.color.white));
                 mLivedetailOnetv.setVisibility(View.VISIBLE);
@@ -127,9 +129,12 @@ public class LiveDetailActivity extends BaseActivity {
                 mLivedetailTvtwo.setText("直播收益(元)");
                 mLivedetailTvthree.setText("观看人数(人)");
                 mLivedetailTvfour.setText("观看次数(次)");
+                SimpleDateFormat dateFormatd = new SimpleDateFormat("yyyy-MM-dd");
+                mLivedetailDate.setText(dateFormatd.format(new Date()));
                 getDayData();
                 break;
             case R.id.livedetail_month:
+                is_day = false;
                 toGoAnima(mLivedetailMonth);
                 mLivedetailDay.setTextColor(getResources().getColor(R.color.white));
                 mLivedetailOnetv.setVisibility(View.GONE);
@@ -138,22 +143,25 @@ public class LiveDetailActivity extends BaseActivity {
                 mLivedetailTvtwo.setText("本月收益(元)");
                 mLivedetailTvthree.setText("直播天数(人)");
                 mLivedetailTvfour.setText("直播时长(H)");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+                mLivedetailDate.setText(dateFormat.format(new Date()));
                 getMonthData();
                 break;
             case R.id.livedetail_date:
+                SimpleDateFormat simpleD = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                showDateDialog(mLivedetailDate, "2000-01-01 00:00:00",simpleD.format(new Date()),is_day);
                 break;
             case R.id.livedetail_sttm:
-                showDateDialog(mLivedetailSttm, "2000-01-01 00:00:00", mLivedetailEdtm.getText().toString() + " 23:59:59");
+                showDateDialog(mLivedetailSttm, "2000-01-01 00:00:00", mLivedetailEdtm.getText().toString() + "-01 23:59:59",false);
                 break;
             case R.id.livedetail_edtm:
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                showDateDialog(mLivedetailEdtm, "2000-01-01 00:00:00", simpleDateFormat.format(new Date()));
+                showDateDialog(mLivedetailEdtm, "2000-01-01 00:00:00", simpleDateFormat.format(new Date()),false);
                 break;
         }
     }
 
     private void getDayData() {
-
         mLivedetailOnetv.setText("111");
         mLivedetailTwotv.setText("222");
         mLivedetailThreetv.setText("333");
@@ -179,16 +187,14 @@ public class LiveDetailActivity extends BaseActivity {
             mlive_strs.add("");
         }
         mLivedeAdapter.setIs_day(false);
-
-
     }
 
 
     private void initTvTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        mLivedetailEdtm.setText(dateFormat.format(new Date()));
         SimpleDateFormat dateFormat_st = new SimpleDateFormat("yyyy-MM");
-        mLivedetailSttm.setText(dateFormat_st.format(new Date()) + "-01");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        mLivedetailEdtm.setText(dateFormat_st.format(new Date()));
+        mLivedetailSttm.setText(dateFormat_st.format(new Date()));
         mLivedetailDate.setText(dateFormat.format(new Date()));
     }
 
@@ -200,19 +206,20 @@ public class LiveDetailActivity extends BaseActivity {
      * @param begin_tm 日期选择的开始日期
      * @param ed_tm    日期选择的结束日期
      */
-    private void showDateDialog(final TextView mtv, String begin_tm, String ed_tm) {
+    private void showDateDialog(final TextView mtv, String begin_tm, String ed_tm,boolean showDay) {
         SimpleDateFormat sdf_no = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
         String now_date = sdf_no.format(new Date());
         customDatePickerSt = new CustomDatePicker(this, new CustomDatePicker.Callback() {
             @Override
             public void onTimeSelected(long timestamp) {
-                mtv.setText(DateFormatUtils.long2Str(timestamp, false));
+                mtv.setText(DateFormatUtils.long2StrDay(timestamp, false,showDay));
             }
         }, begin_tm, ed_tm);
         customDatePickerSt.setCanShowPreciseTime(false); // 是否显示时和分
+        customDatePickerSt.setCanShowPreciseDay(showDay); // 是否显示天
         customDatePickerSt.setScrollLoop(true); // 允许循环滚动
         customDatePickerSt.setCanShowAnim(true);//开启滚动动画
-        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : mtv.getText().toString());
+        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : (showDay?mtv.getText().toString():mtv.getText().toString()+"-01"));
     }
 
     private void toGoAnima(TextView textView) {

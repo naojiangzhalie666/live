@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dp_10">
+
+    <TextView
+        android:id="@+id/item_lchild_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="1.直播常见工具" />
+
+    <TextView
+        android:id="@+id/item_lchild_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_8"
+        android:textColor="@color/black"
+        tools:text="一个梵蒂冈哦is和大佛我核酸都规划公司电话佛我还是跟来开能提高深度很给力可视电话公V
+        哦我客户个人付款联合收代理费开个会哦if电焊工我很笨是考虑你电饭锅了可接受的管理会计" />
+
+
+</LinearLayout>

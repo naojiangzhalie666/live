@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.myapplication.R;
+import com.example.myapplication.ui.ConnectRecordActivity;
 import com.example.myapplication.ui.ExchangeActivity;
 import com.example.myapplication.ui.LiveDetailActivity;
+import com.example.myapplication.ui.OffsupportActivity;
 
 import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
@@ -33,22 +35,23 @@ public class FwFragment extends Fragment {
 
     @OnClick({R.id.fw_live, R.id.fw_speak, R.id.fw_fuchi, R.id.fw_shouyi})
     public void onClick(View view) {
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.fw_live:
-                Intent live_intent =new Intent(getActivity(), LiveDetailActivity.class);
-                startActivity(live_intent);
+                intent = new Intent(getActivity(), LiveDetailActivity.class);
                 break;
             case R.id.fw_speak:
+                intent = new Intent(getActivity(), ConnectRecordActivity.class);
                 break;
             case R.id.fw_fuchi:
+                intent = new Intent(getActivity(), OffsupportActivity.class);
                 break;
             case R.id.fw_shouyi:
-                Intent intent = new Intent(getActivity(), ExchangeActivity.class);
-                startActivity(intent);
+                intent = new Intent(getActivity(), ExchangeActivity.class);
                 break;
         }
+        startActivity(intent);
     }
-
 
 
     @Override

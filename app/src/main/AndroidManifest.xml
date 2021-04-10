@@ -24,8 +24,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.LiveDetailActivity"></activity>
-        <activity android:name=".live.PrepareActivity"></activity>
+        <activity android:name=".ui.MybackpActivity"></activity>
+        <activity android:name=".ui.OffsupportActivity" />
+        <activity android:name=".ui.ConnectRecordActivity" />
+        <activity android:name=".ui.LiveDetailActivity" />
+        <activity android:name=".live.PrepareActivity" />
         <activity android:name=".live.LiveActivity" />
         <activity android:name=".ui.MailListActivity" />
         <activity android:name=".ui.IncomeDetailActivity" />

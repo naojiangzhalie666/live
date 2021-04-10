@@ -16,6 +16,7 @@ import com.example.myapplication.adapter.VpAdapter;
 import com.example.myapplication.pop_dig.CodeDialog;
 import com.example.myapplication.ui.AdviceActivity;
 import com.example.myapplication.ui.FollowActivity;
+import com.example.myapplication.ui.MybackpActivity;
 import com.example.myapplication.ui.NormalActivity;
 import com.example.myapplication.ui.SetActivity;
 import com.example.myapplication.ui.SetInActivity;
@@ -98,11 +99,16 @@ public class MineFragment extends Fragment {
     }
 
     @OnClick({R.id.mine_set, R.id.mine_cons_eyezuanshi, R.id.mine_cons_eyemoney, R.id.mine_guanzhu, R.id.mine_guanzhugzongh, R.id.mine_help,
-            R.id.mine_edt, R.id.mine_ruzhu, R.id.mine_logout, R.id.mine_money_tv, R.id.textView16, R.id.mine_zuanshi, R.id.textView14})
+            R.id.mine_edt, R.id.mine_ruzhu, R.id.mine_logout, R.id.mine_money_tv, R.id.textView16, R.id.mine_zuanshi, R.id.textView14,
+            R.id.mine_daojutv, R.id.textView17})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mine_set:
                 startActivity(new Intent(getActivity(), SetActivity.class));
+                break;
+            case R.id.mine_daojutv:
+            case R.id.textView17:
+                startActivity(new Intent(getActivity(), MybackpActivity.class));
                 break;
             case R.id.mine_cons_eyezuanshi:
                 if (show_zuanshi) {

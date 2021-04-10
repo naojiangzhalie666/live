@@ -29,6 +29,6 @@
     <!--dataPick-->
     <color name="date_picker_bg">#FFFFFF</color>
     <color name="date_picker_divider">#11112233</color>
-    <color name="date_picker_text_light">#425C59</color>
-    <color name="date_picker_text_dark">#333333</color>
+    <color name="date_picker_text_light">#181818</color>
+    <color name="date_picker_text_dark">#999999</color>
 </resources>

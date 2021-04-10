@@ -61,7 +61,7 @@ public class MessageFragment extends BaseFragment {
     private void initView() {
         // 从布局文件中获取会话列表面板
         mConversationLayout = mBaseView.findViewById(R.id.conversation_layout);
-        mimg_mail = mBaseView.findViewById(R.id.message_maillist);
+        mimg_mail = mBaseView.findViewById(R.id.msg_tongxunlv);
         TitleBarLayout titleBarLayout = mConversationLayout.findViewById(R.id.conversation_title);
         titleBarLayout.setVisibility(GONE);
         // 会话列表面板的默认UI和交互初始化

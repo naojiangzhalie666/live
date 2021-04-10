@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ftwo"
+    tools:context=".ui.OffsupportActivity">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="@dimen/title_top"
+        android:paddingBottom="@dimen/dp_5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imgv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/title"
+            android:layout_alignBottom="@+id/title"
+            android:paddingLeft="@dimen/dp_12"
+            app:srcCompat="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="官方扶持"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/order_cz"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_14"
+        android:text="直播攻略"
+        android:textColor="@color/setin_se"
+        app:layout_constraintEnd_toStartOf="@+id/order_tsj"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+    <TextView
+        android:id="@+id/order_tsj"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_14"
+        android:text="新版扶持"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@+id/order_cz"
+        app:layout_constraintEnd_toStartOf="@+id/order_tpj"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/order_cz" />
+
+    <TextView
+        android:id="@+id/order_tpj"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_14"
+        android:text="活动通告"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@+id/order_tsj"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/order_tsj" />
+
+    <View
+        android:id="@+id/order_line"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_3"
+        android:layout_marginTop="@dimen/dp_3"
+        android:background="@drawable/bg_circle_solder_setin"
+        app:layout_constraintEnd_toEndOf="@+id/order_cz"
+        app:layout_constraintStart_toStartOf="@+id/order_cz"
+        app:layout_constraintTop_toBottomOf="@+id/order_cz" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/offsupport_recy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="@dimen/dp_14"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/order_cz" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

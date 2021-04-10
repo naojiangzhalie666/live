@@ -85,4 +85,23 @@
         app:layout_constraintStart_toEndOf="@+id/xf_pingjia"
         app:layout_constraintTop_toTopOf="@+id/xf_pingjia" />
 
+    <TextView
+        android:id="@+id/xf_pjnum"
+        android:layout_width="wrap_content"
+        android:background="@drawable/bg_circle_red"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_3"
+        app:layout_constraintCircle="@+id/xf_pingjia"
+        app:layout_constraintCircleRadius="@dimen/dp_24"
+        app:layout_constraintCircleAngle="30"
+        android:paddingTop="@dimen/dp_1"
+        android:paddingBottom="@dimen/dp_1"
+        android:textSize="10sp"
+        android:layout_height="wrap_content"
+        tools:text="12"
+        tools:layout_editor_absoluteX="226dp"
+        tools:layout_editor_absoluteY="26dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

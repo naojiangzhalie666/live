@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.ui.OrderListActivity;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -20,6 +23,8 @@ import butterknife.Unbinder;
 public class XfFragment extends Fragment {
 
 
+    @BindView(R.id.xf_pjnum)
+    TextView mXfPjnum;
     private Unbinder unbinder;
 
     @Override
@@ -27,6 +32,17 @@ public class XfFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_xf, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        init();
+    }
+
+    private void init() {
+        mXfPjnum.setVisibility(View.VISIBLE);
+        mXfPjnum.setText("22");
     }
 
     @OnClick({R.id.xf_cz, R.id.xf_sj, R.id.xf_pingjia, R.id.xf_level})
