@@ -5,7 +5,6 @@
 
     <RelativeLayout
         android:id="@+id/rl_root"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -154,9 +153,9 @@
         <RelativeLayout
             android:id="@+id/anchor_rl_controllLayer"
             android:layout_width="match_parent"
-            android:visibility="gone"
+            android:layout_height="match_parent"
             android:paddingTop="@dimen/title_top"
-            android:layout_height="match_parent">
+            android:visibility="gone">
 
             <include
                 android:id="@+id/layout_live_pusher_info"
@@ -373,17 +372,97 @@
         </RelativeLayout>
 
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rela_before"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <Button
-        android:id="@+id/btn_start_room"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/beauty_color_red"
-        android:text="开始直播"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/reback"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/back_white" />
+
+        <TextView
+            android:id="@+id/tvone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reback"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:text="给直播起个关联度高的标题吸引更多用户吧！"
+            android:textColor="#ffffffff" />
+
+        <EditText
+            android:id="@+id/input_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|top"
+            android:layout_below="@+id/tvone"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@null"
+            android:hint="婚前昏后大变样，教你十一招回到解放前！"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="22sp" />
+
+        <ImageView
+            android:id="@+id/refresh_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/input_title"
+            android:layout_alignRight="@+id/input_title"
+            android:src="@drawable/live_refresh" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/mine_recy"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="8dp"
+            android:text="选个与本次直播内容相关性最高的标签用户精准度更高哦"
+            android:textColor="#ffff" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mine_recy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+
+
+        <Button
+            android:id="@+id/btn_start_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/xieyi"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:background="@drawable/live_btbg"
+            android:text="开始直播"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/xieyi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:text="直播即代表你同意《边框心理主播协议》"
+            android:textColor="#ffffffff"
+            android:textSize="10sp" />
+
     </RelativeLayout>
 </FrameLayout>

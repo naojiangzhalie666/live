@@ -19,7 +19,6 @@ import com.example.xzb.ui.TCSimpleUserInfo;
 import com.example.xzb.ui.TCUserAvatarListAdapter;
 import com.example.xzb.ui.TCVideoView;
 import com.example.xzb.ui.TCVideoViewMgr;
-import com.example.xzb.utils.login.TCELKReportMgr;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.roomutil.AnchorInfo;
 import com.tencent.liteav.audiosettingkit.AudioEffectPanel;
@@ -49,40 +48,34 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     private TCUserAvatarListAdapter mAvatarListAdapter;     // 头像列表的 Adapter
     // 主播信息
     private ImageView mHeadIcon;              // 主播头像
-    private ImageView                       mRecordBall;            // 表明正在录制的红点球
+    private ImageView mRecordBall;            // 表明正在录制的红点球
     private TextView mBroadcastTime;         // 已经开播的时间
-    private TextView                        mMemberCount;           // 观众数量
-
-
+    private TextView mMemberCount;           // 观众数量
     private AudioEffectPanel mPanelAudioControl;     // 音效面板
-
     private BeautyPanel mBeautyControl;          // 美颜设置的控制类
     private LinearLayout mLinearToolBar;
-
     // log相关
-    private boolean                         mShowLog;               // 是否打开 log 面板
-    private boolean                         mFlashOn;               // 是否打开闪光灯
-
+    private boolean mShowLog;               // 是否打开 log 面板
+    private boolean mFlashOn;               // 是否打开闪光灯
     // 连麦主播
-    private boolean                         mPendingRequest;        // 主播是否正在处理请求
+    private boolean mPendingRequest;        // 主播是否正在处理请求
     private TCVideoViewMgr mPlayerVideoViewList;   // 主播视频列表的View
     private List<AnchorInfo> mPusherList;            // 当前在麦上的主播
-
     private ObjectAnimator mObjAnim;               // 动画
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.BeautyTheme);
         super.onCreate(savedInstanceState);
-        TCELKReportMgr.getInstance().reportELK(TCConstants.ELK_ACTION_CAMERA_PUSH, TCUserMgr.getInstance().getUserId(), 0, "摄像头推流", null);
+//        TCELKReportMgr.getInstance().reportELK(TCConstants.ELK_ACTION_CAMERA_PUSH, TCUserMgr.getInstance().getUserId(), 0, "摄像头推流", null);
         mPusherList = new ArrayList<>();
-
         mBeautyControl.setBeautyManager(mLiveRoom.getBeautyManager());
         BeautyInfo beautyInfo = mBeautyControl.getDefaultBeautyInfo();
         beautyInfo.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
         mBeautyControl.setBeautyInfo(beautyInfo);
         startPreview();
     }
+
     @Override
     protected void initView() {
         setContentView(R.layout.activity_camera_anchor);
@@ -109,7 +102,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         mMemberCount.setText("0");
 
         mLinearToolBar = (LinearLayout) findViewById(R.id.tool_bar);
-
         //AudioEffectPanel
         mPanelAudioControl = (AudioEffectPanel) findViewById(R.id.anchor_audio_control);
         mPanelAudioControl.setAudioEffectManager(mLiveRoom.getAudioEffectManager());
@@ -163,11 +155,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
             }
         });
     }
-    protected void startPreview() {
-        // 打开本地预览，传入预览的 View
-        mTXCloudVideoView.setVisibility(View.VISIBLE);
-        mLiveRoom.startLocalPreview(true, mTXCloudVideoView);
-    }
 
     /**
      * 加载主播头像
@@ -192,19 +179,10 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
 
 
     /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      开始和停止推流相关
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
+     * 开始和停止推流相关
      */
-
     @Override
     protected void startPublish() {
-//        mTXCloudVideoView.setVisibility(View.VISIBLE);
-
-        // 打开本地预览，传入预览的 View
-//        mLiveRoom.startLocalPreview(true, mTXCloudVideoView);
         // 设置美颜参数
         BeautyParams beautyParams = new BeautyParams();
         mLiveRoom.getBeautyManager().setBeautyStyle(beautyParams.mBeautyStyle);
@@ -236,11 +214,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     }
 
     /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      MLVB 组件回调
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
+     * MLVB 组件回调
      */
     @Override
     public void onAnchorEnter(final AnchorInfo pusherInfo) {
@@ -252,7 +226,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         if (videoView == null) {
             return;
         }
-
         if (mPusherList != null) {
             boolean exist = false;
             for (AnchorInfo item : mPusherList) {
@@ -265,7 +238,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 mPusherList.add(pusherInfo);
             }
         }
-
         videoView.startLoading();
         mLiveRoom.startRemoteView(pusherInfo, videoView.videoView, new IMLVBLiveRoomListener.PlayCallback() {
             @Override
@@ -510,11 +482,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
 
 
     /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      权限相关
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
+     * 权限相关
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -533,4 +501,11 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 break;
         }
     }
+
+    protected void startPreview() {
+        // 打开本地预览，传入预览的 View
+        mTXCloudVideoView.setVisibility(View.VISIBLE);
+        mLiveRoom.startLocalPreview(true, mTXCloudVideoView);
+    }
+
 }

@@ -17,11 +17,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xzb.R;
+import com.example.xzb.adapter.QianAdapter;
 import com.example.xzb.important.IMLVBLiveRoomListener;
 import com.example.xzb.important.MLVBCommonDef;
 import com.example.xzb.important.MLVBLiveRoom;
@@ -44,10 +47,15 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import master.flame.danmaku.controller.IDanmakuView;
 
 /**
@@ -99,6 +107,13 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     private RelativeLayout mRela_befor;
     private RelativeLayout mControllLayer;
 
+    /*-----*/
+    private List<Map<String,Object>> mqianStrs;
+    private QianAdapter mQianAdapter;
+    private TextView mtv_one;
+    private ImageView mtv_back;
+    private RecyclerView mRec_qian;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         TitleUtils.getStatusBarHeight(this);
@@ -136,6 +151,41 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
      */
     protected void initView() {
         mRela_befor = findViewById(R.id.rela_before);
+        mtv_one = findViewById(R.id.tvone);
+        mtv_back = findViewById(R.id.reback);
+        mRec_qian = findViewById(R.id.mine_recy);
+        GridLayoutManager manager =new GridLayoutManager(this,3);
+        mRec_qian.setLayoutManager(manager);
+        mqianStrs = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            Map<String,Object> map = new HashMap<>();
+            map.put("select",false);
+            mqianStrs.add(map);
+        }
+        mQianAdapter  =new QianAdapter(this,mqianStrs);
+        mRec_qian.setAdapter(mQianAdapter);
+        mQianAdapter.setOnItemClickListener(new QianAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClickListener(int pos) {
+                for (int i = 0; i < mqianStrs.size(); i++) {
+                    Map<String,Object> map =mqianStrs.get(i);
+                    if(i==pos){
+                        boolean select = (boolean) map.get("select");
+                        map.put("select",!select);
+                    }
+                }
+                mQianAdapter.notifyItemChanged(pos);
+            }
+        });
+        mtv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
+//        mtv_one.requestFocus();
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.rl_root);
         relativeLayout.setOnTouchListener(new View.OnTouchListener() {
