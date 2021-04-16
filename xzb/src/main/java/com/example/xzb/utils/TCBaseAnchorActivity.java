@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -28,14 +29,18 @@ import com.example.xzb.adapter.QianAdapter;
 import com.example.xzb.important.IMLVBLiveRoomListener;
 import com.example.xzb.important.MLVBCommonDef;
 import com.example.xzb.important.MLVBLiveRoom;
+import com.example.xzb.important.MLVBLiveRoomImpl;
 import com.example.xzb.ui.ErrorDialogFragment;
 import com.example.xzb.ui.FinishDetailDialogFragment;
 import com.example.xzb.ui.TCChatEntity;
 import com.example.xzb.ui.TCChatMsgListAdapter;
 import com.example.xzb.ui.TCSimpleUserInfo;
+import com.example.xzb.ui.dialog.LiveCloseDialog;
 import com.example.xzb.ui.dialog.TCInputTextMsgDialog;
 import com.example.xzb.ui.views.TCHeartLayout;
 import com.example.xzb.ui.views.TCSwipeAnimationController;
+import com.example.xzb.utils.countdown.CountDownTimerView;
+import com.example.xzb.utils.countdown.ICountDownTimerView;
 import com.example.xzb.utils.login.TCELKReportMgr;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.roomutil.AnchorInfo;
@@ -46,7 +51,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -62,36 +69,36 @@ import master.flame.danmaku.controller.IDanmakuView;
  * Module:   TCBaseAnchorActivity
  * <p>
  * Function: 主播推流的页面
- *
+ * <p>
  * 1. MLVB 组件的使用，创建或者销毁房间：{@link TCBaseAnchorActivity#startPublish()}; 以及相关事件回调监听
- *
+ * <p>
  * 2. 处理消息接收到的文本信息：{@link TCBaseAnchorActivity#onRecvRoomTextMsg(String, String, String, String, String)}
  */
-public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListener, View.OnClickListener, TCInputTextMsgDialog.OnTextSendListener {
+public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListener, View.OnClickListener, TCInputTextMsgDialog.OnTextSendListener, MLVBLiveRoomImpl.StandardCallback {
     private static final String TAG = TCBaseAnchorActivity.class.getSimpleName();
 
     // 消息列表相关
-    private ListView                    mLvMessage;             // 消息控件
-    private TCInputTextMsgDialog        mInputTextMsgDialog;    // 消息输入框
+    private ListView mLvMessage;             // 消息控件
+    private TCInputTextMsgDialog mInputTextMsgDialog;    // 消息输入框
     private TCChatMsgListAdapter mChatMsgListAdapter;    // 消息列表的Adapter
-    private ArrayList<TCChatEntity>     mArrayListChatEntity;   // 消息内容
+    private ArrayList<TCChatEntity> mArrayListChatEntity;   // 消息内容
 
     private ErrorDialogFragment mErrDlgFragment;        // 错误提示弹窗
     private TCHeartLayout mHeartLayout;           // 点赞动画的布局
 
     protected TCSwipeAnimationController mTCSwipeAnimationController;  // 动画控制类
 
-    private String                      mTitle;                 // 直播标题
-    private String                      mCoverPicUrl;           // 直播封面图
-    private String                      mAvatarPicUrl;          // 个人头像地址
-    private String                      mNickName;              // 个人昵称
-    private String                      mUserId;                // 个人用户id
-    private String                      mLocation;              // 个人定位地址
-    protected long                      mTotalMemberCount = 0;  // 总进房观众数量
-    protected long                      mCurrentMemberCount = 0;// 当前观众数量
-    protected long                      mHeartCount = 0;        // 点赞数量
+    private String mTitle;                 // 直播标题
+    private String mCoverPicUrl;           // 直播封面图
+    private String mAvatarPicUrl;          // 个人头像地址
+    private String mNickName;              // 个人昵称
+    private String mUserId;                // 个人用户id
+    private String mLocation;              // 个人定位地址
+    protected long mTotalMemberCount = 0;  // 总进房观众数量
+    protected long mCurrentMemberCount = 0;// 当前观众数量
+    protected long mHeartCount = 0;        // 点赞数量
 
-    private TCDanmuMgr                  mDanmuMgr;              // 弹幕管理类
+    private TCDanmuMgr mDanmuMgr;              // 弹幕管理类
 
     protected MLVBLiveRoom mLiveRoom;              // MLVB 组件类
 
@@ -100,25 +107,31 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
     private Button mButtonStartRoom;
     // 定时的 Timer 去更新开播时间
-    private Timer                           mBroadcastTimer;        // 定时的 Timer
-    private BroadcastTimerTask              mBroadcastTimerTask;    // 定时任务
-    protected long                          mSecond = 0;            // 开播的时间，单位为秒
-    private long                            mStartPushPts;          // 开始直播的时间，用于 ELK 上报统计。 您可以不关注
+    private Timer mBroadcastTimer;        // 定时的 Timer
+    private BroadcastTimerTask mBroadcastTimerTask;    // 定时任务
+    protected long mSecond = 0;            // 开播的时间，单位为秒
+    private long mStartPushPts;          // 开始直播的时间，用于 ELK 上报统计。 您可以不关注
     private RelativeLayout mRela_befor;
     private RelativeLayout mControllLayer;
 
-    /*-----*/
-    private List<Map<String,Object>> mqianStrs;
+    /*---------------布局新增数据---------------------------*/
+    private TextView mtv_name, mtv_gg, mtv_id, mtv_date,mtv_jg,mtv_title;
+    private List<Map<String, Object>> mqianStrs;
     private QianAdapter mQianAdapter;
     private TextView mtv_one;
     private ImageView mtv_back;
     private RecyclerView mRec_qian;
+    private EditText medt_title;
+    private LiveCloseDialog mLiveCloseDialog;
+    private CountDownTimerView mCountDownTimerView;  //倒计时view
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         TitleUtils.getStatusBarHeight(this);
         super.onCreate(savedInstanceState);
         TitleUtils.setStatusBar(this, false, true);
+        mLiveCloseDialog = new LiveCloseDialog(this);
+
         mStartPushPts = System.currentTimeMillis();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -136,10 +149,10 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         mErrDlgFragment = new ErrorDialogFragment();
         mLiveRoom = MLVBLiveRoom.sharedInstance(this);
 
-        initView();
         if (TextUtils.isEmpty(mNickName)) {
             mNickName = mUserId;
         }
+        initView();
         mLiveRoom.setSelfProfile(mNickName, mAvatarPicUrl);
 //        startPublish();
     }
@@ -150,28 +163,31 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
      * 的布局，所以id要保持一致。 若id发生改变，此处id也要同时修改
      */
     protected void initView() {
+        initMineViews();
         mRela_befor = findViewById(R.id.rela_before);
         mtv_one = findViewById(R.id.tvone);
         mtv_back = findViewById(R.id.reback);
         mRec_qian = findViewById(R.id.mine_recy);
-        GridLayoutManager manager =new GridLayoutManager(this,3);
+        medt_title = findViewById(R.id.input_title);
+        mCountDownTimerView = findViewById(R.id.countdown_timer_view);
+        GridLayoutManager manager = new GridLayoutManager(this, 3);
         mRec_qian.setLayoutManager(manager);
         mqianStrs = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            Map<String,Object> map = new HashMap<>();
-            map.put("select",false);
+            Map<String, Object> map = new HashMap<>();
+            map.put("select", false);
             mqianStrs.add(map);
         }
-        mQianAdapter  =new QianAdapter(this,mqianStrs);
+        mQianAdapter = new QianAdapter(this, mqianStrs);
         mRec_qian.setAdapter(mQianAdapter);
         mQianAdapter.setOnItemClickListener(new QianAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(int pos) {
                 for (int i = 0; i < mqianStrs.size(); i++) {
-                    Map<String,Object> map =mqianStrs.get(i);
-                    if(i==pos){
+                    Map<String, Object> map = mqianStrs.get(i);
+                    if (i == pos) {
                         boolean select = (boolean) map.get("select");
-                        map.put("select",!select);
+                        map.put("select", !select);
                     }
                 }
                 mQianAdapter.notifyItemChanged(pos);
@@ -214,12 +230,42 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         mButtonStartRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String title = medt_title.getText().toString();
+                if(TextUtils.isEmpty(title)){
+                    Toast.makeText(TCBaseAnchorActivity.this, "标题不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mtv_title.setText(title);
+                mTitle =title;
                 mRela_befor.setVisibility(View.INVISIBLE);
                 mControllLayer.setVisibility(View.VISIBLE);
-                startPublish();
+                mCountDownTimerView.countDownAnimation(CountDownTimerView.DEFAULT_COUNTDOWN_NUMBER);
+                mCountDownTimerView.setOnCountDownListener(new ICountDownTimerView.ICountDownListener() {
+                    @Override
+                    public void onCountDownComplete() {
+                        startPublish();
+                    }
+                });
+
             }
         });
     }
+    /*-------新增布局的一些设置--------*/
+    private void initMineViews() {
+        mtv_name = findViewById(R.id.anchor_tv_broadcasting_name);
+        mtv_gg = findViewById(R.id.anchor_tv_member_gz);
+        mtv_id = findViewById(R.id.cam_id);
+        mtv_date = findViewById(R.id.cam_date);
+        mtv_jg = findViewById(R.id.cam_jgname);
+        mtv_title = findViewById(R.id.cam_title);
+        mtv_gg.setVisibility(View.GONE);
+        mtv_jg.setText("天宇新航心理咨询机构");
+        mtv_name.setText(mNickName);
+        mtv_id.setText("边框ID：" + "124124");
+        mtv_date.setText(new SimpleDateFormat("yyyy.MM.dd").format(new Date()));
+
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -233,16 +279,20 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
 
     /**
-     *     /////////////////////////////////////////////////////////////////////////////////
-     *     //
-     *     //                      Activity声明周期相关
-     *     //
-     *     /////////////////////////////////////////////////////////////////////////////////
+     * /////////////////////////////////////////////////////////////////////////////////
+     * //
+     * //                      Activity声明周期相关
+     * //
+     * /////////////////////////////////////////////////////////////////////////////////
      */
 
     @Override
     public void onBackPressed() {
-        showExitInfoDialog("当前正在直播，是否退出直播？", false);
+        if (mSecond == 0) {
+            finish();
+        } else {
+            showExitInfoDialog("当前正在直播，是否退出直播？", false);
+        }
     }
 
     @Override
@@ -277,11 +327,11 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     }
 
     /**
-     *     /////////////////////////////////////////////////////////////////////////////////
-     *     //
-     *     //                      开始和停止推流相关
-     *     //
-     *     /////////////////////////////////////////////////////////////////////////////////
+     * /////////////////////////////////////////////////////////////////////////////////
+     * //
+     * //                      开始和停止推流相关
+     * //
+     * /////////////////////////////////////////////////////////////////////////////////
      */
     protected void startPublish() {
         mLiveRoom.setListener(this);
@@ -348,11 +398,11 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     }
 
     /**
-     *     /////////////////////////////////////////////////////////////////////////////////
-     *     //
-     *     //                      MLVB 组件回调
-     *     //
-     *     /////////////////////////////////////////////////////////////////////////////////
+     * /////////////////////////////////////////////////////////////////////////////////
+     * //
+     * //                      MLVB 组件回调
+     * //
+     * /////////////////////////////////////////////////////////////////////////////////
      */
     @Override
     public void onAnchorEnter(AnchorInfo pusherInfo) {
@@ -452,11 +502,11 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
 
     /**
-     *     /////////////////////////////////////////////////////////////////////////////////
-     *     //
-     *     //                      处理接收到的各种信息
-     *     //
-     *     /////////////////////////////////////////////////////////////////////////////////
+     * /////////////////////////////////////////////////////////////////////////////////
+     * //
+     * //                      处理接收到的各种信息
+     * //
+     * /////////////////////////////////////////////////////////////////////////////////
      */
     protected void handleTextMsg(TCSimpleUserInfo userInfo, String text) {
         TCChatEntity entity = new TCChatEntity();
@@ -475,11 +525,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         mTotalMemberCount++;
         mCurrentMemberCount++;
         TCChatEntity entity = new TCChatEntity();
-        entity.setSenderName("通知");
-        if (TextUtils.isEmpty(userInfo.nickname))
-            entity.setContent(userInfo.userid + "加入直播");
-        else
-            entity.setContent(userInfo.nickname + "加入直播");
+        entity.setSenderName(TextUtils.isEmpty(userInfo.nickname) ? userInfo.userid : userInfo.nickname);//"通知"
+        entity.setContent("进场了");
         entity.setType(TCConstants.MEMBER_ENTER);
         notifyMsg(entity);
     }
@@ -496,11 +543,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             Log.d(TAG, "接受多次退出请求，目前人数为负数");
 
         TCChatEntity entity = new TCChatEntity();
-        entity.setSenderName("通知");
-        if (TextUtils.isEmpty(userInfo.nickname))
-            entity.setContent(userInfo.userid + "退出直播");
-        else
-            entity.setContent(userInfo.nickname + "退出直播");
+        entity.setSenderName(TextUtils.isEmpty(userInfo.nickname) ? userInfo.userid : userInfo.nickname);//"通知"
+        entity.setContent("离开了");
         entity.setType(TCConstants.MEMBER_EXIT);
         notifyMsg(entity);
     }
@@ -512,12 +556,9 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
      */
     protected void handlePraiseMsg(TCSimpleUserInfo userInfo) {
         TCChatEntity entity = new TCChatEntity();
-        entity.setSenderName("通知");
-        if (TextUtils.isEmpty(userInfo.nickname))
-            entity.setContent(userInfo.userid + "点了个赞");
-        else
-            entity.setContent(userInfo.nickname + "点了个赞");
-
+//        entity.setSenderName("通知");
+        entity.setSenderName(TextUtils.isEmpty(userInfo.nickname) ? userInfo.userid : userInfo.nickname);//"通知"
+        entity.setContent("点了个赞");
         mHeartLayout.addFavor();
         mHeartCount++;
 
@@ -646,7 +687,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
     /**
      * 显示直播结果的弹窗
-     *
+     * <p>
      * 如：观看数量、点赞数量、直播时长数
      */
     protected void showPublishFinishDetailsDialog() {
@@ -676,20 +717,16 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         builder.setTitle(msg);
 
         if (!isError) {
-            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            mLiveCloseDialog.show();
+            mLiveCloseDialog.setOnLogoutClickListener(new LiveCloseDialog.OnLogoutClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                public void onLogoutClickListener() {
+                    mLiveCloseDialog.dismiss();
                     stopPublish();
                     showPublishFinishDetailsDialog();
                 }
             });
-            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            return;
         } else {
             //当情况为错误的时候，直接停止推流
             stopPublish();
@@ -728,13 +765,24 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     }
 
     /**
-     *     /////////////////////////////////////////////////////////////////////////////////
-     *     //
-     *     //                      开播时长相关
-     *     //
-     *     /////////////////////////////////////////////////////////////////////////////////
+     * /////////////////////////////////////////////////////////////////////////////////
+     * //
+     * //                      开播时长相关
+     * //
+     * /////////////////////////////////////////////////////////////////////////////////
      */
     protected void onBroadcasterTimeUpdate(long second) {
+
+    }
+
+    @Override
+    public void onError(int errCode, String errInfo) {
+        Log.e("StandardCallback", "onError: errCode= "+errCode  +" errInfo= "+errInfo );
+    }
+
+    @Override
+    public void onSuccess() {
+        Log.e("StandardCallback", "onSuccess: ");
 
     }
 

@@ -71,5 +71,13 @@
     <style name="BeautyTheme" parent="BeautyPanelStyle">
         <item name="beautyPanelColorPrimary">@color/colorGreen</item>
     </style>
+    <style name="PlayerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/PlayerAnimation</item>
+    </style>
+    <style name="PlayerAnimation" parent="android:Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/anim_slice_in_right</item>
+        <item name="android:activityCloseExitAnimation">@anim/anim_slice_out_right</item>
+    </style>
+
 
 </resources>

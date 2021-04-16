@@ -4,7 +4,7 @@
 
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="title_top">25dp</dimen>
+    <dimen name="title_top">20dp</dimen>
 
     <dimen name="title">18sp</dimen>
     <dimen name="sub_content">14sp</dimen>
@@ -39,7 +39,7 @@
     <dimen name="heart_anim_length_rand">350.0dp</dimen>
 
 
-    <dimen name="live_btn_size">35dp</dimen>
+    <dimen name="live_btn_size">30dp</dimen>
 
 
     <!-- AVSDK *******************************************************************************************************************************-->

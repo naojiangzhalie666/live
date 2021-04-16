@@ -203,6 +203,7 @@ attr indexBarTextSize
 attr indicatorColor
 attr indicatorName
 attr initialActivityCount
+attr ios
 attr isBottom
 attr isLightTheme
 attr isSwitch
@@ -281,6 +282,7 @@ attr layout_minWidth
 attr layout_optimizationLevel
 attr layout_order
 attr layout_wrapBefore
+attr leftSwipe
 attr lineHeight
 attr listChoiceBackgroundIndicator
 attr listDividerAlertDialog
@@ -375,6 +377,7 @@ attr subtitleTextColor
 attr subtitleTextStyle
 attr suggestionRowLayout
 attr surface_type
+attr swipeEnable
 attr switchMinWidth
 attr switchPadding
 attr switchStyle
@@ -1166,7 +1169,10 @@ id input_extra_area
 id invisible
 id is_read_tv
 id italic
+id item_cancel
+id item_delete
 id item_left
+id item_swip
 id item_touch_helper_previous_elevation
 id ivAvatar
 id jcameraview
@@ -1312,6 +1318,7 @@ id tv_time
 id tv_title
 id tv_user_name
 id uniform
+id unread_num
 id up
 id user_name_tv
 id video_duration_tv
@@ -2332,6 +2339,7 @@ styleable SimpleExoPlayerView controller_layout_id default_artwork fastforward_i
 styleable Spinner android_dropDownWidth android_entries android_popupBackground android_prompt popupTheme
 styleable StateListDrawable android_constantSize android_dither android_enterFadeDuration android_exitFadeDuration android_variablePadding android_visible
 styleable StateListDrawableItem android_drawable
+styleable SwipeMenuLayout ios leftSwipe swipeEnable
 styleable SwitchCompat android_textOff android_textOn android_thumb showText splitTrack switchMinWidth switchPadding switchTextAppearance thumbTextPadding thumbTint thumbTintMode track trackTint trackTintMode
 styleable SynthesizedImageView synthesized_default_image synthesized_image_bg synthesized_image_gap synthesized_image_size
 styleable TextAppearance android_fontFamily android_shadowColor android_shadowDx android_shadowDy android_shadowRadius android_textColor android_textColorHint android_textColorLink android_textSize android_textStyle android_typeface fontFamily textAllCaps

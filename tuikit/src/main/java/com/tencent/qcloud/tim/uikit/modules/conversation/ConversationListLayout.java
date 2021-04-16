@@ -1,11 +1,6 @@
 package com.tencent.qcloud.tim.uikit.modules.conversation;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -14,9 +9,14 @@ import com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.tencent.qcloud.tim.uikit.modules.conversation.interfaces.IConversationAdapter;
 import com.tencent.qcloud.tim.uikit.modules.conversation.interfaces.IConversationListLayout;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class ConversationListLayout extends RecyclerView implements IConversationListLayout {
 
     private ConversationListAdapter mAdapter;
+    private OnDeleteClickListener mOnDeleteClickListener;
 
     public ConversationListLayout(Context context) {
         super(context);
@@ -99,11 +99,19 @@ public class ConversationListLayout extends RecyclerView implements IConversatio
         mAdapter.setOnItemLongClickListener(listener);
     }
 
+    public void setOnDeleteClickListener(OnDeleteClickListener onDeleteClickListener) {
+        mAdapter.setOnDeleteClickListener(onDeleteClickListener);
+    }
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position, ConversationInfo messageInfo);
     }
 
     public interface OnItemLongClickListener {
         void OnItemLongClick(View view, int position, ConversationInfo messageInfo);
+    }
+
+    public interface OnDeleteClickListener{
+        void onItemDeleteClickListener(View view,int pos,ConversationInfo messageInfo);
     }
 }

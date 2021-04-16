@@ -48,7 +48,7 @@ public class HttpResponse {
     }
 
     public static class PushUrl extends HttpResponse {
-        public String pushURL ="rtmp://134887.livepush.myqcloud.com/live/testl?txSecret=05ea256065200bdd18e677917c91d589&txTime=606FF080";
+        public String pushURL ;
         public String accelerateURL;
     }
 

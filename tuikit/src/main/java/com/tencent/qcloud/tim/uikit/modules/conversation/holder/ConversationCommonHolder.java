@@ -2,17 +2,16 @@ package com.tencent.qcloud.tim.uikit.modules.conversation.holder;
 
 import android.graphics.Color;
 import android.text.Html;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 import com.tencent.qcloud.tim.uikit.R;
 import com.tencent.qcloud.tim.uikit.TUIKit;
 import com.tencent.qcloud.tim.uikit.component.face.FaceManager;
-import com.tencent.qcloud.tim.uikit.modules.chat.layout.input.TIMMentionEditText;
 import com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationIconView;
 import com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.tencent.qcloud.tim.uikit.modules.message.MessageInfo;
@@ -21,10 +20,6 @@ import com.tencent.qcloud.tim.uikit.utils.TUIKitConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +31,11 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
     protected TextView messageText;
     protected TextView timelineText;
     protected TextView unreadText;
+    protected TextView unread_num;
     protected TextView atInfoText;
+    protected TextView tvCancel;
+    protected TextView tvDelete;
+    protected SwipeMenuLayout mMenuLayout;
 
     public ConversationCommonHolder(View itemView) {
         super(itemView);
@@ -46,7 +45,11 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         messageText = rootView.findViewById(R.id.conversation_last_msg);
         timelineText = rootView.findViewById(R.id.conversation_time);
         unreadText = rootView.findViewById(R.id.conversation_unread);
+        unread_num = rootView.findViewById(R.id.unread_num);
         atInfoText = rootView.findViewById(R.id.conversation_at_msg);
+        mMenuLayout = rootView.findViewById(R.id.item_swip);
+        tvCancel = rootView.findViewById(R.id.item_cancel);
+        tvDelete = rootView.findViewById(R.id.item_delete);
     }
 
     public void layoutViews(ConversationInfo conversation, int position) {
@@ -70,6 +73,36 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         } else {
             leftItemLayout.setBackgroundColor(Color.WHITE);
         }
+        leftItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnListLinearClickListener != null)
+                    mOnListLinearClickListener.onListLinearClickListener(v);
+            }
+        });
+        leftItemLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnListLinearClickListener != null)
+                    mOnListLinearClickListener.onListLinearLongClickListener(v);
+                return true;
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMenuLayout.smoothClose();
+                if(mOnListLinearClickListener!=null)
+                    mOnListLinearClickListener.onCancelClickListener(v);
+            }
+        });
+        tvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnListLinearClickListener!=null)
+                    mOnListLinearClickListener.onDeleteClickListener(v);
+            }
+        });
 
         titleText.setText(conversation.getTitle());
         messageText.setText("");
@@ -84,17 +117,22 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         }
 
         if (conversation.getUnRead() > 0) {
-            unreadText.setVisibility(View.VISIBLE);
+//            unreadText.setVisibility(View.VISIBLE);原来的信息提示
+            unreadText.setVisibility(View.GONE);
+            unread_num.setVisibility(View.VISIBLE);
             if (conversation.getUnRead() > 99) {
                 unreadText.setText("99+");
+                unread_num.setText("99+");
             } else {
                 unreadText.setText("" + conversation.getUnRead());
+                unread_num.setText("" + conversation.getUnRead());
             }
         } else {
             unreadText.setVisibility(View.GONE);
+            unread_num.setVisibility(View.GONE);
         }
 
-        if (conversation.getAtInfoText().isEmpty()){
+        if (conversation.getAtInfoText().isEmpty()) {
             atInfoText.setVisibility(View.GONE);
         } else {
             atInfoText.setVisibility(View.VISIBLE);
@@ -114,6 +152,7 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         }
         if (!mAdapter.hasItemUnreadDot()) {
             unreadText.setVisibility(View.GONE);
+            unread_num.setVisibility(View.GONE);
         }
 
         if (conversation.getIconUrlList() != null) {
@@ -125,13 +164,13 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
     }
 
 
-    private static String emojiJudge(String text){
-        if (TextUtils.isEmpty(text)){
+    private static String emojiJudge(String text) {
+        if (TextUtils.isEmpty(text)) {
             return "";
         }
 
         String[] emojiList = FaceManager.getEmojiFilters();
-        if (emojiList ==null || emojiList.length == 0){
+        if (emojiList == null || emojiList.length == 0) {
             return text;
         }
 
@@ -155,12 +194,12 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
 
             int index = findeEmoji(emojiName);
             String[] emojiListValues = FaceManager.getEmojiFiltersValues();
-            if (index != -1 && emojiListValues != null && emojiListValues.length >= index){
+            if (index != -1 && emojiListValues != null && emojiListValues.length >= index) {
                 emojiName = emojiListValues[index];
             }
 
 
-            EmojiData emojiData =new EmojiData();
+            EmojiData emojiData = new EmojiData();
             emojiData.setStart(start);
             emojiData.setEnd(end);
             emojiData.setEmojiText(emojiName);
@@ -169,10 +208,10 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         }
 
         //倒叙替换
-        if (emojiDataArrayList.isEmpty()){
+        if (emojiDataArrayList.isEmpty()) {
             return text;
         }
-        for (int i = emojiDataArrayList.size() - 1; i >= 0; i--){
+        for (int i = emojiDataArrayList.size() - 1; i >= 0; i--) {
             EmojiData emojiData = emojiDataArrayList.get(i);
             String emojiName = emojiData.getEmojiText();
             int start = emojiData.getStart();
@@ -185,19 +224,19 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         return sb.toString();
     }
 
-    private static int findeEmoji(String text){
+    private static int findeEmoji(String text) {
         int result = -1;
-        if (TextUtils.isEmpty(text)){
+        if (TextUtils.isEmpty(text)) {
             return result;
         }
 
         String[] emojiList = FaceManager.getEmojiFilters();
-        if (emojiList ==null || emojiList.length == 0){
+        if (emojiList == null || emojiList.length == 0) {
             return result;
         }
 
-        for (int i = 0; i < emojiList.length; i++){
-            if (text.equals(emojiList[i])){
+        for (int i = 0; i < emojiList.length; i++) {
+            if (text.equals(emojiList[i])) {
                 result = i;
                 break;
             }
@@ -210,7 +249,7 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
 
     }
 
-    private static class EmojiData{
+    private static class EmojiData {
         private int start;
         private int end;
         private String emojiText;

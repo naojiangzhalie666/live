@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/item_findrecy_imgv"
-        android:layout_width="@dimen/dp_61"
-        android:layout_height="@dimen/dp_61"
+        android:layout_width="@dimen/dp_71"
+        android:layout_height="@dimen/dp_71"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"

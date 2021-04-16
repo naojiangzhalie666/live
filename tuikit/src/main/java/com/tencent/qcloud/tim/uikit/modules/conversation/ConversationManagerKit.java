@@ -87,9 +87,16 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
                 List<V2TIMConversation> v2TIMConversationList = v2TIMConversationResult.getConversationList();
                 mUnreadTotal = 0;
                 for (V2TIMConversation v2TIMConversation : v2TIMConversationList) {
-                    //将 imsdk v2TIMConversation 转换为 UIKit ConversationInfo
+                    //将 imsdk v2TIMConversation 转换为 UIKit ConversationInfo  原逻辑--里面会有直播群以及群聊
                     ConversationInfo conversationInfo = TIMConversation2ConversationInfo(v2TIMConversation);
-                    if (conversationInfo != null && !V2TIMManager.GROUP_TYPE_AVCHATROOM.equals(v2TIMConversation.getGroupType())) {
+                    /*if (conversationInfo != null && !V2TIMManager.GROUP_TYPE_AVCHATROOM.equals(v2TIMConversation.getGroupType())) {
+                        mUnreadTotal = mUnreadTotal + conversationInfo.getUnRead();
+                        conversationInfo.setType(ConversationInfo.TYPE_COMMON);
+                        infos.add(conversationInfo);
+                    } */
+/*屏蔽群聊
+* */
+                    if (conversationInfo != null && !conversationInfo.isGroup()) {
                         mUnreadTotal = mUnreadTotal + conversationInfo.getUnRead();
                         conversationInfo.setType(ConversationInfo.TYPE_COMMON);
                         infos.add(conversationInfo);
@@ -122,7 +129,12 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
             V2TIMConversation v2TIMConversation = v2TIMConversationList.get(i);
             TUIKitLog.v(TAG, "refreshConversation v2TIMConversation " + v2TIMConversation.toString());
             ConversationInfo conversationInfo = TIMConversation2ConversationInfo(v2TIMConversation);
-            if (conversationInfo != null && !V2TIMManager.GROUP_TYPE_AVCHATROOM.equals(v2TIMConversation.getGroupType())) {
+            /*原逻辑会有群聊--屏蔽掉*/
+          /*  if (conversationInfo != null && !V2TIMManager.GROUP_TYPE_AVCHATROOM.equals(v2TIMConversation.getGroupType())) {
+                infos.add(conversationInfo);
+            }*/
+
+            if (conversationInfo != null && !conversationInfo.isGroup()) {
                 infos.add(conversationInfo);
             }
         }
@@ -372,6 +384,8 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      */
     private void handleTopData(String id, boolean flag) {
         ConversationInfo conversation = null;
+        if(mProvider==null)
+            return;
         List<ConversationInfo> conversationInfos = mProvider.getDataSource();
         for (int i = 0; i < conversationInfos.size(); i++) {
             ConversationInfo info = conversationInfos.get(i);
@@ -434,6 +448,8 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
     public void deleteConversation(String id, boolean isGroup) {
         TUIKitLog.i(TAG, "deleteConversation id:" + id + "|isGroup:" + isGroup);
         handleTopData(id, false);
+        if(mProvider==null)
+            return;
         List<ConversationInfo> conversationInfos = mProvider.getDataSource();
         for (int i = 0; i < conversationInfos.size(); i++) {
             ConversationInfo info = conversationInfos.get(i);

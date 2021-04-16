@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,7 +19,6 @@ import com.example.xzb.important.IMLVBLiveRoomListener;
 import com.example.xzb.ui.TCSimpleUserInfo;
 import com.example.xzb.ui.TCUserAvatarListAdapter;
 import com.example.xzb.ui.TCVideoView;
-import com.example.xzb.ui.TCVideoViewMgr;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.roomutil.AnchorInfo;
 import com.tencent.liteav.audiosettingkit.AudioEffectPanel;
@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,6 +48,11 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     // 观众头像列表控件
     private RecyclerView mUserAvatarList;        // 用户头像的列表控件
     private TCUserAvatarListAdapter mAvatarListAdapter;     // 头像列表的 Adapter
+    private TXCloudVideoView mtx_contact;//连麦观众窗口
+    private Button mBt_contact;
+    private FrameLayout mFram_contact;
+    private ImageView mImgv_contact;
+    private TCVideoView mTCVideoView;
     // 主播信息
     private ImageView mHeadIcon;              // 主播头像
     private ImageView mRecordBall;            // 表明正在录制的红点球
@@ -59,9 +66,17 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     private boolean mFlashOn;               // 是否打开闪光灯
     // 连麦主播
     private boolean mPendingRequest;        // 主播是否正在处理请求
-    private TCVideoViewMgr mPlayerVideoViewList;   // 主播视频列表的View
     private List<AnchorInfo> mPusherList;            // 当前在麦上的主播
     private ObjectAnimator mObjAnim;               // 动画
+    /*---------布局新增-------*/
+    private TextView mtv_ctcTm,mtv_ctcget;;
+    private LinearLayout ll_conline;//连麦时上面的布局展示--连麦时间、剩余可用时间
+    private Timer mBroadcastTimer_con;// 定时的 Timer
+    private BroadcastTimerTask mBroadcastTimerTask_con;
+    private int mSecond_con = 0;//连麦成功后开始计时
+    private Button bt_yuyin;//语音的开启与关闭  对应 muteLocalAudio 方法
+    private boolean close_locayy = false;//false 本地语音开启  true关闭
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +97,31 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         super.initView();
         mTXCloudVideoView = (TXCloudVideoView) findViewById(R.id.anchor_video_view);
         mTXCloudVideoView.setLogMargin(10, 10, 45, 55);
+        mtx_contact =findViewById(R.id.video_contact);
+        mBt_contact =findViewById(R.id.video_out1);
+        mFram_contact =findViewById(R.id.video_background1);
+        mImgv_contact =findViewById(R.id.video_imageview1);
+        ll_conline = findViewById(R.id.video_ll_contactline);
+        mtv_ctcTm = findViewById(R.id.video_ctc_time);
+        mtv_ctcget = findViewById(R.id.video_ctc_get);
+        bt_yuyin = findViewById(R.id.audience_btn_linkmic);
+
+
+
+        mTCVideoView = new TCVideoView(mtx_contact, mBt_contact, mFram_contact, mImgv_contact, new TCVideoView.OnRoomViewListener() {
+            @Override
+            public void onKickUser(String userID) {
+                if (userID != null) {
+                    for (AnchorInfo item : mPusherList) {
+                        if (userID.equalsIgnoreCase(item.userID)) {
+                            onAnchorExit(item);
+                            break;
+                        }
+                    }
+                    mLiveRoom.kickoutJoinAnchor(userID);
+                }
+            }
+        });
 
         mUserAvatarList = (RecyclerView) findViewById(R.id.anchor_rv_avatar);
         mAvatarListAdapter = new TCUserAvatarListAdapter(this, TCUserMgr.getInstance().getUserId());
@@ -99,7 +139,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         mHeadIcon = (ImageView) findViewById(R.id.anchor_iv_head_icon);
         showHeadIcon(mHeadIcon, TCUserMgr.getInstance().getAvatar());
         mMemberCount = (TextView) findViewById(R.id.anchor_tv_member_counts);
-        mMemberCount.setText("0");
+        mMemberCount.setText("人气0");
 
         mLinearToolBar = (LinearLayout) findViewById(R.id.tool_bar);
         //AudioEffectPanel
@@ -138,23 +178,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 return false;
             }
         });
-
-        // 监听踢出的回调
-        mPlayerVideoViewList = new TCVideoViewMgr(this, new TCVideoView.OnRoomViewListener() {
-            @Override
-            public void onKickUser(String userID) {
-                if (userID != null) {
-                    for (AnchorInfo item : mPusherList) {
-                        if (userID.equalsIgnoreCase(item.userID)) {
-                            onAnchorExit(item);
-                            break;
-                        }
-                    }
-                    mLiveRoom.kickoutJoinAnchor(userID);
-                }
-            }
-        });
     }
+
 
     /**
      * 加载主播头像
@@ -170,8 +195,9 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     protected void onDestroy() {
         super.onDestroy();
         stopRecordAnimation();
-        mPlayerVideoViewList.recycleVideoView();
-        mPlayerVideoViewList = null;
+        mTCVideoView.userID = null;
+        mTCVideoView.setUsed(false);
+        ll_conline.setVisibility(View.GONE);
         if (mMainHandler != null) {
             mMainHandler.removeCallbacksAndMessages(null);
         }
@@ -222,8 +248,9 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
             return;
         }
 
-        final TCVideoView videoView = mPlayerVideoViewList.applyVideoView(pusherInfo.userID);
-        if (videoView == null) {
+        mTCVideoView.userID = pusherInfo.userID;
+        mTCVideoView.setUsed(true);
+        if (mTCVideoView == null) {
             return;
         }
         if (mPusherList != null) {
@@ -238,16 +265,18 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 mPusherList.add(pusherInfo);
             }
         }
-        videoView.startLoading();
-        mLiveRoom.startRemoteView(pusherInfo, videoView.videoView, new IMLVBLiveRoomListener.PlayCallback() {
+        mTCVideoView.startLoading();
+        mLiveRoom.startRemoteView(pusherInfo, mTCVideoView.videoView, new IMLVBLiveRoomListener.PlayCallback() {
             @Override
             public void onBegin() {
-                videoView.stopLoading(true); //推流成功，stopLoading 大主播显示出踢人的button
+                mTCVideoView.stopLoading(true); //推流成功，stopLoading 大主播显示出踢人的button
+                ll_conline.setVisibility(View.VISIBLE);
+                startTimer();
             }
 
             @Override
             public void onError(int errCode, String errInfo) {
-                videoView.stopLoading(false);
+                mTCVideoView.stopLoading(false);
                 onDoAnchorExit(pusherInfo);
             }
 
@@ -276,7 +305,10 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         }
 
         mLiveRoom.stopRemoteView(pusherInfo);//关闭远端视频渲染
-        mPlayerVideoViewList.recycleVideoView(pusherInfo.userID);
+        mTCVideoView.userID = null;
+        mTCVideoView.setUsed(false);
+        ll_conline.setVisibility(View.GONE);
+        stopTimer();
     }
 
     @Override
@@ -310,7 +342,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                     return;
                 }
 
-                if (mPusherList.size() >= 3) {
+                if (mPusherList.size() >= 1) {
                     mLiveRoom.responseJoinAnchor(pusherInfo.userID, false, "主播端连麦人数超过最大限制");
                     return;
                 }
@@ -416,7 +448,11 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 mLinearToolBar.setVisibility(View.GONE);
             }
         } else if (id == R.id.btn_close) {
-            showExitInfoDialog("当前正在直播，是否退出直播？", false);
+            if (mSecond == 0) {
+                finish();
+            } else {
+                showExitInfoDialog("当前正在直播，是否退出直播？", false);
+            }
         } else if (id == R.id.btn_audio_ctrl) {
             if (mPanelAudioControl.isShown()) {
                 mPanelAudioControl.setVisibility(View.GONE);
@@ -429,6 +465,15 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
             }
         } else if (id == R.id.btn_log) {
             showLog();
+        } else if (id == R.id.audience_btn_linkmic) {
+            if(close_locayy){
+                bt_yuyin.setBackgroundResource(R.drawable.linkmic_on);
+                mLiveRoom.muteLocalAudio(false);
+            }else{
+                bt_yuyin.setBackgroundResource(R.drawable.linkmic_off);
+                mLiveRoom.muteLocalAudio(true);
+            }
+            close_locayy = !close_locayy;
         } else {
             super.onClick(v);
         }
@@ -454,8 +499,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         } else {
             if (liveLog != null) liveLog.setBackgroundResource(R.drawable.icon_log_off);
         }
-
-        mPlayerVideoViewList.showLog(mShowLog);
+        mTCVideoView.videoView.showLog(mShowLog);
     }
 
     /**
@@ -470,14 +514,14 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         //更新头像列表 返回false表明已存在相同用户，将不会更新数据
         if (mAvatarListAdapter.addItem(userInfo))
             super.handleMemberJoinMsg(userInfo);
-        mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentMemberCount));
+        mMemberCount.setText("人气" + String.format(Locale.CHINA, "%d", mCurrentMemberCount));
     }
 
     @Override
     protected void handleMemberQuitMsg(TCSimpleUserInfo userInfo) {
         mAvatarListAdapter.removeItem(userInfo.userid);
         super.handleMemberQuitMsg(userInfo);
-        mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentMemberCount));
+        mMemberCount.setText("人气" + String.format(Locale.CHINA, "%d", mCurrentMemberCount));
     }
 
 
@@ -506,6 +550,38 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         // 打开本地预览，传入预览的 View
         mTXCloudVideoView.setVisibility(View.VISIBLE);
         mLiveRoom.startLocalPreview(true, mTXCloudVideoView);
+    }
+
+    /**
+     * 记时器
+     */
+    private class BroadcastTimerTask extends TimerTask {
+        public void run() {
+            //Log.i(TAG, "timeTask ");
+            ++mSecond_con;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mtv_ctcTm.setText(TCUtils.formattedTime(mSecond_con));
+                    mtv_ctcget.setText((mSecond_con/60)+"");
+                }
+            });
+        }
+    }
+
+    private void startTimer() {
+        mSecond_con = 0;
+        if (mBroadcastTimer_con == null) {
+            mBroadcastTimer_con = new Timer(true);
+            mBroadcastTimerTask_con = new BroadcastTimerTask();
+            mBroadcastTimer_con.schedule(mBroadcastTimerTask_con, 1000, 1000);
+        }
+    }
+
+    private void stopTimer() {
+        if (null != mBroadcastTimer_con) {
+            mBroadcastTimerTask_con.cancel();
+        }
     }
 
 }

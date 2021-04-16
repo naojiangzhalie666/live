@@ -48,7 +48,7 @@ public class RemindDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_remind);
+        setContentView(R.layout.dialog_remindxzb);
         ButterKnife.bind(this);
         getWindow().setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT);
         getWindow().setGravity(Gravity.CENTER);

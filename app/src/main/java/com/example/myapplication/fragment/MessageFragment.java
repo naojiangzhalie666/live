@@ -39,9 +39,6 @@ import static android.view.View.GONE;
  */
 public class MessageFragment extends BaseFragment {
 
-
-
-
     private ConversationLayout mConversationLayout;
     private View mBaseView;
     private ImageView mimg_mail;
@@ -79,6 +76,13 @@ public class MessageFragment extends BaseFragment {
             @Override
             public void OnItemLongClick(View view, int position, ConversationInfo conversationInfo) {
                 startPopShow(view, position, conversationInfo);
+            }
+        });
+        mConversationLayout.getConversationList().setOnDeleteClickListener(new ConversationListLayout.OnDeleteClickListener() {
+            @Override
+            public void onItemDeleteClickListener(View view, int position, ConversationInfo conversationInfo) {
+                mConversationLayout.deleteConversation(position, conversationInfo);//删除对话
+//                mConversationLayout.setConversationTop(position, conversationInfo);//置顶--取消置顶
             }
         });
         mimg_mail.setOnClickListener(new View.OnClickListener() {

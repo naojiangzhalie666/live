@@ -374,7 +374,10 @@ id img_sponsor_avatar
 id img_start_new_call
 id input_extra_area
 id is_read_tv
+id item_cancel
+id item_delete
 id item_left
+id item_swip
 id ivAvatar
 id jcameraview
 id join_type_bar
@@ -447,6 +450,7 @@ id tv_start_new_call
 id tv_time
 id tv_title
 id tv_user_name
+id unread_num
 id user_name_tv
 id video_duration_tv
 id video_play_btn

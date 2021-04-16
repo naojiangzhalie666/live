@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="contentDescription"
-    android:layout_width="110dp"
+    android:layout_width="145dp"
     android:layout_height="35dp"
     android:background="@drawable/pusher_info_background"
     android:orientation="horizontal"
     android:paddingBottom="1dp"
     android:paddingLeft="1dp"
-    android:paddingRight="1dp"
+    android:paddingRight="4dp"
     android:paddingTop="1dp">
 
     <ImageView
@@ -17,9 +17,29 @@
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
         android:src="@drawable/face" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/anchor_iv_head_icon"
+        android:src="@drawable/live_yellow"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/anchor_tv_broadcasting_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:textColor="@color/colorTextWhite"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible"
+        android:paddingTop="2.5dp"
+        android:layout_marginLeft="5dp"
+        android:paddingRight="10dp"
+        android:layout_toRightOf="@+id/anchor_iv_record_ball"/>
+ <TextView
+        android:id="@+id/anchor_tv_broadcasting_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="10sp"
@@ -38,8 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_toRightOf="@id/anchor_iv_head_icon"
-            android:layout_marginTop="6dp"
-            android:layout_marginLeft="5dp"
             android:background="@drawable/liveshow_item_dot"
             android:scaleType="fitXY" />
 
@@ -65,5 +83,19 @@
         android:layout_below="@+id/anchor_tv_broadcasting_time"
         android:layout_alignLeft="@+id/anchor_tv_broadcasting_time" />
 
-
+    <TextView
+        android:id="@+id/anchor_tv_member_gz"
+        android:layout_width="35dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:text="关注"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:textColor="#425C59"
+        android:background="@drawable/bg_circle_ye"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/face" />
 </RelativeLayout>

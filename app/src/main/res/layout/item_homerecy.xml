@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="@dimen/dp_12"
+    android:layout_marginRight="@dimen/dp_6"
     android:layout_marginBottom="@dimen/dp_12">
 
     <ImageView
         android:id="@+id/item_homerecy_imgv"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scaleType="centerCrop"
         android:background="@drawable/home_grad"
-        app:layout_constraintDimensionRatio="h,17:20"
+        app:layout_constraintDimensionRatio="h,15:20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,8 +29,8 @@
         android:paddingTop="@dimen/dp_2"
         android:paddingRight="@dimen/dp_5"
         android:paddingBottom="@dimen/dp_2"
-        android:textSize="12sp"
         android:textColor="@color/login_txt"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/item_homerecy_imgv"
         app:layout_constraintTop_toTopOf="@+id/item_homerecy_imgv"
         tools:text="人格心理" />
@@ -66,17 +67,35 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/item_home_rez"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_homerecy_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/personal_renz" />
+
+    <ImageView
+        android:id="@+id/item_home_sun"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/item_home_rez"
+        android:layout_marginLeft="@dimen/dp_3"
+        app:layout_constraintBottom_toBottomOf="@+id/item_homerecy_name"
+        android:layout_height="wrap_content"
+        android:src="@drawable/personal_sun" />
+
     <TextView
         android:id="@+id/item_homerecy_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:drawableLeft="@drawable/login_select"
+        android:layout_marginStart="3dp"
         android:drawablePadding="@dimen/dp_3"
         android:textColor="@color/login_txt"
+        android:layout_marginBottom="@dimen/dp_5"
+        app:layout_constraintStart_toEndOf="@+id/item_home_sun"
         android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/item_homerecy_title"
-        app:layout_constraintStart_toStartOf="parent"
         tools:text="心理咨询师-听雨" />
 
     <TextView

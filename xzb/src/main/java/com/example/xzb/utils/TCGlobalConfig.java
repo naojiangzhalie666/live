@@ -74,7 +74,7 @@ public class TCGlobalConfig {
      *
      * 详情请参考：
      */
-    public static final String APP_SVR_URL = "";
+    public static final String APP_SVR_URL = "https://room.qcloud.com/weapp/utils";
 
 
     /**
@@ -89,6 +89,6 @@ public class TCGlobalConfig {
      *  由于连麦功能使用了比较昂贵的 BGP 专用线路，所以是按照通话时长进行收费的。最初级的体验包包含 3000 分钟的连麦时长，只需要 9.8 元。
      *  购买链接：https://buy.cloud.tencent.com/mobilelive?urlctr=yes&micconn=3000m##
      */
-    public static final boolean ENABLE_LINKMIC = false;
+    public static final boolean ENABLE_LINKMIC = true;
 
 }

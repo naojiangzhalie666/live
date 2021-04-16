@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.VpAdapter;
 import com.example.myapplication.pop_dig.CodeDialog;
+import com.example.myapplication.pop_dig.LogoutDialog;
 import com.example.myapplication.ui.AdviceActivity;
 import com.example.myapplication.ui.FollowActivity;
 import com.example.myapplication.ui.MybackpActivity;
@@ -83,6 +84,7 @@ public class MineFragment extends Fragment {
     private List<Fragment> mFragments;
     private int mPower;
     private CodeDialog mCodeDialog;
+    private LogoutDialog mLogoutDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -147,7 +149,7 @@ public class MineFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SetInActivity.class));
                 break;
             case R.id.mine_logout:
-                ToastUtil.showToast(getActivity(), "退出");
+                mLogoutDialog.show();
                 break;
             case R.id.mine_zuanshi:
             case R.id.textView14:
@@ -165,6 +167,7 @@ public class MineFragment extends Fragment {
     }
 
     private void init() {
+        mLogoutDialog = new LogoutDialog(getActivity());
         mCodeDialog = new CodeDialog(getActivity());
         mFragments = new ArrayList<>();
         mXfFragment = new XfFragment();
@@ -195,6 +198,13 @@ public class MineFragment extends Fragment {
         mMineId.setText("ID 12233");
         mMineLevel.setText("lv 3");
         mMineHead.setImageResource(R.drawable.man_se);
+
+        mLogoutDialog.setOnLogoutClickListener(new LogoutDialog.OnLogoutClickListener() {
+            @Override
+            public void onLogoutClickListener() {
+                getActivity().finish();
+            }
+        });
 
 
     }

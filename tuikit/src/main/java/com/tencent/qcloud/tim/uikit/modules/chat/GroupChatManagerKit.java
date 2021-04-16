@@ -258,7 +258,8 @@ public class GroupChatManagerKit extends ChatManagerKit {
         if (isInvited) {
             ToastUtil.toastLongMessage(TUIKit.getAppContext().getString(R.string.join_group_tip)+ groupID);
         } else {
-            ToastUtil.toastLongMessage(TUIKit.getAppContext().getString(R.string.joined_tip) + groupID);
+            // TODO: 2021/4/15 去掉了提示 ---直播中会展示（但是我不想看到了  哈哈） --加入
+//            ToastUtil.toastLongMessage(TUIKit.getAppContext().getString(R.string.joined_tip) + groupID);
         }
     }
 
@@ -275,7 +276,8 @@ public class GroupChatManagerKit extends ChatManagerKit {
     }
 
     public void notifyGroupDismissed(String groupID) {
-        ToastUtil.toastLongMessage(TUIKit.getAppContext().getString(R.string.dismiss_tip_before) + groupID + TUIKit.getAppContext().getString(R.string.dismiss_tip_after));
+        // TODO: 2021/4/15 去掉了提示 ---直播中会展示（但是我不想看到了  哈哈）--解散
+//        ToastUtil.toastLongMessage(TUIKit.getAppContext().getString(R.string.dismiss_tip_before) + groupID + TUIKit.getAppContext().getString(R.string.dismiss_tip_after));
         if (mCurrentChatInfo != null && groupID.equals(mCurrentChatInfo.getId())) {
             onGroupForceExit();
         }

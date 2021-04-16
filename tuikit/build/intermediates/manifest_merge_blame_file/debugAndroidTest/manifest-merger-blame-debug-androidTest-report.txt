@@ -3,24 +3,24 @@
 3    package="com.tencent.qcloud.tim.uikit.test" >
 4
 5    <uses-sdk
-5-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:5:5-74
+5-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:5:5-74
 6        android:minSdkVersion="19"
-6-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:5:15-41
+6-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:5:15-41
 7        android:targetSdkVersion="28" />
-7-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:5:42-71
+7-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:5:42-71
 8
 9    <instrumentation
-9-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:11:5-15:83
+9-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:11:5-15:83
 10        android:name="androidx.test.runner.AndroidJUnitRunner"
-10-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:11:22-76
+10-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:11:22-76
 11        android:functionalTest="false"
-11-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:14:22-52
+11-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:14:22-52
 12        android:handleProfiling="false"
-12-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:13:22-53
+12-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:13:22-53
 13        android:label="Tests for com.tencent.qcloud.tim.uikit.test"
-13-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:15:22-81
+13-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:15:22-81
 14        android:targetPackage="com.tencent.qcloud.tim.uikit.test" />
-14-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:12:22-79
+14-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:12:22-79
 15
 16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 16-->[__tested_artifact__::tuikit] D:\workplace\live\tuikit\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-79
@@ -60,11 +60,11 @@
 27-->[com.tencent.imsdk:imsdk:5.1.56] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\f2084cdd2658850f967e2c3501692cef\imsdk-5.1.56\AndroidManifest.xml:11:22-78
 28
 29    <application
-29-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:7:5-9:19
+29-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:7:5-9:19
 30        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 30-->[androidx.core:core:1.0.0] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\607c3e85b216ba1410e4c67a1389515c\core-1.0.0\AndroidManifest.xml:22:18-86
 31        android:debuggable="true"
-31-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:7:18-43
+31-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:7:18-43
 32        android:label="@string/app_name"
 32-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:30:9-41
 33        android:supportsRtl="true"
@@ -72,8 +72,8 @@
 34        android:usesCleartextTraffic="true" >
 34-->[com.tencent.liteav:LiteAVSDK_Professional:8.5.10028] X:\Users\admin\.gradle\caches\transforms-2\files-2.1\8435d80c7e8d84ce5f315c30fe58150b\jetified-LiteAVSDK_Professional-8.5.10028\AndroidManifest.xml:32:9-44
 35        <uses-library android:name="android.test.runner" />
-35-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:8:9-60
-35-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger409558810374019851.xml:8:23-57
+35-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:8:9-60
+35-->D:\workplace\live\tuikit\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger1244251134323608900.xml:8:23-57
 36
 37        <activity
 37-->[__tested_artifact__::tuikit] D:\workplace\live\tuikit\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:9-21:52

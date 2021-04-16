@@ -1,14 +1,11 @@
 package com.tencent.qcloud.tim.uikit.modules.conversation.holder;
 
 import android.graphics.Color;
-import android.net.Uri;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tencent.qcloud.tim.uikit.R;
-import com.tencent.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationIconView;
 import com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 
@@ -24,7 +21,6 @@ public class ConversationCustomHolder extends ConversationBaseHolder {
     protected TextView unreadText;
     protected ConversationIconView conversationIconView;
 
-
     public ConversationCustomHolder(View itemView) {
         super(itemView);
         leftItemLayout = rootView.findViewById(R.id.item_left);
@@ -34,7 +30,6 @@ public class ConversationCustomHolder extends ConversationBaseHolder {
         timelineText = rootView.findViewById(R.id.conversation_time);
         unreadText = rootView.findViewById(R.id.conversation_unread);
     }
-
     @Override
     public void layoutViews(ConversationInfo conversation, int position) {
         if (conversation.isTop()) {
@@ -68,6 +63,21 @@ public class ConversationCustomHolder extends ConversationBaseHolder {
         if (mAdapter.getItemTopTextSize() != 0) {
             titleText.setTextSize(mAdapter.getItemTopTextSize());
         }
+        leftItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnListLinearClickListener!=null)
+                    mOnListLinearClickListener.onListLinearClickListener(v);
+            }
+        });
+        leftItemLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(mOnListLinearClickListener!=null)
+                    mOnListLinearClickListener.onListLinearLongClickListener(v);
+                return true;
+            }
+        });
 
     }
 

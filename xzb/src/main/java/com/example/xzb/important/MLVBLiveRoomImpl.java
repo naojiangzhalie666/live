@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
+import com.example.xzb.Constantc;
 import com.example.xzb.utils.http.HttpRequests;
 import com.example.xzb.utils.http.HttpResponse;
 import com.example.xzb.utils.im.IMMessageMgr;
@@ -377,16 +378,16 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         //1. 在应用层调用startLocalPreview，启动本地预览
 
         //2. 请求CGI:get_push_url，异步获取到推流地址pushUrl
-      /*  mHttpRequest.getPushUrl(mSelfAccountInfo.userID, roomID, new HttpRequests.OnResponseCallback<HttpResponse.PushUrl>() {
+        mHttpRequest.getPushUrl(mSelfAccountInfo.userID, roomID, new HttpRequests.OnResponseCallback<HttpResponse.PushUrl>() {
             @Override
             public void onResponse(int retcode, String retmsg, HttpResponse.PushUrl data) {
                 if (retcode == HttpResponse.CODE_OK && data != null && data.pushURL != null) {
                     final String pushURL = data.pushURL;
                     mSelfPushUrl = data.pushURL;
-                    mSelfAccelerateURL = data.accelerateURL;*/
-
+                    mSelfAccelerateURL = data.accelerateURL;
+//                     final String pushURL = Constantc.PUSHURL;
                     //3.开始推流
-                    startPushStream("rtmp://134887.livepush.myqcloud.com/live/testl?txSecret=05ea256065200bdd18e677917c91d589&txTime=606FF080", TXLiveConstants.VIDEO_QUALITY_HIGH_DEFINITION, new StandardCallback() {
+                    startPushStream(pushURL, TXLiveConstants.VIDEO_QUALITY_HIGH_DEFINITION, new StandardCallback() {
                         @Override
                         public void onError(int errCode, String errInfo) {
                             callbackOnThread(callback, "onError", errCode, errInfo);
@@ -407,7 +408,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
                             mBackground = false;
                             //4.推流成功，请求CGI:create_room，获取roomID、roomSig
-                           /* doCreateRoom(roomID, roomInfo, new StandardCallback() {
+                            doCreateRoom(roomID, roomInfo, new StandardCallback() {
                                 @Override
                                 public void onError(int errCode, String errInfo) {
                                     callbackOnThread(callback, "onError", errCode, errInfo);
@@ -452,17 +453,17 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                                         }
                                     });
                                 }
-                            });*/
+                            });
                         }
                     });
 
                 }
-               /* else {
+                else {
                     callbackOnThread(callback, "onError", retcode, "[LiveRoom] 创建房间失败[获取推流地址失败]");
                 }
             }
         });
-    }*/
+    }
 
     /**
      * 进入房间（观众调用）
@@ -867,7 +868,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
         //1.在应用层调用startLocalPreview
 
-        //2. 请求CGI:get_pushers，异步获取房间里所有正在推流的成员
+        // TODO: 2021/4/14 2. 请求CGI:get_pushers，异步获取房间里所有正在推流的成员 ----该方法导致观众端连麦者发生界面黑屏切换
         updateAnchors(true, new UpdateAnchorsCallback() {
             @Override
             public void onUpdateAnchors(int retcode, List<AnchorInfo> addAnchors, List<AnchorInfo> delAnchors, HashMap<String, AnchorInfo> mergedAnchors, AnchorInfo roomCreator) {
@@ -952,7 +953,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 //2. 结束所有加速流的播放
                 cleanPlayers();
 
-                //3. 结束播放大主播的加速流，改为播放普通流
+                // TODO: 2021/4/14 3. 结束播放大主播的加速流，改为播放普通流 ----该方法导致观众端连麦者发生界面黑屏切换
                 mTXLivePlayer.stopPlay(true);
                 if (!mBackground) {
                     String mixedPlayUrl = getMixedPlayUrlByRoomID(mCurrRoomID);
@@ -2088,7 +2089,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         CommonJson<AnchorInfo> msg = new CommonJson<>();
         msg.cmd = "notifyPusherChange";
         msg.data = new AnchorInfo();
-        msg.data.userID = mSelfAccountInfo.userID;
+        msg.data.userID = Constantc.test_USERID;
         String content = new Gson().toJson(msg, new TypeToken<CommonJson<AnchorInfo>>(){}.getType());
         IMMessageMgr imMessageMgr = mIMMessageMgr;
         if (imMessageMgr != null) {
@@ -3144,6 +3145,10 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 callbackOnThread(mCallback, "onError", event, msg);
             } else if (event == TXLiveConstants.PUSH_ERR_SCREEN_CAPTURE_START_FAILED) {
                 String msg = "[LivePusher] 推流失败[录屏启动失败]";
+                TXCLog.e(TAG,msg);
+                callbackOnThread(mCallback, "onError", event, msg);
+            }else if (event == TXLiveConstants.PUSH_WARNING_NET_BUSY) {
+                String msg = "[LivePusher] 您当前的网络环境不佳，请尽快更换网络保证正常直播  ";
                 TXCLog.e(TAG,msg);
                 callbackOnThread(mCallback, "onError", event, msg);
             }

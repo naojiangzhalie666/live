@@ -6,18 +6,11 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tencent.imsdk.conversation.Conversation;
-import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMTextElem;
 import com.tencent.qcloud.tim.uikit.R;
 import com.tencent.qcloud.tim.uikit.TUIKit;
@@ -32,7 +25,8 @@ import com.tencent.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.tencent.qcloud.tim.uikit.utils.BackgroundTasks;
 import com.tencent.qcloud.tim.uikit.utils.ToastUtil;
 
-import java.util.List;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout {
@@ -260,6 +254,11 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
 
     @Override
     public void initDefault() {
+        /*用户的话展示这个----*/
+        getNoticeLayout().alwaysShow(true);
+        getNoticeLayout().getContent().setText("私聊1钻石/每条");
+        getNoticeLayout().getContentExtra().setText("");
+
         getTitleBar().getLeftGroup().setVisibility(View.VISIBLE);
         getTitleBar().setOnLeftClickListener(new OnClickListener() {
             @Override
@@ -269,6 +268,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
                 }
             }
         });
+        // TODO: 2021/4/12 发送消息--用户发送一条耗费一钻石
         getInputLayout().setMessageHandler(new InputLayout.MessageHandler() {
             @Override
             public void sendMessage(MessageInfo msg) {

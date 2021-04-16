@@ -18,7 +18,13 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-
+/********************************************************************
+  @version: 1.0.0
+  @description: 之前用来准备直播的界面---目前没有用到
+  @author: admin
+  @time: 2021/4/13 9:19
+  @变更历史: 
+********************************************************************/
 public class PrepareActivity extends BaseActivity {
     private int mRecordType = TCConstants.RECORD_TYPE_CAMERA;   // 默认摄像头推流
     private boolean mPermission = false;               // 是否已经授权

@@ -1,8 +1,5 @@
 package com.tencent.qcloud.tim.uikit.modules.conversation;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +18,9 @@ import com.tencent.qcloud.tim.uikit.utils.ScreenUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class ConversationListAdapter extends IConversationAdapter {
 
     private boolean mHasShowUnreadDot = true;
@@ -31,6 +31,7 @@ public class ConversationListAdapter extends IConversationAdapter {
     private List<ConversationInfo> mDataSource = new ArrayList<>();
     private ConversationListLayout.OnItemClickListener mOnItemClickListener;
     private ConversationListLayout.OnItemLongClickListener mOnItemLongClickListener;
+    private ConversationListLayout.OnDeleteClickListener mOnDeleteClickListener;
 
     public ConversationListAdapter() {
 
@@ -81,7 +82,27 @@ public class ConversationListAdapter extends IConversationAdapter {
         switch (getItemViewType(position)) {
             case ConversationInfo.TYPE_CUSTOM:
                 break;
-            default:
+            default://进行针对性跳转事件修改
+                if(holder instanceof ConversationCustomHolder||holder instanceof  ConversationCommonHolder){
+                    ((ConversationBaseHolder) holder).setOnListLinearClickListener(new OnListLinearClickListener() {
+                        @Override
+                        public void onListLinearClickListener(View view) {
+                            mOnItemClickListener.onItemClick(view, position, conversationInfo);
+                        }
+
+                        @Override
+                        public void onListLinearLongClickListener(View view) {
+                            mOnItemLongClickListener.OnItemLongClick(view, position, conversationInfo);
+                        }
+
+                        @Override
+                        public void onDeleteClickListener(View v) {
+                            if(mOnDeleteClickListener!=null)
+                                mOnDeleteClickListener.onItemDeleteClickListener(v,position,conversationInfo);
+                        }
+                    });
+
+                }
                 //设置点击和长按事件
                 if (mOnItemClickListener != null) {
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -191,5 +212,8 @@ public class ConversationListAdapter extends IConversationAdapter {
 
     public boolean hasItemUnreadDot() {
         return mHasShowUnreadDot;
+    }
+    public void setOnDeleteClickListener(ConversationListLayout.OnDeleteClickListener onDeleteClickListener) {
+        mOnDeleteClickListener = onDeleteClickListener;
     }
 }

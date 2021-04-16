@@ -1,44 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_left"
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_swip"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
-    android:paddingTop="10dp"
-    android:paddingLeft="12dp"
-    android:orientation="horizontal">
+    android:clickable="true">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/item_left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingTop="10dp">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationIconView
             android:id="@+id/conversation_icon"
             android:layout_width="@dimen/conversation_avatar_width"
             android:layout_height="@dimen/conversation_avatar_height" />
 
+        <com.tencent.qcloud.tim.uikit.component.UnreadCountTextView
+            android:id="@+id/unread_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignRight="@+id/conversation_icon"
+            android:includeFontPadding="false"
+            android:textColor="#fff"
+            android:textSize="8sp" />
+        </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:paddingTop="1.37dp"
+            android:layout_height="62.3dp"
             android:paddingLeft="10dp"
-            android:paddingRight="18.11dp"
-            android:layout_height="62.3dp">
+            android:paddingTop="1.37dp"
+            android:paddingRight="18.11dp">
 
             <TextView
                 android:id="@+id/conversation_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="top|left"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:ellipsize="end"
+                android:gravity="top|left"
                 android:singleLine="true"
-                android:textColor="@color/black_font_color"
                 android:text="aaa"
+                android:textColor="@color/black_font_color"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/conversation_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
                 android:textColor="@color/conversation_time_color"
                 android:textSize="10sp" />
 
@@ -47,24 +66,24 @@
                 android:id="@+id/conversation_at_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/view_line"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="15.54dp"
-                android:layout_above="@+id/view_line"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/list_bottom_text_bg"
                 android:textSize="12.86sp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/conversation_last_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/view_line"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="48dp"
                 android:layout_marginBottom="15.54dp"
-                android:layout_above="@+id/view_line"
                 android:layout_toRightOf="@+id/conversation_at_msg"
                 android:ellipsize="end"
                 android:singleLine="true"
@@ -76,9 +95,9 @@
                 android:id="@+id/conversation_unread"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/view_line"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:layout_above="@+id/view_line"
                 android:layout_marginBottom="15.54dp"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -87,11 +106,35 @@
 
             <View
                 android:id="@+id/view_line"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="12dp"
                 android:layout_width="match_parent"
                 android:layout_height="0.3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="12dp"
                 android:background="@color/split_lint_color" />
         </RelativeLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#f2f2f2"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="取消"
+        android:textColor="#999" />
+
+    <TextView
+        android:id="@+id/item_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#f00"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="删除"
+        android:textColor="#fff" />
+
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

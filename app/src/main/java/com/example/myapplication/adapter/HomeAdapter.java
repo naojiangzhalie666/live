@@ -1,6 +1,7 @@
 package com.example.myapplication.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.xzb.utils.TCUtils;
 import com.example.xzb.utils.onlinelive.TCVideoInfo;
 
 import java.util.List;
@@ -48,13 +51,27 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
         if (position != mLists.size()) {
-            TCVideoInfo bean = mLists.get(position);
+            vh.mItemHomerecyBiao.setVisibility(View.VISIBLE);
+            vh.mItemHomerecyRenqi.setVisibility(View.VISIBLE);
+            vh.mItemHomerecyName.setVisibility(View.VISIBLE);
+            vh.mItemHomerecyTitle.setVisibility(View.VISIBLE);
+            vh.mItemHomerecyLinear.setVisibility(View.VISIBLE);
+            vh.mItemHomeImgRenz.setVisibility(View.VISIBLE);
+            vh.mItemHomeImgSun.setVisibility(View.VISIBLE);
+            TCVideoInfo data = mLists.get(position);
             vh.mItemHomerecyBiao.setText("人气主播");
-            vh.mItemHomerecyRenqi.setText("333");
-            vh.mItemHomerecyName.setText("苏联军队攻克" + (position + 1));
-            vh.mItemHomerecyTitle.setText("了就是看见两个赛季格洛克十九公里是德国");
-            switch (position) {
-                case 1:
+            vh.mItemHomerecyRenqi.setText("" + data.viewerCount); //直播观看人数
+            vh.mItemHomerecyName.setText(TextUtils.isEmpty(data.nickname) ? TCUtils.getLimitString(data.userId, 10) : TCUtils.getLimitString(data.nickname, 10));   //主播昵称
+            vh.mItemHomerecyTitle.setText(TCUtils.getLimitString(data.title, 10));//直播标题
+            //直播封面
+            String cover = data.frontCover;
+//            if (TextUtils.isEmpty(cover)) {
+//                vh.mItemHomerecyImgv.setImageResource(R.drawable.home_grad);
+//            } else {
+            Glide.with(mContext).load(cover).placeholder(R.drawable.home_grad).error(R.drawable.home_grad).into(vh.mItemHomerecyImgv);
+//            }
+           /* switch (position) {
+                case 0:
                     vh.mItemHomerecyImgv.setBackgroundResource(R.drawable.home_white);
                     vh.mItemHomerecyImgvState.setVisibility(View.VISIBLE);
                     vh.mItemHomerecyImgvState.setImageResource(R.drawable.home_media);
@@ -86,16 +103,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     vh.mItemHomerecyLinear.setVisibility(View.GONE);
                     vh.mItemHomerecyTitle.setVisibility(View.GONE);
                     break;
-            }
+            }*/
             vh.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mOnItemClickListener!=null)
+                    if (mOnItemClickListener != null)
                         mOnItemClickListener.onItemClickListener(position);
                 }
             });
         } else {
             vh.mItemHomerecyImgv.setBackground(null);
+            vh.mItemHomeImgSun.setVisibility(View.GONE);
+            vh.mItemHomeImgRenz.setVisibility(View.GONE);
             vh.mItemHomerecyImgv.setImageResource(R.drawable.home_more);
             vh.mItemHomerecyBiao.setVisibility(View.GONE);
             vh.mItemHomerecyRenqi.setVisibility(View.GONE);
@@ -105,7 +124,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             vh.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mOnLastClickListener!=null)
+                    if (mOnLastClickListener != null)
                         mOnLastClickListener.onLastClickListener();
                 }
             });
@@ -123,7 +142,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         void onItemClickListener(int pos);
     }
 
-    public interface OnLastClickListener{
+    public interface OnLastClickListener {
         void onLastClickListener();
     }
 
@@ -142,6 +161,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         TextView mItemHomerecyTitle;
         @BindView(R.id.item_homelinear)
         LinearLayout mItemHomerecyLinear;
+        @BindView(R.id.item_home_rez)
+        ImageView mItemHomeImgRenz;
+        @BindView(R.id.item_home_sun)
+        ImageView mItemHomeImgSun;
 
         ViewHolder(View view) {
             super(view);
