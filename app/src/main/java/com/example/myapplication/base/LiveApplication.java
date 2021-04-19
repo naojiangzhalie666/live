@@ -12,6 +12,7 @@ import com.tencent.qcloud.tim.uikit.config.CustomFaceConfig;
 import com.tencent.qcloud.tim.uikit.config.GeneralConfig;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.rtmp.TXLiveBase;
+import com.yf.xzbgift.important.TUIKitLive;
 
 import androidx.multidex.MultiDex;
 
@@ -57,7 +58,8 @@ public class LiveApplication extends Application {
         MLVBLiveRoomImpl.sharedInstance(this);
         // 必须：初始化全局的 用户信息管理类，记录个人信息。
         TCUserMgr.getInstance().initContext(getApplicationContext());
-
+        // 礼物初始化
+        TUIKitLive.init(this);
     }
 
 }

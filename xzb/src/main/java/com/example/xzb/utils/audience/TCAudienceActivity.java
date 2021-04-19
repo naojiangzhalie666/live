@@ -51,6 +51,16 @@ import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.ui.TXCloudVideoView;
+import com.yf.xzbgift.base.Constants;
+import com.yf.xzbgift.imple.DefaultGiftAdapterImp;
+import com.yf.xzbgift.imple.GiftAdapter;
+import com.yf.xzbgift.imple.GiftInfoDataHandler;
+import com.yf.xzbgift.imple.GiftPanelDelegate;
+import com.yf.xzbgift.imple.GiftPanelViewImp;
+import com.yf.xzbgift.imple.IGiftPanelView;
+import com.yf.xzbgift.important.GiftAnimatorLayout;
+import com.yf.xzbgift.important.GiftInfo;
+import com.yf.xzbgift.important.TUIKitLive;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -186,6 +196,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         // 初始化 MLVB 组件
         mLiveRoom = MLVBLiveRoom.sharedInstance(this);
         initView();
+        initGift();
         mBeautyControl.setBeautyManager(mLiveRoom.getBeautyManager());
         startPlay();
         //在这里停留，让列表界面卡住几百毫秒，给sdk一点预加载的时间，形成秒开的视觉效果
@@ -307,6 +318,74 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
         TCUtils.blurBgPic(this, mBgImageView, mCoverUrl, R.drawable.bg);
     }
+
+
+    /*-----礼物逻辑     始-----*/
+    private GiftAdapter mGiftAdapter;
+    private GiftInfoDataHandler mGiftInfoDataHandler;
+    private GiftAnimatorLayout mGiftAnimatorLayout;
+
+    private void initGift() {
+        mGiftAnimatorLayout = findViewById(R.id.lottie_animator_layout);
+        mGiftAdapter = new DefaultGiftAdapterImp();
+        mGiftInfoDataHandler = new GiftInfoDataHandler();
+        mGiftInfoDataHandler.setGiftAdapter(mGiftAdapter);
+
+    }
+
+
+    private void showGiftPanel() {
+        IGiftPanelView giftPanelView = new GiftPanelViewImp(this);
+        giftPanelView.init(mGiftInfoDataHandler);
+        giftPanelView.setGiftPanelDelegate(new GiftPanelDelegate() {
+            @Override
+            public void onGiftItemClick(GiftInfo giftInfo) {
+                sendGift(giftInfo);
+            }
+
+            @Override
+            public void onChargeClick() {
+
+            }
+        });
+        giftPanelView.show();
+    }
+
+    //发送礼物消息出去同时展示礼物动画和弹幕
+    private void sendGift(final GiftInfo giftInfo) {
+        GiftInfo giftInfoCopy = giftInfo.copy();
+        giftInfoCopy.sendUser = getString(R.string.live_message_me);
+        giftInfoCopy.sendUserHeadIcon = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2F50%2Fv2-e73ebe5fb7fbae39d69ed94dcc82f145_hd.jpg&refer=http%3A%2F%2Fpic1.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1621069154&t=f6b05ac96cc89d9a7db321b657bf8dbc";
+        mGiftAnimatorLayout.show(giftInfoCopy);
+//        mLiveRoom.sendRoomCustomMsg(String.valueOf(Constants.IMCMD_GIFT), giftInfoCopy.giftId, new TRTCLiveRoomCallback.ActionCallback() {
+//            @Override
+//            public void onCallback(int code, String msg) {
+//                if (code != 0) {
+//                    Toast.makeText(TUIKitLive.getAppContext(), R.string.live_message_send_fail, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+        mLiveRoom.sendRoomCustomMsg(String.valueOf(Constants.IMCMD_GIFT), giftInfoCopy.giftId, new SendRoomCustomMsgCallback() {
+            @Override
+            public void onError(int errCode, String errInfo) {
+                if (errCode != 0) {
+                    Toast.makeText(TUIKitLive.getAppContext(), R.string.live_message_send_fail, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onSuccess() {
+                TCChatEntity entity = new TCChatEntity();
+                entity.setSenderName("我:");
+                entity.setContent("送了一个"+giftInfo.title);
+                entity.setType(TCConstants.IMCMD_GIFT);
+                entity.setIs_gift(true);
+                notifyMsg(entity);
+            }
+        });
+    }
+
+    /*-----礼物逻辑  终-----*/
 
     private void toLianx() {
         if (mIsBeingLinkMic == false) {
@@ -441,7 +520,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         showNoticeToast("等待主播接受......");
 
 
-        mLiveRoom.requestJoinAnchor("", new IMLVBLiveRoomListener.RequestJoinAnchorCallback() {
+        mLiveRoom.requestJoinAnchor("连麦", new IMLVBLiveRoomListener.RequestJoinAnchorCallback() {
             @Override
             public void onAccept() {
                 hideNoticeToast();
@@ -693,6 +772,9 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             case TCConstants.IMCMD_DANMU:
                 handleDanmuMsg(userInfo, message);
                 break;
+            case TCConstants.IMCMD_GIFT:
+                handleGiftMsg(userInfo, message);
+                break;
             default:
                 break;
         }
@@ -817,6 +899,33 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     }
 
     /**
+     * 处理礼物弹幕消息
+     */
+    private void handleGiftMsg(TCSimpleUserInfo userInfo, String giftId) {
+        if (mGiftInfoDataHandler != null) {
+            GiftInfo giftInfo = mGiftInfoDataHandler.getGiftInfo(giftId);
+            /*发送消息到列表*/
+            TCChatEntity entity = new TCChatEntity();
+            entity.setSenderName(userInfo.nickname);
+            entity.setContent("送了一个 "+giftInfo.title);
+            entity.setType(TCConstants.TEXT_TYPE);
+            entity.setIs_gift(true);
+            notifyMsg(entity);
+            if (giftInfo != null) {
+                if (userInfo != null) {
+                    giftInfo.sendUserHeadIcon = userInfo.avatar;
+                    if (!TextUtils.isEmpty(userInfo.nickname)) {
+                        giftInfo.sendUser = userInfo.nickname;
+                    } else {
+                        giftInfo.sendUser = userInfo.userid;
+                    }
+                }
+                mGiftAnimatorLayout.show(giftInfo);
+            }
+        }
+    }
+
+    /**
      * 收到文本消息
      *
      * @param userInfo
@@ -928,6 +1037,8 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         } else if (id == R.id.record) {
         } else if (id == R.id.retry_record) {
         } else if (id == R.id.close_record) {
+        }else if (id == R.id.audience_gift) {
+            showGiftPanel();
         }
     }
 

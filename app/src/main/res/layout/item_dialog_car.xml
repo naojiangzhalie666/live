@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dp_5"
+    android:paddingBottom="@dimen/dp_5">
+
+
+    <TextView
+        android:id="@+id/item_digcar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/threethree"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="听风一对一私人订制" />
+
+    <TextView
+        android:id="@+id/item_digcar_zuansh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/threethree"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/item_digcar_title"
+        app:layout_constraintTop_toBottomOf="@+id/item_digcar_title"
+        tools:text="600" />
+
+    <TextView
+        android:id="@+id/textView100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/order_zuanshi"
+        android:drawablePadding="@dimen/dp_5"
+        android:paddingLeft="@dimen/dp_5"
+        android:text="起"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_digcar_zuansh"
+        app:layout_constraintStart_toEndOf="@+id/item_digcar_zuansh"
+        app:layout_constraintTop_toTopOf="@+id/item_digcar_zuansh" />
+
+    <TextView
+        android:id="@+id/item_digcar_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/colorRed"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_digcar_zuansh"
+        app:layout_constraintStart_toEndOf="@+id/textView100"
+        app:layout_constraintTop_toTopOf="@+id/item_digcar_zuansh"
+        tools:text="(低至1.5元/分钟)" />
+
+    <TextView
+        android:id="@+id/item_digcar_tiyan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mine_grad"
+        android:paddingLeft="@dimen/dp_14"
+        android:paddingTop="@dimen/dp_5"
+        android:paddingRight="@dimen/dp_14"
+        android:paddingBottom="@dimen/dp_5"
+        android:text="马上体验"
+        android:textColor="@color/login_txt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -373,6 +373,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:onClick="onClick"
+                    android:id="@+id/camera_siliao"
                     android:background="@drawable/audice_siliao" />
 
                 <Button
@@ -380,6 +382,8 @@
                     android:layout_height="@dimen/live_btn_size"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
+                    android:onClick="onClick"
+                    android:id="@+id/camera_car"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/audice_car" />
 
@@ -616,7 +620,12 @@
             android:textSize="10sp" />
 
     </RelativeLayout>
-
+    <com.yf.xzbgift.important.GiftAnimatorLayout
+        android:id="@+id/lottie_animator_layout"
+        android:layout_gravity="left|bottom"
+        android:layout_marginBottom="@dimen/live_gift_panel_height"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/live_gift_lottie_view_height" />
     <com.example.xzb.utils.countdown.CountDownTimerView
         android:id="@+id/countdown_timer_view"
         android:layout_width="wrap_content"

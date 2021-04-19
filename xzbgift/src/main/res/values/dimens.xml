@@ -1,0 +1,8 @@
+<resources>
+    <dimen name="live_text_max_show_width">80dp</dimen>
+
+    <!-- 礼物 -->
+    <dimen name="live_gift_panel_height">300dp</dimen>
+    <dimen name="live_gift_lottie_view_height">400dp</dimen>
+
+</resources>

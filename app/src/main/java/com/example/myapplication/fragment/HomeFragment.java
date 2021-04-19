@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.HomeAdapter;
+import com.example.myapplication.live.TCAudienceActivity;
+import com.example.myapplication.live.TCCameraAnchorActivity;
 import com.example.myapplication.ui.FindActivity;
 import com.example.myapplication.ui.LookPersonActivity;
 import com.example.myapplication.ui.OranizeActivity;
@@ -19,9 +21,7 @@ import com.example.myapplication.ui.ShowGoodsActivity;
 import com.example.xzb.Constantc;
 import com.example.xzb.important.IMLVBLiveRoomListener;
 import com.example.xzb.important.MLVBLiveRoom;
-import com.example.xzb.utils.TCCameraAnchorActivity;
 import com.example.xzb.utils.TCConstants;
-import com.example.xzb.utils.audience.TCAudienceActivity;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.onlinelive.TCVideoInfo;
 import com.example.xzb.utils.onlinelive.TCVideoListMgr;

@@ -46,6 +46,11 @@ import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.roomutil.AnchorInfo;
 import com.example.xzb.utils.roomutil.AudienceInfo;
 import com.tencent.rtmp.TXLog;
+import com.yf.xzbgift.imple.DefaultGiftAdapterImp;
+import com.yf.xzbgift.imple.GiftAdapter;
+import com.yf.xzbgift.imple.GiftInfoDataHandler;
+import com.yf.xzbgift.important.GiftAnimatorLayout;
+import com.yf.xzbgift.important.GiftInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -124,6 +129,9 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     private EditText medt_title;
     private LiveCloseDialog mLiveCloseDialog;
     private CountDownTimerView mCountDownTimerView;  //倒计时view
+    private GiftAnimatorLayout mGiftAnimatorLayout;   //礼物动画和礼物弹幕的显示
+    private GiftAdapter mGiftAdapter;
+    private GiftInfoDataHandler mGiftInfoDataHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,6 +260,10 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     }
     /*-------新增布局的一些设置--------*/
     private void initMineViews() {
+        mGiftAnimatorLayout = findViewById(R.id.lottie_animator_layout);
+        mGiftInfoDataHandler = new GiftInfoDataHandler();
+        mGiftAdapter = new DefaultGiftAdapterImp();
+        mGiftInfoDataHandler.setGiftAdapter(mGiftAdapter);
         mtv_name = findViewById(R.id.anchor_tv_broadcasting_name);
         mtv_gg = findViewById(R.id.anchor_tv_member_gz);
         mtv_id = findViewById(R.id.cam_id);
@@ -470,6 +482,9 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             case TCConstants.IMCMD_DANMU:
                 handleDanmuMsg(userInfo, message);
                 break;
+            case TCConstants.IMCMD_GIFT:
+                handleGiftMsg(userInfo, message);
+                break;
             default:
                 break;
         }
@@ -582,6 +597,32 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
         if (mDanmuMgr != null) {
             mDanmuMgr.addDanmu(userInfo.avatar, userInfo.nickname, text);
+        }
+    }
+    /**
+     * 处理礼物弹幕消息
+     */
+    private void handleGiftMsg(TCSimpleUserInfo userInfo, String giftId) {
+        if (mGiftInfoDataHandler != null) {
+            GiftInfo giftInfo = mGiftInfoDataHandler.getGiftInfo(giftId);
+            /*发送消息到列表*/
+            TCChatEntity entity = new TCChatEntity();
+            entity.setSenderName(userInfo.nickname);
+            entity.setContent("送了一个 "+giftInfo.title);
+            entity.setType(TCConstants.TEXT_TYPE);
+            entity.setIs_gift(true);
+            notifyMsg(entity);
+            if (giftInfo != null) {
+                if (userInfo != null) {
+                    giftInfo.sendUserHeadIcon = userInfo.avatar;
+                    if (!TextUtils.isEmpty(userInfo.nickname)) {
+                        giftInfo.sendUser = userInfo.nickname;
+                    } else {
+                        giftInfo.sendUser = userInfo.userid;
+                    }
+                }
+                mGiftAnimatorLayout.show(giftInfo);
+            }
         }
     }
 

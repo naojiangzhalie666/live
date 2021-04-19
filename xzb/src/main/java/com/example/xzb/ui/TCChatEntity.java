@@ -10,6 +10,15 @@ public class TCChatEntity {
     private String grpSendName;    // 发送者的名字
     private String content;        // 消息内容
     private int type;            // 消息类型
+    private boolean is_gift;
+
+    public boolean isIs_gift() {
+        return is_gift;
+    }
+
+    public void setIs_gift(boolean is_gift) {
+        this.is_gift = is_gift;
+    }
 
     public String getSenderName() {
         return grpSendName != null ? grpSendName : "";

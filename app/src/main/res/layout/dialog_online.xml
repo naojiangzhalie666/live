@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_corner_gray_tp">
+
+
+    <TextView
+        android:id="@+id/textView81"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:text="在线用户列表"
+        android:textColor="@color/black_oneeight"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/textView82"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@color/ftwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView81" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dig_buy_recy"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/dialog_online_renming"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView82"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_buyzuan">
+
+        <TextView
+            android:id="@+id/textView93"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/efiveefive"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textSize="12sp"
+            android:text="用户昵称"
+            app:layout_constraintEnd_toStartOf="@+id/textView95"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView95"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/efiveefive"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textSize="12sp"
+            android:text="历史连线"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView93"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView93" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dialog_online_recy"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView93" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/dialog_online_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_16"
+        android:text="取消"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dig_buy_recy" />
+
+    <TextView
+        android:id="@+id/dialog_online_renming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_corner_log"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
+        android:textColor="@color/home_txt"
+        android:text="任命\n助理"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView82" />
+
+    <TextView
+        android:id="@+id/dialog_online_qxrenming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_corner_log"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
+        android:textColor="@color/home_txt"
+        android:text="取消\n助理"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_online_invitelx"
+        app:layout_constraintEnd_toEndOf="@+id/dialog_online_renming"
+        app:layout_constraintStart_toStartOf="@+id/dialog_online_renming"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_online_renming" />
+
+    <TextView
+        android:id="@+id/dialog_online_invitelx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_corner_log"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
+        android:textColor="@color/home_txt"
+        android:text="邀请\n连线"
+        app:layout_constraintBottom_toBottomOf="@+id/dig_buy_recy"
+        app:layout_constraintEnd_toEndOf="@+id/dialog_online_qxrenming"
+        app:layout_constraintStart_toStartOf="@+id/dialog_online_renming" />
+</androidx.constraintlayout.widget.ConstraintLayout>

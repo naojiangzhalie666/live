@@ -61,7 +61,9 @@ public class TCConstants {
     public static final int IMCMD_EXIT_LIVE     = 3;   // 用户退出直播
     public static final int IMCMD_PRAISE        = 4;   // 点赞消息
     public static final int IMCMD_DANMU         = 5;   // 弹幕消息
-
+    public static final int IMCMD_GIFT          = 6;   // 礼物消息
+    public static final int IMCMD_CONTACT       = 7;   //主播连麦
+    public static final int IMCMD_DISCONTACT    = 8;   //中断连麦
 
     public static final int MALE    = 0;
     public static final int FEMALE  = 1;

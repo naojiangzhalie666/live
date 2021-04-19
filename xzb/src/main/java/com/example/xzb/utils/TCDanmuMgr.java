@@ -315,7 +315,7 @@ public class TCDanmuMgr {
         if (!TextUtils.isEmpty(headUrl)) {
             RequestManager req = Glide.with(mContext);
             try {
-                headBitmap = req.load(headUrl).asBitmap().centerCrop()
+                headBitmap = req.asBitmap().centerCrop().load(headUrl)
                         .into(BITMAP_WIDTH, BITMAP_HEIGHT)
                         .get();
             } catch (InterruptedException e) {

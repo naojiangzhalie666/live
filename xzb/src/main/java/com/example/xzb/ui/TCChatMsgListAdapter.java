@@ -150,6 +150,9 @@ public class TCChatMsgListAdapter extends BaseAdapter implements AbsListView.OnS
         // 根据名称计算颜色
         spanString_name.setSpan(new ForegroundColorSpan(calcNameColor(item.getSenderName())), 0, item.getSenderName().length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         holder.sendName.setText(spanString_name);
+        if(item.isIs_gift()){//如果是礼物修改  字体颜色
+            spanString.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.colorSendName4)), 4, item.getContent().length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        }
         holder.sendContext.setText(spanString);
         holder.sendLevel.setText("0级");
         // 设置控件实际宽度以便计算列表项实际高度

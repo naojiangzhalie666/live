@@ -3147,11 +3147,12 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 String msg = "[LivePusher] 推流失败[录屏启动失败]";
                 TXCLog.e(TAG,msg);
                 callbackOnThread(mCallback, "onError", event, msg);
-            }else if (event == TXLiveConstants.PUSH_WARNING_NET_BUSY) {
-                String msg = "[LivePusher] 您当前的网络环境不佳，请尽快更换网络保证正常直播  ";
-                TXCLog.e(TAG,msg);
-                callbackOnThread(mCallback, "onError", event, msg);
             }
+//            else if (event == TXLiveConstants.PUSH_WARNING_NET_BUSY) {
+//                String msg = "[LivePusher] 您当前的网络环境不佳，请尽快更换网络保证正常直播  ";
+//                TXCLog.e(TAG,msg);
+//                callbackOnThread(mCallback, "onError", event, msg);
+//            }
         }
 
         @Override

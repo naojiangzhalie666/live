@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="white_alpha">#66FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <color name="beauty_color_red">#FF584C</color>
+    <color name="beauty_color_white">#FFFFFF</color>
+    <color name="live_git_bullet_layout">#40000000</color>
+    <color name="live_gift_white">#FFFFFF</color>
+    <color name="live_dark_black">#FF111111</color>
+    <color name="live_gift_dark_orange">#FF8C00</color>
+    <color name="live_gift_red">#FF0000</color>
+    <color name="live_color_light_red_transform">#CC5353</color>
+    <color name="live_color_light_red">#FF5353</color>
+    <color name="live_color_line">#FFE5E5E5</color>
+
+</resources>
