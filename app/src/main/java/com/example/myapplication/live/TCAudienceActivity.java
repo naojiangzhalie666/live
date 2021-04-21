@@ -826,14 +826,18 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 handleGiftMsg(userInfo, message);
                 break;
             case IMCMD_CONTACT:
-                if (!message.equals(userID)) {
+                if (!message.equals(mUserId)) {
+                    mLiveRoom.getTXLivePlayer().pause();
+                    mTXCloudVideoView.setVisibility(View.GONE);
                     mRelativeLayout.setBackground(getResources().getDrawable(R.drawable.live_contact_bg));
                     mfram_layout.setVisibility(View.VISIBLE);
                 }
                 Log.e(TAG, "onRecvRoomCustomMsg:开始连麦userID =  " + message);
                 break;
             case IMCMD_DISCONTACT:
-                if (!message.equals(userID)) {
+                if (!message.equals(mUserId)) {
+                    mLiveRoom.getTXLivePlayer().resume();
+                    mTXCloudVideoView.setVisibility(View.VISIBLE);
                     mRelativeLayout.setBackground(null);
                     mfram_layout.setVisibility(View.GONE);
                 }
