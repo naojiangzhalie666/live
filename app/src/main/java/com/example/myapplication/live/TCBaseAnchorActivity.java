@@ -610,6 +610,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         }
     }
     /**
+    /**
      * 处理礼物弹幕消息
      */
     private void handleGiftMsg(TCSimpleUserInfo userInfo, String giftId) {

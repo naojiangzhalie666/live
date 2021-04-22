@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.pop_dig.ConphoneDialog;
 import com.example.myapplication.pop_dig.DhDialog;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
@@ -27,6 +28,7 @@ public class SetActivity extends BaseActivity {
     @BindView(R.id.set_huancunnum)
     TextView mSetHuancunnum;
     private DhDialog mDhDialog;
+    private ConphoneDialog mConphoneDialog;
 
 
     @Override
@@ -47,6 +49,13 @@ public class SetActivity extends BaseActivity {
         });
         RequestOptions requestOptions = new RequestOptions().circleCrop();
         Glide.with(this).load(R.drawable.woman_se).apply(requestOptions).into(mSetHead);
+        mConphoneDialog = new ConphoneDialog(this);
+        mConphoneDialog.setOnSureClickListener(new ConphoneDialog.OnSureClickListener() {
+            @Override
+            public void onSureClickListener(String phone) {
+                toSetPhone(phone);
+            }
+        });
 
     }
 
@@ -71,7 +80,7 @@ public class SetActivity extends BaseActivity {
                 mSetBindwchatRight.setText("18730612456");
                 break;
             case R.id.set_yjcontact:
-
+                mConphoneDialog.show();
                 break;
             case R.id.set_xieyi:
                 break;
@@ -87,6 +96,11 @@ public class SetActivity extends BaseActivity {
     private void toDh(String code) {
         ToastShow("兑换: " + code);
 
+
+    }
+
+    private void toSetPhone(String phone){
+        ToastShow("设置应急联系人"+phone);
 
     }
 

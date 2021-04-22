@@ -176,6 +176,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private CarDialog mCarDialog;//购物车弹窗
     private RelativeLayout mRelativeLayout;
     private FrameLayout mfram_layout;
+    private IGiftPanelView mGiftPanelView;
 
 
     @Override
@@ -358,14 +359,9 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         mGiftAdapter = new DefaultGiftAdapterImp();
         mGiftInfoDataHandler = new GiftInfoDataHandler();
         mGiftInfoDataHandler.setGiftAdapter(mGiftAdapter);
-
-    }
-
-
-    private void showGiftPanel() {
-        IGiftPanelView giftPanelView = new GiftPanelViewImp(this);
-        giftPanelView.init(mGiftInfoDataHandler);
-        giftPanelView.setGiftPanelDelegate(new GiftPanelDelegate() {
+        mGiftPanelView = new GiftPanelViewImp(this);
+        mGiftPanelView.init(mGiftInfoDataHandler);
+        mGiftPanelView.setGiftPanelDelegate(new GiftPanelDelegate() {
             @Override
             public void onGiftItemClick(GiftInfo giftInfo) {
                 sendGift(giftInfo);
@@ -376,7 +372,11 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 mBuyzDialog.show();
             }
         });
-        giftPanelView.show();
+    }
+
+
+    private void showGiftPanel() {
+        mGiftPanelView.show();
     }
 
     //发送礼物消息出去同时展示礼物动画和弹幕

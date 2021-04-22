@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/dp_4"
+    android:layout_marginBottom="@dimen/dp_4"
+    android:background="#33F2F2F2"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_level_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/level_item_tpbg"
+        android:gravity="center"
+        android:padding="@dimen/dp_3"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1级" />
+
+    <ImageView
+        android:id="@+id/item_level_imgvone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_4"
+        android:layout_marginTop="@dimen/dp_3"
+        android:layout_marginRight="@dimen/dp_4"
+        android:layout_marginBottom="@dimen/dp_3"
+        android:background="@drawable/level_item_bg"
+        android:padding="@dimen/dp_8"
+        android:src="@drawable/level_sm_muge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_level_title" />
+
+    <ImageView
+        android:id="@+id/lock_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_3"
+        android:src="@drawable/level_lock"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/item_level_imgvone"
+        app:layout_constraintTop_toTopOf="@+id/item_level_imgvone" />
+
+    <ImageView
+        android:id="@+id/item_level_imgvsecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_4"
+        android:layout_marginRight="@dimen/dp_4"
+        android:layout_marginBottom="@dimen/dp_3"
+        android:background="@drawable/level_item_bg"
+        android:padding="@dimen/dp_8"
+        android:src="@drawable/level_sm_muge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_level_imgvone" />
+
+    <ImageView
+        android:id="@+id/lock_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_3"
+        android:src="@drawable/level_lock"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/item_level_imgvsecond"
+        app:layout_constraintTop_toTopOf="@+id/item_level_imgvsecond" />
+
+    <ImageView
+        android:id="@+id/item_level_imgvthird"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_4"
+        android:layout_marginRight="@dimen/dp_4"
+        android:layout_marginBottom="@dimen/dp_3"
+        android:background="@drawable/level_item_bg"
+        android:padding="@dimen/dp_8"
+        android:src="@drawable/level_sm_muge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_level_imgvsecond" />
+
+    <ImageView
+        android:id="@+id/lock_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_3"
+        android:src="@drawable/level_lock"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/item_level_imgvthird"
+        app:layout_constraintTop_toTopOf="@+id/item_level_imgvthird" />
+
+    <View
+        android:id="@+id/item_level_zhezhao"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#88666666"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

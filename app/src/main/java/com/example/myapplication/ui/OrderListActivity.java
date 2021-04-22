@@ -4,12 +4,15 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.CzAdapter;
+import com.example.myapplication.adapter.LevelAdapter;
 import com.example.myapplication.adapter.PjAdapter;
 import com.example.myapplication.adapter.SjAdapter;
+import com.example.myapplication.pop_dig.HowupDialog;
 import com.example.myapplication.pop_dig.PjDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.superc.yyfflibrary.base.BaseActivity;
@@ -42,6 +45,28 @@ public class OrderListActivity extends BaseActivity {
     TextView mOrderTpj;
     @BindView(R.id.order_fdj)
     TextView mOrderFdj;
+    @BindView(R.id.level_recy)
+    RecyclerView mOrderLevelRecy;
+    @BindView(R.id.level_progress)
+    ProgressBar mLevelProgress;
+    @BindView(R.id.level_name)
+    TextView mLevelName;
+    @BindView(R.id.level_level)
+    TextView mLevelLevel;
+    @BindView(R.id.level_what)
+    TextView mLevelWhat;
+    @BindView(R.id.level_howup)
+    TextView mLevelHowup;
+    @BindView(R.id.level_dengj)
+    TextView mLevelDengj;
+    @BindView(R.id.level_tv_three)
+    TextView mLevelTvThree;
+    @BindView(R.id.level_tv_two)
+    TextView mLevelTvTwo;
+    @BindView(R.id.level_tv_one)
+    TextView mLevelTvOne;
+    @BindView(R.id.order_dpj_num)
+    TextView mLevelDpjNum;
     private int line_startDis = 0;
 
     private CzAdapter mCzAdapter;
@@ -49,10 +74,14 @@ public class OrderListActivity extends BaseActivity {
     private SjAdapter mSjAdapter;
     private List<Map<String, Object>> mSjLists;
     private PjAdapter mPjAdapter;
-    private List<Map<String,Object>> mPjlists;
+    private List<Map<String, Object>> mPjlists;
     private String mType = "0";
     private PjDialog mPjDialog;
     private boolean is_first = true;
+    private View minclude_view;
+    private List<String> mLevel_maps;
+    private LevelAdapter mLevelAdapter;
+    private HowupDialog mHowupDialog;
 
     @Override
     public int getContentLayoutId() {
@@ -69,6 +98,8 @@ public class OrderListActivity extends BaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
+        mHowupDialog = new HowupDialog(this);
+        minclude_view = findViewById(R.id.order_include);
         mPjDialog = new PjDialog(this);
         mOrderCz.setTextColor(getResources().getColor(R.color.black));
         mOrderTsj.setTextColor(getResources().getColor(R.color.black));
@@ -77,21 +108,46 @@ public class OrderListActivity extends BaseActivity {
         mPjDialog.setOnSubClickListener(new PjDialog.OnSubClickListener() {
             @Override
             public void onSbCLickListner(String content) {
-                ToastShow(content+"几颗星：");
+                ToastShow(content + "几颗星：");
             }
         });
         initAdapter();
+        mLevelHowup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mHowupDialog.show();
+            }
+        });
+        mHowupDialog.setOnQianwClickListener(new HowupDialog.OnQianwClickListener() {
+            @Override
+            public void onQianwaOneClickListener() {
+                Intent intent = new Intent(OrderListActivity.this, MainActivity.class);
+                intent.putExtra("msg", "ever");
+                startActivity(intent);
+                finish();
+            }
 
+            @Override
+            public void onQianwaTwoClickListener() {
+                Intent intent = new Intent(OrderListActivity.this, MainActivity.class);
+                intent.putExtra("msg", "pipei");
+                startActivity(intent);
+                finish();
+            }
+        });
+        mLevelDpjNum.setText("66");
 
     }
 
     private void initAdapter() {
+        mLevel_maps = new ArrayList<>();
+        mLevelAdapter = new LevelAdapter(this, mLevel_maps);
         mCZlists = new ArrayList<>();
         mCzAdapter = new CzAdapter(this, mCZlists);
         mSjLists = new ArrayList<>();
         mSjAdapter = new SjAdapter(this, mSjLists);
         mPjlists = new ArrayList<>();
-        mPjAdapter = new PjAdapter(this,mPjlists);
+        mPjAdapter = new PjAdapter(this, mPjlists);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mOrderRecy.setLayoutManager(linearLayoutManager);
@@ -108,6 +164,8 @@ public class OrderListActivity extends BaseActivity {
                 toGetTpj();
                 break;
             case "3":
+                minclude_view.setVisibility(View.VISIBLE);
+                mSmart.setVisibility(View.GONE);
                 toGetFdj();
                 break;
         }
@@ -133,10 +191,16 @@ public class OrderListActivity extends BaseActivity {
             }
         });
 
+        LinearLayoutManager lin_hor = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        mOrderLevelRecy.setLayoutManager(lin_hor);
+        mOrderLevelRecy.setAdapter(mLevelAdapter);
+
     }
 
     @OnClick({R.id.imgv_back, R.id.order_cz, R.id.order_tsj, R.id.order_tpj, R.id.order_fdj})
     public void onClick(View view) {
+        minclude_view.setVisibility(View.GONE);
+        mSmart.setVisibility(View.VISIBLE);
         switch (view.getId()) {
             case R.id.imgv_back:
                 finish();
@@ -168,6 +232,8 @@ public class OrderListActivity extends BaseActivity {
                 mOrderCz.setTextColor(getResources().getColor(R.color.black));
                 mOrderTsj.setTextColor(getResources().getColor(R.color.black));
                 mOrderTpj.setTextColor(getResources().getColor(R.color.black));
+                minclude_view.setVisibility(View.VISIBLE);
+                mSmart.setVisibility(View.GONE);
                 break;
         }
     }
@@ -200,7 +266,7 @@ public class OrderListActivity extends BaseActivity {
     private void toGetTpj() {
         mPjlists.clear();
         for (int i = 0; i < 5; i++) {
-            Map<String,Object> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             mPjlists.add(map);
         }
         mOrderRecy.setAdapter(mPjAdapter);
@@ -210,7 +276,20 @@ public class OrderListActivity extends BaseActivity {
 
     /*等级与特权数据*/
     private void toGetFdj() {
+        mLevelName.setText("心理咨询师");
+        mLevelLevel.setText("LV.12");
+        mLevelDengj.setText("10/66");
+        mLevelWhat.setText("再消耗50个钻石即可升级");
+        mLevelTvOne.setText("大拇哥");
+        mLevelTvTwo.setText("可巴拉芭芭拉一号房十大歌 阿斯还发你是否");
+        mLevelTvThree.setText("等级到11级自动发放");
 
+        mLevelAdapter.setLevel(10);
+        mLevel_maps.clear();
+        for (int i = 0; i < 20; i++) {
+            mLevel_maps.add("");
+        }
+        mLevelAdapter.notifyDataSetChanged();
 
     }
 
@@ -229,21 +308,21 @@ public class OrderListActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if(is_first){
-        switch (mType) {
-            case "0":
-                toGoAnima(mOrderCz);
-                break;
-            case "1":
-                toGoAnima(mOrderTsj);
-                break;
-            case "2":
-                toGoAnima(mOrderTpj);
-                break;
-            case "3":
-                toGoAnima(mOrderFdj);
-                break;
-        }
+        if (is_first) {
+            switch (mType) {
+                case "0":
+                    toGoAnima(mOrderCz);
+                    break;
+                case "1":
+                    toGoAnima(mOrderTsj);
+                    break;
+                case "2":
+                    toGoAnima(mOrderTpj);
+                    break;
+                case "3":
+                    toGoAnima(mOrderFdj);
+                    break;
+            }
         }
         is_first = false;
     }

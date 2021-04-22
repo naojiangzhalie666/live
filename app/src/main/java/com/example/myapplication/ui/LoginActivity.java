@@ -14,7 +14,15 @@ import com.example.xzb.utils.login.TCUserMgr;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.ShareUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+import com.tencent.liteav.AVCallManager;
+import com.tencent.liteav.login.ProfileManager;
+import com.tencent.liteav.login.UserModel;
+import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
+import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +41,7 @@ public class LoginActivity extends BaseActivity {
     ImageView mLoginImgv;
     private boolean mPermission = false;               // 是否已经授权
     private String login_name = Constantc.test_USERID;
+    private TCUserMgr mInstance;
 
     @Override
     public int getContentLayoutId() {
@@ -77,7 +86,21 @@ public class LoginActivity extends BaseActivity {
 
     private void thisLogin() {
         if (mLoginImgv.getVisibility() == View.VISIBLE) {
-            TCUserMgr.getInstance().loginMLVB();
+            mInstance = TCUserMgr.getInstance();
+            mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
+                @Override
+                public void onLoginBackListener(String userid, String usersig,long sdk_id) {
+                    if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
+                        UserModel self = new UserModel();
+                        self.userId = userid;
+                        self.userSig = usersig;
+                        ProfileManager.getInstance().setUserModel(self);
+                        AVCallManager.getInstance().init(LoginActivity.this);
+                    }
+                    loginTUIKitLive(sdk_id, userid, usersig);
+                }
+            });
+            mInstance.loginMLVB();
             statActivity(MainActivity.class);
             finish();
         } else {
@@ -154,6 +177,23 @@ public class LoginActivity extends BaseActivity {
                 Log.e(TAG, "imLogin 登录成功");
             }
         });*/
+    }
+
+    private static void loginTUIKitLive(long sdkAppid, String userId, String userSig) {
+        try {
+            Class<?> classz = Class.forName("com.tencent.qcloud.tim.tuikit.live.TUIKitLive");
+            Class<?> tClazz = Class.forName("com.tencent.qcloud.tim.tuikit.live.TUIKitLive$LoginCallback");
+
+            // 反射修改isAttachedTUIKit的值
+            Field field = classz.getDeclaredField("sIsAttachedTUIKit");
+            field.setAccessible(true);
+            field.set(null, true);
+
+            Method method = classz.getMethod("login", int.class, String.class, String.class, tClazz);
+            method.invoke(null, sdkAppid, userId, userSig, null);
+        }catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+            TUIKitLog.e("LoginActivity", "loginTUIKitLive error: " + e.getMessage());
+        }
     }
 
 

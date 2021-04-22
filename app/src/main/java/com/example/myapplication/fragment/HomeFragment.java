@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.HomeAdapter;
+import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.live.TCAudienceActivity;
 import com.example.myapplication.live.TCCameraAnchorActivity;
 import com.example.myapplication.ui.FindActivity;
@@ -19,18 +22,24 @@ import com.example.myapplication.ui.LookPersonActivity;
 import com.example.myapplication.ui.OranizeActivity;
 import com.example.myapplication.ui.ShowGoodsActivity;
 import com.example.xzb.Constantc;
-import com.example.xzb.important.IMLVBLiveRoomListener;
-import com.example.xzb.important.MLVBLiveRoom;
 import com.example.xzb.utils.TCConstants;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.onlinelive.TCVideoInfo;
 import com.example.xzb.utils.onlinelive.TCVideoListMgr;
-import com.example.xzb.utils.roomutil.LoginInfo;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.superc.yyfflibrary.utils.ShareUtil;
+import com.tencent.liteav.AVCallManager;
+import com.tencent.liteav.login.ProfileManager;
+import com.tencent.liteav.login.UserModel;
+import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
+import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,11 +65,15 @@ public class HomeFragment extends Fragment {
     RecyclerView mHomeRecy;
     @BindView(R.id.home_smart)
     SmartRefreshLayout mHomeSmart;
+    @BindView(R.id.home_camera)
+    ImageView mImgv_camera;
 
     private List<TCVideoInfo> mLists;
     private HomeAdapter mHomeAdapter;
 
     private Unbinder unbinder;
+    private int mPower;
+    private TCUserMgr mInstance;
 
 
     @Override
@@ -90,12 +103,21 @@ public class HomeFragment extends Fragment {
                 break;
             case R.id.home_newman:
                 startActivity(new Intent(getActivity(), ShowGoodsActivity.class));//商品套餐页面
+                Toast toast =Toast.makeText(getActivity(),"跳转商品页面",Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER,0,0);
+                toast.show();
                 break;
         }
     }
 
 
     private void init() {
+        mPower = (int) ShareUtil.getInstance(getActivity()).get("power", 0);
+        if (mPower == 0) {//普通
+            mImgv_camera.setVisibility(View.GONE);
+        } else {//咨询师
+            mImgv_camera.setVisibility(View.VISIBLE);
+        }
         mHomeSmart.setEnableLoadMore(false);
         mHomeSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -204,26 +226,23 @@ public class HomeFragment extends Fragment {
      * MLVB的登录
      */
     private void loginMLVB() {
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.sdkAppID = Constantc.test_sdkAppID;
-        loginInfo.userID = Constantc.test_USERID;
-        loginInfo.userSig = Constantc.test_userSig;
-        loginInfo.userName = Constantc.test_USERID;//名称
-        loginInfo.userAvatar = "";//头像地址
-        MLVBLiveRoom liveRoom = MLVBLiveRoom.sharedInstance(getActivity());
-        liveRoom.login(loginInfo, new IMLVBLiveRoomListener.LoginCallback() {
+        mInstance = TCUserMgr.getInstance();
+        mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
             @Override
-            public void onError(int errCode, String errInfo) {
-                Log.i("HomeFragment", "onError: errorCode = " + errInfo + " info = " + errInfo);
-            }
-
-            @Override
-            public void onSuccess() {
-                Constantc.mlvb_login = true;
+            public void onLoginBackListener(String userid, String usersig,long sdk_id) {
+                if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
+                    UserModel self = new UserModel();
+                    self.userId = userid;
+                    self.userSig = usersig;
+                    ProfileManager.getInstance().setUserModel(self);
+                    AVCallManager.getInstance().init(LiveApplication.getmInstance());
+                }
+                loginTUIKitLive(sdk_id, userid, usersig);
                 getLiveData();
                 Log.i("HomeFragment", "onSuccess: MLVB登录成功");
             }
         });
+        mInstance.loginMLVB();
     }
 
     /**
@@ -274,6 +293,23 @@ public class HomeFragment extends Fragment {
             intent.putExtra(TCConstants.COVER_PIC, TCUserMgr.getInstance().getCoverPic());
             intent.putExtra(TCConstants.USER_LOC, "天津");
             startActivity(intent);
+        }
+    }
+
+    private static void loginTUIKitLive(long sdkAppid, String userId, String userSig) {
+        try {
+            Class<?> classz = Class.forName("com.tencent.qcloud.tim.tuikit.live.TUIKitLive");
+            Class<?> tClazz = Class.forName("com.tencent.qcloud.tim.tuikit.live.TUIKitLive$LoginCallback");
+
+            // 反射修改isAttachedTUIKit的值
+            Field field = classz.getDeclaredField("sIsAttachedTUIKit");
+            field.setAccessible(true);
+            field.set(null, true);
+
+            Method method = classz.getMethod("login", int.class, String.class, String.class, tClazz);
+            method.invoke(null, sdkAppid, userId, userSig, null);
+        }catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+            TUIKitLog.e("LoginActivity", "loginTUIKitLive error: " + e.getMessage());
         }
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,6 +34,10 @@ import butterknife.Unbinder;
 
 public class FindNoviceFragment extends Fragment {
 
+    @BindView(R.id.novice_imgvnote)
+    ImageView mFragNoviceImgvNote;
+    @BindView(R.id.novice_note)
+    TextView mFragNoviceNote;
     @BindView(R.id.frag_novice_xinshou)
     TextView mFragNoviceXinshou;
     @BindView(R.id.frag_novice_dayrenwu)
@@ -70,36 +75,61 @@ public class FindNoviceFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mFragNoviceRecy.setLayoutManager(linearLayoutManager);
         mFragNoviceRecy.setAdapter(mNoviceAdapter);
+        Bundle arguments = getArguments();
+        if(arguments!=null){
+            int index = arguments.getInt("index");
+            if(index == 1)
+                everClick();
+        }
         getData();
     }
 
     @OnClick({R.id.frag_novice_xinshou, R.id.frag_novice_dayrenwu, R.id.frag_novice_dayshouyi, R.id.frag_novice_monthshouyi})
     public void onClick(View view) {
+        mFragNoviceXinshou.setBackgroundResource(0);
+        mFragNoviceDayrenwu.setBackgroundResource(0);
+        mFragNoviceDayshouyi.setBackgroundResource(0);
+        mFragNoviceMonthshouyi.setBackgroundResource(0);
+        mFragNoviceXinshou.setTextSize(12);
+        mFragNoviceDayrenwu.setTextSize(12);
+        mFragNoviceDayshouyi.setTextSize(12);
+        mFragNoviceMonthshouyi.setTextSize(12);
+        mFragNoviceImgvNote.setVisibility(View.GONE);
+        mFragNoviceNote.setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.frag_novice_xinshou:
-                mFragNoviceLinear.setBackgroundResource(R.drawable.novice_bgxinshou);
+                mFragNoviceXinshou.setBackgroundResource(R.drawable.bg_one);
+                mFragNoviceXinshou.setTextSize(14);
                 state = 0;
                 getData();
                 break;
             case R.id.frag_novice_dayrenwu:
-                mFragNoviceLinear.setBackgroundResource(R.drawable.novice_bg);
+                mFragNoviceDayrenwu.setBackgroundResource(R.drawable.bg_center);
+                mFragNoviceDayrenwu.setTextSize(14);
+                mFragNoviceNote.setVisibility(View.VISIBLE);
                 state = 1;
                 getData();
                 break;
             case R.id.frag_novice_dayshouyi:
-                mFragNoviceLinear.setBackgroundResource(R.drawable.novice_bgday);
+                mFragNoviceDayshouyi.setBackgroundResource(R.drawable.bg_center);
+                mFragNoviceDayshouyi.setTextSize(14);
+                mFragNoviceNote.setVisibility(View.VISIBLE);
                 state = 2;
                 getData();
                 break;
             case R.id.frag_novice_monthshouyi:
-                mFragNoviceLinear.setBackgroundResource(R.drawable.novice_bgmonth);
+                mFragNoviceMonthshouyi.setBackgroundResource(R.drawable.bg_end);
+                mFragNoviceMonthshouyi.setTextSize(14);
+                mFragNoviceNote.setVisibility(View.VISIBLE);
+                mFragNoviceImgvNote.setVisibility(View.VISIBLE);
+                mFragNoviceNote.setText("每自然月1日00:00自动更新");
                 state = 3;
                 getData();
                 break;
         }
     }
 
-    private void getData(){
+    private void getData() {
         mStringList.clear();
         for (int i = 0; i < 20; i++) {
             mStringList.add("");
@@ -107,6 +137,33 @@ public class FindNoviceFragment extends Fragment {
         mNoviceAdapter.setType(state);
         mNoviceAdapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle arguments = getArguments();
+        if(arguments!=null){
+            int index = arguments.getInt("index");
+            if(index == 1)
+                everClick();
+        }
+    }
+
+    private void everClick(){
+        mFragNoviceXinshou.setBackgroundResource(0);
+        mFragNoviceDayshouyi.setBackgroundResource(0);
+        mFragNoviceMonthshouyi.setBackgroundResource(0);
+        mFragNoviceXinshou.setTextSize(12);
+        mFragNoviceDayshouyi.setTextSize(12);
+        mFragNoviceMonthshouyi.setTextSize(12);
+        mFragNoviceImgvNote.setVisibility(View.GONE);
+        mFragNoviceNote.setVisibility(View.GONE);
+        mFragNoviceDayrenwu.setBackgroundResource(R.drawable.bg_center);
+        mFragNoviceDayrenwu.setTextSize(14);
+        mFragNoviceNote.setVisibility(View.VISIBLE);
+        state = 1;
+        getData();
     }
 
     @Override

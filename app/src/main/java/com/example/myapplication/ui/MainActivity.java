@@ -1,5 +1,9 @@
 package com.example.myapplication.ui;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+
 import com.example.myapplication.R;
 import com.example.myapplication.fragment.FindFragment;
 import com.example.myapplication.fragment.HomeFragment;
@@ -92,6 +96,21 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(intent!=null){
+            String msg = intent.getStringExtra("msg");
+            if(!TextUtils.isEmpty(msg)){
+                Bundle bundle = new Bundle();
+                bundle.putString("msg",msg);
+                mFindFragment.setArguments(bundle);
+                mPager.setCurrentItem(1);
+            }
+
+
+        }
+    }
 
     long stT = 0;
     long endT = 0;

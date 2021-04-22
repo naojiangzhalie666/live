@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.DigserviceAdapter;
+import com.ljy.devring.util.DensityUtil;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class ServiceDialog extends Dialog {
         setContentView(R.layout.dialog_service);
         ButterKnife.bind(this);
 
-        getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT,mStringList.size()>4?1200: RelativeLayout.LayoutParams.WRAP_CONTENT);
+        getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT,mStringList.size()>4? DensityUtil.dp2px(mContext,400): RelativeLayout.LayoutParams.WRAP_CONTENT);
         getWindow().setBackgroundDrawableResource(R.color.transparent);
         getWindow().setGravity(Gravity.BOTTOM);
         mDigserviceAdapter = new DigserviceAdapter(mContext, mStringList);

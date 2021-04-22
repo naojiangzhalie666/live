@@ -5,14 +5,14 @@
     android:id="@+id/frag_novice_linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/novice_bgxinshou"
+    android:background="@drawable/bg_corner_white"
     android:orientation="vertical"
     tools:context=".fragment.FindNoviceFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dp_3"
+        android:background="@drawable/bg_corner_graytop"
         android:orientation="horizontal">
 
         <TextView
@@ -20,7 +20,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/bg_one"
             android:gravity="center"
+            android:paddingTop="@dimen/dp_6"
+            android:paddingBottom="@dimen/dp_6"
             android:text="新手任务"
             android:textColor="@color/black"
             android:textSize="12sp" />
@@ -42,9 +45,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="每日收益"
+            android:text="日收益任务"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:background="@drawable/bg_center" />
 
         <TextView
             android:id="@+id/frag_novice_monthshouyi"
@@ -52,9 +56,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="每月收益"
+            android:text="月收益任务"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:background="@drawable/bg_end" />
 
 
     </LinearLayout>
@@ -66,8 +71,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:text="极乐世界"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,7 +84,37 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="@dimen/dp_10" />
+        android:paddingLeft="@dimen/dp_14"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_14" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/novice_imgvnote"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:paddingTop="@dimen/dp_8"
+            android:paddingBottom="@dimen/dp_8"
+            android:paddingLeft="@dimen/dp_8"
+            android:layout_height="wrap_content"
+            android:src="@drawable/notice_help" />
+
+        <TextView
+            android:id="@+id/novice_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="每日凌晨00：00重置"
+
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

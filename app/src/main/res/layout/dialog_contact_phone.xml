@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_60"
+    android:background="@drawable/bg_corner_white">
+
+    <TextView
+        android:id="@+id/textView101"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_12"
+        android:text="输入紧急联系人"
+        android:textColor="@color/threethree"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView102"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_16"
+        android:text="手机号"
+        android:textColor="@color/sixsixsix"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView101" />
+
+    <EditText
+        android:id="@+id/dig_contac_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:background="@null"
+        android:inputType="number"
+        android:maxLength="11"
+        android:paddingTop="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView102"
+        app:layout_constraintTop_toBottomOf="@+id/textView102" />
+
+    <TextView
+        android:id="@+id/textView104"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/ftwo"
+        app:layout_constraintEnd_toEndOf="@+id/dig_contac_phone"
+        app:layout_constraintStart_toStartOf="@+id/dig_contac_phone"
+        app:layout_constraintTop_toBottomOf="@+id/dig_contac_phone" />
+
+    <TextView
+        android:id="@+id/dig_contac_sure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="@dimen/dp_12"
+        android:background="@drawable/dig_con_re"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingRight="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_2"
+        android:text="确认"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dig_contac_cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView104" />
+
+    <TextView
+        android:id="@+id/dig_contac_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dig_con_bl"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingRight="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_2"
+        android:text="取消"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dig_contac_sure"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dig_contac_sure" />
+</androidx.constraintlayout.widget.ConstraintLayout>

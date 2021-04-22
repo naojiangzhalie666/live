@@ -1,5 +1,8 @@
 package com.example.myapplication.ui;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -10,8 +13,16 @@ import com.example.myapplication.adapter.PersonImageAdapter;
 import com.example.myapplication.adapter.PersonTwoAdapter;
 import com.example.myapplication.adapter.PersonjgImageAdapter;
 import com.example.myapplication.bean.JgBean;
+import com.example.myapplication.utils.GlideEngine;
+import com.example.myapplication.utils.MyLinearLayoutManager;
 import com.example.myapplication.utils.TitleUtils;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.animators.AnimationType;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.listener.OnItemClickListener;
+import com.luck.picture.lib.tools.SdkVersionUtils;
 import com.superc.yyfflibrary.base.BaseActivity;
 
 import java.util.ArrayList;
@@ -66,15 +77,17 @@ public class OranizeActivity extends BaseActivity {
     @BindView(R.id.personal_photorecy)
     RecyclerView mPersonalPhotorecy;
 
-    private boolean is_user  =false;
+    private boolean is_user = false;
     private List<JgBean> mLocalMedias;
-    private List<LocalMedia>     mLocalMedias_bt;
+    private List<LocalMedia> mLocalMedias_bt;
     private PersonjgImageAdapter mPersonImageAdapter;
     private PersonImageAdapter mPersonImageAdapter_bt;
 
     private List<Map<String, Object>> mStr_listtwos;
     private List<Map<String, Object>> mStr_noSelects;
     private PersonTwoAdapter mPersonTwoAdapter;
+    public static final int SELECT_ONE = 113;
+    public static final int SELECT_TWO = 112;
 
 
     @Override
@@ -91,7 +104,7 @@ public class OranizeActivity extends BaseActivity {
         mPersonalId.setText("ID:213412");
         mPersonalGeren.setText("都回家啦会计岗位nowie投了几个啦圣诞节；啊");
         mPersonalGeren.setEnabled(false);
-        if(is_user){
+        if (is_user) {
             mPersonalOneedt.setVisibility(View.GONE);
             mPersonalTwoedt.setVisibility(View.GONE);
             mPersonalThreeedt.setVisibility(View.GONE);
@@ -100,18 +113,18 @@ public class OranizeActivity extends BaseActivity {
         }
         /*第一个横向咨询师列表*/
         mLocalMedias = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        /*for (int i = 0; i < 5; i++) {
             JgBean jgBean = new JgBean();
             jgBean.setName("");
             mLocalMedias.add(jgBean);
-        }
-        mPersonImageAdapter = new PersonjgImageAdapter(this, null);
+        }*/
+        mPersonImageAdapter = new PersonjgImageAdapter(this, onAddZiPicClickListener_jg);
         mPersonImageAdapter.setCan_caozuo(false);
         mPersonImageAdapter.setShow_add(false);
         mPersonImageAdapter.setShow_zdy(true);
-        mPersonImageAdapter.setList(mLocalMedias);
+//        mPersonImageAdapter.setList(mLocalMedias);
         mPersonImageAdapter.setHasStableIds(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        MyLinearLayoutManager linearLayoutManager = new MyLinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         mPersonalTworecy.setLayoutManager(linearLayoutManager);
         mPersonalTworecy.setAdapter(mPersonImageAdapter);
         mPersonImageAdapter.setOnEdtClickListener(new PersonjgImageAdapter.OnEdtClickListener() {
@@ -152,10 +165,10 @@ public class OranizeActivity extends BaseActivity {
         });
         /*第三个竖向列表*/
         mLocalMedias_bt = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
+       /* for (int i = 0; i < 9; i++) {
             mLocalMedias_bt.add(new LocalMedia());
-        }
-        mPersonImageAdapter_bt = new PersonImageAdapter(this, null);
+        }*/
+        mPersonImageAdapter_bt = new PersonImageAdapter(this, onAddZiPicClickListener);
         mPersonImageAdapter_bt.setCan_caozuo(false);
         mPersonImageAdapter_bt.setShow_add(false);
         mPersonImageAdapter_bt.setShow_zdy(true);
@@ -163,6 +176,20 @@ public class OranizeActivity extends BaseActivity {
         LinearLayoutManager linear_bt = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         mPersonalPhotorecy.setLayoutManager(linear_bt);
         mPersonalPhotorecy.setAdapter(mPersonImageAdapter_bt);
+        mPersonImageAdapter_bt.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                List<LocalMedia> selectList = mPersonImageAdapter_bt.getData();
+                showPic(selectList, position);
+            }
+        });
+        mPersonImageAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                List<LocalMedia> selectList = getZxsList(mPersonImageAdapter.getData());
+                showPic(selectList, position);
+            }
+        });
 
 
     }
@@ -245,14 +272,14 @@ public class OranizeActivity extends BaseActivity {
         }
     }
 
-    private void toGetFuwu(){
-        List<Map<String,Object>> maps =new ArrayList<>();
+    private void toGetFuwu() {
+        List<Map<String, Object>> maps = new ArrayList<>();
         mStr_noSelects.clear();
         for (int i = 0; i < mStr_listtwos.size(); i++) {
             boolean select = (boolean) mStr_listtwos.get(i).get("select");
-            if(select){
+            if (select) {
                 maps.add(mStr_listtwos.get(i));
-            }else{
+            } else {
                 mStr_noSelects.add(mStr_listtwos.get(i));
             }
         }
@@ -261,4 +288,139 @@ public class OranizeActivity extends BaseActivity {
         mPersonTwoAdapter.setIs_edt(false);
         mPersonTwoAdapter.notifyDataSetChanged();
     }
+
+
+    private PersonjgImageAdapter.onAddPicClickListener onAddZiPicClickListener_jg = new PersonjgImageAdapter.onAddPicClickListener() {
+        @Override
+        public void onAddPicClick() {
+            toSelectPic(true);
+        }
+    };
+
+    private PersonImageAdapter.onAddPicClickListener onAddZiPicClickListener = new PersonImageAdapter.onAddPicClickListener() {
+        @Override
+        public void onAddPicClick() {
+            toSelectPic(false);
+        }
+    };
+
+
+    private void toSelectPic(boolean is_jg) {
+        // 进入相册 以下是例子：不需要的api可以不写
+        PictureSelector.create(this)
+                .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
+                .isWeChatStyle(true)// 是否开启微信图片选择风格
+                .isPageStrategy(true)// 是否开启分页策略 & 每页多少条；默认开启
+                .setRecyclerAnimationMode(AnimationType.DEFAULT_ANIMATION)// 列表动画效果
+                .isWithVideoImage(false)// 图片和视频是否可以同选,只在ofAll模式下有效
+                .isMaxSelectEnabledMask(false)// 选择数到了最大阀值列表是否启用蒙层效果
+                .maxSelectNum(88)// 最大图片选择数量
+                .minSelectNum(1)// 最小选择数量
+                .imageSpanCount(4)// 每行显示个数
+                .isReturnEmpty(false)// 未选择数据时点击按钮是否可以返回
+                .closeAndroidQChangeWH(true)//如果图片有旋转角度则对换宽高,默认为true
+                .closeAndroidQChangeVideoWH(!SdkVersionUtils.checkedAndroid_Q())// 如果视频有旋转角度则对换宽高,默认为false
+                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)// 设置相册Activity方向，不设置默认使用系统
+                .isOriginalImageControl(false)// 是否显示原图控制按钮，如果设置为true则用户可以自由选择是否使用原图，压缩、裁剪功能将会失效
+                .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选
+                .isSingleDirectReturn(true)// 单选模式下是否直接返回，PictureConfig.SINGLE模式下有效
+                .isPreviewImage(true)// 是否可预览图片
+                .isCamera(false)// 是否显示拍照按钮
+                .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                .isEnableCrop(false)// 是否裁剪
+                .isCompress(false)// 是否压缩
+                .synOrAsy(false)//同步true或异步false 压缩 默认同步
+                .selectionData(is_jg ? null : mPersonImageAdapter_bt.getData())// 是否传入已选图片
+                .minimumCompressSize(100)// 小于多少kb的图片不压缩
+//                .forResult(new MyResultCallback(mOtherAdapter));
+                .forResult(is_jg ? SELECT_ONE : SELECT_TWO);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+            switch (requestCode) {
+                case SELECT_ONE:
+                    for (int i = 0; i < selectList.size(); i++) {
+                        mLocalMedias.add(fengzBean(selectList.get(i)));
+                    }
+                    mPersonImageAdapter.setList(mLocalMedias);
+                    mPersonImageAdapter.notifyDataSetChanged();
+                    break;
+                case SELECT_TWO:
+                    mPersonImageAdapter_bt.setList(selectList);
+                    mPersonImageAdapter_bt.notifyDataSetChanged();
+                    break;
+
+
+            }
+
+        }
+    }
+
+    private void showPic(List<LocalMedia> selectList, int position) {
+        if (selectList.size() > 0) {
+            LocalMedia media = selectList.get(position);
+            String mimeType = media.getMimeType();
+            int mediaType = PictureMimeType.getMimeType(mimeType);
+            switch (mediaType) {
+                case PictureConfig.TYPE_VIDEO:
+                    PictureSelector.create(OranizeActivity.this).themeStyle(R.style.picture_default_style).externalPictureVideo(TextUtils.isEmpty(media.getAndroidQToPath()) ? media.getPath() : media.getAndroidQToPath());
+                    break;
+                case PictureConfig.TYPE_AUDIO:
+                    PictureSelector.create(OranizeActivity.this).externalPictureAudio(PictureMimeType.isContent(media.getPath()) ? media.getAndroidQToPath() : media.getPath());
+                    break;
+                default:
+                    PictureSelector.create(OranizeActivity.this)
+                            .themeStyle(R.style.picture_default_style) // xml设置主题
+                            .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)// 设置相册Activity方向，不设置默认使用系统
+                            .isNotPreviewDownload(true)// 预览图片长按是否可以下载
+                            .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
+                            .openExternalPreview(position, selectList);
+                    break;
+            }
+        }
+    }
+
+    private JgBean fengzBean(LocalMedia localMedia) {
+        JgBean jgBean = new JgBean();
+        jgBean.setName("");
+        jgBean.setFileName(localMedia.getFileName());
+        jgBean.setPath(localMedia.getPath());
+        jgBean.setCutPath(localMedia.getCutPath());
+        jgBean.setCompressPath(localMedia.getCompressPath());
+        jgBean.setNum(localMedia.getNum());
+        jgBean.setBucketId(localMedia.getBucketId());
+        jgBean.setAndroidQToPath(localMedia.getAndroidQToPath());
+        jgBean.setChecked(localMedia.isChecked());
+        jgBean.setChooseModel(localMedia.getChooseModel());
+        jgBean.setCompressed(localMedia.isCompressed());
+        jgBean.setDuration(localMedia.getDuration());
+        jgBean.setHeight(localMedia.getHeight());
+        jgBean.setId(localMedia.getId());
+        jgBean.setMaxSelectEnabledMask(localMedia.isMaxSelectEnabledMask());
+        jgBean.setMimeType(localMedia.getMimeType());
+        jgBean.setOrientation(localMedia.getOrientation());
+        jgBean.setOriginal(localMedia.isOriginal());
+        jgBean.setOriginalPath(localMedia.getOriginalPath());
+        jgBean.setParentFolderName(localMedia.getParentFolderName());
+        jgBean.setPosition(localMedia.getPosition());
+        jgBean.setRealPath(localMedia.getRealPath());
+        jgBean.setSize(localMedia.getSize());
+        jgBean.setWidth(localMedia.getWidth());
+        return jgBean;
+    }
+
+    private List<LocalMedia> getZxsList(List<JgBean> jgBeans) {
+        List<LocalMedia> selectList = new ArrayList<>();
+        for (int i = 0; i < jgBeans.size(); i++) {
+            LocalMedia l = jgBeans.get(i);
+            selectList.add(l);
+        }
+        return selectList;
+    }
+
 }

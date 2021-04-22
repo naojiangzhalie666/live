@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView21"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/level_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_corner_white_ff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView18"
+            android:layout_width="@dimen/dp_55"
+            android:layout_height="@dimen/dp_55"
+            android:layout_marginStart="@dimen/dp_14"
+            android:layout_marginTop="@dimen/dp_14"
+            android:layout_marginBottom="@dimen/dp_14"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/beauty_bailan" />
+
+        <ProgressBar
+            android:id="@+id/level_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_toRightOf="@+id/gift_head"
+            android:progress="50"
+            android:progressDrawable="@drawable/bg_progress"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView18"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/level_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:textColor="@color/black_oneeight"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/level_progress"
+            app:layout_constraintStart_toStartOf="@+id/level_progress"
+            tools:text="心理咨询师" />
+
+        <TextView
+            android:id="@+id/level_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/home_txt"
+            android:textSize="10sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/level_name"
+            app:layout_constraintStart_toEndOf="@+id/level_name"
+            tools:text="LV.12" />
+
+        <TextView
+            android:id="@+id/level_what"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:textColor="@color/threethree"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/level_progress"
+            app:layout_constraintTop_toBottomOf="@+id/level_progress"
+            tools:text="再消耗50个钻石即可升级" />
+
+        <TextView
+            android:id="@+id/level_howup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="如何升级？"
+            android:textColor="@color/home_txt"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/level_name"
+            app:layout_constraintEnd_toEndOf="@+id/level_progress" />
+
+        <TextView
+            android:id="@+id/level_dengj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/home_txt"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/level_progress"
+            app:layout_constraintTop_toTopOf="@+id/level_what"
+            tools:text="10/65" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/level_recy_bg"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/ttt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="升级福利"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/level_recy"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ttt" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/level_tv_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:drawableLeft="@drawable/level_lock"
+        android:drawablePadding="@dimen/dp_5"
+        android:textColor="@color/beauty_color_white"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintStart_toStartOf="@+id/level_tv_two"
+        tools:text="等级到达15时自动发放" />
+
+    <TextView
+        android:id="@+id/level_tv_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:maxWidth="@dimen/dp_100"
+        android:textColor="@color/white"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toTopOf="@+id/level_tv_three"
+        app:layout_constraintStart_toStartOf="@+id/level_tv_one"
+        tools:text="可巴拉芭芭拉一号房十大歌 阿斯还发你是否" />
+
+    <TextView
+        android:id="@+id/level_tv_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/level_note"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:text="大拇哥"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/level_tv_two"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout7" />
+
+    <ImageView
+        android:id="@+id/imageView23"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_102"
+        app:layout_constraintBottom_toTopOf="@+id/imageView24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/level_big_mg" />
+
+    <ImageView
+        android:id="@+id/imageView24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="@+id/imageView23"
+        app:layout_constraintStart_toStartOf="@+id/imageView23"
+        app:layout_constraintTop_toBottomOf="@+id/imageView23"
+        app:srcCompat="@drawable/level_yinying" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

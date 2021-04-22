@@ -8,6 +8,7 @@ import com.example.xzb.utils.roomutil.AnchorInfo;
 import com.example.xzb.utils.roomutil.LoginInfo;
 import com.tencent.liteav.audio.TXAudioEffectManager;
 import com.tencent.liteav.beauty.TXBeautyManager;
+import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.TXLivePusher;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
@@ -729,4 +730,6 @@ public abstract class MLVBLiveRoom {
     public abstract TXAudioEffectManager getAudioEffectManager();
 
     /// @}
+
+    public abstract TXLivePlayer getTXLivePlayer();
 }

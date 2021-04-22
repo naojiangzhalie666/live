@@ -63,6 +63,13 @@ public class LiveglAdapter extends RecyclerView.Adapter<LiveglAdapter.ViewHolder
                     mOnItemClickListener.onItemClickListener(position);
             }
         });
+        vh.mItemLiveglTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnItemClickListener!=null)
+                    mOnItemClickListener.onItemClickListener(position);
+            }
+        });
 
 
 

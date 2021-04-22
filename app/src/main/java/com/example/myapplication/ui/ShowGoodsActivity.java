@@ -81,9 +81,10 @@ public class ShowGoodsActivity extends BaseActivity {
         mShowgoodsBuy.setText("充值支付");
         if(is_user){
             mShowgoodsRe.setVisibility(View.VISIBLE);
+            mShowgoodsEdt.setVisibility(View.GONE);
         }else{
             mShowgoodsRe.setVisibility(View.GONE);
-            mShowgoodsEdt.setVisibility(View.GONE);
+            mShowgoodsEdt.setVisibility(View.VISIBLE);
         }
         mList_goods = new ArrayList<>();
         for (int i = 0; i < 10; i++) {

@@ -145,6 +145,7 @@
             android:id="@+id/normal_shaixuan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginEnd="10dp"
             android:drawableRight="@drawable/mine_next"
             android:drawablePadding="@dimen/dp_5"

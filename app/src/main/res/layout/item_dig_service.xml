@@ -5,18 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/dp_3"
-    android:layout_marginTop="@dimen/dp_8"
+    android:layout_marginTop="@dimen/dp_6"
     android:layout_marginRight="@dimen/dp_3"
-    android:background="@drawable/bg_corner_white"
+    android:background="@drawable/service_bg"
     android:elevation="@dimen/dp_1"
-    android:padding="@dimen/dp_10">
+    android:padding="@dimen/dp_8">
 
 
     <ImageView
         android:id="@+id/item_service_head"
         android:layout_width="@dimen/dp_55"
-        android:scaleType="fitXY"
         android:layout_height="@dimen/dp_55"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_3"
+        android:layout_marginBottom="@dimen/dp_3"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/man_se" />
@@ -26,6 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:textSize="12sp"
         android:layout_marginTop="4dp"
         android:textColor="@color/black_oneeight"
         app:layout_constraintStart_toEndOf="@+id/item_service_head"
@@ -40,7 +45,7 @@
         android:drawableRight="@drawable/talk_zuan"
         android:drawablePadding="@dimen/dp_3"
         android:textColor="@color/red_goods"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/item_service_head"
         app:layout_constraintStart_toStartOf="@+id/item_service_title"
         tools:text="600" />
@@ -66,9 +71,9 @@
         android:drawableLeft="@drawable/talk_service_talk"
         android:drawablePadding="@dimen/dp_3"
         android:paddingLeft="@dimen/dp_12"
-        android:paddingTop="@dimen/dp_7"
+        android:paddingTop="@dimen/dp_5"
         android:paddingRight="@dimen/dp_12"
-        android:paddingBottom="@dimen/dp_7"
+        android:paddingBottom="@dimen/dp_5"
         android:text="询问"
         android:textColor="@color/white"
         android:textSize="12sp"

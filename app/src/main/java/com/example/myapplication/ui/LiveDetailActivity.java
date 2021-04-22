@@ -141,7 +141,7 @@ public class LiveDetailActivity extends BaseActivity {
                 mLivedetailTvone.setVisibility(View.GONE);
                 mLivedetailBttv.setVisibility(View.VISIBLE);
                 mLivedetailTvtwo.setText("本月收益(元)");
-                mLivedetailTvthree.setText("直播天数(人)");
+                mLivedetailTvthree.setText("直播天数");
                 mLivedetailTvfour.setText("直播时长(H)");
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
                 mLivedetailDate.setText(dateFormat.format(new Date()));

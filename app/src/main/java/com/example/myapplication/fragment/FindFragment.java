@@ -74,8 +74,23 @@ public class FindFragment extends Fragment {
         mFindNoviceFragment = new FindNoviceFragment();
         mFindWonderFragment = new FindWonderFragment();
         mFindLimitmFragment = new FindLimitmFragment();
-        getFragmentManager().beginTransaction().add(R.id.find_fram, mFindNoviceFragment).commit();
-        getFragmentManager().beginTransaction().show(mFindNoviceFragment);
+        Bundle arguments = getArguments();
+        if(arguments!=null){
+            String msg = arguments.getString("msg");
+            if(msg.equals("ever")){
+                getFragmentManager().beginTransaction().add(R.id.find_fram, mFindNoviceFragment).commit();
+                getFragmentManager().beginTransaction().show(mFindNoviceFragment);
+                Bundle bundle = new Bundle();
+                bundle.putInt("index",1);
+                mFindNoviceFragment.setArguments(bundle);
+            }else if(msg.equals("pipei")){
+                getFragmentManager().beginTransaction().add(R.id.find_fram, mFindMatchFragment).commit();
+                getFragmentManager().beginTransaction().show(mFindMatchFragment);
+            }
+        }else {
+            getFragmentManager().beginTransaction().add(R.id.find_fram, mFindNoviceFragment).commit();
+            getFragmentManager().beginTransaction().show(mFindNoviceFragment);
+        }
         mStrings = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
             mStrings.add("");
@@ -85,6 +100,27 @@ public class FindFragment extends Fragment {
         mFindRecytop.setLayoutManager(linearLayoutManager);
         mFindRecytop.setAdapter(mFindgetAdapter);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle arguments = getArguments();
+        if(arguments!=null){
+            String msg = arguments.getString("msg");
+            if(msg.equals("ever")){
+                mFindXinshouview.performClick();
+                getFragmentManager().beginTransaction().replace(R.id.find_fram, mFindNoviceFragment).commit();
+                getFragmentManager().beginTransaction().show(mFindNoviceFragment);
+                Bundle bundle = new Bundle();
+                bundle.putInt("index",1);
+                mFindNoviceFragment.setArguments(bundle);
+            }else if(msg.equals("pipei")){
+                mFindPipeiview.performClick();
+                getFragmentManager().beginTransaction().replace(R.id.find_fram, mFindMatchFragment).commit();
+                getFragmentManager().beginTransaction().show(mFindMatchFragment);
+            }
+        }
     }
 
     @OnClick({R.id.find_pipeiview, R.id.find_pipei, R.id.find_xinshouview, R.id.find_xinshou, R.id.find_wonderview, R.id.find_wonder, R.id.find_limittmview, R.id.find_limittm})

@@ -59,7 +59,7 @@ public class NoviceAdapter extends RecyclerView.Adapter<NoviceAdapter.ViewHolder
             case 0://新手
                 vh.mItemNoviceImgv.setVisibility(View.VISIBLE);
                 RequestOptions requestOptions = new RequestOptions().circleCrop();
-                Glide.with(mContext).load(R.drawable.login_wchat).apply(requestOptions).into(vh.mItemNoviceImgv);
+                Glide.with(mContext).load(R.drawable.pj_bg).apply(requestOptions).into(vh.mItemNoviceImgv);
                 break;
             case 1://每日任务
                 break;

@@ -24,7 +24,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MybackpActivity"></activity>
+        <activity android:name=".pop_dig.ReportActivity"
+            android:theme="@style/ActivityDialog"></activity>
+        <activity android:name=".ui.MybackpActivity" />
         <activity android:name=".ui.OffsupportActivity" />
         <activity android:name=".ui.ConnectRecordActivity" />
         <activity android:name=".ui.LiveDetailActivity" />
@@ -80,13 +82,15 @@
               </intent-filter>
             -->
         </activity>
-        <activity android:name=".live.TCCameraAnchorActivity"
+        <activity
+            android:name=".live.TCCameraAnchorActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"></activity>
-        <activity android:name=".live.TCAudienceActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".live.TCAudienceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/PlayerTheme"
-            android:windowSoftInputMode="adjustNothing"></activity>
+            android:windowSoftInputMode="adjustNothing" />
     </application>
 
 </manifest>

@@ -50,7 +50,7 @@ public class ShowGoodsAdapter extends RecyclerView.Adapter<ShowGoodsAdapter.View
         vh.mItemGoodsDay.setText("" + (position + 1));
         vh.mItemGoodsNote.setText("购买后仅需1" + position + "元/天");
         vh.mItemGoodsNum.setText((position + 1) + "00钻石");
-        vh.mItemGoodsImgv.setVisibility(show_se ? View.VISIBLE : View.GONE);
+        vh.mItemGoodsImgv.setVisibility(show_se ? View.GONE : View.VISIBLE);
         boolean select = (boolean) bean.get("select");
         vh.mItemGoodsImgv.setImageResource(select ? R.drawable.personal_se : R.drawable.personal_unse);
         vh.mItemGoodsCon.setBackgroundResource(select ? R.drawable.personal_juxing : R.drawable.bg_corner_six);

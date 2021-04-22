@@ -2089,7 +2089,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         CommonJson<AnchorInfo> msg = new CommonJson<>();
         msg.cmd = "notifyPusherChange";
         msg.data = new AnchorInfo();
-        msg.data.userID = Constantc.test_USERID;
+        msg.data.userID = mSelfAccountInfo.userID;
         String content = new Gson().toJson(msg, new TypeToken<CommonJson<AnchorInfo>>(){}.getType());
         IMMessageMgr imMessageMgr = mIMMessageMgr;
         if (imMessageMgr != null) {
@@ -3167,6 +3167,11 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             mTXLivePusher = new TXLivePusher(mAppContext);
         }
         return mTXLivePusher.getAudioEffectManager();
+    }
+
+    @Override
+    public TXLivePlayer getTXLivePlayer() {
+        return mTXLivePlayer;
     }
 
     private void callbackOnThread(final Object object, final String methodName, final Object... args) {

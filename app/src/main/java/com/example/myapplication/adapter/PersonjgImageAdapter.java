@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.bean.JgBean;
 import com.example.myapplication.listener.OnItemLongClickListener;
@@ -179,6 +181,7 @@ public class PersonjgImageAdapter extends RecyclerView.Adapter<PersonjgImageAdap
         //少于8张，显示继续添加的图标
         if (getItemViewType(position) == TYPE_CAMERA) {
             if (show_zdy) {
+                viewHolder.edt.setEnabled(false);
                 viewHolder.mLinearLayout.setVisibility(View.VISIBLE);
                 viewHolder.mLinearLayout.setOnClickListener(v -> mOnAddPicClickListener.onAddPicClick());
             } else {
@@ -201,7 +204,7 @@ public class PersonjgImageAdapter extends RecyclerView.Adapter<PersonjgImageAdap
                     list.remove(index);
                     notifyItemRemoved(index);
                     notifyItemRangeChanged(index, list.size());
-                    viewHolder.edt.setTag(position);
+//                    viewHolder.edt.setTag(position);
                 }
                 if (mOnDeleteClickListener != null)
                     mOnDeleteClickListener.onDeleteClickListener(position);
@@ -269,8 +272,10 @@ public class PersonjgImageAdapter extends RecyclerView.Adapter<PersonjgImageAdap
             if (chooseModel == PictureMimeType.ofAudio()) {
                 viewHolder.mImg.setImageResource(R.drawable.picture_audio_placeholder);
             } else {
+                RoundedCorners roundedCorners = new RoundedCorners(6);
                 Glide.with(viewHolder.itemView.getContext()).load(PictureMimeType.isContent(path) && !media.isCut() && !media.isCompressed() ? Uri.parse(path) : path)
-                        .centerCrop()
+                        .apply(new RequestOptions().transform(roundedCorners))
+//                        .centerCrop()
                         .placeholder(R.color.app_color_f6)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(viewHolder.mImg);

@@ -474,7 +474,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
             mFlashView.setBackgroundDrawable(mFlashOn ?
                     getResources().getDrawable(R.drawable.flash_on) :
                     getResources().getDrawable(R.drawable.flash_off));
-        } else if (id == R.id.beauty_btn) {
+        } else if (id == R.id.beauty_btn||id ==R.id.beauty_btnface) {
             if (mBeautyControl.isShown()) {
                 mBeautyControl.setVisibility(View.GONE);
                 mLinearToolBar.setVisibility(View.VISIBLE);
