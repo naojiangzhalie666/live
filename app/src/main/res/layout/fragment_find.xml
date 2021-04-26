@@ -9,13 +9,15 @@
     android:paddingTop="@dimen/title_top"
     tools:context=".fragment.FindFragment">
 
-    <TextView
+    <ImageView
         android:id="@+id/textView5"
         android:layout_width="@dimen/dp_40"
         android:layout_height="@dimen/dp_40"
         android:layout_marginTop="@dimen/dp_8"
         android:layout_marginRight="@dimen/dp_4"
         android:background="@drawable/bg_add_circle"
+        android:src="@drawable/ruzhu_add"
+        android:padding="@dimen/dp_10"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="40sp"

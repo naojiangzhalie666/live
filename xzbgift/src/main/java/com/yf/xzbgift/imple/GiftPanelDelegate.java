@@ -13,4 +13,6 @@ public interface GiftPanelDelegate {
      * 充值点击事件
      */
     void onChargeClick();
+
+    void onSendClickListener(GiftInfo giftInfo);
 }

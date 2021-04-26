@@ -496,6 +496,12 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     }
 
+    @Override
+    protected void startSjbg() {
+        if(mOnNewAddClickListener!=null)
+            mOnNewAddClickListener.onSjbgClickListener();
+    }
+
     private void startDefaultGroupLiveAnchor() {
         Intent intent = new Intent();
         intent.setAction("com.tencent.qcloud.tim.tuikit.live.grouplive.anchor");
@@ -852,6 +858,8 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         void onDiamondClickListener();
 
         void onSerViceCLickListener();
+
+        void onSjbgClickListener();
 
 
     }

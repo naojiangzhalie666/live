@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
@@ -46,8 +47,9 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder vh, int position) {
         Map<String, Object> bean = mLists.get(position);
         vh.mItemCzTitle.setText("今年高考人数");
-        RoundedCorners roundedCorners = new RoundedCorners(16);
-        Glide.with(mContext).load(R.drawable.login_bg).apply(RequestOptions.bitmapTransform(roundedCorners)).into(vh.mItemCzHead);
+        RoundedCorners roundedCorners = new RoundedCorners(15);
+        Glide.with(mContext).load(R.drawable.login_bg).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners)).into(vh.mItemCzHead);
+
         vh.mItemCzZsnum.setText("钻石数量：" + "40+" + position);
         vh.mItemCzCreattime.setText("创建时间：" + "2010.02.02 12:22");
         vh.mItemCzCode.setText("订单编号：" + "124煞了苦痛23" + position);

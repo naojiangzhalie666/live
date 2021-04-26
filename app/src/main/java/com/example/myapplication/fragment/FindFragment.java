@@ -1,6 +1,7 @@
 package com.example.myapplication.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,12 @@ import android.view.ViewGroup;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.FindgetAdapter;
+import com.example.myapplication.bean.EventMessage;
+import com.example.myapplication.ui.MailListActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +73,7 @@ public class FindFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        EventBus.getDefault().register(this);
         init();
     }
 
@@ -102,30 +110,16 @@ public class FindFragment extends Fragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Bundle arguments = getArguments();
-        if(arguments!=null){
-            String msg = arguments.getString("msg");
-            if(msg.equals("ever")){
-                mFindXinshouview.performClick();
-                getFragmentManager().beginTransaction().replace(R.id.find_fram, mFindNoviceFragment).commit();
-                getFragmentManager().beginTransaction().show(mFindNoviceFragment);
-                Bundle bundle = new Bundle();
-                bundle.putInt("index",1);
-                mFindNoviceFragment.setArguments(bundle);
-            }else if(msg.equals("pipei")){
-                mFindPipeiview.performClick();
-                getFragmentManager().beginTransaction().replace(R.id.find_fram, mFindMatchFragment).commit();
-                getFragmentManager().beginTransaction().show(mFindMatchFragment);
-            }
-        }
-    }
 
-    @OnClick({R.id.find_pipeiview, R.id.find_pipei, R.id.find_xinshouview, R.id.find_xinshou, R.id.find_wonderview, R.id.find_wonder, R.id.find_limittmview, R.id.find_limittm})
+    @OnClick({R.id.find_pipeiview, R.id.find_pipei, R.id.find_xinshouview, R.id.find_xinshou, R.id.find_wonderview, R.id.find_wonder,
+            R.id.find_limittmview, R.id.find_limittm,R.id.textView5})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.textView5:
+                Intent intent = new Intent(getActivity(), MailListActivity.class);
+                intent.putExtra("index","end");
+                startActivity(intent);
+                break;
             case R.id.find_pipeiview:
             case R.id.find_pipei:
                 mFindPipeiview.setBackgroundResource(R.drawable.home_tranthree);
@@ -168,10 +162,29 @@ public class FindFragment extends Fragment {
                 break;
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventMsg(EventMessage msg){
+        if(msg.getMessage().equals("ever")){
+            mFindPipeiview.setBackgroundResource(R.drawable.home_tranthreetran);
+            mFindXinshouview.setBackgroundResource(R.drawable.home_tranthree);
+            mFindWonderview.setBackgroundResource(R.drawable.home_tranthreetran);
+            mFindLimittmview.setBackgroundResource(R.drawable.home_tranthreetran);
+            getFragmentManager().beginTransaction().replace(R.id.find_fram, mFindNoviceFragment).commitAllowingStateLoss();
+            getFragmentManager().beginTransaction().show(mFindNoviceFragment);
+        }else if(msg.getMessage().equals("pipei")){
+            mFindPipeiview.setBackgroundResource(R.drawable.home_tranthree);
+            mFindXinshouview.setBackgroundResource(R.drawable.home_tranthreetran);
+            mFindWonderview.setBackgroundResource(R.drawable.home_tranthreetran);
+            mFindLimittmview.setBackgroundResource(R.drawable.home_tranthreetran);
+            getFragmentManager().beginTransaction().replace(R.id.find_fram, mFindMatchFragment).commitAllowingStateLoss();
+            getFragmentManager().beginTransaction().show(mFindMatchFragment);
+        }
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -22,6 +22,7 @@ public class GiftInfo {
     public String sendUser;
     //礼物发送方头像
     public String sendUserHeadIcon;
+    public String gift_count;
 
 
 
@@ -48,6 +49,7 @@ public class GiftInfo {
         giftInfo.title = this.title;
         giftInfo.price = this.price;
         giftInfo.type = this.type;
+        giftInfo.gift_count = this.gift_count;
         return giftInfo;
     }
 }

@@ -10,6 +10,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
@@ -49,7 +50,8 @@ public class SjAdapter extends RecyclerView.Adapter<SjAdapter.ViewHolder> {
         Map<String, Object> bean = mLists.get(position);
         vh.mItemSjTitle.setText("是谁给当时的");
         RoundedCorners roundedCorners = new RoundedCorners(16);
-        Glide.with(mContext).load(R.drawable.mine_bg).apply(RequestOptions.bitmapTransform(roundedCorners).fitCenter()).into(vh.mItemSjHead);
+        Glide.with(mContext).load(R.drawable.mine_bg).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners)).into(vh.mItemSjHead);
+
         vh.mItemSjZsnum.setText("疏解时长：" + "40+" + position);
         vh.mItemSjCreattime.setText("创建时间：" + "2010.02.02 12:22");
         vh.mItemSjCode.setText("订单编号：" + "124煞了苦痛23" + position);

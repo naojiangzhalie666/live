@@ -71,4 +71,5 @@ dependencies {
     implementation project(path: ':tuikit')
     implementation 'com.android.support:multidex:1.0.2'
     implementation project(path: ':xzb')
+    implementation 'com.belerweb:pinyin4j:2.5.1'
 }

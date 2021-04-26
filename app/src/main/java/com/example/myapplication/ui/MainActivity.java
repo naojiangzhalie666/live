@@ -1,10 +1,7 @@
 package com.example.myapplication.ui;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-
 import com.example.myapplication.R;
+import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.fragment.FindFragment;
 import com.example.myapplication.fragment.HomeFragment;
 import com.example.myapplication.fragment.MessageFragment;
@@ -14,6 +11,10 @@ import com.example.myapplication.views.TabContainerView;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.superc.yyfflibrary.views.lowhurdles.TabFragmentAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -41,6 +42,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
+        EventBus.getDefault().register(this);
         mHomeFragment = new HomeFragment();
         mFindFragment = new FindFragment();
         mMessageFragment = new MessageFragment();
@@ -95,21 +97,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public void onPageScrollStateChanged(int state) {
 
     }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if(intent!=null){
-            String msg = intent.getStringExtra("msg");
-            if(!TextUtils.isEmpty(msg)){
-                Bundle bundle = new Bundle();
-                bundle.putString("msg",msg);
-                mFindFragment.setArguments(bundle);
-                mPager.setCurrentItem(1);
-            }
-
-
-        }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventMsgt(EventMessage msg){
+        mPager.setCurrentItem(1);
     }
 
     long stT = 0;
@@ -126,4 +116,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         super.onBackPressed();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

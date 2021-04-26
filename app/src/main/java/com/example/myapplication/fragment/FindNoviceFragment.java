@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.NoviceAdapter;
+import com.example.myapplication.bean.EventMessage;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +70,7 @@ public class FindNoviceFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        EventBus.getDefault().register(this);
         init();
     }
 
@@ -139,16 +145,6 @@ public class FindNoviceFragment extends Fragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Bundle arguments = getArguments();
-        if(arguments!=null){
-            int index = arguments.getInt("index");
-            if(index == 1)
-                everClick();
-        }
-    }
 
     private void everClick(){
         mFragNoviceXinshou.setBackgroundResource(0);
@@ -165,10 +161,17 @@ public class FindNoviceFragment extends Fragment {
         state = 1;
         getData();
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventMsg(EventMessage msg){
+        if(msg.getMessage().equals("ever")){
+            everClick();
+        }
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 }

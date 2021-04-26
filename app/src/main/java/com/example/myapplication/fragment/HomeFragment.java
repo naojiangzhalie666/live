@@ -313,4 +313,13 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Constantc.mlvb_login) {
+            getLiveData();
+        } else {
+            loginMLVB();
+        }
+    }
 }

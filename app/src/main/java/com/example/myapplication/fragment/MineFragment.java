@@ -17,6 +17,7 @@ import com.example.myapplication.pop_dig.CodeDialog;
 import com.example.myapplication.pop_dig.LogoutDialog;
 import com.example.myapplication.ui.AdviceActivity;
 import com.example.myapplication.ui.FollowActivity;
+import com.example.myapplication.ui.HelpabackActivity;
 import com.example.myapplication.ui.MybackpActivity;
 import com.example.myapplication.ui.NormalActivity;
 import com.example.myapplication.ui.SetActivity;
@@ -140,7 +141,7 @@ public class MineFragment extends Fragment {
                 ToastUtil.showToast(getActivity(), "公众号关注");
                 break;
             case R.id.mine_help:
-                ToastUtil.showToast(getActivity(), "帮助");
+                startActivity(new Intent(getActivity(), HelpabackActivity.class));
                 break;
             case R.id.mine_edt:
                 ToastUtil.showToast(getActivity(), "修改个人");

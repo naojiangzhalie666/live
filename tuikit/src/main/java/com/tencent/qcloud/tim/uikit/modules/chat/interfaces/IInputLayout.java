@@ -71,6 +71,10 @@ public interface IInputLayout {
      */
     void disableVideoRecordAction(boolean disable);
 
+    void disableServiceAction(boolean mService);
+
+    void disableSjbgAction(boolean mSjbg);
+
     /**
      * disable 发送文件后，会隐藏更多面板上的按钮
      *

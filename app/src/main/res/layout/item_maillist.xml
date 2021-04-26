@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/catalog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/nineninenine"
+        tools:text="A"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_4"
+        android:textSize="10sp"
+       />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/item_findrecy_imgv"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:scaleType="centerCrop"
+            android:padding="@dimen/dp_3"
+            android:background="@drawable/bg_circle_stoke_hom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/chat_state"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mail_grad"
+            android:text="直播中"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:paddingTop="@dimen/dp_3"
+            android:paddingBottom="@dimen/dp_3"
+            app:layout_constraintBottom_toBottomOf="@+id/item_findrecy_imgv"
+            app:layout_constraintEnd_toEndOf="@+id/item_findrecy_imgv"
+            app:layout_constraintStart_toStartOf="@+id/item_findrecy_imgv"
+            app:layout_constraintTop_toBottomOf="@+id/item_findrecy_imgv" />
+
+        <TextView
+            android:id="@+id/item_findrecy_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:lines="1"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toStartOf="@+id/item_findrecy_statetop"
+            app:layout_constraintStart_toEndOf="@+id/item_findrecy_imgv"
+            app:layout_constraintTop_toTopOf="@+id/item_findrecy_imgv"
+            tools:text="情感老师--嘿嘿嘿" />
+
+        <TextView
+            android:id="@+id/item_findrecy_statetop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_38"
+            android:drawableRight="@drawable/find_more"
+            android:drawablePadding="@dimen/dp_8"
+            android:textColor="#A0A0A0"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="去观看" />
+        <View
+            android:layout_width="0dp"
+            app:layout_constraintStart_toStartOf="@+id/item_findrecy_title"
+            android:background="#E5E5E5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="@dimen/dp_1"/>
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_9"
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginEnd="@dimen/dp_12"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/item_findrecy_imgv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/item_findrecy_imgv"
+            app:layout_constraintTop_toBottomOf="@+id/item_findrecy_title">
+
+            <LinearLayout
+                android:id="@+id/item_findrecy_llnow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/dp_2"
+                    android:paddingBottom="@dimen/dp_2"
+                    android:text="["
+                    android:textColor="@color/find_green"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/imgv_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_2"
+                    android:src="@drawable/find_media" />
+
+                <TextView
+                    android:id="@+id/item_findrecy_statebt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_2"
+                    android:paddingBottom="@dimen/dp_2"
+                    android:text="直播中"
+                    android:textColor="@color/find_green"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_2"
+                    android:paddingBottom="@dimen/dp_2"
+                    android:text="]"
+                    android:textColor="@color/find_green"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/item_findrecy_tvstate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_2"
+                android:textColor="@color/threethree"
+                android:textSize="12sp"
+                tools:text="[ 待上线 ]" />
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

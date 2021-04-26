@@ -10,6 +10,7 @@
         android:id="@+id/item_buy_con"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
         android:background="@drawable/buy_bg_unse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,9 +22,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp_7"
             android:paddingTop="@dimen/dp_2"
-            android:textSize="10sp"
             android:text="超值"
             android:textColor="@color/white"
+            android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,9 +47,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_14"
+            android:paddingTop="@dimen/dp_3"
             android:text="18元"
             android:textColor="@color/nineninenine"
-            android:paddingTop="@dimen/dp_3"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/dig_buy_zuan"
@@ -59,9 +60,9 @@
     <RelativeLayout
         android:id="@+id/dig_buy_rel"
         android:layout_width="0dp"
-        android:visibility="gone"
         android:layout_height="0dp"
         android:background="@drawable/bg_corner_jig"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/item_buy_con"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/item_buy_con"
@@ -80,4 +81,19 @@
             android:textStyle="bold" />
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cz_grad_chaoh"
+        android:gravity="center"
+        android:paddingLeft="@dimen/dp_5"
+        android:paddingTop="@dimen/dp_1"
+        android:paddingRight="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_1"
+        android:text="受欢迎"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

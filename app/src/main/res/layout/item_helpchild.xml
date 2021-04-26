@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingLeft="@dimen/dp_10"
+    android:background="@drawable/bg_corner_whitelit">
+
+    <TextView
+        android:id="@+id/item_helpch_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
+        android:textColor="@color/sixsixsix"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/item_helpch_imgv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="这里是运营的一些问题" />
+
+    <ImageView
+        android:id="@+id/item_helpch_imgv"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:paddingLeft="@dimen/dp_20"
+        app:layout_constraintBottom_toBottomOf="@+id/item_helpch_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/item_helpch_title"
+        app:srcCompat="@drawable/helpback_ri" />
+
+    <View
+        android:id="@+id/item_helpch_line"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/ftwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_helpch_title" />
+
+    <TextView
+        android:id="@+id/item_helpch_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/sixsixsix"
+        android:layout_marginBottom="8dp"
+        android:paddingTop="@dimen/dp_6"
+        android:visibility="gone"
+        android:textSize="12sp"
+        tools:visibility="visible"
+        android:lineSpacingExtra="@dimen/dp_3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_helpch_line"
+        tools:text="你会计呢干嘛我in哦噶问哦"
+      />
+</androidx.constraintlayout.widget.ConstraintLayout>

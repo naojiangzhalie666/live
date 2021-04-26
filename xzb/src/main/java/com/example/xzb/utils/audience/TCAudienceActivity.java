@@ -347,6 +347,11 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             public void onChargeClick() {
 
             }
+
+            @Override
+            public void onSendClickListener(GiftInfo giftInfo) {
+
+            }
         });
         giftPanelView.show();
     }

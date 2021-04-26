@@ -1,6 +1,7 @@
 package com.yf.xzbgift.imple.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,16 +70,22 @@ public class GiftPanelAdapter extends RecyclerView.Adapter<GiftPanelAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final GiftInfo giftInfo = mGiftInfoList.get(position);
-        GlideEngine.loadImage(holder.mImageGift, giftInfo.giftPicUrl);
+//        GlideEngine.loadImage(holder.mImageGift, giftInfo.giftPicUrl);
+        GlideEngine.loadImage(holder.mImageGift, R.drawable.muge);
         holder.mTextGiftName.setText(giftInfo.title);
         holder.mTextGiftPrice.setText(String.format(mContext.getString(R.string.live_gift_game_currency), giftInfo.price));
+        holder.mTextGiftNum.setVisibility(TextUtils.isEmpty(giftInfo.gift_count)?View.GONE:View.VISIBLE);
+        holder.mTextGiftNum.setText(giftInfo.gift_count);
         if (giftInfo.isSelected) {
             holder.mLayoutRootView.setBackgroundResource(R.drawable.live_gift_shape_normal);
+            holder.mTextGiftName.setVisibility(View.GONE);
+            holder.mTextGiftPrice.setVisibility(View.VISIBLE);
 //            holder.mTextGiftName.setVisibility(View.GONE);
 //            holder.mTextSendBtn.setVisibility(View.VISIBLE);
         } else {
             holder.mLayoutRootView.setBackground(null);
             holder.mTextGiftName.setVisibility(View.VISIBLE);
+            holder.mTextGiftPrice.setVisibility(View.GONE);
 //            holder.mTextSendBtn.setVisibility(View.GONE);
         }
     }
@@ -99,6 +106,7 @@ public class GiftPanelAdapter extends RecyclerView.Adapter<GiftPanelAdapter.View
         ImageView mImageGift;
         TextView mTextGiftName;
         TextView mTextGiftPrice;
+        TextView mTextGiftNum;
 //        TextView     mTextSendBtn;
 
         public ViewHolder(View view) {
@@ -107,6 +115,7 @@ public class GiftPanelAdapter extends RecyclerView.Adapter<GiftPanelAdapter.View
             mImageGift      = (ImageView)    view.findViewById(R.id.iv_gift_icon);
             mTextGiftName   = (TextView)     view.findViewById(R.id.tv_gift_name);
             mTextGiftPrice  = (TextView)     view.findViewById(R.id.tv_gift_price);
+            mTextGiftNum  = (TextView)     view.findViewById(R.id.gift_num);
 //            mTextSendBtn    = (TextView)     view.findViewById(R.id.tv_send);
         }
     }

@@ -19,6 +19,7 @@ import com.example.myapplication.chat.helper.ChatLayoutHelper;
 import com.example.myapplication.pop_dig.BuyzDialog;
 import com.example.myapplication.pop_dig.HeadDialog;
 import com.example.myapplication.pop_dig.ServiceDialog;
+import com.example.myapplication.pop_dig.SjbgDialog;
 import com.example.myapplication.utils.FlowLayoutManager;
 import com.example.myapplication.utils.SpaceItemDecoration;
 import com.tencent.imsdk.v2.V2TIMConversation;
@@ -74,9 +75,14 @@ public class ChatFragment extends BaseFragment {
     private String[] mStrings = new String[]{"情感分析", "情感分析", "第三者问题", "未成年人心理", "未成年人心理"};
     private ServiceDialog mServiceDialog;
     private List<String> mService_strs;
+     private SjbgDialog mSjbgDialog;
+    private List<String> mSjbg_strs;
+
     private HeadDialog mHeadDialog;
     private List<Map<String,Object>> mBuy_strs;
     private BuyzDialog mBuyzDialog;
+
+    private boolean is_user = false;
 
 
     @Override
@@ -120,6 +126,19 @@ public class ChatFragment extends BaseFragment {
             }
         });
 
+        mSjbg_strs = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            mSjbg_strs.add("");
+        }
+        mSjbgDialog = new SjbgDialog(getActivity(),mSjbg_strs);
+        mSjbgDialog.setOnTalkClickListener(new SjbgDialog.OnTalkClickListener() {
+            @Override
+            public void onTalkClickListener(String content) {
+//                MessageInfo info = MessageInfoUtil.buildTextMessage(content);
+//                mChatLayout.sendMessage(info,false);
+            }
+        });
+
         mcon_tp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,7 +174,13 @@ public class ChatFragment extends BaseFragment {
         /*
         *聊天下方是否需要多展示（咨询师与用户展示不同）
         * */
-        mChatLayout.getInputLayout().disableVideoRecordAction(false);//是否展示摄像
+        if(is_user){
+            mChatLayout.getInputLayout().disableServiceAction(false);//展示服务项目
+            mChatLayout.getInputLayout().disableSjbgAction(true);//隐藏疏解报告
+        }else{
+            mChatLayout.getInputLayout().disableServiceAction(true);
+            mChatLayout.getInputLayout().disableSjbgAction(false);
+        }
 
 
         //单聊组件的默认UI和交互初始化
@@ -238,6 +263,12 @@ public class ChatFragment extends BaseFragment {
             public void onSerViceCLickListener() {
                 mServiceDialog.show();
             }
+
+            @Override
+            public void onSjbgClickListener() {
+                mSjbgDialog.show();
+            }
+
         });
 
         if (false/*mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP*/) {

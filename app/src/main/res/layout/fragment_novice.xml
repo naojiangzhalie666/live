@@ -5,7 +5,7 @@
     android:id="@+id/frag_novice_linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_corner_white"
+    android:background="@drawable/bg_corner_whiteb"
     android:orientation="vertical"
     tools:context=".fragment.FindNoviceFragment">
 

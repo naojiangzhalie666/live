@@ -78,7 +78,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     private ObjectAnimator mObjAnim;               // 动画
     /*---------布局新增-------*/
     private TextView mtv_ctcTm, mtv_ctcget;
-    ;
     private LinearLayout ll_conline;//连麦时上面的布局展示--连麦时间、剩余可用时间
     private Timer mBroadcastTimer_con;// 定时的 Timer
     private BroadcastTimerTask mBroadcastTimerTask_con;

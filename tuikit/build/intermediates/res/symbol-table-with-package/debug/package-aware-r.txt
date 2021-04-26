@@ -1846,6 +1846,7 @@ string shengli
 string shiai
 string shouqiang
 string show_info
+string ssj_bg
 string start_call
 string start_group_call
 string status_bar_notification_info_overflow

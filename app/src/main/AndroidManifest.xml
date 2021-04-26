@@ -24,8 +24,12 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".pop_dig.ReportActivity"
-            android:theme="@style/ActivityDialog"></activity>
+        <activity android:name=".pop_dig.ChathelfActivity"
+            android:theme="@style/ActivityDialog_helf"></activity>
+        <activity android:name=".ui.HelpabackActivity" />
+        <activity
+            android:name=".pop_dig.ReportActivity"
+            android:theme="@style/ActivityDialog" />
         <activity android:name=".ui.MybackpActivity" />
         <activity android:name=".ui.OffsupportActivity" />
         <activity android:name=".ui.ConnectRecordActivity" />
@@ -63,6 +67,17 @@
         <activity android:name=".ui.FindActivity" />
         <activity android:name=".ui.MsgInputActivity" />
         <activity android:name=".ui.BindPhoneActivity" />
+        <activity android:name=".ui.TestActivity">
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+
+        </activity>
         <activity android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

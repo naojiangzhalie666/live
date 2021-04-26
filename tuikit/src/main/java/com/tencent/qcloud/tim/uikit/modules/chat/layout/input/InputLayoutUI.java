@@ -79,9 +79,10 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     private boolean mCzzuanshi;
     private boolean mService;
     private boolean mVideoRecordDisable = true;
-    private boolean mSendFileDisable  = true;
+    private boolean mSendFileDisable = true;
     private boolean mEnableAudioCall;
     private boolean mEnableVideoCall;
+    private boolean mSjbg;
 
     public InputLayoutUI(Context context) {
         super(context);
@@ -168,7 +169,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             mInputMoreActionList.add(action);
         }
 
-         if (!mCzzuanshi) {
+        if (!mCzzuanshi) {
             action = new InputMoreActionUnit();
             action.setIconResId(R.drawable.talk_zuanshi);
             action.setTitleId(R.string.zuanshi);
@@ -181,7 +182,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             mInputMoreActionList.add(action);
         }
 
-         if (!mService) {
+        if (!mService) {
             action = new InputMoreActionUnit();
             action.setIconResId(R.drawable.talk_order);
             action.setTitleId(R.string.service);
@@ -193,7 +194,18 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             });
             mInputMoreActionList.add(action);
         }
-
+        if (!mSjbg) {
+            action = new InputMoreActionUnit();
+            action.setIconResId(R.drawable.talk_order);
+            action.setTitleId(R.string.ssj_bg);
+            action.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startSjbg();
+                }
+            });
+            mInputMoreActionList.add(action);
+        }
 
 
         if (!mVideoRecordDisable) {
@@ -278,6 +290,8 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
     protected abstract void startService();
 
+    protected abstract void startSjbg();
+
     @Override
     public void disableAudioInput(boolean disable) {
         mAudioInputDisable = disable;
@@ -333,6 +347,16 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     @Override
     public void disableVideoRecordAction(boolean disable) {
         mVideoRecordDisable = disable;
+    }
+
+    @Override
+    public void disableServiceAction(boolean service) {
+        mService = service;
+    }
+
+    @Override
+    public void disableSjbgAction(boolean sjbg) {
+        mSjbg = sjbg;
     }
 
     @Override

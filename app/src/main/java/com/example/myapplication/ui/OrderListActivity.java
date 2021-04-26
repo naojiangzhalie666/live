@@ -12,11 +12,14 @@ import com.example.myapplication.adapter.CzAdapter;
 import com.example.myapplication.adapter.LevelAdapter;
 import com.example.myapplication.adapter.PjAdapter;
 import com.example.myapplication.adapter.SjAdapter;
+import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.pop_dig.HowupDialog;
 import com.example.myapplication.pop_dig.PjDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -122,17 +125,17 @@ public class OrderListActivity extends BaseActivity {
             @Override
             public void onQianwaOneClickListener() {
                 Intent intent = new Intent(OrderListActivity.this, MainActivity.class);
-                intent.putExtra("msg", "ever");
                 startActivity(intent);
                 finish();
+                EventBus.getDefault().post(new EventMessage("ever"));
             }
 
             @Override
             public void onQianwaTwoClickListener() {
                 Intent intent = new Intent(OrderListActivity.this, MainActivity.class);
-                intent.putExtra("msg", "pipei");
                 startActivity(intent);
                 finish();
+                EventBus.getDefault().post(new EventMessage("pipei"));
             }
         });
         mLevelDpjNum.setText("66");

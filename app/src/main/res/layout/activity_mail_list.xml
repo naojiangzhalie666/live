@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/ftwo"
     tools:context=".ui.MailListActivity">
+
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_70"
         android:background="@drawable/msg_tpbg"
         android:paddingTop="@dimen/title_top"
-        android:paddingBottom="@dimen/dp_5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -34,7 +35,163 @@
             android:text="通讯录"
             android:textColor="@color/login_txt"
             android:textSize="20sp" />
+
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/cons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_4"
+            android:background="@drawable/bg_corner_graytop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/mail_txlone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/dp_7"
+                android:text="关注我的"
+                android:textColor="@color/nineninenine"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/mail_txltwo"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/mail_txltwo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:padding="@dimen/dp_7"
+                android:text="我的关注"
+                android:textColor="@color/nineninenine"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/mail_txlthree"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/mail_txlone"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/mail_txlthree"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:padding="@dimen/dp_7"
+                android:text="咨询师列表"
+                android:textColor="@color/nineninenine"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/mail_txltwo"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/mail_txlonee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mail_left"
+                android:gravity="center"
+                android:padding="@dimen/dp_8"
+                android:text="关注我的"
+                android:textColor="@color/home_txt"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/mail_txltwoo"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/mail_txltwoo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mail_center"
+                android:gravity="center"
+                android:padding="@dimen/dp_8"
+                android:text="我的关注"
+                android:textColor="@color/home_txt"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@+id/mail_txlthreee"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/mail_txlonee"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/mail_txlthreee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mail_right"
+                android:gravity="center"
+                android:padding="@dimen/dp_8"
+                android:text="咨询师列表"
+                android:textColor="@color/home_txt"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/mail_txltwoo"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/mail_list_line"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_3"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:background="@drawable/bg_circle_solder_setin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/mail_txlonee"
+                app:layout_constraintStart_toStartOf="@+id/mail_txlonee" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <ListView
+        android:id="@+id/mail_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:divider="@color/white"
+        android:dividerHeight="@dimen/dp_0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cons" />
+
+    <com.example.myapplication.utils.indelistview.LetterListView
+        android:id="@+id/let_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginRight="@dimen/dp_8"
+        android:paddingRight="10dp"
+        android:paddingBottom="@dimen/dp_10"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cons" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

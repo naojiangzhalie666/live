@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dialog_shim_close"
-        android:background="@drawable/bg_corner_white"
+        android:background="@drawable/bg_corner_whitea"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/dp_10">

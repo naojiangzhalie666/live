@@ -82,13 +82,13 @@ public class BuyzDialog extends Dialog {
         mBuyAdapter.setLook_more(false);
     }
 
-    @OnClick({R.id.dig_buy_xieyi, R.id.dig_buy_buy, R.id.dig_buy_cancel})
+    @OnClick({R.id.dig_buy_xieyi, R.id.dig_buy_zfb, R.id.dig_buy_cancel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.dig_buy_xieyi:
                 ToastUtil.showToast(mContext, "弹出协议");
                 break;
-            case R.id.dig_buy_buy:
+            case R.id.dig_buy_zfb:
                 ToastUtil.showToast(mContext, "充值"+select);
                 break;
             case R.id.dig_buy_cancel:

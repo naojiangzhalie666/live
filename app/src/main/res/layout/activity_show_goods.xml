@@ -76,7 +76,7 @@
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10"
                 android:animateLayoutChanges="true"
-                android:background="@drawable/bg_corner_white"
+                android:background="@drawable/bg_corner_whitea"
                 android:padding="@dimen/dp_10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

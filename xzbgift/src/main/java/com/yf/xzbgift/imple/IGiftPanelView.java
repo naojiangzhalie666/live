@@ -20,4 +20,9 @@ public interface IGiftPanelView {
     //订阅礼物面板事件
     void setGiftPanelDelegate(GiftPanelDelegate delegate);
 
+    //设置钻石数量
+    void setMoney_zuan(String money_zuan);
+    //更新背包数量
+    void notiBbGift();
+
 }

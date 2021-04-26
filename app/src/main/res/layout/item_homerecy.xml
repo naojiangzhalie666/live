@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="@dimen/dp_6"
+    android:layout_marginRight="@dimen/dp_12"
     android:layout_marginBottom="@dimen/dp_12">
 
     <ImageView
@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:background="@drawable/home_grad"
-        app:layout_constraintDimensionRatio="h,15:20"
+        app:layout_constraintDimensionRatio="h,17:25"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

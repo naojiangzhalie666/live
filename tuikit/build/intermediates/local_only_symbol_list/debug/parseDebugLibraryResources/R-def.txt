@@ -818,6 +818,7 @@ string shandian
 string shengli
 string shiai
 string shouqiang
+string ssj_bg
 string start_call
 string start_group_call
 string stop_call_tip

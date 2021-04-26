@@ -59,12 +59,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
-        tools:itemCount="3"
-        tools:listitem="@layout/item_buyzuan"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView88" />
+        app:layout_constraintTop_toBottomOf="@+id/textView88"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_buyzuan" />
 
     <TextView
         android:id="@+id/textView90"
@@ -87,18 +87,57 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/textView90"
         app:layout_constraintStart_toEndOf="@+id/textView90" />
 
-    <Button
-        android:id="@+id/dig_buy_buy"
+
+    <TextView
+        android:id="@+id/dig_buy_wchat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginTop="10dp"
-        android:background="@drawable/bg_circle_red"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/bg_circle_green"
+        android:gravity="center"
+        android:padding="@dimen/dp_8"
+        android:text="充值"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/dig_buy_zfb"
+        app:layout_constraintStart_toStartOf="@+id/dig_buy_recy"
+        app:layout_constraintTop_toBottomOf="@+id/textView90" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:background="@drawable/cz_jz"
+        app:layout_constraintCircleAngle="75"
+        android:text="加赠30%"
+        android:textColor="@color/white"
+        android:gravity="center"
+        app:layout_constraintCircleRadius="@dimen/dp_55"
+        app:layout_constraintCircle="@+id/dig_buy_wchat"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/dig_buy_zfb"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/bg_circle_blue"
+        android:gravity="center"
+        android:padding="@dimen/dp_8"
         android:text="充值"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/dig_buy_recy"
-        app:layout_constraintStart_toStartOf="@+id/dig_buy_recy"
+        app:layout_constraintStart_toEndOf="@+id/dig_buy_wchat"
         app:layout_constraintTop_toBottomOf="@+id/textView90" />
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:background="@drawable/cz_jz"
+        app:layout_constraintCircleAngle="75"
+        android:text="加赠30%"
+        android:textColor="@color/white"
+        android:gravity="center"
+        app:layout_constraintCircleRadius="@dimen/dp_55"
+        app:layout_constraintCircle="@+id/dig_buy_zfb"
+        android:layout_height="wrap_content"/>
     <View
         android:id="@+id/textView94"
         android:layout_width="0dp"
@@ -107,7 +146,7 @@
         android:background="@color/ftwo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dig_buy_buy" />
+        app:layout_constraintTop_toBottomOf="@+id/dig_buy_zfb" />
 
     <TextView
         android:id="@+id/dig_buy_cancel"

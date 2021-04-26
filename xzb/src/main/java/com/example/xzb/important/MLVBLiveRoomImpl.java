@@ -11,7 +11,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
-import com.example.xzb.Constantc;
 import com.example.xzb.utils.http.HttpRequests;
 import com.example.xzb.utils.http.HttpResponse;
 import com.example.xzb.utils.im.IMMessageMgr;
@@ -3172,6 +3171,11 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     @Override
     public TXLivePlayer getTXLivePlayer() {
         return mTXLivePlayer;
+    }
+
+    @Override
+    public TXLivePusher getTxLivePusher() {
+        return mTXLivePusher;
     }
 
     private void callbackOnThread(final Object object, final String methodName, final Object... args) {

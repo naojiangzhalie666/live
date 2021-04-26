@@ -36,6 +36,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
+        <ImageView
+            android:id="@+id/video_imgv"
+            android:layout_width="match_parent"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/bg"
+            android:visibility="gone"
+            android:layout_height="match_parent"/>
 
         <LinearLayout
             android:id="@+id/video_ll_contactline"
@@ -170,9 +177,9 @@
             android:id="@+id/audience_fram_contac"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_below="@+id/cam_title"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             tools:visibility="visible">
 
             <LinearLayout
@@ -241,9 +248,24 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/tool_bar"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:visibility="visible"
+            tools:visibility="gone"
+            android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
             android:src="@drawable/audice_lianx" />
+
+        <ImageView
+            android:id="@+id/anchor_camera"
+            android:layout_width="@dimen/live_btn_size"
+            android:layout_height="@dimen/live_btn_size"
+            android:layout_above="@+id/tool_bar"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:onClick="onClick"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/audience_opencamear" />
 
         <LinearLayout
             android:id="@+id/tool_bar"

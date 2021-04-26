@@ -732,4 +732,6 @@ public abstract class MLVBLiveRoom {
     /// @}
 
     public abstract TXLivePlayer getTXLivePlayer();
+
+    public abstract TXLivePusher getTxLivePusher();
 }

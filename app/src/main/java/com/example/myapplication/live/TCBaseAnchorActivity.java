@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.pop_dig.GuanzDialog;
+import com.example.myapplication.pop_dig.ReportActivity;
 import com.example.xzb.R;
 import com.example.xzb.adapter.QianAdapter;
 import com.example.xzb.important.IMLVBLiveRoomListener;
@@ -51,6 +54,7 @@ import com.example.xzb.utils.login.TCELKReportMgr;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.roomutil.AnchorInfo;
 import com.example.xzb.utils.roomutil.AudienceInfo;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.rtmp.TXLog;
 import com.yf.xzbgift.imple.DefaultGiftAdapterImp;
 import com.yf.xzbgift.imple.GiftAdapter;
@@ -116,7 +120,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     protected Handler mMainHandler = new Handler(Looper.getMainLooper());
 
 
-    private Button mButtonStartRoom;
+    private Button mButtonStartRoom;//开始直播按钮
     // 定时的 Timer 去更新开播时间
     private Timer mBroadcastTimer;        // 定时的 Timer
     private BroadcastTimerTask mBroadcastTimerTask;    // 定时任务
@@ -138,6 +142,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     private GiftAnimatorLayout mGiftAnimatorLayout;   //礼物动画和礼物弹幕的显示
     private GiftAdapter mGiftAdapter;
     private GiftInfoDataHandler mGiftInfoDataHandler;
+    private GuanzDialog mGuanzDialog;
 
 
     @Override
@@ -239,6 +244,35 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
         mChatMsgListAdapter = new TCChatMsgListAdapter(this, mLvMessage, mArrayListChatEntity);
         mLvMessage.setAdapter(mChatMsgListAdapter);
+        mLvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int postion, long l) {
+                TCChatEntity tcChatEntity = mArrayListChatEntity.get(postion);
+                mGuanzDialog = new GuanzDialog(TCBaseAnchorActivity.this,tcChatEntity);
+                mGuanzDialog.setOnDigClickListener(new GuanzDialog.OnDigClickListener() {
+                    @Override
+                    public void onInviteClickListener() {
+                        ToastUtil.showToast(TCBaseAnchorActivity.this,"邀请"+tcChatEntity.getSenderName()+"进行连线");
+                    }
+
+                    @Override
+                    public void onJubaoClickListener() {
+                        startActivity(new Intent(TCBaseAnchorActivity.this, ReportActivity.class));
+                    }
+
+                    @Override
+                    public void onJinyanClickListener() {
+                        ToastUtil.showToast(TCBaseAnchorActivity.this,"禁言"+tcChatEntity.getSenderName());
+                    }
+
+                    @Override
+                    public void onRenmingClickListener() {
+                        ToastUtil.showToast(TCBaseAnchorActivity.this,"任命"+tcChatEntity.getSenderName()+"为助理");
+                    }
+                });
+                mGuanzDialog.show();
+            }
+        });
 
         IDanmakuView danmakuView = (IDanmakuView) findViewById(R.id.anchor_danmaku_view);
         mDanmuMgr = new TCDanmuMgr(this);
@@ -246,13 +280,12 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         mButtonStartRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = medt_title.getText().toString();
+                String title = medt_title.getText().toString().trim();
                 if(TextUtils.isEmpty(title)){
-                    Toast.makeText(TCBaseAnchorActivity.this, "标题不能为空", Toast.LENGTH_SHORT).show();
-                    return;
+                    title = medt_title.getHint().toString();
                 }
-                mtv_title.setText(title);
-                mTitle =title;
+                mtv_title.setText(title.trim());
+                mTitle =title.trim();
                 mRela_befor.setVisibility(View.INVISIBLE);
                 mControllLayer.setVisibility(View.VISIBLE);
                 mCountDownTimerView.countDownAnimation(CountDownTimerView.DEFAULT_COUNTDOWN_NUMBER);

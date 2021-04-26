@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.xzb.utils.TCUtils;
 import com.example.xzb.utils.onlinelive.TCVideoInfo;
@@ -62,13 +65,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             vh.mItemHomerecyBiao.setText("人气主播");
             vh.mItemHomerecyRenqi.setText("" + data.viewerCount); //直播观看人数
             vh.mItemHomerecyName.setText(TextUtils.isEmpty(data.nickname) ? TCUtils.getLimitString(data.userId, 10) : TCUtils.getLimitString(data.nickname, 10));   //主播昵称
-            vh.mItemHomerecyTitle.setText(TCUtils.getLimitString(data.title, 10));//直播标题
+            vh.mItemHomerecyTitle.setText(TCUtils.getLimitString(data.title.trim(), 10));//直播标题
             //直播封面
             String cover = data.frontCover;
 //            if (TextUtils.isEmpty(cover)) {
 //                vh.mItemHomerecyImgv.setImageResource(R.drawable.home_grad);
 //            } else {
-            Glide.with(mContext).load(cover).placeholder(R.drawable.home_grad).error(R.drawable.home_grad).into(vh.mItemHomerecyImgv);
+            RoundedCorners roundedCorners = new RoundedCorners(15);
+            Glide.with(mContext).load(cover).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners )).placeholder(R.drawable.home_grad).error(R.drawable.home_grad).into(vh.mItemHomerecyImgv);
 //            }
            /* switch (position) {
                 case 0:

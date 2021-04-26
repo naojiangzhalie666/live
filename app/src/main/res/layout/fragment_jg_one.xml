@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_corner_white"
+            android:background="@drawable/bg_corner_whitea"
             android:paddingLeft="@dimen/dp_15"
             android:paddingRight="@dimen/dp_15"
             android:paddingBottom="@dimen/dp_15">
@@ -296,6 +296,8 @@
                 android:id="@+id/jgone_conback"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:visibility="invisible"
+                tools:visibility="visible"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="@dimen/dp_16"
                 android:background="@drawable/bg_corner_ft"
@@ -328,6 +330,8 @@
 
             <TextView
                 android:id="@+id/textView51"
+                android:visibility="invisible"
+                tools:visibility="visible"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_5"
@@ -346,7 +350,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_15"
-            android:background="@drawable/bg_corner_white"
+            android:background="@drawable/bg_corner_whitea"
             android:paddingLeft="@dimen/dp_15"
             android:paddingRight="@dimen/dp_15"
             android:paddingBottom="@dimen/dp_20">

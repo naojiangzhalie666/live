@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/bg_corner_whitea"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/dig_gz_invite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="@dimen/dp_16"
+            android:text="邀请连线"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/dig_gz_rmzl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline14" />
+
+        <View
+            android:id="@+id/textView138"
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/nineninenine"
+            app:layout_constraintBottom_toBottomOf="@+id/dig_gz_rmzl"
+            app:layout_constraintEnd_toStartOf="@+id/guideline14"
+            app:layout_constraintStart_toStartOf="@+id/guideline14"
+            app:layout_constraintTop_toBottomOf="@+id/textView136" />
+
+        <TextView
+            android:id="@+id/dig_gz_jubao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_8"
+            android:paddingRight="@dimen/dp_10"
+            android:text="举报"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline14"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dig_gz_jy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_8"
+            android:paddingRight="@dimen/dp_10"
+            android:text="禁言"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/dig_gz_jubao"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="@+id/guideline14" />
+
+        <TextView
+            android:id="@+id/dig_gz_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="85dp"
+            android:textColor="@color/threethree"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toStartOf="@+id/dig_gz_sex"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="你猜我叫什么" />
+
+        <ImageView
+            android:id="@+id/dig_gz_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            app:layout_constraintBottom_toBottomOf="@+id/dig_gz_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dig_gz_name"
+            app:layout_constraintTop_toTopOf="@+id/dig_gz_name"
+            app:srcCompat="@drawable/chat_dig_man" />
+
+        <TextView
+            android:id="@+id/textView126"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID:"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/dig_gz_jubao"
+            app:layout_constraintTop_toTopOf="@+id/textView130" />
+
+        <TextView
+            android:id="@+id/dig_gz_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView126"
+            app:layout_constraintStart_toEndOf="@+id/textView126"
+            tools:text="41212" />
+
+        <TextView
+            android:id="@+id/textView128"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="已连线:"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/textView126"
+            app:layout_constraintTop_toBottomOf="@+id/textView126" />
+
+        <TextView
+            android:id="@+id/dig_gz_lxtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView128"
+            app:layout_constraintStart_toEndOf="@+id/textView128"
+            tools:text="2.3小时" />
+
+        <View
+            android:id="@+id/textView130"
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/nineninenine"
+            app:layout_constraintBottom_toBottomOf="@+id/dig_gz_lxtime"
+            app:layout_constraintEnd_toStartOf="@+id/guideline14"
+            app:layout_constraintStart_toStartOf="@+id/guideline14"
+            app:layout_constraintTop_toBottomOf="@+id/dig_gz_name" />
+
+        <TextView
+            android:id="@+id/textView131"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="年龄段:"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView126"
+            app:layout_constraintEnd_toStartOf="@+id/dig_gz_old"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/guideline14" />
+
+        <TextView
+            android:id="@+id/dig_gz_old"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView131"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView131"
+            tools:text="90后" />
+
+        <TextView
+            android:id="@+id/textView133"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注册时间:"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView128"
+            app:layout_constraintStart_toStartOf="@+id/textView131" />
+
+        <TextView
+            android:id="@+id/dig_gz_zctime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView133"
+            app:layout_constraintStart_toEndOf="@+id/textView133"
+            tools:text="66天" />
+
+        <TextView
+            android:id="@+id/dig_gz_favour"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView128"
+            tools:text="情感挽回  恋爱技巧  恋爱技巧  恋爱技巧  恋爱技巧" />
+
+        <View
+            android:id="@+id/textView136"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_1"
+            android:layout_marginTop="16dp"
+            android:background="@color/nineninenine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dig_gz_favour" />
+
+        <TextView
+            android:id="@+id/dig_gz_rmzl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_50"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp_12"
+            android:paddingTop="@dimen/dp_16"
+            android:text="任命助理"
+            android:textColor="@color/threethree"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView136" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/dig_gz_imgv"
+        android:layout_width="@dimen/dp_124"
+        android:layout_height="@dimen/dp_124"
+        android:background="@drawable/bg_circel_login"
+        android:padding="@dimen/dp_2"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout8"
+        app:srcCompat="@drawable/audio_effect_setting_changetype_luoli" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
