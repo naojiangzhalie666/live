@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout {
 
     protected MessageListAdapter mAdapter;
+    private OnSendClickListener mOnSendClickListener;
 
     private AnimationDrawable mVolumeAnim;
     private Runnable mTypingRunnable = null;
@@ -272,7 +273,9 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         getInputLayout().setMessageHandler(new InputLayout.MessageHandler() {
             @Override
             public void sendMessage(MessageInfo msg) {
-                AbsChatLayout.this.sendMessage(msg, false);
+                if(mOnSendClickListener!=null)
+                    mOnSendClickListener.onSendClickListener(msg);
+//                AbsChatLayout.this.sendMessage(msg, false);
             }
         });
         getInputLayout().clearCustomActionList();
@@ -328,6 +331,10 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         });
     }
 
+    public interface OnSendClickListener{
+       public void onSendClickListener(MessageInfo msg);
+    }
+
     protected void deleteMessage(int position, MessageInfo msg) {
         getChatManager().deleteMessage(position, msg);
     }
@@ -373,5 +380,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         exitChat();
     }
 
-
+    public void setOnSendClickListener(OnSendClickListener onSendClickListener) {
+        mOnSendClickListener = onSendClickListener;
+    }
 }

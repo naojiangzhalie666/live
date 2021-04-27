@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/hide_edittext"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="148dp"
+       >
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/keyboard_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_d8d3cf">
+
+        <com.example.myapplication.utils.keyboard.BaseKeyboardView
+            android:id="@+id/keyboard_view"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="9dp"
+            android:layout_marginRight="9dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:keyTextColor="#181818"
+            android:keyBackground="@drawable/key_abc_bg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@color/c_d8d3cf"
+            android:keyTextSize="10sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

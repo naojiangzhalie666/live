@@ -15,7 +15,7 @@ public class RemindDialog extends Dialog {
     private  OnllClickListenenr mOnllClickListenenr;
 
     public RemindDialog(@NonNull Context context) {
-        super(context);
+        super(context,R.style.NotitleDiag);
 
     }
 
@@ -27,7 +27,7 @@ public class RemindDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_remindxzb);
-        getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         getWindow().setBackgroundDrawableResource(R.color.transparent);
         setCanceledOnTouchOutside(false);
         findViewById(R.id.dig_live_ll).setOnClickListener(new View.OnClickListener() {

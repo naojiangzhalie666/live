@@ -16,8 +16,9 @@ import com.example.myapplication.adapter.VpAdapter;
 import com.example.myapplication.pop_dig.CodeDialog;
 import com.example.myapplication.pop_dig.LogoutDialog;
 import com.example.myapplication.ui.AdviceActivity;
-import com.example.myapplication.ui.FollowActivity;
 import com.example.myapplication.ui.HelpabackActivity;
+import com.example.myapplication.ui.LookPersonActivity;
+import com.example.myapplication.ui.MailListActivity;
 import com.example.myapplication.ui.MybackpActivity;
 import com.example.myapplication.ui.NormalActivity;
 import com.example.myapplication.ui.SetActivity;
@@ -134,7 +135,8 @@ public class MineFragment extends Fragment {
                 show_money = !show_money;
                 break;
             case R.id.mine_guanzhu:
-                startActivity(new Intent(getActivity(), FollowActivity.class));
+//                startActivity(new Intent(getActivity(), FollowActivity.class));
+                startActivity(new Intent(getActivity(), MailListActivity.class));
                 break;
             case R.id.mine_guanzhugzongh:
                 mCodeDialog.show();
@@ -144,7 +146,7 @@ public class MineFragment extends Fragment {
                 startActivity(new Intent(getActivity(), HelpabackActivity.class));
                 break;
             case R.id.mine_edt:
-                ToastUtil.showToast(getActivity(), "修改个人");
+                startActivity(new Intent(getActivity(), LookPersonActivity.class));//咨询师页面
                 break;
             case R.id.mine_ruzhu:
                 startActivity(new Intent(getActivity(), SetInActivity.class));
@@ -162,7 +164,9 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.mine_money_tv:
             case R.id.textView16:
-                startActivity(new Intent(getActivity(), AdviceActivity.class));
+                Intent intent = new Intent(getActivity(),AdviceActivity.class);
+                intent.putExtra("index",1);
+                startActivity(intent);
                 break;
         }
     }

@@ -12,14 +12,10 @@ import com.example.myapplication.adapter.CzAdapter;
 import com.example.myapplication.adapter.LevelAdapter;
 import com.example.myapplication.adapter.PjAdapter;
 import com.example.myapplication.adapter.SjAdapter;
-import com.example.myapplication.bean.EventMessage;
-import com.example.myapplication.pop_dig.HowupDialog;
 import com.example.myapplication.pop_dig.PjDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,7 +80,7 @@ public class OrderListActivity extends BaseActivity {
     private View minclude_view;
     private List<String> mLevel_maps;
     private LevelAdapter mLevelAdapter;
-    private HowupDialog mHowupDialog;
+//    private HowupDialog mHowupDialog;
 
     @Override
     public int getContentLayoutId() {
@@ -101,7 +97,6 @@ public class OrderListActivity extends BaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
-        mHowupDialog = new HowupDialog(this);
         minclude_view = findViewById(R.id.order_include);
         mPjDialog = new PjDialog(this);
         mOrderCz.setTextColor(getResources().getColor(R.color.black));
@@ -115,29 +110,7 @@ public class OrderListActivity extends BaseActivity {
             }
         });
         initAdapter();
-        mLevelHowup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mHowupDialog.show();
-            }
-        });
-        mHowupDialog.setOnQianwClickListener(new HowupDialog.OnQianwClickListener() {
-            @Override
-            public void onQianwaOneClickListener() {
-                Intent intent = new Intent(OrderListActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-                EventBus.getDefault().post(new EventMessage("ever"));
-            }
 
-            @Override
-            public void onQianwaTwoClickListener() {
-                Intent intent = new Intent(OrderListActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-                EventBus.getDefault().post(new EventMessage("pipei"));
-            }
-        });
         mLevelDpjNum.setText("66");
 
     }

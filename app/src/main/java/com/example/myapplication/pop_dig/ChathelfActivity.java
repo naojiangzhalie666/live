@@ -8,18 +8,24 @@ import android.view.Window;
 
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.bean.EventMessage;
+import com.example.myapplication.chat.BaseHelfActivity;
 import com.example.myapplication.chat.ChatActivity;
 import com.example.myapplication.chat.ChathelfFragment;
+import com.ljy.devring.util.DensityUtil;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 
-import androidx.appcompat.app.AppCompatActivity;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import androidx.constraintlayout.widget.Constraints;
 import butterknife.ButterKnife;
 
 import static com.tencent.imsdk.v2.V2TIMManager.V2TIM_STATUS_LOGINED;
 
-public class ChathelfActivity extends AppCompatActivity {
+public class ChathelfActivity extends BaseHelfActivity {
     private static final String TAG = ChatActivity.class.getSimpleName();
 
     private ChathelfFragment mChatFragment;
@@ -30,9 +36,10 @@ public class ChathelfActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_chathelf);
         ButterKnife.bind(this);
-        getWindow().setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT);
+        getWindow().setLayout(Constraints.LayoutParams.MATCH_PARENT, DensityUtil.dp2px(this,400));
         getWindow().setGravity(Gravity.BOTTOM);
         chat(getIntent());
+        EventBus.getDefault().register(this);
     }
 
 
@@ -82,5 +89,18 @@ public class ChathelfActivity extends AppCompatActivity {
 //        }
 //        startActivity(intent);
         finish();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventmsg(EventMessage msg){
+        if(msg.getMessage().equals("chathelf_finish")){
+            finish();
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

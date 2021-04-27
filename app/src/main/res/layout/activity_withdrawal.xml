@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingTop="@dimen/title_top"
+        android:paddingTop="@dimen/dp_45"
         android:paddingBottom="@dimen/dp_5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,24 +43,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
         android:text="到账银行卡"
         android:textColor="@color/black_oneeight"
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintVertical_bias="0.32" />
 
     <ImageView
         android:id="@+id/imageView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="@dimen/dp_8"
-        app:layout_constraintBottom_toBottomOf="@+id/textView72"
-        app:layout_constraintEnd_toStartOf="@+id/textView72"
-        app:layout_constraintTop_toTopOf="@+id/textView72"
+        app:layout_constraintBottom_toBottomOf="@+id/withdrawal_bankname"
+        app:layout_constraintEnd_toStartOf="@+id/withdrawal_bankname"
+        app:layout_constraintTop_toTopOf="@+id/withdrawal_bankname"
         app:srcCompat="@drawable/mine_zuanshi" />
 
     <TextView
-        android:id="@+id/textView72"
+        android:id="@+id/withdrawal_bankname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_50"
@@ -81,212 +82,22 @@
         android:text="2小时内到账"
         android:textColor="@color/nineninenine"
         app:layout_constraintStart_toEndOf="@+id/imageView17"
-        app:layout_constraintTop_toBottomOf="@+id/textView72" />
+        app:layout_constraintTop_toBottomOf="@+id/withdrawal_bankname" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.22" />
+        app:layout_constraintGuide_percent="0.26" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dp_10"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent">
-
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_12"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="1"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/button2"
-            app:layout_constraintEnd_toStartOf="@+id/button5"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="4"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/button3"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="7"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/button4"
-            app:layout_constraintEnd_toEndOf="@+id/button2"
-            app:layout_constraintStart_toStartOf="@+id/button2" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="0"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/button10"
-            app:layout_constraintStart_toStartOf="@+id/button3" />
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="2"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toStartOf="@+id/button6"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button" />
-
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_10"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="3"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button5"
-            app:layout_constraintEnd_toStartOf="@+id/button7"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button5"
-            app:layout_constraintTop_toTopOf="@+id/button5" />
-
-        <ImageButton
-            android:id="@+id/button7"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:background="@drawable/bg_corner_whitelit"
-            android:src="@drawable/withd_delete"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button6"
-            app:layout_constraintTop_toTopOf="@+id/button6" />
-
-        <Button
-            android:id="@+id/button8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="5"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button2"
-            app:layout_constraintEnd_toEndOf="@+id/button5"
-            app:layout_constraintStart_toStartOf="@+id/button5"
-            app:layout_constraintTop_toTopOf="@+id/button2" />
-
-        <Button
-            android:id="@+id/button9"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="6"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button8"
-            app:layout_constraintEnd_toEndOf="@+id/button6"
-            app:layout_constraintStart_toStartOf="@+id/button6"
-            app:layout_constraintTop_toTopOf="@+id/button8" />
-
-        <Button
-            android:id="@+id/button10"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="8"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button3"
-            app:layout_constraintEnd_toEndOf="@+id/button8"
-            app:layout_constraintStart_toStartOf="@+id/button8"
-            app:layout_constraintTop_toTopOf="@+id/button3" />
-
-        <Button
-            android:id="@+id/button11"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="9"
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button10"
-            app:layout_constraintEnd_toEndOf="@+id/button9"
-            app:layout_constraintStart_toStartOf="@+id/button9"
-            app:layout_constraintTop_toTopOf="@+id/button10" />
-
-        <Button
-            android:id="@+id/button12"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_corner_whitelit"
-            android:text="."
-            android:textColor="@color/black_oneeight"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button4"
-            app:layout_constraintEnd_toEndOf="@+id/button11"
-            app:layout_constraintStart_toStartOf="@+id/button11" />
-
-        <Button
-            android:id="@+id/button13"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:background="@drawable/bg_corner_tx"
-            android:text="提现"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/button7"
-            app:layout_constraintStart_toStartOf="@+id/button7"
-            app:layout_constraintTop_toTopOf="@+id/button9" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="1dp"
         android:background="@drawable/bg_corner_white_tp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline13">
@@ -307,28 +118,30 @@
             android:id="@+id/textView76"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="4dp"
             android:text="￥"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView75"
-            app:layout_constraintTop_toBottomOf="@+id/textView75" />
+            app:layout_constraintTop_toTopOf="@+id/withdra_edt" />
 
         <EditText
-            android:id="@+id/textView77"
+            android:id="@+id/withdra_edt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="34dp"
             android:background="@null"
-            android:textColor="@color/black"
             android:hint="提现金额"
+            android:lines="1"
+            android:textColor="@color/black"
             android:textColorHint="@color/efiveefive"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView76"
-            app:layout_constraintTop_toTopOf="@+id/textView76" />
+            app:layout_constraintTop_toBottomOf="@+id/textView75" />
 
         <View
             android:id="@+id/textView78"
@@ -341,10 +154,10 @@
             android:text="TextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView77" />
+            app:layout_constraintTop_toBottomOf="@+id/withdra_edt" />
 
         <TextView
-            android:id="@+id/textView79"
+            android:id="@+id/withdrawal_nowmoney"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_5"
@@ -355,13 +168,15 @@
             tools:text="当前零钱余额14863.22元，" />
 
         <TextView
-            android:id="@+id/textView80"
+            android:id="@+id/withdrawal_alltix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_4"
             android:text="全部提现"
-            android:textColor="@color/blue"
+            android:textColor="#0A57AF"
             android:textSize="12sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView79"
-            app:layout_constraintStart_toEndOf="@+id/textView79" />
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/withdrawal_nowmoney"
+            app:layout_constraintStart_toEndOf="@+id/withdrawal_nowmoney" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

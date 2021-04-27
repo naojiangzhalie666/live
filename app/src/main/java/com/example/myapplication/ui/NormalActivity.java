@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.WalletAdapter;
+import com.example.myapplication.pop_dig.BuyzDialog;
 import com.example.myapplication.utils.datepicker.CustomDatePicker;
 import com.example.myapplication.utils.datepicker.DateFormatUtils;
 import com.superc.yyfflibrary.base.BaseActivity;
@@ -45,6 +46,8 @@ public class NormalActivity extends BaseActivity {
     private CustomDatePicker customDatePickerSt;
     private List<Map<String,Object>> mStringList;
     private WalletAdapter mWalletAdapter;
+    private List<Map<String,Object>> mBuy_strs;
+    private BuyzDialog mBuyzDialog;
 
 
     @Override
@@ -76,6 +79,13 @@ public class NormalActivity extends BaseActivity {
                 mWalletAdapter.notifyItemChanged(pos);
             }
         });
+        mBuy_strs = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            Map<String,Object> map =new HashMap<>();
+            map.put("select",false);
+            mBuy_strs.add(map);
+        }
+        mBuyzDialog = new BuyzDialog(this,mBuy_strs);
 
     }
 
@@ -86,7 +96,7 @@ public class NormalActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.advice_chongzhi:
-                ToastShow("充值");
+                mBuyzDialog.show();
                 break;
             case R.id.normal_sttm:
                 showDateDialog(mNormalSttm, "2000-01-01 00:00:00", mNormalEdtm.getText().toString() + " 23:59:59");

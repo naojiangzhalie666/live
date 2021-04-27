@@ -23,15 +23,17 @@
 
         <ProgressBar
             android:id="@+id/dialog_car_pro"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_marginLeft="14dp"
+            android:layout_toLeftOf="@+id/dialog_car_zhinan"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="14dp"
             android:layout_toRightOf="@+id/dialog_car_head"
             android:progress="30"
-            android:progressDrawable="@drawable/bg_progress" />
+            android:max="100"
+            android:progressDrawable="@drawable/pb_pd_sp_car"
+           />
 
         <TextView
             android:id="@+id/dialog_car_what"
@@ -47,14 +49,15 @@
         <TextView
             android:id="@+id/dialog_car_zhinan"
             android:layout_width="wrap_content"
+            android:visibility="invisible"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialog_car_pro"
             android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
             android:text="升级指南?"
-            android:textColor="@color/black"
+            android:textColor="@color/home_txt"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
 
     </RelativeLayout>
@@ -84,7 +87,7 @@
             android:text="专属服务"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:textStyle="bold" />
+             />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -109,8 +112,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:text="账户余额:"
-            android:textColor="#F7D4B6"
-            android:textStyle="bold" />
+            android:textColor="@color/black_oneeight"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/dialog_car_money"
@@ -120,8 +123,8 @@
             android:layout_toRightOf="@+id/tt"
             android:paddingLeft="5dp"
             android:text="0"
-            android:textColor="#F7D4B6"
-            android:textStyle="bold" />
+            android:textColor="@color/black_oneeight"
+            android:textStyle="normal" />
 
         <ImageView
             android:layout_width="wrap_content"

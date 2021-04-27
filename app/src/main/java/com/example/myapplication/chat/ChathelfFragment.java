@@ -17,6 +17,7 @@ import com.example.myapplication.chat.helper.ChatLayoutHelper;
 import com.example.myapplication.pop_dig.BuyzDialog;
 import com.example.myapplication.pop_dig.ServiceDialog;
 import com.example.myapplication.pop_dig.SjbgDialog;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -27,6 +28,7 @@ import com.tencent.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.tencent.qcloud.tim.uikit.component.AudioPlayer;
 import com.tencent.qcloud.tim.uikit.component.TitleBarLayout;
 import com.tencent.qcloud.tim.uikit.modules.chat.ChatLayout;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.AbsChatLayout;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.input.InputLayout;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout;
@@ -231,6 +233,13 @@ public class ChathelfFragment extends BaseFragment {
                 mSjbgDialog.show();
             }
 
+        });
+        mChatLayout.setOnSendClickListener(new AbsChatLayout.OnSendClickListener() {
+            @Override
+            public void onSendClickListener(MessageInfo msg) {
+                ToastUtil.showToast(getActivity(),"钻石不够,充值后发送");
+                mChatLayout.sendMessage(msg, false);
+            }
         });
 
         if (false/*mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP*/) {

@@ -26,12 +26,12 @@ public class BaseDialog extends Dialog {
     TextView mDigLogoutSure;
     @BindView(R.id.dig_logout_cancel)
     TextView mDigLogoutCancel;
-    private OnSureClickListener mOnLogoutClickListener;
     private Window mWindow;
     private String title;
     private String sure;
     private String cancel;
     private int sure_color;
+    private OnItemClickListener mOnItemClickListener;
 
     public BaseDialog(@NonNull Context context, BaseBuild baseBuild) {
         super(context);
@@ -41,8 +41,8 @@ public class BaseDialog extends Dialog {
         sure_color = baseBuild.sure_color;
     }
 
-    public void setOnLogoutClickListener(OnSureClickListener onSureClickListener) {
-        mOnLogoutClickListener = onSureClickListener;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -54,6 +54,7 @@ public class BaseDialog extends Dialog {
         mWindow.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         mWindow.setGravity(Gravity.BOTTOM);
         mWindow.setBackgroundDrawableResource(R.color.transparent);
+        setCanceledOnTouchOutside(false);
         mTitle.setText(title);
         mDigLogoutSure.setText(sure);
         mDigLogoutCancel.setText(cancel);
@@ -72,20 +73,24 @@ public class BaseDialog extends Dialog {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.dig_logout_sure:
-                if (mOnLogoutClickListener != null)
-                    mOnLogoutClickListener.onSureClickListener();
+                if (mOnItemClickListener != null)
+                    mOnItemClickListener.onSureClickListener();
+                dismiss();
                 break;
             case R.id.dig_logout_cancel:
+                if (mOnItemClickListener != null)
+                    mOnItemClickListener.onCancelClickListener();
                 dismiss();
                 break;
         }
     }
 
-    public interface OnSureClickListener {
+    public interface OnItemClickListener {
         void onSureClickListener();
+        void onCancelClickListener();
     }
 
-    public class BaseBuild {
+    public static class BaseBuild {
         private String title;
         private String sure;
         private String cancel;

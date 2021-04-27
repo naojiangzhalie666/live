@@ -30,8 +30,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.myapplication.base.Constant;
+import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.pop_dig.BuyzDialog;
 import com.example.myapplication.pop_dig.CarDialog;
+import com.example.myapplication.pop_dig.ChathelfActivity;
 import com.example.xzb.R;
 import com.example.xzb.important.IMLVBLiveRoomListener;
 import com.example.xzb.important.MLVBCommonDef;
@@ -44,6 +47,7 @@ import com.example.xzb.ui.TCSimpleUserInfo;
 import com.example.xzb.ui.TCUserAvatarListAdapter;
 import com.example.xzb.ui.TCVideoView;
 import com.example.xzb.ui.TCVideoViewMgr;
+import com.example.xzb.ui.dialog.RemindDialog;
 import com.example.xzb.ui.dialog.TCInputTextMsgDialog;
 import com.example.xzb.ui.views.TCHeartLayout;
 import com.example.xzb.ui.views.TCSwipeAnimationController;
@@ -57,8 +61,10 @@ import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.roomutil.AnchorInfo;
 import com.example.xzb.utils.roomutil.AudienceInfo;
 import com.superc.yyfflibrary.utils.ToastUtil;
+import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.liteav.demo.beauty.view.BeautyPanel;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePushConfig;
 import com.tencent.rtmp.TXLivePusher;
@@ -74,6 +80,8 @@ import com.yf.xzbgift.imple.IGiftPanelView;
 import com.yf.xzbgift.important.GiftAnimatorLayout;
 import com.yf.xzbgift.important.GiftInfo;
 import com.yf.xzbgift.important.TUIKitLive;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -1096,16 +1104,34 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
      * @param errorMsg
      */
     private void showErrorAndQuit(String errorMsg) {
+        EventBus.getDefault().post(new EventMessage("chathelf_finish"));
         stopPlay();
 // TODO: 2021/4/9 需要最后进行接入时放开，播放错误时的跳转以及标识设置
       /*  Intent rstData = new Intent();
         rstData.putExtra(TCConstants.ACTIVITY_RESULT,errorMsg);
         setResult(TCVideoListFragment.START_LIVE_PLAY,rstData);
 */
-        if (errorMsg.contains("10010") && !mLiveDialogFragment.isAdded() && !this.isFinishing()) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.add(mLiveDialogFragment, "loading");
-            transaction.commitAllowingStateLoss();
+        if (errorMsg.contains("10010") && !this.isFinishing()) {
+            RemindDialog mRemindDialog = new RemindDialog(this);
+            mRemindDialog.show();
+            mRemindDialog.setOnllClickListenenr(new RemindDialog.OnllClickListenenr() {
+                @Override
+                public void onllClickListener() {
+                    mRemindDialog.dismiss();
+                        TCAudienceActivity.this.finish();
+                }
+            });
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                public void run() {
+                    if(mRemindDialog!=null)
+                        mRemindDialog.dismiss();
+                        TCAudienceActivity.this.finish();
+                }
+            }, 3000 , 1000);
+//            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//            transaction.add(mLiveDialogFragment, "loading");
+//            transaction.commitAllowingStateLoss();
             return;
         }
         if (!mErrDlgFragment.isAdded() && !this.isFinishing()) {
@@ -1174,11 +1200,10 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         } else if (id == R.id.audience_gift) {
             showGiftPanel();
         } else if (id == R.id.audience_siliao) {
-            ToastUtil.showToast(this, "进行私聊");
+            startChatActivity(mPusherId,mPusherNickname);
         } else if (id == R.id.audience_car) {
             mCarDialog.show();
         }else if(id == R.id.anchor_camera){
-            ToastUtil.showToast(this,"开启/关闭摄像头");
             if(is_open) {
                 TXLivePushConfig config = mTxLivePusher.getConfig();
                 //设置推送到主播端的垫片--图片
@@ -1195,6 +1220,19 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             }
             is_open=!is_open;
         }
+    }
+
+    private void startChatActivity(String pusherId,String pusherNickname) {
+
+        ChatInfo chatInfo = new ChatInfo();
+        chatInfo.setType( V2TIMConversation.V2TIM_C2C);
+        chatInfo.setId(pusherId);
+        chatInfo.setChatName(pusherNickname);
+        Intent intent = new Intent(this, ChathelfActivity.class);
+        intent.putExtra(Constant.CHAT_INFO, chatInfo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
     }
 
     private void showLog() {

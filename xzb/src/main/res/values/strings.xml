@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">testlive</string>
     <string name="float_window_not_allow">悬浮窗权限未开启 请在应用-权限中打开悬浮窗权限</string>
-    <string name="dialog_input_text_hint">开启弹幕互动吧</string>
+    <string name="dialog_input_text_hint">发个弹幕互动吧</string>
     <string name="send">发送</string>
 
 

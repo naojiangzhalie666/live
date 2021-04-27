@@ -13,7 +13,7 @@ import android.widget.PopupWindow;
 
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
-import com.example.myapplication.pop_dig.ChathelfActivity;
+import com.example.myapplication.chat.ChatActivity;
 import com.example.myapplication.ui.MailListActivity;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.qcloud.tim.uikit.base.BaseFragment;
@@ -189,11 +189,11 @@ public class MessageFragment extends BaseFragment {
 
     private void startChatActivity(ConversationInfo conversationInfo) {
         ChatInfo chatInfo = new ChatInfo();
-        chatInfo.setType(conversationInfo.isGroup() ? V2TIMConversation.V2TIM_GROUP : V2TIMConversation.V2TIM_C2C);
+        chatInfo.setType(V2TIMConversation.V2TIM_C2C);
         chatInfo.setId(conversationInfo.getId());
         chatInfo.setChatName(conversationInfo.getTitle());
-        Intent intent = new Intent(getActivity(), ChathelfActivity.class);
-//        Intent intent = new Intent(getActivity(), ChatActivity.class);
+//        Intent intent = new Intent(getActivity(), ChathelfActivity.class);
+        Intent intent = new Intent(getActivity(), ChatActivity.class);
         intent.putExtra(Constant.CHAT_INFO, chatInfo);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getActivity().startActivity(intent);

@@ -46,7 +46,6 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.ViewHolder> 
         Map<String, Object> bean = mLists.get(position);
         Glide.with(mContext).load(R.drawable.ruzhu_bg).apply(new RequestOptions().circleCrop()).into(vh.mItemTimesImg);
         vh.mItemTimesName.setText("王大拿" + position);
-        vh.mItemTimesNum.setText("" + position);
         vh.mItemTimesContent.setText((position+1)+"分钟疏解");
         boolean select = (boolean) bean.get("select");
         vh.mItemTimesContent.setBackgroundResource(select?R.drawable.mine_grad:R.drawable.bg_circle_gray);
@@ -76,8 +75,6 @@ public class TimesAdapter extends RecyclerView.Adapter<TimesAdapter.ViewHolder> 
         ImageView mItemTimesImg;
         @BindView(R.id.item_times_name)
         TextView mItemTimesName;
-        @BindView(R.id.item_times_num)
-        TextView mItemTimesNum;
         @BindView(R.id.item_times_content)
         TextView mItemTimesContent;
 

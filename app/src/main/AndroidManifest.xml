@@ -24,8 +24,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".pop_dig.ChathelfActivity"
-            android:theme="@style/ActivityDialog_helf"></activity>
+        <activity android:name=".pop_dig.MeslistActivity"
+            android:theme="@style/ActivityDialog_helf" ></activity>
+        <activity
+            android:name=".pop_dig.ChathelfActivity"
+            android:theme="@style/ActivityDialog_helf" />
         <activity android:name=".ui.HelpabackActivity" />
         <activity
             android:name=".pop_dig.ReportActivity"
@@ -38,7 +41,9 @@
         <activity android:name=".live.LiveActivity" />
         <activity android:name=".ui.MailListActivity" />
         <activity android:name=".ui.IncomeDetailActivity" />
-        <activity android:name=".ui.WithdrawalActivity" />
+        <activity
+            android:name=".ui.WithdrawalActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.ShowGoodsActivity"
             android:screenOrientation="portrait"

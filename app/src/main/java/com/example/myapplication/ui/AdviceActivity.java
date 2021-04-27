@@ -1,6 +1,7 @@
 package com.example.myapplication.ui;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.WalletAdapter;
+import com.example.myapplication.pop_dig.BuyzDialog;
 import com.example.myapplication.pop_dig.ShimDialog;
 import com.example.myapplication.utils.datepicker.CustomDatePicker;
 import com.example.myapplication.utils.datepicker.DateFormatUtils;
@@ -78,6 +80,11 @@ public class AdviceActivity extends BaseActivity {
     private List<Map<String,Object>> mStringList;
     private WalletAdapter mWalletAdapter;
 
+    private List<Map<String,Object>> mBuy_strs;
+    private BuyzDialog mBuyzDialog;
+    private int mIndex;
+    private boolean is_firstin = true;
+
 
     @Override
     public int getContentLayoutId() {
@@ -119,6 +126,26 @@ public class AdviceActivity extends BaseActivity {
                 mWalletAdapter.notifyItemChanged(pos);
             }
         });
+        mBuy_strs = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            Map<String,Object> map =new HashMap<>();
+            map.put("select",false);
+            mBuy_strs.add(map);
+        }
+        mBuyzDialog = new BuyzDialog(this,mBuy_strs);
+        Intent intent = getIntent();
+        if(intent!=null){
+            mIndex = intent.getIntExtra("index", 0);
+            if(mIndex == 1){
+                mAdviceZuans.setTextColor(getResources().getColor(R.color.white));
+                mAdviceChongzhi.setVisibility(View.INVISIBLE);
+                mAdviceConMoney.setVisibility(View.VISIBLE);
+                mAdviceContent.setText("累计收入（元）");
+                mAdviceNum.setText("2141.22");
+                mAdviceConBtmoney.setVisibility(View.VISIBLE);
+                mAdviceConBtzuanshi.setVisibility(View.GONE);
+            }
+        }
 
     }
 
@@ -130,6 +157,7 @@ public class AdviceActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.advice_chongzhi:
+                mBuyzDialog.show();
                 break;
             case R.id.normal_sttm:
                 showDateDialog(mNormalSttm, "2000-01-01 00:00:00", mNormalEdtm.getText().toString() + " 23:59:59");
@@ -220,5 +248,15 @@ public class AdviceActivity extends BaseActivity {
         customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : mtv.getText().toString());
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(is_firstin){
+            if(mIndex == 1){
+                toGoAnima(mAdviceMoney);
+            }
+            is_firstin = false;
+        }
 
+    }
 }

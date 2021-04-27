@@ -97,9 +97,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public void onPageScrollStateChanged(int state) {
 
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void getEventMsgt(EventMessage msg){
-        mPager.setCurrentItem(1);
+    public void getEventMsgt(EventMessage msg) {
+        if (msg.getMessage().equals("ever") || (msg.getMessage().equals("pipei")))
+            mPager.setCurrentItem(1);
     }
 
     long stT = 0;

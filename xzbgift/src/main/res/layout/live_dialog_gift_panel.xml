@@ -24,12 +24,13 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_toLeftOf="@+id/gift_zhinan"
             android:layout_marginLeft="14dp"
             android:max="100"
+            android:progressDrawable="@drawable/pb_pd_sp_blog"
             android:background="@drawable/bg_white"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/gift_head"
@@ -52,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/progressBar"
             android:layout_alignParentRight="true"
+            android:visibility="invisible"
             android:layout_marginTop="5dp"
             android:text="升级指南?"
             android:textColor="#F7D4B6"

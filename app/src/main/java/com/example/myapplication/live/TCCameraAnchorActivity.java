@@ -1,8 +1,6 @@
 package com.example.myapplication.live;
 
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -16,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.pop_dig.BaseDialog;
+import com.example.myapplication.pop_dig.MeslistActivity;
 import com.example.myapplication.pop_dig.OnlineDialog;
 import com.example.myapplication.ui.LookPersonActivity;
 import com.example.xzb.R;
@@ -324,27 +324,21 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
 
     @Override
     public void onRequestJoinAnchor(final AnchorInfo pusherInfo, String reason) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setMessage(pusherInfo.userName + "向您发起连麦请求")
-                .setPositiveButton("接受", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mLiveRoom.responseJoinAnchor(pusherInfo.userID, true, "");
-                        dialog.dismiss();
-                        mPendingRequest = false;
-                        sendContactMsg(true,pusherInfo.userID);
-                    }
-                })
-                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mLiveRoom.responseJoinAnchor(pusherInfo.userID, false, "主播拒绝了您的连麦请求");
-                        dialog.dismiss();
-                        mPendingRequest = false;
-                    }
-                });
+        BaseDialog dig = new BaseDialog.BaseBuild().setSure("接受").setCancel("拒绝").setTitle(pusherInfo.userName + "向您发起连麦请求").build(this);
+        dig.setOnItemClickListener(new BaseDialog.OnItemClickListener() {
+            @Override
+            public void onSureClickListener() {
+                mLiveRoom.responseJoinAnchor(pusherInfo.userID, true, "");
+                mPendingRequest = false;
+                sendContactMsg(true,pusherInfo.userID);
+            }
+
+            @Override
+            public void onCancelClickListener() {
+                mLiveRoom.responseJoinAnchor(pusherInfo.userID, false, "主播拒绝了您的连麦请求");
+                mPendingRequest = false;
+            }
+        });
 
         mMainHandler.post(new Runnable() {
             @Override
@@ -358,18 +352,13 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                     mLiveRoom.responseJoinAnchor(pusherInfo.userID, false, "主播端连麦人数超过最大限制");
                     return;
                 }
-
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.setCancelable(false);
-                alertDialog.setCanceledOnTouchOutside(false);
-                alertDialog.show();
-
+                dig.show();
                 mPendingRequest = true;
 
                 mMainHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        alertDialog.dismiss();
+                        dig.dismiss();
                         mPendingRequest = false;
                     }
                 }, 10000);
@@ -513,7 +502,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         } else if (id == R.id.camera_car) {
             startActivity(new Intent(this, LookPersonActivity.class));//咨询师页面
         } else if (id == R.id.camera_siliao) {
-            ToastUtil.showToast(this, "进行私聊");
+            startActivity(new Intent(this, MeslistActivity.class));
         } else if (id == R.id.btn_share) {
             ToastUtil.showToast(this, "进行分享");
         } else {

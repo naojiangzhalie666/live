@@ -48,9 +48,9 @@ public class TCInputTextMsgDialog extends Dialog {
         super(context, theme);
         mContext = context;
         setContentView(R.layout.dialog_input_text);
-
         messageTextView = (EditText) findViewById(R.id.et_input_message);
         messageTextView.setInputType(InputType.TYPE_CLASS_TEXT);
+        messageTextView.requestFocus();
         //修改下划线颜色
         messageTextView.getBackground().setColorFilter(context.getResources().getColor(R.color.transparent), PorterDuff.Mode.CLEAR);
 
