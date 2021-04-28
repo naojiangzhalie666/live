@@ -14,5 +14,6 @@
     <color name="live_color_light_red_transform">#CC5353</color>
     <color name="live_color_light_red">#FF5353</color>
     <color name="live_color_line">#FFE5E5E5</color>
+    <color name="dig_red">#FE3930</color>
 
 </resources>

@@ -32,6 +32,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.bean.EventMessage;
+import com.example.myapplication.pop_dig.BaseDialog;
 import com.example.myapplication.pop_dig.BuyzDialog;
 import com.example.myapplication.pop_dig.CarDialog;
 import com.example.myapplication.pop_dig.ChathelfActivity;
@@ -179,7 +180,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     /*---------------布局新增数据---------------------------*/
     private BroadcastTimerTask mBroadcastTimerTask;    // 定时任务
     protected long mSecond = 0;            // 连麦的时间，单位为秒
-    protected long mLeft_second = 3600;
+    protected long mLeft_second = 70;
     private Timer mBroadcastTimer;        // 定时的 Timer
     private TextView mtv_name, mtv_gg, mtv_id, mtv_date, mtv_jg, mtv_title, mtv_ctcTm, mtv_ctcleftTm;
     private LinearLayout ll_conline;//连麦时上面的布局展示--连麦时间、剩余可用时间
@@ -200,6 +201,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private int now_zuanshi = 500;
     private TXLivePusher mTxLivePusher;
     private boolean is_open  = true;
+    private BaseDialog mBaseDialog;
 
 
 
@@ -1410,6 +1412,23 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 public void run() {
                     mtv_ctcTm.setText(TCUtils.formattedTime(mSecond));
                     mtv_ctcleftTm.setText(TCUtils.duration((mLeft_second - mSecond) * 1000));
+                    if(mLeft_second - mSecond==60) {
+                        mBaseDialog = new BaseDialog.BaseBuild().setCancel("取消").setSure("去充值").setTitle("一分钟后疏解中断,请立即续费").build(TCAudienceActivity.this);
+                        mBaseDialog.setOnItemClickListener(new BaseDialog.OnItemClickListener() {
+                            @Override
+                            public void onSureClickListener() {
+                                mBuyzDialog.show();
+                            }
+
+                            @Override
+                            public void onCancelClickListener() {
+
+                            }
+                        });
+                        mBaseDialog.show();
+                    }else{
+
+                    }
                 }
             });
         }

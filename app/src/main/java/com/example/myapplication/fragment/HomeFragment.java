@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.HomeAdapter;
 import com.example.myapplication.base.LiveApplication;
+import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.live.TCAudienceActivity;
 import com.example.myapplication.live.TCCameraAnchorActivity;
 import com.example.myapplication.ui.FindActivity;
@@ -36,6 +37,10 @@ import com.tencent.liteav.login.ProfileManager;
 import com.tencent.liteav.login.UserModel;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -86,6 +91,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        EventBus.getDefault().register(this);
         init();
     }
 
@@ -204,7 +210,7 @@ public class HomeFragment extends Fragment {
                             mLists.addAll((ArrayList<TCVideoInfo>) result.clone());
                         }
                         if (refresh) {
-                            mHomeAdapter.notifyDataSetChanged();
+                            mHomeAdapter.setLists(mLists);
                         }
                     } else {
                         Toast.makeText(getActivity(), "刷新列表失败", Toast.LENGTH_LONG).show();
@@ -321,5 +327,22 @@ public class HomeFragment extends Fragment {
         } else {
             loginMLVB();
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMsg(EventMessage msg){
+        if(msg.getMessage().equals("fresh_home")){
+            if (Constantc.mlvb_login) {
+                getLiveData();
+            } else {
+                loginMLVB();
+            }
+        }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

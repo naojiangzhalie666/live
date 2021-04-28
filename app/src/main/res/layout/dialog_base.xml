@@ -11,8 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="@dimen/dp_10"
+        android:padding="@dimen/dp_16"
         android:textColor="@color/black_oneeight"
+        android:textSize="12sp"
         tools:text="一分钟后疏解中断，请立即续费" />
 
     <View
@@ -28,23 +29,22 @@
         android:padding="@dimen/dp_15"
         android:text="确定"
         android:textColor="#FE3930"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_3"
-        android:layout_marginLeft="@dimen/dp_8"
-        android:layout_marginRight="@dimen/dp_8"
+        android:layout_height="@dimen/dp_6"
         android:background="@color/ftwo" />
 
     <TextView
         android:id="@+id/dig_logout_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp_15"
+        android:paddingBottom="@dimen/dp_30"
         android:gravity="center"
-        android:padding="@dimen/dp_15"
         android:text="取消"
-        android:textColor="@color/nineninenine"
-        android:textSize="16sp" />
+        android:textColor="@color/black_oneeight"
+        android:textSize="15sp" />
 
 </LinearLayout>

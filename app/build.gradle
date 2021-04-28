@@ -4,6 +4,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('D:\\live.jks')
+            storePassword '123456'
+            keyAlias = 'live'
+            keyPassword '123456'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
@@ -44,6 +52,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -72,4 +83,5 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.2'
     implementation project(path: ':xzb')
     implementation 'com.belerweb:pinyin4j:2.5.1'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 }

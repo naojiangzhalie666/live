@@ -51,6 +51,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return vh;
     }
 
+    public void setLists(List<TCVideoInfo> lists) {
+        mLists = lists;
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
         if (position != mLists.size()) {

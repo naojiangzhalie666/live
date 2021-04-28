@@ -14,7 +14,7 @@ public class GeneralConfig {
     private int audioRecordMaxTime = DEFAULT_AUDIO_RECORD_MAX_TIME;
     private int videoRecordMaxTime = DEFAULT_VIDEO_RECORD_MAX_TIME;
     private int logLevel = V2TIMSDKConfig.V2TIM_LOG_DEBUG;
-    private boolean enableLogPrint = true;
+    private boolean enableLogPrint = false;
     private boolean showRead = false;
     private boolean testEnv = false;
     private int sdkAppId = 0;

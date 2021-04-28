@@ -6,6 +6,11 @@
     <string name="mine_guanzhu"><![CDATA[我关注的&关注我的]]></string>
     <string name="level"><![CDATA[等级&特权]]></string>
     <string name="follow_title"><![CDATA[我的关注&粉丝]]></string>
+    <string name="errcode_success">发送成功</string>
+    <string name="errcode_cancel">发送取消</string>
+    <string name="errcode_deny">发送被拒绝</string>
+    <string name="errcode_unsupported">不支持错误</string>
+    <string name="errcode_unknown">发送返回</string>
 
     <!--dataPick-->
     <string name="cancel">取消</string>

@@ -1,6 +1,7 @@
 package com.example.myapplication.ui;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.View;
@@ -8,15 +9,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.bean.LoginBean;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
 import com.example.xzb.Constantc;
 import com.example.xzb.utils.TCConstants;
 import com.example.xzb.utils.login.TCUserMgr;
+import com.google.gson.Gson;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.ShareUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tencent.liteav.AVCallManager;
 import com.tencent.liteav.login.ProfileManager;
 import com.tencent.liteav.login.UserModel;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 
@@ -31,6 +37,8 @@ import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.example.myapplication.base.LiveApplication.api;
 
 public class LoginActivity extends BaseActivity {
 
@@ -60,18 +68,18 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_loginthis:
-                ShareUtil.getInstance(this).put("power",0);//普通
+              /*  ShareUtil.getInstance(this).put("power",0);//普通
+                thisLogin();*/
+                ShareUtil.getInstance(this).put("power",1);//咨询师
                 thisLogin();
+                login("liangtiandong", "123456","");
                 break;
             case R.id.login_loginother:
                 ToastShow("其它手机号登录");
                 statActivity(BindPhoneActivity.class);
-                finish();
                 break;
             case R.id.ll_wx:
-                ShareUtil.getInstance(this).put("power",1);//咨询师
-                thisLogin();
-                ToastShow("微信登录");
+                loginWx();
                 break;
             case R.id.login_rela:
                 if(mLoginImgv.getVisibility() == View.VISIBLE){
@@ -81,6 +89,42 @@ public class LoginActivity extends BaseActivity {
                 }
 
                 break;
+        }
+    }
+
+    private void login(String name,String pwd,String type){
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().login(name,pwd,type), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                LoginBean loginBean = new Gson().fromJson(result.toString(),LoginBean.class);
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+
+            }
+        });
+    }
+
+    private void loginWx(){
+       SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "live_login_request_please";
+        api.sendReq(req);
+
+    }
+    private String user_openId, accessToken;
+    private boolean is_wechat;
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        is_wechat= intent.getBooleanExtra("wechat",false);
+        user_openId = intent.getStringExtra("openId");
+        accessToken = intent.getStringExtra("accessToken");
+        if(is_wechat){
+            login(user_openId,accessToken,"");
         }
     }
 

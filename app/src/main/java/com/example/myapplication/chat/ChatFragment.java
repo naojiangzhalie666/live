@@ -204,17 +204,6 @@ public class ChatFragment extends BaseFragment {
                 getActivity().finish();
             }
         });
-        if (mChatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
-            mTitleBar.setOnRightClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Intent intent = new Intent(getActivity(), FriendProfileActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    intent.putExtra(TUIKitConstants.ProfileType.CONTENT, mChatInfo);
-//                    DemoApplication.instance().startActivity(intent);
-                }
-            });
-        }
         mChatLayout.getMessageLayout().setOnItemClickListener(new MessageLayout.OnItemClickListener() {
             @Override
             public void onMessageLongClick(View view, int position, MessageInfo messageInfo) {

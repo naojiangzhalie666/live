@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.pop_dig.GuanzDialog;
 import com.example.myapplication.pop_dig.ReportActivity;
 import com.example.xzb.R;
@@ -62,6 +63,7 @@ import com.yf.xzbgift.imple.GiftInfoDataHandler;
 import com.yf.xzbgift.important.GiftAnimatorLayout;
 import com.yf.xzbgift.important.GiftInfo;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -437,6 +439,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     }
 
     protected void stopPublish() {
+        EventBus.getDefault().post(new EventMessage("fresh_home"));
         mLiveRoom.exitRoom(new ExitRoomCallback() {
             @Override
             public void onSuccess() {
