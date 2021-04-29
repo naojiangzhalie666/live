@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.VpAdapter;
+import com.example.myapplication.base.Constant;
 import com.example.myapplication.pop_dig.CodeDialog;
 import com.example.myapplication.pop_dig.LogoutDialog;
 import com.example.myapplication.ui.AdviceActivity;
@@ -21,9 +22,10 @@ import com.example.myapplication.ui.LookPersonActivity;
 import com.example.myapplication.ui.MailListActivity;
 import com.example.myapplication.ui.MybackpActivity;
 import com.example.myapplication.ui.NormalActivity;
+import com.example.myapplication.ui.OranizeActivity;
 import com.example.myapplication.ui.SetActivity;
 import com.example.myapplication.ui.SetInActivity;
-import com.superc.yyfflibrary.utils.ShareUtil;
+import com.example.myapplication.utils.LiveShareUtil;
 import com.superc.yyfflibrary.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -146,7 +148,16 @@ public class MineFragment extends Fragment {
                 startActivity(new Intent(getActivity(), HelpabackActivity.class));
                 break;
             case R.id.mine_edt:
-                startActivity(new Intent(getActivity(), LookPersonActivity.class));//咨询师页面
+                Intent intent = null;
+                if (mPower == Constant.POWER_ZIXUNSHI) {//咨询师
+                    intent= new Intent(getActivity(), LookPersonActivity.class);
+                    intent.putExtra("is_user",false);
+                    startActivity(intent);
+                } else {//咨询机构--子咨询师
+                    intent = new Intent(getActivity(), OranizeActivity.class);
+                    intent.putExtra("is_user",mPower == Constant.POWER_ZIXUNJIGOU?false:true);
+                    startActivity(intent);
+                }
                 break;
             case R.id.mine_ruzhu:
                 startActivity(new Intent(getActivity(), SetInActivity.class));
@@ -156,7 +167,7 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.mine_zuanshi:
             case R.id.textView14:
-                if (mPower == 0) {//普通
+                if (mPower == Constant.POWER_NORMAL) {//普通
                     startActivity(new Intent(getActivity(), NormalActivity.class));
                 } else {//咨询师/机构
                     startActivity(new Intent(getActivity(), AdviceActivity.class));
@@ -164,9 +175,9 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.mine_money_tv:
             case R.id.textView16:
-                Intent intent = new Intent(getActivity(),AdviceActivity.class);
-                intent.putExtra("index",1);
-                startActivity(intent);
+                Intent intent_ad = new Intent(getActivity(),AdviceActivity.class);
+                intent_ad.putExtra("index",1);
+                startActivity(intent_ad);
                 break;
         }
     }
@@ -176,13 +187,13 @@ public class MineFragment extends Fragment {
         mCodeDialog = new CodeDialog(getActivity());
         mFragments = new ArrayList<>();
         mXfFragment = new XfFragment();
-        mPower = (int) ShareUtil.getInstance(getActivity()).get("power", 0);
-        if (mPower == 0) {//普通
+        mPower =LiveShareUtil.getInstance(getActivity()).getPower();
+        if (mPower == Constant.POWER_NORMAL) {//普通
             mMineEdt.setVisibility(View.GONE);
             mMineEdtline.setVisibility(View.GONE);
             mFragments.add(mXfFragment);
             mMineConsMoney.setVisibility(View.GONE);
-        } else {//咨询师
+        } else {
             mFwFragment = new FwFragment();
             mMineRuzhu.setVisibility(View.GONE);
             mMineConsMoney.setVisibility(View.VISIBLE);

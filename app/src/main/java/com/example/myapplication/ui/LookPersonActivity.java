@@ -7,15 +7,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.PersonImageAdapter;
 import com.example.myapplication.adapter.PersonOneAdapter;
 import com.example.myapplication.adapter.PersonTwoAdapter;
+import com.example.myapplication.base.Constant;
 import com.example.myapplication.pop_dig.BtPopupWindow;
 import com.example.myapplication.pop_dig.ReportActivity;
 import com.example.myapplication.pop_dig.ReportDialog;
+import com.example.myapplication.pop_dig.ShareDialog;
 import com.example.myapplication.utils.GlideEngine;
+import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.TitleUtils;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.animators.AnimationType;
@@ -25,6 +29,11 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnItemClickListener;
 import com.luck.picture.lib.tools.SdkVersionUtils;
 import com.superc.yyfflibrary.base.BaseActivity;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +51,7 @@ public class LookPersonActivity extends BaseActivity {
     @BindView(R.id.personal_head)
     ImageView mPersonalHead;
     @BindView(R.id.personal_name)
-    TextView mPersonalName;
+    EditText mPersonalName;
     @BindView(R.id.personal_jigou)
     TextView mPersonalJigou;
     @BindView(R.id.personal_id)
@@ -75,7 +84,7 @@ public class LookPersonActivity extends BaseActivity {
     TextView mPersonalBtTalk;
     @BindView(R.id.personal_thiredrecy)
     RecyclerView mPersonalThiredrecy;
-   @BindView(R.id.personal_more)
+    @BindView(R.id.personal_more)
     ImageView mPersonalThireDd;
 
 
@@ -90,10 +99,12 @@ public class LookPersonActivity extends BaseActivity {
     private List<Map<String, Object>> mStr_noSelects;
     private PersonTwoAdapter mPersonTwoAdapter;
 
-    private boolean is_user = false;
+    private ShareDialog mShareDialog;
+    private boolean is_user = true;
     private BtPopupWindow mBtPopupWindow;
     private ReportDialog mReportDialog;
     public static final int SELECT_ZZ = 113;
+    private int mPower;
 
 
     @Override
@@ -105,20 +116,43 @@ public class LookPersonActivity extends BaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
+        initShare();
         mBtPopupWindow = new BtPopupWindow(this);
         mReportDialog = new ReportDialog(this);
         mPersonalName.setText("角色经历多空");
+        mPersonalName.setEnabled(false);
         mPersonalJigou.setText("送到家里的思考");
         mPersonalId.setText("ID:1234123");
         mPersonalGeren.setText("就离开公司打卡记录的是干嘛了咯我就饿哦圣诞节快乐开了家公司大家快来噶大师金克拉撒旦给");
         mPersonalGeren.setEnabled(false);
-        if (is_user) {
+        mPower = LiveShareUtil.getInstance(this).getPower();
+        Intent intent = getIntent();
+        if (intent != null) {
+            is_user = intent.getBooleanExtra("is_user", true);
+        }
+        if (is_user) {//不是自己身份点击过来的
             mPersonalOneedt.setVisibility(View.GONE);
             mPersonalTwoedt.setVisibility(View.GONE);
             mPersonalThreeedt.setVisibility(View.GONE);
             mPersonalFouredt.setVisibility(View.GONE);
             mPersonalBtShare.setVisibility(View.VISIBLE);
             mPersonalBtTalk.setVisibility(View.VISIBLE);
+        } else {//是自己身份点击过来的--且是咨询师
+            if (mPower == Constant.POWER_ZIXUNSHI) {
+                mPersonalOneedt.setVisibility(View.VISIBLE);
+                mPersonalTwoedt.setVisibility(View.VISIBLE);
+                mPersonalThreeedt.setVisibility(View.VISIBLE);
+                mPersonalFouredt.setVisibility(View.VISIBLE);
+                mPersonalBtShare.setVisibility(View.GONE);
+                mPersonalBtTalk.setVisibility(View.GONE);
+            } else {
+                mPersonalOneedt.setVisibility(View.GONE);
+                mPersonalTwoedt.setVisibility(View.GONE);
+                mPersonalThreeedt.setVisibility(View.GONE);
+                mPersonalFouredt.setVisibility(View.GONE);
+                mPersonalBtShare.setVisibility(View.VISIBLE);
+                mPersonalBtTalk.setVisibility(View.VISIBLE);
+            }
         }
 
         /*第一个横向列表*/
@@ -192,24 +226,29 @@ public class LookPersonActivity extends BaseActivity {
             @Override
             public void onItemClickListener(int pos) {
                 if (is_user) {
-                    ToastShow("进行询问");
+                    Intent intt = new Intent(LookPersonActivity.this, ShowGoodsActivity.class);
+                    intt.putExtra("is_user", is_user);
+                    startActivity(intt);//商品套餐页面
                 } else if (mPersonalFoursure.getVisibility() == View.VISIBLE) {
                     Map<String, Object> map = mStr_listtwos.get(pos);
                     boolean sel = (boolean) map.get("select");
                     map.put("select", !sel);
                     mPersonTwoAdapter.notifyItemChanged(pos);
+                }else if(mPersonalFouredt.getVisibility() ==View.VISIBLE){
+                    Intent intt = new Intent(LookPersonActivity.this, ShowGoodsActivity.class);
+                    intt.putExtra("is_user", is_user);
+                    startActivity(intt);//商品套餐页面
                 }
             }
         });
         mBtPopupWindow.setOnItemClickListener(new BtPopupWindow.OnItemClickListener() {
             @Override
             public void onRuzhuClickListener() {
-                ToastShow("申请入驻");
+                startActivity(new Intent(LookPersonActivity.this, SetInActivity.class));
             }
 
             @Override
             public void onJubaoClickListener() {
-//                mReportDialog.show();
                 startActivity(new Intent(LookPersonActivity.this, ReportActivity.class));
             }
         });
@@ -225,23 +264,23 @@ public class LookPersonActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.personal_more:
-                mBtPopupWindow.showAsDropDown(mPersonalThireDd,0,0);
+                mBtPopupWindow.showAsDropDown(mPersonalThireDd, 0, 0);
                 break;
             case R.id.look_btshare:
-
+                mShareDialog.show();
                 break;
             case R.id.look_bttalk:
-
+                ToastShow("进行私聊");
                 break;
             case R.id.personal_oneedt:
                 mPersonalOnesure.setVisibility(View.VISIBLE);
                 mPersonalOneedt.setVisibility(View.GONE);
-                ToastShow("个人可编辑");
+                mPersonalName.setEnabled(true);
                 break;
             case R.id.personal_onesure:
                 mPersonalOnesure.setVisibility(View.GONE);
                 mPersonalOneedt.setVisibility(View.VISIBLE);
-                ToastShow("个人不可编辑");
+                mPersonalName.setEnabled(false);
                 break;
             case R.id.showgoods_edt:
                 mPersonalTwosure.setVisibility(View.VISIBLE);
@@ -253,14 +292,12 @@ public class LookPersonActivity extends BaseActivity {
             case R.id.showgoods_edtsure:
                 mPersonalTwosure.setVisibility(View.GONE);
                 mPersonalTwoedt.setVisibility(View.VISIBLE);
-                ToastShow("相册不可编辑");
                 mPersonImageAdapter.setCan_caozuo(false);
                 mPersonImageAdapter.setShow_add(false);
                 break;
             case R.id.personal_threeedt:
                 mPersonalThreesure.setVisibility(View.VISIBLE);
                 mPersonalThreeedt.setVisibility(View.GONE);
-                ToastShow("简介可编辑");
                 mPersonalGeren.requestFocus();
                 mPersonalGeren.setEnabled(true);
                 mPersonalGeren.setSelection(mPersonalGeren.getText().toString().length());
@@ -268,13 +305,11 @@ public class LookPersonActivity extends BaseActivity {
             case R.id.personal_threesure:
                 mPersonalThreesure.setVisibility(View.GONE);
                 mPersonalThreeedt.setVisibility(View.VISIBLE);
-                ToastShow("简介不可编辑");
                 mPersonalGeren.setEnabled(false);
                 break;
             case R.id.personal_fouredt:
                 mPersonalFoursure.setVisibility(View.VISIBLE);
                 mPersonalFouredt.setVisibility(View.GONE);
-                ToastShow("服务项目可编辑");
                 mStr_listtwos.addAll(mStr_noSelects);
                 mPersonTwoAdapter.setIs_edt(true);
                 mPersonTwoAdapter.notifyDataSetChanged();
@@ -282,7 +317,6 @@ public class LookPersonActivity extends BaseActivity {
             case R.id.personal_foursure:
                 mPersonalFoursure.setVisibility(View.GONE);
                 mPersonalFouredt.setVisibility(View.VISIBLE);
-                ToastShow("服务项目不可编辑");
                 toGetFuwu();
                 break;
         }
@@ -355,4 +389,78 @@ public class LookPersonActivity extends BaseActivity {
             mPersonImageAdapter.notifyDataSetChanged();
         }
     }
+
+    private void initShare(){
+        mShareDialog = new ShareDialog(this);
+        UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");
+        web.setTitle("边框心理");//标题
+        web.setThumb(new UMImage(this, R.drawable.mine_live));  //缩略图
+        web.setDescription("my description");//描述
+
+        mShareDialog.setOnItemClickListener(new ShareDialog.OnItemClickListener() {
+            @Override
+            public void onWeQuanClickListener() {
+                new ShareAction(LookPersonActivity.this)
+                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)//传入平台
+                        .withMedia(web)
+                        .setCallback(shareListener)//回调监听器
+                        .share();
+            }
+
+            @Override
+            public void onWechatClickListener() {
+                new ShareAction(LookPersonActivity.this)
+                        .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
+                        .withMedia(web)
+                        .setCallback(shareListener)//回调监听器
+                        .share();
+            }
+
+            @Override
+            public void onWeiboClickListener() {
+//                new ShareAction(LookPersonActivity.this).withMedia(web).
+//                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE/*,SHARE_MEDIA.SINA, SHARE_MEDIA.QQ,*/).setCallback(shareListener).share();
+            }
+        });
+    }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        /**
+         * @descrption 分享开始的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+
+        }
+
+        /**
+         * @descrption 分享成功的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Toast.makeText(LookPersonActivity.this, "分享成功", Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享失败的回调
+         * @param platform 平台类型
+         * @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(LookPersonActivity.this, "分享失败" + t.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享取消的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(LookPersonActivity.this, "取消分享", Toast.LENGTH_LONG).show();
+
+        }
+    };
 }

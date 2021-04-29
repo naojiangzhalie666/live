@@ -65,6 +65,7 @@
         android:layout_height="0dp"
         android:background="@drawable/bg_corner_jig"
         android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/item_buy_con"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/item_buy_con"
@@ -72,8 +73,8 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
             android:drawableRight="@drawable/mine_next"
             android:drawablePadding="@dimen/dp_9"
             android:gravity="center"

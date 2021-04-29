@@ -48,5 +48,9 @@
     <string name="new_msg">收到一条新消息</string>
     <string name="call_nos">通话失去响应</string>
 
+    <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
+    <string name="app_tip">提示</string>
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+
 
 </resources>

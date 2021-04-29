@@ -7,13 +7,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.PersonImageAdapter;
 import com.example.myapplication.adapter.PersonTwoAdapter;
 import com.example.myapplication.adapter.PersonjgImageAdapter;
+import com.example.myapplication.base.Constant;
 import com.example.myapplication.bean.JgBean;
+import com.example.myapplication.pop_dig.ShareDialog;
 import com.example.myapplication.utils.GlideEngine;
+import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.MyLinearLayoutManager;
 import com.example.myapplication.utils.TitleUtils;
 import com.luck.picture.lib.PictureSelector;
@@ -24,12 +28,18 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnItemClickListener;
 import com.luck.picture.lib.tools.SdkVersionUtils;
 import com.superc.yyfflibrary.base.BaseActivity;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -41,9 +51,9 @@ public class OranizeActivity extends BaseActivity {
     @BindView(R.id.personal_head)
     ImageView mPersonalHead;
     @BindView(R.id.personal_name)
-    TextView mPersonalName;
+    EditText mPersonalName;
     @BindView(R.id.personal_jigou)
-    TextView mPersonalJigou;
+    EditText mPersonalJigou;
     @BindView(R.id.personal_id)
     TextView mPersonalId;
     @BindView(R.id.personal_oneedt)
@@ -76,18 +86,22 @@ public class OranizeActivity extends BaseActivity {
     TextView mPersonalFivesure;
     @BindView(R.id.personal_photorecy)
     RecyclerView mPersonalPhotorecy;
+    @BindView(R.id.con_user)
+    ConstraintLayout mCons_bt;
 
-    private boolean is_user = false;
+    private boolean is_user = true;
     private List<JgBean> mLocalMedias;
     private List<LocalMedia> mLocalMedias_bt;
     private PersonjgImageAdapter mPersonImageAdapter;
     private PersonImageAdapter mPersonImageAdapter_bt;
 
+    private ShareDialog mShareDialog;
     private List<Map<String, Object>> mStr_listtwos;
     private List<Map<String, Object>> mStr_noSelects;
     private PersonTwoAdapter mPersonTwoAdapter;
     public static final int SELECT_ONE = 113;
     public static final int SELECT_TWO = 112;
+    private int mPower;
 
 
     @Override
@@ -99,17 +113,40 @@ public class OranizeActivity extends BaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
+        initShare();
         mPersonalName.setText("角色经历多空");
+        mPersonalName.setEnabled(false);
         mPersonalJigou.setText("送到家里的思考");
+        mPersonalJigou.setEnabled(false);
         mPersonalId.setText("ID:213412");
         mPersonalGeren.setText("都回家啦会计岗位nowie投了几个啦圣诞节；啊");
         mPersonalGeren.setEnabled(false);
-        if (is_user) {
+        mPower = LiveShareUtil.getInstance(this).getPower();
+        Intent intent = getIntent();
+        if (intent != null) {
+            is_user = intent.getBooleanExtra("is_user", true);
+        }
+        if (is_user) {//不是自己身份点击过来的
             mPersonalOneedt.setVisibility(View.GONE);
             mPersonalTwoedt.setVisibility(View.GONE);
             mPersonalThreeedt.setVisibility(View.GONE);
             mPersonalFouredt.setVisibility(View.GONE);
             mPersonalFiveedt.setVisibility(View.GONE);
+            mCons_bt.setVisibility(View.VISIBLE);
+        } else {//是自己身份点击过来的--且为咨询机构可修改
+            if (mPower == Constant.POWER_ZIXUNJIGOU) {
+                mPersonalOneedt.setVisibility(View.VISIBLE);
+                mPersonalTwoedt.setVisibility(View.VISIBLE);
+                mPersonalThreeedt.setVisibility(View.VISIBLE);
+                mPersonalFouredt.setVisibility(View.VISIBLE);
+                mPersonalFiveedt.setVisibility(View.VISIBLE);
+            } else {
+                mPersonalOneedt.setVisibility(View.GONE);
+                mPersonalTwoedt.setVisibility(View.GONE);
+                mPersonalThreeedt.setVisibility(View.GONE);
+                mPersonalFouredt.setVisibility(View.GONE);
+                mPersonalFiveedt.setVisibility(View.GONE);
+            }
         }
         /*第一个横向咨询师列表*/
         mLocalMedias = new ArrayList<>();
@@ -154,12 +191,18 @@ public class OranizeActivity extends BaseActivity {
             @Override
             public void onItemClickListener(int pos) {
                 if (is_user) {
-                    ToastShow("进行询问");
+                    Intent intt = new Intent(OranizeActivity.this, ShowGoodsActivity.class);
+                    intt.putExtra("is_user", is_user);
+                    startActivity(intt);//商品套餐页面
                 } else if (mPersonalFoursure.getVisibility() == View.VISIBLE) {
                     Map<String, Object> map = mStr_listtwos.get(pos);
                     boolean sel = (boolean) map.get("select");
                     map.put("select", !sel);
                     mPersonTwoAdapter.notifyItemChanged(pos);
+                }else if(mPersonalFouredt.getVisibility() ==View.VISIBLE){
+                    Intent intt = new Intent(OranizeActivity.this, ShowGoodsActivity.class);
+                    intt.putExtra("is_user", is_user);
+                    startActivity(intt);//商品套餐页面
                 }
             }
         });
@@ -194,43 +237,47 @@ public class OranizeActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.personal_back, R.id.personal_share, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt, R.id.personal_threesure, R.id.personal_fouredt, R.id.personal_foursure, R.id.personal_fiveedt, R.id.personal_fivesure})
+    @OnClick({R.id.personal_back, R.id.personal_share, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt,
+            R.id.personal_threesure, R.id.personal_fouredt, R.id.personal_foursure, R.id.personal_fiveedt, R.id.personal_fivesure, R.id.look_btshare, R.id.look_bttalk})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.personal_back:
                 finish();
                 break;
             case R.id.personal_share:
-                ToastShow("进行分享");
+            case R.id.look_btshare:
+                mShareDialog.show();
+                break;
+            case R.id.look_bttalk:
+                ToastShow("跳转私聊");
                 break;
             case R.id.personal_oneedt:
                 mPersonalOnesure.setVisibility(View.VISIBLE);
                 mPersonalOneedt.setVisibility(View.GONE);
-                ToastShow("个人可编辑");
+                mPersonalName.setEnabled(true);
+                mPersonalJigou.setEnabled(true);
                 break;
             case R.id.personal_onesure:
                 mPersonalOnesure.setVisibility(View.GONE);
                 mPersonalOneedt.setVisibility(View.VISIBLE);
-                ToastShow("个人不可编辑");
+                mPersonalName.setEnabled(false);
+                mPersonalJigou.setEnabled(false);
                 break;
             case R.id.showgoods_edt:
                 mPersonalTwosure.setVisibility(View.VISIBLE);
                 mPersonalTwoedt.setVisibility(View.GONE);
-                ToastShow("相册可编辑");
                 mPersonImageAdapter.setShow_add(true);
                 mPersonImageAdapter.setCan_caozuo(true);
                 break;
             case R.id.showgoods_edtsure:
                 mPersonalTwosure.setVisibility(View.GONE);
                 mPersonalTwoedt.setVisibility(View.VISIBLE);
-                ToastShow("相册不可编辑");
                 mPersonImageAdapter.setShow_add(false);
                 mPersonImageAdapter.setCan_caozuo(false);
                 break;
             case R.id.personal_threeedt:
                 mPersonalThreesure.setVisibility(View.VISIBLE);
                 mPersonalThreeedt.setVisibility(View.GONE);
-                ToastShow("简介可编辑");
                 mPersonalGeren.requestFocus();
                 mPersonalGeren.setEnabled(true);
                 mPersonalGeren.setSelection(mPersonalGeren.getText().toString().length());
@@ -238,13 +285,11 @@ public class OranizeActivity extends BaseActivity {
             case R.id.personal_threesure:
                 mPersonalThreesure.setVisibility(View.GONE);
                 mPersonalThreeedt.setVisibility(View.VISIBLE);
-                ToastShow("简介不可编辑");
                 mPersonalGeren.setEnabled(false);
                 break;
             case R.id.personal_fouredt:
                 mPersonalFoursure.setVisibility(View.VISIBLE);
                 mPersonalFouredt.setVisibility(View.GONE);
-                ToastShow("服务项目可编辑");
                 mStr_listtwos.addAll(mStr_noSelects);
                 mPersonTwoAdapter.setIs_edt(true);
                 mPersonTwoAdapter.notifyDataSetChanged();
@@ -252,20 +297,17 @@ public class OranizeActivity extends BaseActivity {
             case R.id.personal_foursure:
                 mPersonalFoursure.setVisibility(View.GONE);
                 mPersonalFouredt.setVisibility(View.VISIBLE);
-                ToastShow("服务项目不可编辑");
                 toGetFuwu();
                 break;
             case R.id.personal_fiveedt:
                 mPersonalFivesure.setVisibility(View.VISIBLE);
                 mPersonalFiveedt.setVisibility(View.GONE);
-                ToastShow("相册可编辑");
                 mPersonImageAdapter_bt.setShow_add(true);
                 mPersonImageAdapter_bt.setCan_caozuo(true);
                 break;
             case R.id.personal_fivesure:
                 mPersonalFivesure.setVisibility(View.GONE);
                 mPersonalFiveedt.setVisibility(View.VISIBLE);
-                ToastShow("相册不可编辑");
                 mPersonImageAdapter_bt.setShow_add(false);
                 mPersonImageAdapter_bt.setCan_caozuo(false);
                 break;
@@ -422,5 +464,80 @@ public class OranizeActivity extends BaseActivity {
         }
         return selectList;
     }
+
+    private void initShare() {
+        mShareDialog = new ShareDialog(this);
+        UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");
+        web.setTitle("边框心理");//标题
+        web.setThumb(new UMImage(this, R.drawable.mine_live));  //缩略图
+        web.setDescription("my description");//描述
+
+        mShareDialog.setOnItemClickListener(new ShareDialog.OnItemClickListener() {
+            @Override
+            public void onWeQuanClickListener() {
+                new ShareAction(OranizeActivity.this)
+                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)//传入平台
+                        .withMedia(web)
+                        .setCallback(shareListener)//回调监听器
+                        .share();
+            }
+
+            @Override
+            public void onWechatClickListener() {
+                new ShareAction(OranizeActivity.this)
+                        .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
+                        .withMedia(web)
+                        .setCallback(shareListener)//回调监听器
+                        .share();
+            }
+
+            @Override
+            public void onWeiboClickListener() {
+//                new ShareAction(LookPersonActivity.this).withMedia(web).
+//                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE/*,SHARE_MEDIA.SINA, SHARE_MEDIA.QQ,*/).setCallback(shareListener).share();
+            }
+        });
+    }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        /**
+         * @descrption 分享开始的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+
+        }
+
+        /**
+         * @descrption 分享成功的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Toast.makeText(OranizeActivity.this, "分享成功", Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享失败的回调
+         * @param platform 平台类型
+         * @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(OranizeActivity.this, "分享失败" + t.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享取消的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(OranizeActivity.this, "取消分享", Toast.LENGTH_LONG).show();
+
+        }
+    };
+
 
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.HomeAdapter;
+import com.example.myapplication.base.Constant;
 import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.live.TCAudienceActivity;
@@ -22,6 +23,7 @@ import com.example.myapplication.ui.FindActivity;
 import com.example.myapplication.ui.LookPersonActivity;
 import com.example.myapplication.ui.OranizeActivity;
 import com.example.myapplication.ui.ShowGoodsActivity;
+import com.example.myapplication.utils.LiveShareUtil;
 import com.example.xzb.Constantc;
 import com.example.xzb.utils.TCConstants;
 import com.example.xzb.utils.login.TCUserMgr;
@@ -31,7 +33,6 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
-import com.superc.yyfflibrary.utils.ShareUtil;
 import com.tencent.liteav.AVCallManager;
 import com.tencent.liteav.login.ProfileManager;
 import com.tencent.liteav.login.UserModel;
@@ -118,10 +119,10 @@ public class HomeFragment extends Fragment {
 
 
     private void init() {
-        mPower = (int) ShareUtil.getInstance(getActivity()).get("power", 0);
-        if (mPower == 0) {//普通
+        mPower = LiveShareUtil.getInstance(getActivity()).getPower();
+        if (mPower == Constant.POWER_NORMAL) {
             mImgv_camera.setVisibility(View.GONE);
-        } else {//咨询师
+        } else {
             mImgv_camera.setVisibility(View.VISIBLE);
         }
         mHomeSmart.setEnableLoadMore(false);

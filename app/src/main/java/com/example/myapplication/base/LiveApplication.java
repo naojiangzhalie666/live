@@ -19,6 +19,8 @@ import com.tencent.qcloud.tim.uikit.config.CustomFaceConfig;
 import com.tencent.qcloud.tim.uikit.config.GeneralConfig;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.rtmp.TXLiveBase;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 import com.yf.xzbgift.important.TUIKitLive;
 
 import androidx.multidex.MultiDex;
@@ -38,6 +40,7 @@ public class LiveApplication extends Application {
         init();
         initTent();
         initWachat();
+        initUmeng();
 
     }
 
@@ -79,6 +82,24 @@ public class LiveApplication extends Application {
                 api.registerApp(Constant.APP_ID);
             }
         }, new IntentFilter(ConstantsAPI.ACTION_REFRESH_WXAPP));
+    }
+
+    private void initUmeng(){
+        UMConfigure.init(this,"608a3f9253b6726499e67eb2","umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
+        // 微信设置
+        PlatformConfig.setWeixin(Constant.APP_ID,Constant.APP_SECRECT);
+        PlatformConfig.setWXFileProvider("com.example.myapplication.fileprovider");
+        // 新浪微博设置
+        PlatformConfig.setSinaWeibo("3921700954","04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
+        PlatformConfig.setSinaFileProvider("com.example.myapplication.fileprovider");
+      /*  // QQ设置
+        PlatformConfig.setQQZone("101830139","5d63ae8858f1caab67715ccd6c18d7a5");
+        PlatformConfig.setQQFileProvider("com.tencent.sample2.fileprovider");
+        // 企业微信设置
+        PlatformConfig.setWXWork("wwac6ffb259ff6f66a","EU1LRsWC5uWn6KUuYOiWUpkoH45eOA0yH-ngL8579zs","1000002","wwauthac6ffb259ff6f66a000002");
+        PlatformConfig.setWXWorkFileProvider("com.tencent.sample2.fileprovider");*/
+
+
     }
 
 }

@@ -2,6 +2,7 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'https://dl.bintray.com/umsdk/release'}
         google()
         jcenter()
     }
@@ -18,6 +19,8 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+        maven { url 'https://dl.bintray.com/umsdk/release'}
+        maven { url "https://dl.bintray.com/thelasterstar/maven/" }
         flatDir{
             dirs 'libs'
         }

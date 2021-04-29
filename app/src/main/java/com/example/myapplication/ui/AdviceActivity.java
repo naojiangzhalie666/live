@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.WalletAdapter;
-import com.example.myapplication.pop_dig.BuyzDialog;
+import com.example.myapplication.pop_dig.BuyzActivity;
 import com.example.myapplication.pop_dig.ShimDialog;
 import com.example.myapplication.utils.datepicker.CustomDatePicker;
 import com.example.myapplication.utils.datepicker.DateFormatUtils;
@@ -80,8 +80,6 @@ public class AdviceActivity extends BaseActivity {
     private List<Map<String,Object>> mStringList;
     private WalletAdapter mWalletAdapter;
 
-    private List<Map<String,Object>> mBuy_strs;
-    private BuyzDialog mBuyzDialog;
     private int mIndex;
     private boolean is_firstin = true;
 
@@ -126,13 +124,6 @@ public class AdviceActivity extends BaseActivity {
                 mWalletAdapter.notifyItemChanged(pos);
             }
         });
-        mBuy_strs = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            Map<String,Object> map =new HashMap<>();
-            map.put("select",false);
-            mBuy_strs.add(map);
-        }
-        mBuyzDialog = new BuyzDialog(this,mBuy_strs);
         Intent intent = getIntent();
         if(intent!=null){
             mIndex = intent.getIntExtra("index", 0);
@@ -157,7 +148,7 @@ public class AdviceActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.advice_chongzhi:
-                mBuyzDialog.show();
+                startActivity(new Intent(this, BuyzActivity.class));
                 break;
             case R.id.normal_sttm:
                 showDateDialog(mNormalSttm, "2000-01-01 00:00:00", mNormalEdtm.getText().toString() + " 23:59:59");

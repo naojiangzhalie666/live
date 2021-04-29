@@ -18,8 +18,6 @@ import com.example.myapplication.ui.OranizeActivity;
 import com.example.myapplication.ui.ShowGoodsActivity;
 import com.superc.yyfflibrary.utils.ToastUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,20 +47,11 @@ public class CarDialog extends Dialog {
     private List<Map<String, Object>> mMapList;
     private CarshowAdapter mCarshowAdapter;
 
-    private List<Map<String, Object>> mBuy_strs;
-    private BuyzDialog mBuyzDialog;//钻石购买弹窗
 
     public CarDialog(@NonNull Context context, List<Map<String, Object>> maps) {
         super(context);
         mContext = context;
         mMapList = maps;
-        mBuy_strs = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("select", false);
-            mBuy_strs.add(map);
-        }
-        mBuyzDialog = new BuyzDialog(context, mBuy_strs);
     }
 
     @Override
@@ -102,7 +91,7 @@ public class CarDialog extends Dialog {
                 ToastUtil.showToast(mContext, "指南");
                 break;
             case R.id.dialog_car_charge:
-                mBuyzDialog.show();
+                mContext.startActivity(new Intent(mContext, BuyzActivity.class));
                 break;
             case R.id.dialog_car_more:
                 mContext.startActivity(new Intent(mContext, OranizeActivity.class));//咨询机构页面

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.bean.LoginBean;
+import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.httputil.HttpBackListener;
 import com.example.myapplication.utils.httputil.LiveHttp;
 import com.example.xzb.Constantc;
@@ -17,7 +18,6 @@ import com.example.xzb.utils.TCConstants;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.google.gson.Gson;
 import com.superc.yyfflibrary.base.BaseActivity;
-import com.superc.yyfflibrary.utils.ShareUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tencent.liteav.AVCallManager;
 import com.tencent.liteav.login.ProfileManager;
@@ -68,11 +68,9 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_loginthis:
-              /*  ShareUtil.getInstance(this).put("power",0);//普通
-                thisLogin();*/
-                ShareUtil.getInstance(this).put("power",1);//咨询师
+                LiveShareUtil.getInstance(LoginActivity.this).putPower("1");
                 thisLogin();
-                login("liangtiandong", "123456","");
+                login("liangtiandong", "123456", "");
                 break;
             case R.id.login_loginother:
                 ToastShow("其它手机号登录");
@@ -82,9 +80,9 @@ public class LoginActivity extends BaseActivity {
                 loginWx();
                 break;
             case R.id.login_rela:
-                if(mLoginImgv.getVisibility() == View.VISIBLE){
+                if (mLoginImgv.getVisibility() == View.VISIBLE) {
                     mLoginImgv.setVisibility(View.GONE);
-                }else{
+                } else {
                     mLoginImgv.setVisibility(View.VISIBLE);
                 }
 
@@ -92,12 +90,12 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void login(String name,String pwd,String type){
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().login(name,pwd,type), new HttpBackListener() {
+    private void login(String name, String pwd, String type) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().login(name, pwd, type), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
-                LoginBean loginBean = new Gson().fromJson(result.toString(),LoginBean.class);
-
+                LoginBean loginBean = new Gson().fromJson(result.toString(), LoginBean.class);
+                thisLogin();
             }
 
             @Override
@@ -107,24 +105,26 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    private void loginWx(){
-       SendAuth.Req req = new SendAuth.Req();
+    private void loginWx() {
+        SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "live_login_request_please";
         api.sendReq(req);
 
     }
+
     private String user_openId, accessToken;
     private boolean is_wechat;
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        is_wechat= intent.getBooleanExtra("wechat",false);
+        is_wechat = intent.getBooleanExtra("wechat", false);
         user_openId = intent.getStringExtra("openId");
         accessToken = intent.getStringExtra("accessToken");
-        if(is_wechat){
-            login(user_openId,accessToken,"");
+        if (is_wechat) {
+            login(accessToken, user_openId, "wx");
         }
     }
 
@@ -133,7 +133,7 @@ public class LoginActivity extends BaseActivity {
             mInstance = TCUserMgr.getInstance();
             mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
                 @Override
-                public void onLoginBackListener(String userid, String usersig,long sdk_id) {
+                public void onLoginBackListener(String userid, String usersig, long sdk_id) {
                     if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
                         UserModel self = new UserModel();
                         self.userId = userid;
@@ -151,8 +151,9 @@ public class LoginActivity extends BaseActivity {
             ToastShow("请阅读并勾选协议");
         }
     }
+
     /**
-     *   动态权限检查相关
+     * 动态权限检查相关
      */
     private boolean checkPublishPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -165,7 +166,8 @@ public class LoginActivity extends BaseActivity {
             }
             if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)) {
                 permissions.add(Manifest.permission.RECORD_AUDIO);
-            } if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
+            }
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
                 permissions.add(Manifest.permission.CAMERA);
             }
             if (permissions.size() != 0) {
@@ -197,7 +199,7 @@ public class LoginActivity extends BaseActivity {
     /*
      * IM那套库的登录
      * */
-    private void goLogin(){
+    private void goLogin() {
     /*    // 获取userSig函数
 //        String userSig = GenerateTestUserSig.genTestUserSig(login_name);
         String userSig = Constantc.test_userSig;
@@ -235,7 +237,7 @@ public class LoginActivity extends BaseActivity {
 
             Method method = classz.getMethod("login", int.class, String.class, String.class, tClazz);
             method.invoke(null, sdkAppid, userId, userSig, null);
-        }catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
             TUIKitLog.e("LoginActivity", "loginTUIKitLive error: " + e.getMessage());
         }
     }

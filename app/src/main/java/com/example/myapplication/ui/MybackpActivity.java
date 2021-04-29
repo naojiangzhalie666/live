@@ -1,12 +1,13 @@
 package com.example.myapplication.ui;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.GiftsAdapter;
 import com.example.myapplication.adapter.TimesAdapter;
-import com.example.myapplication.pop_dig.BuyzDialog;
+import com.example.myapplication.pop_dig.BuyzActivity;
 import com.example.myapplication.utils.TitleUtils;
 import com.superc.yyfflibrary.base.BaseActivity;
 
@@ -39,8 +40,6 @@ public class MybackpActivity extends BaseActivity {
 
     private List<Map<String, Object>> mTimes;
     private TimesAdapter mTimesAdapter;
-    private List<Map<String,Object>> mBuy_strs;
-    private BuyzDialog mBuyzDialog;
 
 
     @Override
@@ -58,13 +57,6 @@ public class MybackpActivity extends BaseActivity {
         mDaojAdapter = new GiftsAdapter(this, mDaojs);
         mTimes = new ArrayList<>();
         mTimesAdapter = new TimesAdapter(this, mTimes);
-        mBuy_strs = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            Map<String,Object> map =new HashMap<>();
-            map.put("select",false);
-            mBuy_strs.add(map);
-        }
-        mBuyzDialog = new BuyzDialog(this,mBuy_strs);
 
         GridLayoutManager gri = new GridLayoutManager(this, 4);
         mMybackpRecy.setLayoutManager(gri);
@@ -137,7 +129,7 @@ public class MybackpActivity extends BaseActivity {
                 mMybackpGift.setTextSize(14);
                 break;
             case R.id.mybackp_chongz:
-                mBuyzDialog.show();
+                startActivity(new Intent(this, BuyzActivity.class));
                 break;
         }
     }

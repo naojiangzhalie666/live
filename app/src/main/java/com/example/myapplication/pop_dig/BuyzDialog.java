@@ -3,13 +3,18 @@ package com.example.myapplication.pop_dig;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.BuyAdapter;
+import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveApplication;
 import com.superc.yyfflibrary.utils.ToastUtil;
+import com.tencent.mm.opensdk.modelpay.PayReq;
 
 import java.util.List;
 import java.util.Map;
@@ -27,10 +32,14 @@ public class BuyzDialog extends Dialog {
     TextView mDigBuyLastzuan;
     @BindView(R.id.dig_buy_recy)
     RecyclerView mDigBuyRecy;
+    @BindView(R.id.dig_buy_wchat)
+    TextView mTvPaywechat;
+
+
     private Context mContext;
     private List<Map<String, Object>> mMapList;
     private BuyAdapter mBuyAdapter;
-    private String select="";
+    private String select = "";
 
     public BuyzDialog(@NonNull Context context, List<Map<String, Object>> mpList) {
         super(context);
@@ -64,12 +73,12 @@ public class BuyzDialog extends Dialog {
                     }
                 }
                 mBuyAdapter.notifyDataSetChanged();*/
-                select = "充值"+pos;
+                select = "充值" + pos;
             }
 
             @Override
             public void onLookMoreListener() {
-                select="";
+                select = "";
                 mBuyAdapter.setLook_more(true);
             }
         });
@@ -78,22 +87,49 @@ public class BuyzDialog extends Dialog {
     @Override
     public void show() {
         super.show();
-        select="";
+        select = "";
         mBuyAdapter.setLook_more(false);
     }
 
-    @OnClick({R.id.dig_buy_xieyi, R.id.dig_buy_zfb, R.id.dig_buy_cancel})
+    @OnClick({R.id.dig_buy_xieyi, R.id.dig_buy_zfb, R.id.dig_buy_wchat, R.id.dig_buy_cancel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.dig_buy_xieyi:
                 ToastUtil.showToast(mContext, "弹出协议");
                 break;
+            case R.id.dig_buy_wchat:
+                payByWechat();
+                break;
             case R.id.dig_buy_zfb:
-                ToastUtil.showToast(mContext, "充值"+select);
+                ToastUtil.showToast(mContext, "支付宝充值" + select);
                 break;
             case R.id.dig_buy_cancel:
                 dismiss();
                 break;
         }
     }
+
+    private void payByWechat() {
+        mTvPaywechat.setEnabled(false);
+        Toast.makeText(mContext, "后台获取订单信息...", Toast.LENGTH_SHORT).show();
+        try {
+            PayReq req = new PayReq();
+            req.appId = Constant.APP_ID;
+            req.partnerId = "1900000109";
+            req.prepayId = "1101000000140415649af9fc314aa427";
+            req.nonceStr = "1101000000140429eb40476f8896f4c9";
+            req.timeStamp = "1398746574";
+            req.packageValue = "Sign=WXPay";
+            req.sign = "7FFECB600D7157C5AA49810D2D8F28BC2811827B";
+            req.extData = "live_wechat_pay"; // optional
+            LiveApplication.api.sendReq(req);
+        } catch (Exception e) {
+            Log.e("PAY_GET", "异常：" + e.getMessage());
+            Toast.makeText(mContext, "异常：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        mTvPaywechat.setEnabled(true);
+
+
+    }
+
 }

@@ -33,9 +33,11 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.pop_dig.BaseDialog;
-import com.example.myapplication.pop_dig.BuyzDialog;
+import com.example.myapplication.pop_dig.BuyzActivity;
 import com.example.myapplication.pop_dig.CarDialog;
 import com.example.myapplication.pop_dig.ChathelfActivity;
+import com.example.myapplication.ui.LookPersonActivity;
+import com.example.myapplication.ui.OranizeActivity;
 import com.example.xzb.R;
 import com.example.xzb.important.IMLVBLiveRoomListener;
 import com.example.xzb.important.MLVBCommonDef;
@@ -191,8 +193,6 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private Bitmap mbit_def;
     private Button mBt_contact;
     private TCVideoView mTCVideoView;//连麦时展示View
-    private List<Map<String, Object>> mBuy_strs;
-    private BuyzDialog mBuyzDialog;//钻石购买弹窗
     private List<Map<String, Object>> mCar_strs;
     private CarDialog mCarDialog;//购物车弹窗
     private RelativeLayout mRelativeLayout;
@@ -295,13 +295,6 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 Toast.makeText(TCAudienceActivity.this, "关注该主播", Toast.LENGTH_SHORT).show();
             }
         });
-        mBuy_strs = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("select", false);
-            mBuy_strs.add(map);
-        }
-        mBuyzDialog = new BuyzDialog(this, mBuy_strs);
         mCar_strs = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             Map<String, Object> map = new HashMap<>();
@@ -384,6 +377,19 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 }
             }
         });
+        mIvAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =null;
+                if(Constant.IS_ZIXUNSHI){//TODO 需要知道进行直播的是咨询师还是机构
+                    intent = new Intent(TCAudienceActivity.this, LookPersonActivity.class);
+                }else{
+                    intent = new Intent(TCAudienceActivity.this, OranizeActivity.class);
+                }
+                intent.putExtra("is_user",true);
+                startActivity(intent);
+            }
+        });
 
         //美颜功能
         mBeautyControl = (BeautyPanel) findViewById(R.id.beauty_panel);
@@ -416,7 +422,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
             @Override
             public void onChargeClick() {
-                mBuyzDialog.show();
+                startActivity(new Intent(TCAudienceActivity.this, BuyzActivity.class));
             }
 
             @Override
@@ -1417,7 +1423,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                         mBaseDialog.setOnItemClickListener(new BaseDialog.OnItemClickListener() {
                             @Override
                             public void onSureClickListener() {
-                                mBuyzDialog.show();
+                                startActivity(new Intent(TCAudienceActivity.this, BuyzActivity.class));
                             }
 
                             @Override

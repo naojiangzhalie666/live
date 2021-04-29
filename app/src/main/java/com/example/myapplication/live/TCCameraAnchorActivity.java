@@ -14,10 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.base.Constant;
 import com.example.myapplication.pop_dig.BaseDialog;
 import com.example.myapplication.pop_dig.MeslistActivity;
 import com.example.myapplication.pop_dig.OnlineDialog;
 import com.example.myapplication.ui.LookPersonActivity;
+import com.example.myapplication.ui.OranizeActivity;
+import com.example.myapplication.utils.LiveShareUtil;
 import com.example.xzb.R;
 import com.example.xzb.ui.TCSimpleUserInfo;
 import com.example.xzb.ui.TCUserAvatarListAdapter;
@@ -86,6 +89,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     private boolean close_locayy = false;//false 本地语音开启  true关闭
     private OnlineDialog mOnlineDialog;
     private List<TCSimpleUserInfo> mOnlin_entits;
+    private int mPower;
 
 
     @Override
@@ -145,7 +149,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         mBroadcastTime = (TextView) findViewById(R.id.anchor_tv_broadcasting_time);
         mBroadcastTime.setText(String.format(Locale.US, "%s", "00:00:00"));
         mRecordBall = (ImageView) findViewById(R.id.anchor_iv_record_ball);
-
+        mPower = LiveShareUtil.getInstance(this).getPower();
         mHeadIcon = (ImageView) findViewById(R.id.anchor_iv_head_icon);
         showHeadIcon(mHeadIcon, TCUserMgr.getInstance().getAvatar());
         mMemberCount = (TextView) findViewById(R.id.anchor_tv_member_counts);
@@ -186,6 +190,20 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
             @Override
             public boolean onLevelChanged(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition, int beautyLevel) {
                 return false;
+            }
+        });
+        mHeadIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = null;
+                if (mPower == Constant.POWER_ZIXUNSHI) {//TODO 需要知道进行直播的是咨询师还是机构
+                    intent = new Intent(TCCameraAnchorActivity.this, LookPersonActivity.class);
+                    intent.putExtra("is_user", false);
+                } else {
+                    intent = new Intent(TCCameraAnchorActivity.this, OranizeActivity.class);
+                    intent.putExtra("is_user", mPower == Constant.POWER_ZIXUNJIGOU ? false : true);
+                }
+                startActivity(intent);
             }
         });
     }
@@ -318,7 +336,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         mTCVideoView.userID = null;
         mTCVideoView.setUsed(false);
         ll_conline.setVisibility(View.GONE);
-        sendContactMsg(false,"");
+        sendContactMsg(false, "");
         stopTimer();
     }
 
@@ -330,7 +348,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
             public void onSureClickListener() {
                 mLiveRoom.responseJoinAnchor(pusherInfo.userID, true, "");
                 mPendingRequest = false;
-                sendContactMsg(true,pusherInfo.userID);
+                sendContactMsg(true, pusherInfo.userID);
             }
 
             @Override
@@ -372,8 +390,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
      * @param is_lm true = 连麦中   false==中断连麦
      */
 
-    private void sendContactMsg(boolean is_lm,String userid) {
-        mLiveRoom.sendRoomCustomMsg(String.valueOf(is_lm?IMCMD_CONTACT:IMCMD_DISCONTACT), userid, new SendRoomCustomMsgCallback() {
+    private void sendContactMsg(boolean is_lm, String userid) {
+        mLiveRoom.sendRoomCustomMsg(String.valueOf(is_lm ? IMCMD_CONTACT : IMCMD_DISCONTACT), userid, new SendRoomCustomMsgCallback() {
             @Override
             public void onError(int errCode, String errInfo) {
                 if (errCode != 0) {
@@ -462,7 +480,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
             mFlashView.setBackgroundDrawable(mFlashOn ?
                     getResources().getDrawable(R.drawable.flash_on) :
                     getResources().getDrawable(R.drawable.flash_off));
-        } else if (id == R.id.beauty_btn||id ==R.id.beauty_btnface) {
+        } else if (id == R.id.beauty_btn || id == R.id.beauty_btnface) {
             if (mBeautyControl.isShown()) {
                 mBeautyControl.setVisibility(View.GONE);
                 mLinearToolBar.setVisibility(View.VISIBLE);

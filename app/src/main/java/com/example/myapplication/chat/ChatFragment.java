@@ -16,7 +16,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.adapter.TalkAdapter;
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.chat.helper.ChatLayoutHelper;
-import com.example.myapplication.pop_dig.BuyzDialog;
+import com.example.myapplication.pop_dig.BuyzActivity;
 import com.example.myapplication.pop_dig.HeadDialog;
 import com.example.myapplication.pop_dig.ServiceDialog;
 import com.example.myapplication.pop_dig.SjbgDialog;
@@ -42,9 +42,7 @@ import com.tencent.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitConstants;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -81,8 +79,6 @@ public class ChatFragment extends BaseFragment {
     private List<String> mSjbg_strs;
 
     private HeadDialog mHeadDialog;
-    private List<Map<String,Object>> mBuy_strs;
-    private BuyzDialog mBuyzDialog;
 
     private boolean is_user = false;
 
@@ -148,13 +144,6 @@ public class ChatFragment extends BaseFragment {
             }
         });
 
-        mBuy_strs = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            Map<String,Object> map =new HashMap<>();
-            map.put("select",false);
-            mBuy_strs.add(map);
-        }
-        mBuyzDialog = new BuyzDialog(getActivity(),mBuy_strs);
     }
 
 
@@ -247,7 +236,8 @@ public class ChatFragment extends BaseFragment {
         mChatLayout.getInputLayout().setOnNewAddClickListener(new InputLayout.onNewAddClickListener() {
             @Override
             public void onDiamondClickListener() {
-                mBuyzDialog.show();
+                startActivity(new Intent(getActivity(), BuyzActivity.class));
+//                mBuyzDialog.show();
             }
 
             @Override

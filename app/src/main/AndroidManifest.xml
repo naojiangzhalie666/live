@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.myapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,8 +25,17 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".pop_dig.MeslistActivity"
-            android:theme="@style/ActivityDialog_helf" ></activity>
+        <activity android:name=".pop_dig.BuyzActivity"
+            android:theme="@style/ActivityDialog_pay"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/ActivityDialog_pay" />
+        <activity
+            android:name=".pop_dig.MeslistActivity"
+            android:theme="@style/ActivityDialog_helf" />
         <activity
             android:name=".pop_dig.ChathelfActivity"
             android:theme="@style/ActivityDialog_helf" />
@@ -83,7 +93,8 @@
             -->
 
         </activity>
-        <activity android:name=".ui.LoginActivity"
+        <activity
+            android:name=".ui.LoginActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -114,13 +125,22 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:taskAffinity="com.example.myapplication"
-            android:launchMode="singleTask">
-        </activity>
-
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.myapplication.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                tools:replace="android:resource"
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths_um" />
+        </provider>
 
     </application>
 

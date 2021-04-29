@@ -13,6 +13,11 @@ public class Constant {
     public static final String APP_ID= "wxf577d166ba856289";//微信Appid
     public static final String APP_SECRECT = "2ed4c15ba396f03ed7f79cc5388d3d13";//微信Appsec
     public static final boolean IS_JIAMI = false;
+    public static final int POWER_NORMAL = 0;//普通
+    public static final int POWER_ZIXUNSHI = 1;//咨询师
+    public static final int POWER_ZIXUNJIGOU = 2;//咨询机构
+    public static final int POWER_ZIZIXNSHI = 3;//子咨询师
+    public static final boolean IS_ZIXUNSHI = false;//主播是否为咨询师
 
 
     // 存储
