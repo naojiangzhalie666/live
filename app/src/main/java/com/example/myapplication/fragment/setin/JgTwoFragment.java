@@ -103,7 +103,7 @@ public class JgTwoFragment extends Fragment {
                 mZixAdapter.notifyDataSetChanged();
                 break;
             case R.id.setin_next:
-                mActivity.goNext();
+                mActivity.toSub();
                 for (int i = 0; i < mZixBeans.size(); i++) {
                     ZixBean zixBean = mZixBeans.get(i);
                     Log.e(TAG, "onClick: "+zixBean.toString() );

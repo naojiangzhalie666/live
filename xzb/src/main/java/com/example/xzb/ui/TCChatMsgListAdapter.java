@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.xzb.R;
 
 import java.util.ArrayList;
@@ -145,6 +146,7 @@ public class TCChatMsgListAdapter extends BaseAdapter implements AbsListView.OnS
 //        if (mCreateAnimator && mBLiveAnimator) {
 //            playViewAnimator(convertView, position, item);
 //        }
+        Glide.with(mContext).load(item.getHead()).placeholder(R.drawable.face).error(R.drawable.face).circleCrop().into(holder.sendHead);
         spanString = new SpannableString(item.getContent());
         spanString_name = new SpannableString(item.getSenderName());
         // 根据名称计算颜色

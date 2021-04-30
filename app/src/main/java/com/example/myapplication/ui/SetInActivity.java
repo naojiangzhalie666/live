@@ -5,6 +5,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.base.Constant;
 import com.example.myapplication.fragment.setin.JgOneFragment;
 import com.example.myapplication.fragment.setin.JgTwoFragment;
 import com.example.myapplication.fragment.setin.ManOneFragment;
@@ -12,16 +13,18 @@ import com.example.myapplication.fragment.setin.ManTwoFragment;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 /********************************************************************
-  @version: 1.0.0
-  @description: 入驻申请界面
-  @author: admin
-  @time: 2021/3/26 8:43
-  @变更历史: 
-********************************************************************/
+ @version: 1.0.0
+ @description: 入驻申请界面
+ @author: admin
+ @time: 2021/3/26 8:43
+ @变更历史:
+ ********************************************************************/
 public class SetInActivity extends BaseActivity {
 
     @BindView(R.id.setin_man)
@@ -30,6 +33,8 @@ public class SetInActivity extends BaseActivity {
     TextView mSetinJigou;
     @BindView(R.id.setin_fram)
     FrameLayout mSetinFram;
+    @BindView(R.id.setin_con_end)
+    ConstraintLayout mSetinConend;
 
     private JgOneFragment mJgOneFragment;
     private JgTwoFragment mJgTwoFragment;
@@ -47,11 +52,15 @@ public class SetInActivity extends BaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         ButterKnife.bind(this);
+        if(Constant.IS_SHENHEING){
+            mSetinConend.setVisibility(View.VISIBLE);
+            return;
+        }
         mJgOneFragment = new JgOneFragment();
-        mJgTwoFragment  = new JgTwoFragment();
-        mManOneFragment =new ManOneFragment();
+        mJgTwoFragment = new JgTwoFragment();
+        mManOneFragment = new ManOneFragment();
         mManTwoFragment = new ManTwoFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.setin_fram,mManOneFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.setin_fram, mManOneFragment).commit();
         getSupportFragmentManager().beginTransaction().show(mManOneFragment);
 
 
@@ -69,7 +78,7 @@ public class SetInActivity extends BaseActivity {
                 mSetinJigou.setTextColor(getResources().getColor(R.color.login_txt));
                 mSetinJigou.setBackgroundResource(R.drawable.bg_circle_lotxt);
                 is_man = true;
-                getSupportFragmentManager().beginTransaction().replace(R.id.setin_fram,mManOneFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.setin_fram, mManOneFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(mManOneFragment);
 
                 break;
@@ -79,27 +88,29 @@ public class SetInActivity extends BaseActivity {
                 mSetinJigou.setTextColor(getResources().getColor(R.color.setin_se));
                 mSetinJigou.setBackgroundResource(R.drawable.bg_circle_solder_lotxt);
                 is_man = false;
-                getSupportFragmentManager().beginTransaction().replace(R.id.setin_fram,mJgOneFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.setin_fram, mJgOneFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(mJgOneFragment);
                 break;
         }
     }
 
-    public void goNext(){
-        if(is_man){
+    public void goNext() {
+        if (is_man) {
             getSupportFragmentManager().beginTransaction().replace(R.id.setin_fram, mManTwoFragment).commit();
             getSupportFragmentManager().beginTransaction().show(mManTwoFragment);
-        }else {
+        } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.setin_fram, mJgTwoFragment).commit();
             getSupportFragmentManager().beginTransaction().show(mJgTwoFragment);
         }
     }
 
-    public void toSub(){
-        if(is_man){
-            ToastShow("已提交审核，请耐心等待结果");
-        }else{
-
+    public void toSub() {
+        if (is_man) {
+            Constant.IS_SHENHEING = true;
+            mSetinConend.setVisibility(View.VISIBLE);
+        } else {
+            Constant.IS_SHENHEING = true;
+            mSetinConend.setVisibility(View.VISIBLE);
         }
 
 

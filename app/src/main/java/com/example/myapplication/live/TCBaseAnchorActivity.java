@@ -25,7 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.pop_dig.GuanzDialog;
 import com.example.myapplication.pop_dig.ReportActivity;
 import com.example.xzb.R;
@@ -63,7 +62,6 @@ import com.yf.xzbgift.imple.GiftInfoDataHandler;
 import com.yf.xzbgift.important.GiftAnimatorLayout;
 import com.yf.xzbgift.important.GiftInfo;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -439,7 +437,6 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     }
 
     protected void stopPublish() {
-        EventBus.getDefault().post(new EventMessage("fresh_home"));
         mLiveRoom.exitRoom(new ExitRoomCallback() {
             @Override
             public void onSuccess() {
@@ -574,6 +571,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setSenderName(userInfo.nickname);
         entity.setContent(text);
         entity.setType(TCConstants.TEXT_TYPE);
+        entity.setHead(userInfo.avatar);
         notifyMsg(entity);
     }
 
@@ -589,6 +587,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setSenderName(TextUtils.isEmpty(userInfo.nickname) ? userInfo.userid : userInfo.nickname);//"通知"
         entity.setContent("进场了");
         entity.setType(TCConstants.MEMBER_ENTER);
+        entity.setHead(userInfo.avatar);
         notifyMsg(entity);
     }
 
@@ -607,6 +606,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setSenderName(TextUtils.isEmpty(userInfo.nickname) ? userInfo.userid : userInfo.nickname);//"通知"
         entity.setContent("离开了");
         entity.setType(TCConstants.MEMBER_EXIT);
+        entity.setHead(userInfo.avatar);
         notifyMsg(entity);
     }
 
@@ -625,6 +625,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
         //todo：修改显示类型
         entity.setType(TCConstants.PRAISE);
+        entity.setHead(userInfo.avatar);
         notifyMsg(entity);
     }
 
@@ -639,6 +640,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setSenderName(userInfo.nickname);
         entity.setContent(text);
         entity.setType(TCConstants.TEXT_TYPE);
+        entity.setHead(userInfo.avatar);
         notifyMsg(entity);
 
         if (mDanmuMgr != null) {
@@ -658,6 +660,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             entity.setContent("送了一个 "+giftInfo.title);
             entity.setType(TCConstants.TEXT_TYPE);
             entity.setIs_gift(true);
+            entity.setHead(userInfo.avatar);
             notifyMsg(entity);
             if (giftInfo != null) {
                 if (userInfo != null) {
@@ -715,6 +718,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setSenderName("我:");
         entity.setContent(msg);
         entity.setType(TCConstants.TEXT_TYPE);
+        entity.setHead(mAvatarPicUrl);
         notifyMsg(entity);
 
         // 发送弹幕或发送房间信息

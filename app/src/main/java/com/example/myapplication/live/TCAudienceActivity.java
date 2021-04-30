@@ -131,7 +131,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private ListView mListViewMsg;           // 消息列表控件
     private ArrayList<TCChatEntity> mArrayListChatEntity = new ArrayList<>(); // 消息列表集合
     private TCChatMsgListAdapter mChatMsgListAdapter;    // 消息列表的Adapter
-    private ImageView mBtnLinkMic,mimgv_camera;            // 连麦按钮
+    private ImageView mBtnLinkMic, mimgv_camera;            // 连麦按钮
     private Button mBtnSwitchCamera;       // 切换摄像头按钮
     private ImageView mIvAvatar;              // 主播头像控件
     private TextView mTvPusherName;          // 主播昵称控件
@@ -197,12 +197,12 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private CarDialog mCarDialog;//购物车弹窗
     private RelativeLayout mRelativeLayout;
     private FrameLayout mfram_layout;
+    private ImageView mimgv_headzb, mimgv_lx;
     private IGiftPanelView mGiftPanelView;
     private int now_zuanshi = 500;
     private TXLivePusher mTxLivePusher;
-    private boolean is_open  = true;
+    private boolean is_open = true;
     private BaseDialog mBaseDialog;
-
 
 
     @Override
@@ -267,14 +267,16 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         mimg_defa = findViewById(R.id.video_imgv);
         mBt_contact = findViewById(R.id.btn_kick_out1);
         mfram_layout = findViewById(R.id.audience_fram_contac);
+        mimgv_headzb = findViewById(R.id.audience_headzb);
+        mimgv_lx = findViewById(R.id.audience_headlx);
         mTCVideoView = new TCVideoView(mtx_contact, mBt_contact, mfram_contact, mimg_contact, null);
 
         Glide.with(this).load(mAvatar).placeholder(R.drawable.bg).error(R.drawable.bg).centerCrop().into(mimg_defa);
-        Glide.with(this).load(mAvatar).centerCrop().into(new CustomTarget<Drawable>(){
+        Glide.with(this).load(mAvatar).centerCrop().into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 BitmapDrawable bd = (BitmapDrawable) resource;
-                mbit_def =  bd.getBitmap();
+                mbit_def = bd.getBitmap();
             }
 
             @Override
@@ -341,6 +343,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
         mIvAvatar = (ImageView) findViewById(R.id.anchor_iv_head_icon);
         TCUtils.showPicWithUrl(this, mIvAvatar, mPusherAvatar, R.drawable.face);
+        Glide.with(this).load(mPusherAvatar).placeholder(R.drawable.bg).error(R.drawable.bg).centerCrop().into(mimgv_headzb);//连麦时的头像加载
         mMemberCount = (TextView) findViewById(R.id.anchor_tv_member_counts);
 
         mCurrentAudienceCount++;
@@ -380,13 +383,13 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         mIvAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent =null;
-                if(Constant.IS_ZIXUNSHI){//TODO 需要知道进行直播的是咨询师还是机构
+                Intent intent = null;
+                if (Constant.IS_ZIXUNSHI) {//TODO 需要知道进行直播的是咨询师还是机构
                     intent = new Intent(TCAudienceActivity.this, LookPersonActivity.class);
-                }else{
+                } else {
                     intent = new Intent(TCAudienceActivity.this, OranizeActivity.class);
                 }
-                intent.putExtra("is_user",true);
+                intent.putExtra("is_user", true);
                 startActivity(intent);
             }
         });
@@ -412,12 +415,12 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
     private void showGiftPanel() {
         mGiftPanelView = new GiftPanelViewImp(this);
-        mGiftPanelView.setMoney_zuan(now_zuanshi+"");
+        mGiftPanelView.setMoney_zuan(now_zuanshi + "");
         mGiftPanelView.init(mGiftInfoDataHandler);
         mGiftPanelView.setGiftPanelDelegate(new GiftPanelDelegate() {
             @Override
             public void onGiftItemClick(GiftInfo giftInfo) {
-                sendGift(giftInfo,true);
+                sendGift(giftInfo, true);
             }
 
             @Override
@@ -427,22 +430,22 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
             @Override
             public void onSendClickListener(GiftInfo giftInfo) {
-                sendGift(giftInfo,false);
+                sendGift(giftInfo, false);
             }
         });
         mGiftPanelView.show();
     }
 
     //发送礼物消息出去同时展示礼物动画和弹幕
-    private void sendGift(final GiftInfo giftInfo,boolean is_lw) {
+    private void sendGift(final GiftInfo giftInfo, boolean is_lw) {
         GiftInfo giftInfoCopy = giftInfo.copy();
         giftInfoCopy.sendUser = getString(R.string.live_message_me);
         giftInfoCopy.sendUserHeadIcon = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2F50%2Fv2-e73ebe5fb7fbae39d69ed94dcc82f145_hd.jpg&refer=http%3A%2F%2Fpic1.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1621069154&t=f6b05ac96cc89d9a7db321b657bf8dbc";
         mGiftAnimatorLayout.show(giftInfoCopy);
-        if(is_lw){/*发送成功  礼物进行钻石消耗   背包不消耗钻石*/
-            now_zuanshi -=giftInfo.price;
-            mGiftPanelView.setMoney_zuan(now_zuanshi+"");
-        }else{//背包中发送会减少数量
+        if (is_lw) {/*发送成功  礼物进行钻石消耗   背包不消耗钻石*/
+            now_zuanshi -= giftInfo.price;
+            mGiftPanelView.setMoney_zuan(now_zuanshi + "");
+        } else {//背包中发送会减少数量
             mGiftPanelView.notiBbGift();
 
         }
@@ -463,6 +466,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 entity.setContent("送了一个" + giftInfo.title);
                 entity.setType(TCConstants.IMCMD_GIFT);
                 entity.setIs_gift(true);
+                entity.setHead(mAvatar);
                 notifyMsg(entity);
             }
         });
@@ -893,6 +897,8 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 break;
             case IMCMD_CONTACT:
                 if (!message.equals(mUserId)) {
+                    // TODO: 2021/4/30 请求接口获取头像地址--or主播进行自定义消息推送时进行一个用户图像地址的拼接
+                    Glide.with(this).load(userAvatar).placeholder(R.drawable.bg).error(R.drawable.bg).centerCrop().into(mimgv_lx);
                     mLiveRoom.getTXLivePlayer().pause();
                     mTXCloudVideoView.setVisibility(View.GONE);
                     mRelativeLayout.setBackground(getResources().getDrawable(R.drawable.live_contact_bg));
@@ -902,7 +908,11 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 break;
             case IMCMD_DISCONTACT:
                 if (!message.equals(mUserId)) {
-                    //延迟2秒再进行拉流
+                    mLiveRoom.getTXLivePlayer().resume();
+                    mTXCloudVideoView.setVisibility(View.VISIBLE);
+                    mRelativeLayout.setBackground(null);
+                    mfram_layout.setVisibility(View.GONE);
+                   /* //延迟2秒再进行拉流
                     new Timer().schedule(new TimerTask() {
                         public void run() {
                             runOnUiThread(new Runnable() {
@@ -915,7 +925,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                                 }
                             });
                         }
-                    }, 2000 , 1000);
+                    }, 2000 , 1000);*/
                 }
                 Log.i(TAG, "onRecvRoomCustomMsg:中断连麦userID =  " + message);
                 break;
@@ -984,6 +994,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         entity.setSenderName(TextUtils.isEmpty(userInfo.nickname) ? userInfo.userid : userInfo.nickname);//"通知"
         entity.setContent("进场了");
         entity.setType(TCConstants.MEMBER_ENTER);
+        entity.setHead(userInfo.avatar);
         notifyMsg(entity);
     }
 
@@ -1006,6 +1017,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         entity.setSenderName(TextUtils.isEmpty(userInfo.nickname) ? userInfo.userid : userInfo.nickname);//"通知"
         entity.setContent("离开了");
         entity.setType(TCConstants.MEMBER_EXIT);
+        entity.setHead(userInfo.avatar);
         notifyMsg(entity);
     }
 
@@ -1024,7 +1036,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             mHeartLayout.addFavor();
         }
         mHeartCount++;
-
+        entity.setHead(userInfo.avatar);
         entity.setType(TCConstants.MEMBER_ENTER);
         notifyMsg(entity);
     }
@@ -1054,6 +1066,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             entity.setContent("送了一个 " + giftInfo.title);
             entity.setType(TCConstants.TEXT_TYPE);
             entity.setIs_gift(true);
+            entity.setHead(userInfo.avatar);
             notifyMsg(entity);
             if (giftInfo != null) {
                 if (userInfo != null) {
@@ -1126,17 +1139,17 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 @Override
                 public void onllClickListener() {
                     mRemindDialog.dismiss();
-                        TCAudienceActivity.this.finish();
+                    TCAudienceActivity.this.finish();
                 }
             });
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 public void run() {
-                    if(mRemindDialog!=null)
+                    if (mRemindDialog != null)
                         mRemindDialog.dismiss();
-                        TCAudienceActivity.this.finish();
+                    TCAudienceActivity.this.finish();
                 }
-            }, 3000 , 1000);
+            }, 3000, 1000);
 //            FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //            transaction.add(mLiveDialogFragment, "loading");
 //            transaction.commitAllowingStateLoss();
@@ -1167,7 +1180,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_back) {
-            if(!mIsBeingLinkMic) {
+            if (!mIsBeingLinkMic) {
                 Intent rstData = new Intent();
                 long memberCount = mCurrentAudienceCount - 1;
                 rstData.putExtra(TCConstants.MEMBER_COUNT, memberCount >= 0 ? memberCount : 0);
@@ -1176,7 +1189,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 setResult(0, rstData);
                 stopPlay();
                 finish();
-            }else{
+            } else {
                 stopLinkMic();
                 startPlay();
             }
@@ -1208,32 +1221,32 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         } else if (id == R.id.audience_gift) {
             showGiftPanel();
         } else if (id == R.id.audience_siliao) {
-            startChatActivity(mPusherId,mPusherNickname);
+            startChatActivity(mPusherId, mPusherNickname);
         } else if (id == R.id.audience_car) {
             mCarDialog.show();
-        }else if(id == R.id.anchor_camera){
-            if(is_open) {
+        } else if (id == R.id.anchor_camera) {
+            if (is_open) {
                 TXLivePushConfig config = mTxLivePusher.getConfig();
                 //设置推送到主播端的垫片--图片
-                config.setPauseImg(mbit_def==null?BitmapFactory.decodeResource(getResources(), R.drawable.bg):mbit_def);
+                config.setPauseImg(mbit_def == null ? BitmapFactory.decodeResource(getResources(), R.drawable.bg) : mbit_def);
                 config.setPauseFlag(TXLiveConstants.PAUSE_FLAG_PAUSE_VIDEO);
                 mTxLivePusher.setConfig(config);
                 mimgv_camera.setImageResource(R.drawable.audience_closecamear);
                 mimg_defa.setVisibility(View.VISIBLE);
                 mTxLivePusher.pausePusher();
-            }else {
+            } else {
                 mTxLivePusher.resumePusher();
                 mimgv_camera.setImageResource(R.drawable.audience_opencamear);
                 mimg_defa.setVisibility(View.GONE);
             }
-            is_open=!is_open;
+            is_open = !is_open;
         }
     }
 
-    private void startChatActivity(String pusherId,String pusherNickname) {
+    private void startChatActivity(String pusherId, String pusherNickname) {
 
         ChatInfo chatInfo = new ChatInfo();
-        chatInfo.setType( V2TIMConversation.V2TIM_C2C);
+        chatInfo.setType(V2TIMConversation.V2TIM_C2C);
         chatInfo.setId(pusherId);
         chatInfo.setChatName(pusherNickname);
         Intent intent = new Intent(this, ChathelfActivity.class);
@@ -1308,6 +1321,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         entity.setSenderName("我:");
         entity.setContent(msg);
         entity.setType(TCConstants.TEXT_TYPE);
+        entity.setHead(mAvatar);
         notifyMsg(entity);
 
         if (danmuOpen) {
@@ -1418,7 +1432,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 public void run() {
                     mtv_ctcTm.setText(TCUtils.formattedTime(mSecond));
                     mtv_ctcleftTm.setText(TCUtils.duration((mLeft_second - mSecond) * 1000));
-                    if(mLeft_second - mSecond==60) {
+                    if (mLeft_second - mSecond == 60) {
                         mBaseDialog = new BaseDialog.BaseBuild().setCancel("取消").setSure("去充值").setTitle("一分钟后疏解中断,请立即续费").build(TCAudienceActivity.this);
                         mBaseDialog.setOnItemClickListener(new BaseDialog.OnItemClickListener() {
                             @Override
@@ -1432,7 +1446,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                             }
                         });
                         mBaseDialog.show();
-                    }else{
+                    } else {
 
                     }
                 }
@@ -1455,6 +1469,8 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         if (null != mBroadcastTimer) {
             mBroadcastTimerTask.cancel();
         }
+        mBroadcastTimer=null;
+        mtv_ctcTm.setText("0");
     }
 
 

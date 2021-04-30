@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.example.xzb.Constantc;
 import com.example.xzb.utils.http.HttpRequests;
 import com.example.xzb.utils.http.HttpResponse;
 import com.example.xzb.utils.im.IMMessageMgr;
@@ -1765,7 +1767,11 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         customMessage.cmd = "CustomCmdMsg";
         customMessage.data = new CustomMessage();
         customMessage.data.userName = mSelfAccountInfo.userName;
-        customMessage.data.userAvatar = mSelfAccountInfo.userAvatar;
+        if(!TextUtils.isEmpty(cmd)&&Integer.parseInt(cmd)==7){
+            customMessage.data.userAvatar = Constantc.LX_HEAD;
+        }else {
+            customMessage.data.userAvatar = mSelfAccountInfo.userAvatar;
+        }
         customMessage.data.cmd = cmd;
         customMessage.data.msg = message ;
         final String content = new Gson().toJson(customMessage, new TypeToken<CommonJson<CustomMessage>>(){}.getType());

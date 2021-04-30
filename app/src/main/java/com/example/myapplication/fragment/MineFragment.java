@@ -8,14 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.VpAdapter;
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.pop_dig.CodeDialog;
 import com.example.myapplication.pop_dig.LogoutDialog;
+import com.example.myapplication.pop_dig.ShareDialog;
 import com.example.myapplication.ui.AdviceActivity;
 import com.example.myapplication.ui.HelpabackActivity;
 import com.example.myapplication.ui.LookPersonActivity;
@@ -26,7 +29,12 @@ import com.example.myapplication.ui.OranizeActivity;
 import com.example.myapplication.ui.SetActivity;
 import com.example.myapplication.ui.SetInActivity;
 import com.example.myapplication.utils.LiveShareUtil;
-import com.superc.yyfflibrary.utils.ToastUtil;
+import com.ljy.devring.util.DensityUtil;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +51,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MineFragment extends Fragment {
+public class MineFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.mine_zuanshi)
     TextView mMineZuanshi;
@@ -81,6 +89,10 @@ public class MineFragment extends Fragment {
     RelativeLayout mMineRuzhu;
     @BindView(R.id.mine_logout)
     Button mMineLogout;
+    @BindView(R.id.mine_indicator)
+    LinearLayout mMineLinator;
+    @BindView(R.id.tvvv)
+    TextView mTvvv;
     private Unbinder unbinder;
     private boolean show_zuanshi = true, show_money = true;
     private XfFragment mXfFragment;
@@ -89,6 +101,7 @@ public class MineFragment extends Fragment {
     private int mPower;
     private CodeDialog mCodeDialog;
     private LogoutDialog mLogoutDialog;
+    private ShareDialog mShareDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -119,7 +132,7 @@ public class MineFragment extends Fragment {
             case R.id.mine_cons_eyezuanshi:
                 if (show_zuanshi) {
                     mMineConsEyezuanshi.setImageResource(R.drawable.mine_bi);
-                    mMineZuanshi.setText("****");
+                    mMineZuanshi.setText("*****");
                 } else {
                     mMineConsEyezuanshi.setImageResource(R.drawable.mine_kai);
                     mMineZuanshi.setText("1244");
@@ -129,7 +142,7 @@ public class MineFragment extends Fragment {
             case R.id.mine_cons_eyemoney:
                 if (show_money) {
                     mMineConsEyemoney.setImageResource(R.drawable.mine_bi);
-                    mMineMoneyTv.setText("****");
+                    mMineMoneyTv.setText("*****");
                 } else {
                     mMineConsEyemoney.setImageResource(R.drawable.mine_kai);
                     mMineMoneyTv.setText("1244");
@@ -142,7 +155,6 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.mine_guanzhugzongh:
                 mCodeDialog.show();
-                ToastUtil.showToast(getActivity(), "公众号关注");
                 break;
             case R.id.mine_help:
                 startActivity(new Intent(getActivity(), HelpabackActivity.class));
@@ -150,17 +162,21 @@ public class MineFragment extends Fragment {
             case R.id.mine_edt:
                 Intent intent = null;
                 if (mPower == Constant.POWER_ZIXUNSHI) {//咨询师
-                    intent= new Intent(getActivity(), LookPersonActivity.class);
-                    intent.putExtra("is_user",false);
+                    intent = new Intent(getActivity(), LookPersonActivity.class);
+                    intent.putExtra("is_user", false);
                     startActivity(intent);
                 } else {//咨询机构--子咨询师
                     intent = new Intent(getActivity(), OranizeActivity.class);
-                    intent.putExtra("is_user",mPower == Constant.POWER_ZIXUNJIGOU?false:true);
+                    intent.putExtra("is_user", mPower == Constant.POWER_ZIXUNJIGOU ? false : true);
                     startActivity(intent);
                 }
                 break;
             case R.id.mine_ruzhu:
-                startActivity(new Intent(getActivity(), SetInActivity.class));
+                if (mPower == Constant.POWER_NORMAL) {
+                    startActivity(new Intent(getActivity(), SetInActivity.class));
+                }else{
+                    mShareDialog.show();
+                }
                 break;
             case R.id.mine_logout:
                 mLogoutDialog.show();
@@ -175,8 +191,8 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.mine_money_tv:
             case R.id.textView16:
-                Intent intent_ad = new Intent(getActivity(),AdviceActivity.class);
-                intent_ad.putExtra("index",1);
+                Intent intent_ad = new Intent(getActivity(), AdviceActivity.class);
+                intent_ad.putExtra("index", 1);
                 startActivity(intent_ad);
                 break;
         }
@@ -187,18 +203,31 @@ public class MineFragment extends Fragment {
         mCodeDialog = new CodeDialog(getActivity());
         mFragments = new ArrayList<>();
         mXfFragment = new XfFragment();
-        mPower =LiveShareUtil.getInstance(getActivity()).getPower();
+        initShare();
+        mPower = LiveShareUtil.getInstance(getActivity()).getPower();
         if (mPower == Constant.POWER_NORMAL) {//普通
             mMineEdt.setVisibility(View.GONE);
             mMineEdtline.setVisibility(View.GONE);
             mFragments.add(mXfFragment);
             mMineConsMoney.setVisibility(View.GONE);
         } else {
+            mTvvv.setText("分享APP");
             mFwFragment = new FwFragment();
-            mMineRuzhu.setVisibility(View.GONE);
             mMineConsMoney.setVisibility(View.VISIBLE);
             mFragments.add(mXfFragment);
             mFragments.add(mFwFragment);
+            mMineLinator.removeAllViews();
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(DensityUtil.dp2px(getActivity(), 5), DensityUtil.dp2px(getActivity(), 5));
+            layoutParams.leftMargin = DensityUtil.dp2px(getActivity(), 8);
+            ImageView img_one = new ImageView(getActivity());
+            img_one.setLayoutParams(layoutParams);
+            img_one.setImageResource(R.drawable.min_im_dit);
+            img_one.setSelected(true);
+            mMineLinator.addView(img_one);
+            ImageView img_two = new ImageView(getActivity());
+            img_two.setLayoutParams(layoutParams);
+            img_two.setImageResource(R.drawable.min_im_dit);
+            mMineLinator.addView(img_two);
         }
         mMineVp.setAdapter(new VpAdapter(getFragmentManager(), 1, mFragments));
 
@@ -221,6 +250,7 @@ public class MineFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        mMineVp.addOnPageChangeListener(this);
 
 
     }
@@ -231,5 +261,99 @@ public class MineFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        toScroll(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    private void toScroll(int pos) {
+        for (int i = 0; i < mMineLinator.getChildCount(); i++) {
+            mMineLinator.getChildAt(i).setSelected(i==pos?true:false);
+        }
+    }
+    private void initShare() {
+        mShareDialog = new ShareDialog(getActivity());
+        UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");
+        web.setTitle("边框心理");//标题
+        web.setThumb(new UMImage(getActivity(), R.drawable.mine_live));  //缩略图
+        web.setDescription("my description");//描述
+
+        mShareDialog.setOnItemClickListener(new ShareDialog.OnItemClickListener() {
+            @Override
+            public void onWeQuanClickListener() {
+                new ShareAction(getActivity())
+                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)//传入平台
+                        .withMedia(web)
+                        .setCallback(shareListener)//回调监听器
+                        .share();
+            }
+
+            @Override
+            public void onWechatClickListener() {
+                new ShareAction(getActivity())
+                        .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
+                        .withMedia(web)
+                        .setCallback(shareListener)//回调监听器
+                        .share();
+            }
+
+            @Override
+            public void onWeiboClickListener() {
+//                new ShareAction(LookPersonActivity.this).withMedia(web).
+//                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE/*,SHARE_MEDIA.SINA, SHARE_MEDIA.QQ,*/).setCallback(shareListener).share();
+            }
+        });
+    }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        /**
+         * @descrption 分享开始的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+
+        }
+
+        /**
+         * @descrption 分享成功的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Toast.makeText(getActivity(), "分享成功", Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享失败的回调
+         * @param platform 平台类型
+         * @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(getActivity(), "分享失败" + t.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享取消的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(getActivity(), "取消分享", Toast.LENGTH_LONG).show();
+
+        }
+    };
 
 }

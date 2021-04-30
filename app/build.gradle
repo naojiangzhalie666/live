@@ -84,6 +84,7 @@ dependencies {
     implementation project(path: ':xzb')
     implementation 'com.belerweb:pinyin4j:2.5.1'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    implementation (name: 'alipaysdk-15.8.03.210428205839', ext: 'aar')
     implementation  'com.umeng.umsdk:common:9.3.6'//umeng+必选
     implementation  'com.umeng.umsdk:asms:1.2.1'//umeng+必选
     implementation  'com.umeng.umsdk:share-core:7.1.4'//分享核心库，必选

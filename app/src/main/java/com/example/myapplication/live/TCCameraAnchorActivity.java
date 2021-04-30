@@ -21,6 +21,7 @@ import com.example.myapplication.pop_dig.OnlineDialog;
 import com.example.myapplication.ui.LookPersonActivity;
 import com.example.myapplication.ui.OranizeActivity;
 import com.example.myapplication.utils.LiveShareUtil;
+import com.example.xzb.Constantc;
 import com.example.xzb.R;
 import com.example.xzb.ui.TCSimpleUserInfo;
 import com.example.xzb.ui.TCUserAvatarListAdapter;
@@ -336,6 +337,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         mTCVideoView.userID = null;
         mTCVideoView.setUsed(false);
         ll_conline.setVisibility(View.GONE);
+        Constantc.LX_HEAD = "";
         sendContactMsg(false, "");
         stopTimer();
     }
@@ -348,7 +350,9 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
             public void onSureClickListener() {
                 mLiveRoom.responseJoinAnchor(pusherInfo.userID, true, "");
                 mPendingRequest = false;
+                Constantc.LX_HEAD = pusherInfo.userAvatar;
                 sendContactMsg(true, pusherInfo.userID);
+
             }
 
             @Override
@@ -633,6 +637,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         if (null != mBroadcastTimer_con) {
             mBroadcastTimerTask_con.cancel();
         }
+        mBroadcastTimer_con = null;
+        mtv_ctcTm.setText("0");
     }
 
 }

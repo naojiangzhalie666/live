@@ -208,7 +208,7 @@ public class HomeFragment extends Fragment {
                     if (retCode == 0) {
                         mLists.clear();
                         if (result != null) {
-                            mLists.addAll((ArrayList<TCVideoInfo>) result.clone());
+                            mLists.addAll(result);
                         }
                         if (refresh) {
                             mHomeAdapter.setLists(mLists);

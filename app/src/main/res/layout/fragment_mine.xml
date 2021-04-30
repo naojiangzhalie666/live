@@ -53,15 +53,14 @@
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/mine_cons_money"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mine_id">
 
                 <ImageView
                     android:id="@+id/imageView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="@dimen/dp_13"
+                    android:layout_height="@dimen/dp_10"
+                    android:layout_marginEnd="6dp"
                     android:src="@drawable/mine_zuanshi"
                     app:layout_constraintBottom_toBottomOf="@+id/mine_zuanshi"
                     app:layout_constraintEnd_toStartOf="@+id/mine_zuanshi"
@@ -71,21 +70,18 @@
                     android:id="@+id/mine_zuanshi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginTop="8dp"
-                    android:layout_marginRight="@dimen/dp_10"
                     android:ellipsize="end"
                     android:lines="1"
                     android:maxWidth="@dimen/dp_70"
                     android:textColor="#181818"
-                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/textView14"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
-                    tools:text="1434" />
+                    tools:text="14344" />
 
                 <TextView
                     android:id="@+id/textView14"
@@ -95,19 +91,17 @@
                     android:text="钻石（个）"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/mine_zuanshi"
-                    app:layout_constraintStart_toStartOf="@+id/mine_zuanshi"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mine_zuanshi" />
 
                 <ImageView
                     android:id="@+id/mine_cons_eyezuanshi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginTop="6dp"
                     android:src="@drawable/mine_kai"
                     app:layout_constraintStart_toEndOf="@+id/mine_zuanshi"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/mine_zuanshi" />
 
                 <TextView
                     android:id="@+id/textView15"
@@ -134,9 +128,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="6dp"
                     android:text="¥"
                     android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/mine_money_tv"
                     app:layout_constraintEnd_toStartOf="@+id/mine_money_tv"
                     app:layout_constraintTop_toTopOf="@+id/mine_money_tv" />
@@ -150,7 +146,6 @@
                     android:lines="1"
                     android:maxWidth="@dimen/dp_70"
                     android:textColor="#181818"
-                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/textView16"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -167,19 +162,17 @@
                     android:text="现金（元）"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/mine_money_tv"
-                    app:layout_constraintStart_toStartOf="@+id/mine_money_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mine_money_tv" />
 
                 <ImageView
                     android:id="@+id/mine_cons_eyemoney"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginTop="6dp"
                     android:src="@drawable/mine_kai"
                     app:layout_constraintStart_toEndOf="@+id/mine_money_tv"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/mine_money_tv" />
 
                 <TextView
                     android:layout_width="@dimen/dp_1"
@@ -198,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_50"
                 android:textColor="#181818"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -211,7 +204,7 @@
                 android:layout_marginTop="@dimen/dp_4"
                 android:layout_marginEnd="@dimen/dp_8"
                 android:textColor="@color/nineninenine"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 app:layout_constraintEnd_toStartOf="@+id/mine_level"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
@@ -228,9 +221,9 @@
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingTop="@dimen/dp_1"
                 android:paddingRight="@dimen/dp_10"
-                android:textColor="@color/white"
                 android:paddingBottom="@dimen/dp_1"
-                android:textSize="10sp"
+                android:textColor="@color/white"
+                android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="@+id/mine_id"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -251,7 +244,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="6dp"
                     android:src="@drawable/mine_money"
                     app:layout_constraintBottom_toBottomOf="@+id/mine_daojutv"
                     app:layout_constraintEnd_toStartOf="@+id/mine_daojutv"
@@ -264,7 +257,6 @@
                     android:layout_marginTop="8dp"
                     android:maxWidth="@dimen/dp_70"
                     android:textColor="#181818"
-                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/textView17"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -281,8 +273,8 @@
                     android:text="道具（个）"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/mine_daojutv"
-                    app:layout_constraintStart_toStartOf="@+id/mine_daojutv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mine_daojutv" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -317,6 +309,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
+        <LinearLayout
+            android:id="@+id/mine_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/dp_6"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_vp"
+            app:layout_constraintEnd_toEndOf="@+id/mine_vp"
+            app:layout_constraintStart_toStartOf="@+id/mine_vp" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout6"
             android:layout_width="0dp"
@@ -338,7 +340,7 @@
                 android:layout_marginTop="16dp"
                 android:text="其他服务"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -367,6 +369,7 @@
                 android:paddingTop="@dimen/dp_8"
                 android:paddingBottom="@dimen/dp_8"
                 android:text="@string/mine_guanzhu"
+                android:textSize="13sp"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="@+id/textView19"
                 app:layout_constraintStart_toStartOf="@+id/textView19"
@@ -393,7 +396,7 @@
                 android:drawablePadding="@dimen/dp_5"
                 android:paddingTop="@dimen/dp_8"
                 android:paddingBottom="@dimen/dp_8"
-                android:text="关注公众号"
+                android:text="关注公众号"  android:textSize="13sp"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="@+id/textView19"
                 app:layout_constraintStart_toStartOf="@+id/textView19"
@@ -420,7 +423,7 @@
                 android:paddingTop="@dimen/dp_8"
                 android:paddingBottom="@dimen/dp_8"
                 android:text="帮助与反馈"
-                android:textColor="@color/black"
+                android:textColor="@color/black"  android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="@+id/textView19"
                 app:layout_constraintStart_toStartOf="@+id/textView19"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />
@@ -445,7 +448,7 @@
                 android:drawableRight="@drawable/mine_next"
                 android:drawablePadding="@dimen/dp_5"
                 android:paddingTop="@dimen/dp_8"
-                android:text="修改个人页面"
+                android:text="修改个人页面"  android:textSize="13sp"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/textView19"
@@ -479,7 +482,7 @@
                 android:layout_centerInParent="true"
                 android:text="我要入驻"
                 android:textColor="@color/login_txt"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
         </RelativeLayout>
 

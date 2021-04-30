@@ -9,8 +9,17 @@ package com.example.xzb.ui;
 public class TCChatEntity {
     private String grpSendName;    // 发送者的名字
     private String content;        // 消息内容
+    private String head;           //发送者头像
     private int type;            // 消息类型
     private boolean is_gift;
+
+    public String getHead() {
+        return head;
+    }
+
+    public void setHead(String head) {
+        this.head = head;
+    }
 
     public boolean isIs_gift() {
         return is_gift;

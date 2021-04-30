@@ -182,11 +182,13 @@
             android:visibility="gone"
             tools:visibility="visible">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp">
 
                 <ImageView
+                    android:id="@+id/audience_headzb"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -194,6 +196,7 @@
                     android:src="@drawable/pause_publish" />
 
                 <ImageView
+                    android:id="@+id/audience_headlx"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -201,13 +204,14 @@
                     android:src="@drawable/bg" />
 
             </LinearLayout>
-
-            <ImageView
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:src="@drawable/live_contact_tplit" />
-
+                android:text="私密连线中   连线全程保密"
+                android:textColor="#F7D4B6"
+                android:gravity="center"
+                android:background="@drawable/live_contact_tplit"
+                android:textSize="11sp"
+                android:layout_height="wrap_content"/>
         </FrameLayout>
 
         <TextView

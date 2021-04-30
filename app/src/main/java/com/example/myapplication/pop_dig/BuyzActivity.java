@@ -1,6 +1,9 @@
 package com.example.myapplication.pop_dig;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -8,12 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.sdk.app.PayTask;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.BuyAdapter;
 import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.utils.httputil.HttpBackListener;
 import com.example.myapplication.utils.httputil.LiveHttp;
+import com.example.myapplication.zfb.PayResult;
 import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 
@@ -46,6 +51,7 @@ public class BuyzActivity extends AppCompatActivity {
     private List<Map<String, Object>> mMapList;
     private BuyAdapter mBuyAdapter;
     private String select = "";
+    private static final int SDK_PAY_FLAG = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +116,7 @@ public class BuyzActivity extends AppCompatActivity {
                 getWxMsg();
                 break;
             case R.id.dig_buy_zfb:
-                ToastUtil.showToast(this, "支付宝充值" + select);
+                getZfb();
                 break;
             case R.id.dig_buy_cancel:
                 finish();
@@ -136,6 +142,7 @@ public class BuyzActivity extends AppCompatActivity {
 
     }
 
+    /*微信支付*/
     private void payByWechat(JSONObject jsonObject) {
         mTvPaywechat.setEnabled(false);
         JSONObject retData = jsonObject.getJSONObject("retData");
@@ -157,18 +164,84 @@ public class BuyzActivity extends AppCompatActivity {
         mTvPaywechat.setEnabled(true);
     }
 
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SDK_PAY_FLAG: {
+                    @SuppressWarnings("unchecked")
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    /**
+                     * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        ToastUtil.showToast(BuyzActivity.this, "支付成功" + payResult);
+                    } else {
+                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        ToastUtil.showToast(BuyzActivity.this, "支付失败" + payResult);
+                    }
+                    break;
+                }
+            }
+        }
+
+        ;
+    };
+
+    /*支付宝支付*/
+    private void payByZfb(String info) {
+
+        Runnable payRunnable = new Runnable() {
+
+            @Override
+            public void run() {
+                PayTask alipay = new PayTask(BuyzActivity.this);
+                Map<String, String> result = alipay.payV2(info, true);
+                Message msg = new Message();
+                msg.what = SDK_PAY_FLAG;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+            }
+        };
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
+    }
+
+    /*支付宝支付*/
+    private void getZfb() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getZFBPayinfo(), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                JSONObject jsonObject = (JSONObject) result;
+                if(jsonObject.getJSONObject("retData")!=null)
+                payByZfb(jsonObject.getJSONObject("retData").getString("payUrl"));
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEventMsg(EventMessage message) {
         if (message.getMessage().equals("pay_finish")) {
             switch (message.getCode()) {
                 case 0:
-                    ToastUtil.showToast(this,"支付成功");
+                    ToastUtil.showToast(this, "支付成功");
                     break;
                 case -1:
-                    ToastUtil.showToast(this,"支付失败");
+                    ToastUtil.showToast(this, "支付失败");
                     break;
                 case -2:
-                    ToastUtil.showToast(this,"取消支付");
+                    ToastUtil.showToast(this, "取消支付");
                     break;
             }
         }

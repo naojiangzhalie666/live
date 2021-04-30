@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.base.Constant;
 import com.example.myapplication.bean.LoginBean;
 import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.httputil.HttpBackListener;
@@ -68,6 +69,7 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_loginthis:
+                Constant.IS_SHENHEING = false;
                 LiveShareUtil.getInstance(LoginActivity.this).putPower("1");
                 thisLogin();
                 login("liangtiandong", "123456", "");

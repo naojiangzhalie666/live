@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="到账银行卡"
+        android:textSize="13sp"
         android:textColor="@color/black_oneeight"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,6 +71,7 @@
         android:text="中国建设银行"
         android:textColor="@color/black_oneeight"
         android:textStyle="bold"
+        android:textSize="13sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView70"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView70" />
@@ -79,6 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textSize="13sp"
         android:text="2小时内到账"
         android:textColor="@color/nineninenine"
         app:layout_constraintStart_toEndOf="@+id/imageView17"
@@ -110,7 +113,7 @@
             android:layout_marginTop="34dp"
             android:text="提现金额"
             android:textColor="@color/black_oneeight"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -121,7 +124,7 @@
             android:layout_marginTop="4dp"
             android:text="￥"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="33sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView75"
             app:layout_constraintTop_toTopOf="@+id/withdra_edt" />
@@ -137,7 +140,7 @@
             android:lines="1"
             android:textColor="@color/black"
             android:textColorHint="@color/efiveefive"
-            android:textSize="34sp"
+            android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView76"
@@ -162,7 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_5"
             android:textColor="@color/nineninenine"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@+id/textView78"
             app:layout_constraintTop_toBottomOf="@+id/textView78"
             tools:text="当前零钱余额14863.22元，" />
@@ -174,7 +177,7 @@
             android:paddingLeft="@dimen/dp_4"
             android:text="全部提现"
             android:textColor="#0A57AF"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/withdrawal_nowmoney"
             app:layout_constraintStart_toEndOf="@+id/withdrawal_nowmoney" />

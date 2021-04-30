@@ -77,13 +77,15 @@ public class GiftPanelAdapter extends RecyclerView.Adapter<GiftPanelAdapter.View
         holder.mTextGiftNum.setVisibility(TextUtils.isEmpty(giftInfo.gift_count)?View.GONE:View.VISIBLE);
         holder.mTextGiftNum.setText(giftInfo.gift_count);
         if (giftInfo.isSelected) {
-            holder.mLayoutRootView.setBackgroundResource(R.drawable.live_gift_shape_normal);
+//            holder.mLayoutRootView.setBackgroundResource(R.drawable.live_gift_shape_normal);
+            holder.mImageGift.setBackgroundResource(R.drawable.live_gift_shape_normal);
             holder.mTextGiftName.setVisibility(View.GONE);
             holder.mTextGiftPrice.setVisibility(View.VISIBLE);
 //            holder.mTextGiftName.setVisibility(View.GONE);
 //            holder.mTextSendBtn.setVisibility(View.VISIBLE);
         } else {
-            holder.mLayoutRootView.setBackground(null);
+//            holder.mLayoutRootView.setBackground(null);
+            holder.mImageGift.setBackground(null);
             holder.mTextGiftName.setVisibility(View.VISIBLE);
             holder.mTextGiftPrice.setVisibility(View.GONE);
 //            holder.mTextSendBtn.setVisibility(View.GONE);

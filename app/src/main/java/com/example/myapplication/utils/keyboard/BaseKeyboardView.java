@@ -15,6 +15,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.ljy.devring.util.DensityUtil;
+
 import java.util.List;
 
 /**
@@ -33,20 +35,24 @@ public class BaseKeyboardView extends KeyboardView {
 
     private Rect rClipRegion;
     private Keyboard.Key rInvalidatedKey;
+    private Context mContext;
 
     public BaseKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
         init(context, attrs, 0, 0);
     }
 
     public BaseKeyboardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mContext = context;
         init(context, attrs, defStyleAttr, 0);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public BaseKeyboardView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        mContext = context;
         init(context, attrs, defStyleAttr, defStyleRes);
     }
 
@@ -142,28 +148,26 @@ public class BaseKeyboardView extends KeyboardView {
 
             if (label != null) {
                 //获取为Key的Label的字体大小, 若没有定制, 使用KeyboardView的默认属性keyTextSize设置
-                Float customKeyTextSize = 48f;//字体大小
+                Float customKeyTextSize = Float.parseFloat(String.valueOf(DensityUtil.sp2px(mContext,20)));//字体大小
                 // For characters, use large font. For labels like "Done", use small font.
                 if (null != customKeyTextSize) {
                     paint.setTextSize(customKeyTextSize);
-                    paint.setTypeface(Typeface.DEFAULT);
-                    //paint.setTypeface(Typeface.DEFAULT_BOLD);
+                    Typeface typeface =Typeface.create(Typeface.DEFAULT_BOLD ,Typeface.BOLD);
+                    paint.setTypeface(typeface);
                 } else {
                     if (label.length() > 1 && key.codes.length < 2) {
                         paint.setTextSize(rLabelTextSize);
-                        paint.setTypeface(Typeface.DEFAULT);
-                        //paint.setTypeface(Typeface.DEFAULT_BOLD);
+                        Typeface typeface =Typeface.create(Typeface.DEFAULT_BOLD ,Typeface.BOLD);
+                        paint.setTypeface(typeface);
                     } else {
                         paint.setTextSize(rKeyTextSize);
-                        paint.setTypeface(Typeface.DEFAULT);
-                        //paint.setTypeface(Typeface.DEFAULT);
+                        Typeface typeface =Typeface.create(Typeface.DEFAULT_BOLD ,Typeface.BOLD);
+                        paint.setTypeface(typeface);
                     }
                 }
-
                 //获取为Key的Label的字体颜色, 若没有定制, 使用KeyboardView的默认属性keyTextColor设置
 //                Integer customKeyTextColor = customKeyStyle.getKeyTextColor(key);
                 if (null != key.iconPreview) {
-                    paint.setTextSize(36f);
                     paint.setTypeface(Typeface.DEFAULT);
                     paint.setColor(Color.parseColor("#ffffff"));
                 } else {

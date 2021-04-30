@@ -19,6 +19,10 @@ import com.tencent.rtmp.TXLog;
 
 import org.json.JSONObject;
 
+import static com.example.xzb.Constantc.USER_CoverPic;
+import static com.example.xzb.Constantc.USER_NAME;
+import static com.example.xzb.Constantc.USER_UserAvatar;
+
 /**
  * Module:   TCUserMgr
  * <p>
@@ -414,11 +418,10 @@ public class TCUserMgr {
     public void loginMLVB() {
         Constantc.mlvb_login = false;
         if (mContext == null) return;
-        //头像
-        mUserAvatar = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2F50%2Fv2-e73ebe5fb7fbae39d69ed94dcc82f145_hd.jpg&refer=http%3A%2F%2Fpic1.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620871698&t=d27011329fbd6b0ca7bc7aaf01f94f54";
-        mNickName = Constantc.USER_NAME;//昵称
-        //封面图
-        mCoverPic = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fc%2F55bf0900d0a2e.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620871753&t=c6d2d2c02ecc25d3e0627178af755008";
+
+        mUserAvatar = USER_UserAvatar; //头像
+        mNickName = USER_NAME;//昵称
+        mCoverPic = USER_CoverPic;   //封面图
         mSex =1;//性别
         mUserId = Constantc.test_USERID;
         mUserSig = Constantc.test_userSig;
@@ -427,7 +430,7 @@ public class TCUserMgr {
         loginInfo.sdkAppID = mSdkAppID;
         loginInfo.userID =  mUserId;
         loginInfo.userSig = mUserSig;
-        loginInfo.userName = Constantc.USER_NAME;
+        loginInfo.userName = USER_NAME;
         loginInfo.userAvatar = mUserAvatar;
         MLVBLiveRoom liveRoom = MLVBLiveRoom.sharedInstance(mContext);
         liveRoom.login(loginInfo, new IMLVBLiveRoomListener.LoginCallback() {

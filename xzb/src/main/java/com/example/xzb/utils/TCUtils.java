@@ -32,10 +32,13 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.xzb.R;
 
 import java.io.File;
@@ -384,12 +387,12 @@ public class TCUtils {
             return;
         }
         try {
-//            if (TextUtils.isEmpty(url)){
+            if (TextUtils.isEmpty(url)){
                 view.setImageResource(defResId);
-//            } else {
-//                RequestManager req = Glide.with(context);
-//                req.load(url).placeholder(defResId).transform(new TCGlideCircleTransform(context)).into(view);
-//            }
+            } else {
+                RequestManager req = Glide.with(context);
+                req.load(url).placeholder(defResId).transform(new TCGlideCircleTransform(context)).into(view);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -81,6 +81,7 @@ public class WithdrawalActivity extends BaseActivity {
                 if (TextUtils.isEmpty(charSequence) || charSequence.toString().equals("0") || charSequence.toString().equals("0.0")) {
                     Toast.makeText(WithdrawalActivity.this, "请输入提现金额", Toast.LENGTH_SHORT).show();
                 } else {
+                    Toast.makeText(WithdrawalActivity.this, "提现"+charSequence, Toast.LENGTH_SHORT).show();
 //                    onNumberkeyActionDone();
                 }
             }

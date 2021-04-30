@@ -324,8 +324,14 @@ com/tencent/qcloud/tim/uikit/component/indexlib/suspension/ISuspensionInterface.
  com.tencent.qcloud.tim.uikit.component.indexlib.suspension.ISuspensionInterface
 com/tencent/qcloud/tim/uikit/component/photoview/OnScaleChangedListener.java
  com.tencent.qcloud.tim.uikit.component.photoview.OnScaleChangedListener
-com/tencent/qcloud/tim/uikit/base/ILayout.java
- com.tencent.qcloud.tim.uikit.base.ILayout
+com/tencent/qcloud/tim/uikit/TUIKitImpl.java
+ com.tencent.qcloud.tim.uikit.TUIKitImpl
+ com.tencent.qcloud.tim.uikit.TUIKitImpl$1
+ com.tencent.qcloud.tim.uikit.TUIKitImpl$2
+ com.tencent.qcloud.tim.uikit.TUIKitImpl$3
+ com.tencent.qcloud.tim.uikit.TUIKitImpl$4
+ com.tencent.qcloud.tim.uikit.TUIKitImpl$5
+ com.tencent.qcloud.tim.uikit.TUIKitImpl$6
 com/tencent/qcloud/tim/uikit/component/video/TypeButton.java
  com.tencent.qcloud.tim.uikit.component.video.TypeButton
 com/tencent/qcloud/tim/uikit/modules/conversation/interfaces/IConversationLayout.java
@@ -735,8 +741,8 @@ com/tencent/qcloud/tim/uikit/config/CustomFaceConfig.java
  com.tencent.qcloud.tim.uikit.config.CustomFaceConfig
 com/tencent/qcloud/tim/uikit/component/video/listener/ErrorListener.java
  com.tencent.qcloud.tim.uikit.component.video.listener.ErrorListener
-com/tencent/qcloud/tim/uikit/component/photoview/Compat.java
- com.tencent.qcloud.tim.uikit.component.photoview.Compat
+com/tencent/qcloud/tim/uikit/TUIKit.java
+ com.tencent.qcloud.tim.uikit.TUIKit
 com/tencent/qcloud/tim/uikit/component/video/FoucsView.java
  com.tencent.qcloud.tim.uikit.component.video.FoucsView
 com/tencent/qcloud/tim/uikit/modules/group/info/GroupInfoAdapter.java
@@ -908,13 +914,7 @@ com/tencent/qcloud/tim/uikit/modules/conversation/ConversationLayout.java
  com.tencent.qcloud.tim.uikit.modules.conversation.ConversationLayout$1
 com/tencent/qcloud/tim/uikit/modules/group/apply/GroupApplyManagerActivity.java
  com.tencent.qcloud.tim.uikit.modules.group.apply.GroupApplyManagerActivity
-com/tencent/qcloud/tim/uikit/TUIKit.java
- com.tencent.qcloud.tim.uikit.TUIKit
-com/tencent/qcloud/tim/uikit/TUIKitImpl.java
- com.tencent.qcloud.tim.uikit.TUIKitImpl
- com.tencent.qcloud.tim.uikit.TUIKitImpl$1
- com.tencent.qcloud.tim.uikit.TUIKitImpl$2
- com.tencent.qcloud.tim.uikit.TUIKitImpl$3
- com.tencent.qcloud.tim.uikit.TUIKitImpl$4
- com.tencent.qcloud.tim.uikit.TUIKitImpl$5
- com.tencent.qcloud.tim.uikit.TUIKitImpl$6
+com/tencent/qcloud/tim/uikit/base/ILayout.java
+ com.tencent.qcloud.tim.uikit.base.ILayout
+com/tencent/qcloud/tim/uikit/component/photoview/Compat.java
+ com.tencent.qcloud.tim.uikit.component.photoview.Compat

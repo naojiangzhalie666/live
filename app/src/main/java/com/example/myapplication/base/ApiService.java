@@ -8,12 +8,23 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiService {
-    /*登录
-     *
+    /* 登录
      * authType :  帐号密码登录：空  、手机短信验证码登录：sms(验证码)、微信登录：wx ?
      * */
     @POST("sysLoginController/login")
     Observable<JSONObject> login(@Query("username") String name, @Query("password") String pwd, @Query("authType") String authType);
+
+    /*获取微信支付数据*/
+    @GET("testController/appWxPay")
+    Observable<JSONObject> getWxPayinfo();
+
+    /*获取支付宝支付数据*/
+    @GET("testController/appALiPay")
+    Observable<JSONObject> getZFBPayinfo();
+
+
+
+
 
     /**
      * 微信获取accrss_token
@@ -36,7 +47,5 @@ public interface ApiService {
     @GET("https://api.weixin.qq.com/sns/userinfo")
     Observable<JSONObject> getWxUserInfo(@Query("access_token") String access_token, @Query("openid") String openid, @Query("lang") String lang);
 
-    @GET("http://172.16.6.126:8081/testController/appWxPay")
-    Observable<JSONObject> getWxPayinfo();
 
 }
