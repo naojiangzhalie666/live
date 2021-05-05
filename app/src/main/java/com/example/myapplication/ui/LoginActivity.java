@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.bean.LoginBean;
 import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.httputil.HttpBackListener;
@@ -26,6 +27,10 @@ import com.tencent.liteav.login.UserModel;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -62,6 +67,7 @@ public class LoginActivity extends BaseActivity {
         TitleUtils.setStatusTextColor(false, this);
         ButterKnife.bind(this);
         mPermission = checkPublishPermission();
+        EventBus.getDefault().register(this);
     }
 
 
@@ -122,12 +128,12 @@ public class LoginActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        is_wechat = intent.getBooleanExtra("wechat", false);
+       /* is_wechat = intent.getBooleanExtra("wechat", false);
         user_openId = intent.getStringExtra("openId");
         accessToken = intent.getStringExtra("accessToken");
         if (is_wechat) {
             login(accessToken, user_openId, "wx");
-        }
+        }*/
     }
 
     private void thisLogin() {
@@ -225,6 +231,20 @@ public class LoginActivity extends BaseActivity {
                 Log.e(TAG, "imLogin 登录成功");
             }
         });*/
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMsg(EventMessage msg){
+        if(msg.getMessage().equals("wx_login")){
+            login(msg.getAcc_token(),msg.getOpenid(), "wx");
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private static void loginTUIKitLive(long sdkAppid, String userId, String userSig) {

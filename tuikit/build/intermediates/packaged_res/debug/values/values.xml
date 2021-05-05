@@ -666,7 +666,7 @@
     <string name="select_call_user">Select a user to call</string>
     <string name="send">Send</string>
     <string name="send_error">Sending error</string>
-    <string name="send_two_mins">Message sent more than 2 min ago</string>
+    <string name="send_two_mins">消息发送已超过2分钟</string>
     <string name="sended">Sent</string>
     <string name="sending">Sending...</string>
     <string name="service">服务项目咨询</string>

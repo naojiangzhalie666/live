@@ -36,8 +36,10 @@ import com.example.myapplication.pop_dig.BaseDialog;
 import com.example.myapplication.pop_dig.BuyzActivity;
 import com.example.myapplication.pop_dig.CarDialog;
 import com.example.myapplication.pop_dig.ChathelfActivity;
+import com.example.myapplication.pop_dig.ShareDialog;
 import com.example.myapplication.ui.LookPersonActivity;
 import com.example.myapplication.ui.OranizeActivity;
+import com.example.xzb.Constantc;
 import com.example.xzb.R;
 import com.example.xzb.important.IMLVBLiveRoomListener;
 import com.example.xzb.important.MLVBCommonDef;
@@ -63,7 +65,6 @@ import com.example.xzb.utils.login.TCELKReportMgr;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.roomutil.AnchorInfo;
 import com.example.xzb.utils.roomutil.AudienceInfo;
-import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.liteav.demo.beauty.view.BeautyPanel;
@@ -73,6 +74,11 @@ import com.tencent.rtmp.TXLivePushConfig;
 import com.tencent.rtmp.TXLivePusher;
 import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.ui.TXCloudVideoView;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.yf.xzbgift.base.Constants;
 import com.yf.xzbgift.imple.DefaultGiftAdapterImp;
 import com.yf.xzbgift.imple.GiftAdapter;
@@ -203,6 +209,9 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private TXLivePusher mTxLivePusher;
     private boolean is_open = true;
     private BaseDialog mBaseDialog;
+    private boolean mPendingRequest;        // 是否正在处理请求
+    protected Handler mMainHandler = new Handler(Looper.getMainLooper());
+    private ShareDialog mShareDialog;
 
 
     @Override
@@ -252,6 +261,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
     /*-------新增布局的一些设置--------*/
     private void initMineViews() {
+        initShare();
         mtv_name = findViewById(R.id.anchor_tv_broadcasting_name);
         mtv_gg = findViewById(R.id.anchor_tv_member_gz);
         mtv_id = findViewById(R.id.cam_id);
@@ -550,7 +560,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         mLiveRoom.enterRoom(mGroupId, mTXCloudVideoView, new EnterRoomCallback() {
             @Override
             public void onError(int errCode, String errInfo) {
-                showErrorAndQuit("加入房间失败，Error:" + errCode);
+                showErrorAndQuit("加入房间失败");
 //                TCELKReportMgr.getInstance().reportELK(TCConstants.ELK_ACTION_LIVE_PLAY, TCUserMgr.getInstance().getUserId(), -10001, "进入LiveRoom失败", null);
             }
 
@@ -623,25 +633,25 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 hideNoticeToast();
                 Toast.makeText(TCAudienceActivity.this, reason, Toast.LENGTH_SHORT).show();
                 mIsBeingLinkMic = false;
-                mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
+//                mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
             }
 
             @Override
             public void onTimeOut() {
                 mBtnLinkMic.setEnabled(true);
                 mBtnLinkMic.setVisibility(View.VISIBLE);
-                mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
+//                mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
                 hideNoticeToast();
                 Toast.makeText(TCAudienceActivity.this, "连麦请求超时，主播没有做出回应", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(int code, String errInfo) {
-                Toast.makeText(TCAudienceActivity.this, "连麦请求发生错误，" + errInfo, Toast.LENGTH_SHORT).show();
+                Toast.makeText(TCAudienceActivity.this, "连麦请求发生错误" , Toast.LENGTH_SHORT).show();
                 hideNoticeToast();
                 mBtnLinkMic.setEnabled(true);
                 mBtnLinkMic.setVisibility(View.VISIBLE);
-                mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
+//                mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
             }
         });
     }
@@ -667,7 +677,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 mBtnLinkMic.setEnabled(true);
                 mBtnLinkMic.setVisibility(View.VISIBLE);
                 mIsBeingLinkMic = false;
-                mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
+//                mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
                 Toast.makeText(TCAudienceActivity.this, "连麦失败：" + errInfo, Toast.LENGTH_SHORT).show();
             }
 
@@ -692,12 +702,15 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         ll_conline.setVisibility(View.GONE);
         stopTimer();
         mIsBeingLinkMic = false;
+        is_open = true;
+        mimgv_camera.setImageResource(R.drawable.audience_opencamear);
+        mimg_defa.setVisibility(View.GONE);
 
         //启用连麦Button
         if (mBtnLinkMic != null) {
             mBtnLinkMic.setEnabled(true);
             mBtnLinkMic.setVisibility(View.VISIBLE);
-            mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
+//            mBtnLinkMic.setBackgroundResource(R.drawable.linkmic_on);
             mimgv_camera.setVisibility(View.GONE);
             mimg_defa.setVisibility(View.GONE);
         }
@@ -846,13 +859,55 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     }
 
     @Override
-    public void onRequestJoinAnchor(AnchorInfo anchorInfo, String reason) {
+    public void onRequestJoinAnchor(AnchorInfo pusherInfo, String reason) {
+        BaseDialog dig = new BaseDialog.BaseBuild().setSure("接受").setCancel("拒绝").setTitle(pusherInfo.userName + "向您发起连麦请求").build(this);
+        dig.setOnItemClickListener(new BaseDialog.OnItemClickListener() {
+            @Override
+            public void onSureClickListener() {
+                mLiveRoom.responseJoinAnchor(pusherInfo.userID, true, "");
+                mPendingRequest = false;
+                Constantc.LX_HEAD = pusherInfo.userAvatar;
+                sendContactMsg(true, pusherInfo.userID);
+                joinPusher();
+            }
 
+            @Override
+            public void onCancelClickListener() {
+                mLiveRoom.responseJoinAnchor(pusherInfo.userID, false, "拒绝了您的连麦请求");
+                mPendingRequest = false;
+            }
+        });
+
+        mMainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mPendingRequest == true) {
+                    mLiveRoom.responseJoinAnchor(pusherInfo.userID, false, "请稍后，正在处理其它人的连麦请求");
+                    return;
+                }
+
+                if (mPusherList.size() >= 1) {
+                    mLiveRoom.responseJoinAnchor(pusherInfo.userID, false, "连麦人数超过最大限制");
+                    return;
+                }
+                dig.show();
+                mPendingRequest = true;
+
+                mMainHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dig.dismiss();
+                        mPendingRequest = false;
+                    }
+                }, 10000);
+            }
+        });
     }
+
 
     @Override
     public void onKickoutJoinAnchor() {
-        Toast.makeText(getApplicationContext(), "不好意思，您被主播踢开", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "已中断连麦", Toast.LENGTH_LONG).show();
         stopLinkMic();
     }
 
@@ -1212,7 +1267,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         } else if (id == R.id.btn_message_input) {
             showInputMsgDialog();
         } else if (id == R.id.btn_share) {
-            ToastUtil.showToast(this, "分享直播间");
+            mShareDialog.show();
         } else if (id == R.id.btn_log) {
             showLog();
         } else if (id == R.id.record) {
@@ -1225,6 +1280,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         } else if (id == R.id.audience_car) {
             mCarDialog.show();
         } else if (id == R.id.anchor_camera) {
+            mTxLivePusher= mLiveRoom.getTxLivePusher();
             if (is_open) {
                 TXLivePushConfig config = mTxLivePusher.getConfig();
                 //设置推送到主播端的垫片--图片
@@ -1353,6 +1409,79 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             });
         }
     }
+    private void initShare(){
+        mShareDialog = new ShareDialog(this);
+        UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");
+        web.setTitle("边框心理");//标题
+        web.setThumb(new UMImage(this, com.example.myapplication.R.drawable.mine_live));  //缩略图
+        web.setDescription("my description");//描述
+
+        mShareDialog.setOnItemClickListener(new ShareDialog.OnItemClickListener() {
+            @Override
+            public void onWeQuanClickListener() {
+                new ShareAction(TCAudienceActivity.this)
+                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)//传入平台
+                        .withMedia(web)
+                        .setCallback(shareListener)//回调监听器
+                        .share();
+            }
+
+            @Override
+            public void onWechatClickListener() {
+                new ShareAction(TCAudienceActivity.this)
+                        .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
+                        .withMedia(web)
+                        .setCallback(shareListener)//回调监听器
+                        .share();
+            }
+
+            @Override
+            public void onWeiboClickListener() {
+//                new ShareAction(LookPersonActivity.this).withMedia(web).
+//                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE/*,SHARE_MEDIA.SINA, SHARE_MEDIA.QQ,*/).setCallback(shareListener).share();
+            }
+        });
+    }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        /**
+         * @descrption 分享开始的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+
+        }
+
+        /**
+         * @descrption 分享成功的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Toast.makeText(TCAudienceActivity.this, "分享成功", Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享失败的回调
+         * @param platform 平台类型
+         * @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(TCAudienceActivity.this, "分享失败" + t.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享取消的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(TCAudienceActivity.this, "取消分享", Toast.LENGTH_LONG).show();
+
+        }
+    };
 
 
     /**
@@ -1472,6 +1601,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         mBroadcastTimer=null;
         mtv_ctcTm.setText("0");
     }
+
 
 
 }

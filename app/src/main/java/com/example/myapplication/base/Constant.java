@@ -14,8 +14,8 @@ public class Constant {
     public static boolean IS_SHENHEING = false;//入驻是否在审核中
 
     /*腾讯云直播*/
-    public static final String LICENCEURL = "http://license.vod2.myqcloud.com/license/v1/e1d8613d180c8d324b801c89111da8f6/TXLiveSDK.licence"; // 获取到的 licence url
-    public static final String LICENCEKEY = "ccc669eed3641dc1a8dfccdc99b0dd96"; // 获取到的 licence key
+    public static final String LICENCEURL = "http://license.vod2.myqcloud.com/license/v1/17a46e881d1eafbddf54d6a617619267/TXLiveSDK.licence"; // 获取到的 licence url
+    public static final String LICENCEKEY = "9fdb190cae9f7bb82780efdb05dd16c5"; // 获取到的 licence key
 
     /*im聊天*/
     public static final String SECRETKEY = Constantc.SECRETKEY;//聊天key

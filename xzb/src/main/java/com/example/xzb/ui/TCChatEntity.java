@@ -12,6 +12,15 @@ public class TCChatEntity {
     private String head;           //发送者头像
     private int type;            // 消息类型
     private boolean is_gift;
+    public String userid;       // userId
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
 
     public String getHead() {
         return head;

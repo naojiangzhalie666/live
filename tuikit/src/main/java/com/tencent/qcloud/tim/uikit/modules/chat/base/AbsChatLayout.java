@@ -256,7 +256,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
     @Override
     public void initDefault() {
         /*用户的话展示这个----*/
-        getNoticeLayout().alwaysShow(true);
+//        getNoticeLayout().alwaysShow(true);
         getNoticeLayout().getContent().setText("私聊1钻石/每条");
         getNoticeLayout().getContentExtra().setText("");
 

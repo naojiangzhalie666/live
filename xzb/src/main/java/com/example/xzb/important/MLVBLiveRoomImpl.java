@@ -800,6 +800,74 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         }
     }
 
+    /*自定义主播邀请观众进行连麦*/
+    @Override
+    public void requestJoinUserAnchor(String reason,String toUserid, IMLVBLiveRoomListener.RequestJoinAnchorCallback callback) {
+        TXCLog.i(TAG, "API -> requestJoinAnchor:" + reason);
+        try {
+            CommonJson<JoinAnchorRequest> request = new CommonJson<>();
+            request.cmd = "linkmic";
+            request.data = new JoinAnchorRequest();
+            request.data.type = "request";
+            request.data.roomID = mCurrRoomID;
+            request.data.userID = mSelfAccountInfo.userID;
+            request.data.userName = mSelfAccountInfo.userName;
+            request.data.userAvatar = mSelfAccountInfo.userAvatar;
+            request.data.reason = reason;
+            request.data.timestamp = System.currentTimeMillis() - mTimeDiff;
+            mJoinAnchorCallback = callback;
+            if (mJoinAnchorTimeoutTask == null) {
+                mJoinAnchorTimeoutTask = new Runnable() {
+                    @Override
+                    public void run() {
+                        callbackOnThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                IMLVBLiveRoomListener.RequestJoinAnchorCallback reqJoinCallback = mJoinAnchorCallback;
+                                if (reqJoinCallback != null) {
+                                    reqJoinCallback.onTimeOut();
+                                    mJoinAnchorCallback = null;
+                                }
+                            }
+                        });
+                    }
+                };
+            }
+
+            mListenerHandler.removeCallbacks(mJoinAnchorTimeoutTask);
+            mListenerHandler.postDelayed(mJoinAnchorTimeoutTask, 10 * 1000);
+            String content = new Gson().toJson(request, new TypeToken<CommonJson<JoinAnchorRequest>>(){}.getType());
+            String toUserID = toUserid;
+            IMMessageMgr imMessageMgr = mIMMessageMgr;
+            if (imMessageMgr != null) {
+                imMessageMgr.sendC2CCustomMessage(toUserID, content, new IMMessageMgr.Callback() {
+                    @Override
+                    public void onError(final int code, final String errInfo) {
+                        callbackOnThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                IMLVBLiveRoomListener.RequestJoinAnchorCallback reqJoinCallback = mJoinAnchorCallback;
+                                if (reqJoinCallback != null) {
+                                    reqJoinCallback.onError(code, "[IM] 请求连麦失败[" + errInfo + ":" + code + "]");
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onSuccess(Object... args) {
+
+                    }
+                });
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * 主播处理连麦请求
      *

@@ -3,7 +3,6 @@ package com.example.myapplication.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +21,7 @@ import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
-import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tim.uikit.base.BaseFragment;
-import com.tencent.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.tencent.qcloud.tim.uikit.component.AudioPlayer;
 import com.tencent.qcloud.tim.uikit.component.TitleBarLayout;
 import com.tencent.qcloud.tim.uikit.modules.chat.ChatLayout;
@@ -41,10 +38,10 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.tencent.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout.DATA_CHANGE_TYPE_REFRESH;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -230,57 +227,11 @@ public class ChathelfFragment extends BaseFragment {
                 mChatLayout.sendMessage(msg, false);
             }
         });
+        // TODO: 2021/5/5 如果是用户的话进行提醒
+        MessageInfo msg = buildTextMessage("私聊1钻石/每条");
+        mChatLayout.getChatManager().getCurrentProvider().getDataSource().add(msg);
+        mChatLayout.getChatManager().getCurrentProvider().updateAdapter(DATA_CHANGE_TYPE_REFRESH,0);
 
-        if (false/*mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP*/) {
-            V2TIMManager.getConversationManager().getConversation(mChatInfo.getId(), new V2TIMValueCallback<V2TIMConversation>() {
-                @Override
-                public void onError(int code, String desc) {
-                    Log.e(TAG, "getConversation error:" + code + ", desc:" + desc);
-                }
-
-                @Override
-                public void onSuccess(V2TIMConversation v2TIMConversation) {
-                    if (v2TIMConversation == null) {
-                        Log.d(TAG, "getConversation failed");
-                        return;
-                    }
-                    mChatInfo.setAtInfoList(v2TIMConversation.getGroupAtInfoList());
-
-                    final V2TIMMessage lastMessage = v2TIMConversation.getLastMessage();
-
-                    updateAtInfoLayout();
-                    mChatLayout.getAtInfoLayout().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            final List<V2TIMGroupAtInfo> atInfoList = mChatInfo.getAtInfoList();
-                            if (atInfoList == null || atInfoList.isEmpty()) {
-                                mChatLayout.getAtInfoLayout().setVisibility(GONE);
-                                return;
-                            } else {
-                                mChatLayout.getChatManager().getAtInfoChatMessages(atInfoList.get(atInfoList.size() - 1).getSeq(), lastMessage, new IUIKitCallBack() {
-                                    @Override
-                                    public void onSuccess(Object data) {
-                                        mChatLayout.getMessageLayout().scrollToPosition((int) atInfoList.get(atInfoList.size() - 1).getSeq());
-                                        LinearLayoutManager mLayoutManager = (LinearLayoutManager) mChatLayout.getMessageLayout().getLayoutManager();
-                                        mLayoutManager.scrollToPositionWithOffset((int) atInfoList.get(atInfoList.size() - 1).getSeq(), 0);
-
-                                        atInfoList.remove(atInfoList.size() - 1);
-                                        mChatInfo.setAtInfoList(atInfoList);
-
-                                        updateAtInfoLayout();
-                                    }
-
-                                    @Override
-                                    public void onError(String module, int errCode, String errMsg) {
-                                        Log.d(TAG, "getAtInfoChatMessages failed");
-                                    }
-                                });
-                            }
-                        }
-                    });
-                }
-            });
-        }
         mimgv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -391,6 +342,24 @@ public class ChathelfFragment extends BaseFragment {
     }
     private int dp2px(float value) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getActivity().getResources().getDisplayMetrics());
+    }
+    /**
+     * 创建一条文本消息
+     *
+     * @param message 消息内容
+     * @return
+     */
+    public static MessageInfo buildTextMessage(String message) {
+        MessageInfo info = new MessageInfo();
+        V2TIMMessage v2TIMMessage = V2TIMManager.getMessageManager().createTextMessage(message);
+
+        info.setExtra(message);
+        info.setMsgTime(System.currentTimeMillis() / 1000);
+        info.setSelf(true);
+        info.setTimMessage(v2TIMMessage);
+        info.setFromUser(V2TIMManager.getInstance().getLoginUser());
+        info.setMsgType(MessageInfo.MSG_STATUS_ZUANS);
+        return info;
     }
 
 }

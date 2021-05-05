@@ -18,6 +18,7 @@ import com.example.myapplication.base.Constant;
 import com.example.myapplication.pop_dig.BaseDialog;
 import com.example.myapplication.pop_dig.MeslistActivity;
 import com.example.myapplication.pop_dig.OnlineDialog;
+import com.example.myapplication.pop_dig.ShareDialog;
 import com.example.myapplication.ui.LookPersonActivity;
 import com.example.myapplication.ui.OranizeActivity;
 import com.example.myapplication.utils.LiveShareUtil;
@@ -29,7 +30,6 @@ import com.example.xzb.ui.TCVideoView;
 import com.example.xzb.utils.TCUtils;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.roomutil.AnchorInfo;
-import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.liteav.audiosettingkit.AudioEffectPanel;
 import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
@@ -38,6 +38,11 @@ import com.tencent.liteav.demo.beauty.model.ItemInfo;
 import com.tencent.liteav.demo.beauty.model.TabInfo;
 import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.rtmp.ui.TXCloudVideoView;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -91,6 +96,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     private OnlineDialog mOnlineDialog;
     private List<TCSimpleUserInfo> mOnlin_entits;
     private int mPower;
+    private ShareDialog mShareDialog;
+
 
 
     @Override
@@ -110,6 +117,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     protected void initView() {
         setContentView(R.layout.activity_camera_anchor);
         super.initView();
+        initShare();
         mTXCloudVideoView = (TXCloudVideoView) findViewById(R.id.anchor_video_view);
         mTXCloudVideoView.setLogMargin(10, 10, 45, 55);
         mtx_contact = findViewById(R.id.video_contact);
@@ -122,6 +130,12 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         bt_yuyin = findViewById(R.id.audience_btn_linkmic);
         mOnlin_entits = new ArrayList<>();
         mOnlineDialog = new OnlineDialog(this, mOnlin_entits, TCUserMgr.getInstance().getUserId());
+        mOnlineDialog.setOnItemLxListener(new OnlineDialog.OnItemLxListener() {
+            @Override
+            public void onItemLxLixtener(String userid) {
+                startLinkMic(userid);
+            }
+        });
 
         mTCVideoView = new TCVideoView(mtx_contact, mBt_contact, mFram_contact, mImgv_contact, new TCVideoView.OnRoomViewListener() {
             @Override
@@ -205,6 +219,33 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                     intent.putExtra("is_user", mPower == Constant.POWER_ZIXUNJIGOU ? false : true);
                 }
                 startActivity(intent);
+            }
+        });
+    }
+
+    /*邀请观众进行连麦*/
+    private void startLinkMic(String userid) {
+        mLiveRoom.requestJoinUserAnchor("连麦", userid, new RequestJoinAnchorCallback() {
+            @Override
+            public void onAccept() {
+                Log.i(TAG, "onAccept:观众接受已经接收连麦");
+                if(mOnlineDialog!=null&&mOnlineDialog.isShowing())
+                    mOnlineDialog.dismiss();
+            }
+
+            @Override
+            public void onReject(String reason) {
+                Toast.makeText(TCCameraAnchorActivity.this, reason, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTimeOut() {
+                Toast.makeText(TCCameraAnchorActivity.this, "连麦请求超时，观众没有做出回应", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(int errCode, String errInfo) {
+                Toast.makeText(TCCameraAnchorActivity.this, "连麦请求发生错误", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -526,7 +567,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         } else if (id == R.id.camera_siliao) {
             startActivity(new Intent(this, MeslistActivity.class));
         } else if (id == R.id.btn_share) {
-            ToastUtil.showToast(this, "进行分享");
+            mShareDialog.show();
         } else {
             super.onClick(v);
         }
@@ -554,6 +595,80 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         }
         mTCVideoView.videoView.showLog(mShowLog);
     }
+
+    private void initShare(){
+        mShareDialog = new ShareDialog(this);
+        UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");
+        web.setTitle("边框心理");//标题
+        web.setThumb(new UMImage(this, com.example.myapplication.R.drawable.mine_live));  //缩略图
+        web.setDescription("my description");//描述
+
+        mShareDialog.setOnItemClickListener(new ShareDialog.OnItemClickListener() {
+            @Override
+            public void onWeQuanClickListener() {
+                new ShareAction(TCCameraAnchorActivity.this)
+                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)//传入平台
+                        .withMedia(web)
+                        .setCallback(shareListener)//回调监听器
+                        .share();
+            }
+
+            @Override
+            public void onWechatClickListener() {
+                new ShareAction(TCCameraAnchorActivity.this)
+                        .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
+                        .withMedia(web)
+                        .setCallback(shareListener)//回调监听器
+                        .share();
+            }
+
+            @Override
+            public void onWeiboClickListener() {
+//                new ShareAction(LookPersonActivity.this).withMedia(web).
+//                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE/*,SHARE_MEDIA.SINA, SHARE_MEDIA.QQ,*/).setCallback(shareListener).share();
+            }
+        });
+    }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        /**
+         * @descrption 分享开始的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+
+        }
+
+        /**
+         * @descrption 分享成功的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Toast.makeText(TCCameraAnchorActivity.this, "分享成功", Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享失败的回调
+         * @param platform 平台类型
+         * @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(TCCameraAnchorActivity.this, "分享失败" + t.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @descrption 分享取消的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(TCCameraAnchorActivity.this, "取消分享", Toast.LENGTH_LONG).show();
+
+        }
+    };
 
     /**
      * /////////////////////////////////////////////////////////////////////////////////

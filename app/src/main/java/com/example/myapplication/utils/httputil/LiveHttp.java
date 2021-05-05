@@ -4,9 +4,12 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.myapplication.base.ApiService;
+import com.example.myapplication.base.LiveApplication;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.http.support.throwable.HttpThrowable;
+import com.ljy.devring.util.NetworkUtil;
+import com.superc.yyfflibrary.utils.ToastUtil;
 
 import io.reactivex.Observable;
 
@@ -67,6 +70,11 @@ public class LiveHttp {
     }*/
 
     public void toGetData(Observable observable, HttpBackListener backListener) {
+        if(!NetworkUtil.isNetWorkAvailable(LiveApplication.getmInstance())){
+            ToastUtil.showToast(LiveApplication.getmInstance(),"网络不可用,请检查");
+            return;
+        }
+
         DevRing.httpManager().commonRequest(observable, new CommonObserver<JSONObject>() {
             @Override
             public void onResult(JSONObject result) {

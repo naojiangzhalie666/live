@@ -162,7 +162,7 @@
     <string name="up_cancle_send">Release to Cancel</string>
     <string name="and_and"> </string>
     <string name="be_friend">is your friend now.</string>
-    <string name="send_two_mins">Message sent more than 2 min ago</string>
+    <string name="send_two_mins">消息发送已超过2分钟</string>
     <string name="revoke_fail">Failed to recall</string>
     <string name="release_end">Release to Send</string>
     <string name="hold_say">Hold to Talk</string>

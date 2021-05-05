@@ -770,6 +770,8 @@ com/tencent/liteav/model/ITRTCAVCall.java
 com/tencent/qcloud/tim/uikit/modules/message/MessageInfo.java
  com.tencent.qcloud.tim.uikit.modules.message.MessageInfo
  com.tencent.qcloud.tim.uikit.modules.message.MessageInfo$1
+com/tencent/qcloud/tim/uikit/modules/chat/layout/message/holder/MessageZuansHolder.java
+ com.tencent.qcloud.tim.uikit.modules.chat.layout.message.holder.MessageZuansHolder
 com/tencent/qcloud/tim/uikit/modules/group/member/IGroupMemberRouter.java
  com.tencent.qcloud.tim.uikit.modules.group.member.IGroupMemberRouter
 com/tencent/qcloud/tim/uikit/component/AudioPlayer.java

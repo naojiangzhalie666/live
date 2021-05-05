@@ -231,6 +231,9 @@ public abstract class MLVBLiveRoom {
      */
     public abstract void requestJoinAnchor(String reason, IMLVBLiveRoomListener.RequestJoinAnchorCallback callback);
 
+
+    public abstract void requestJoinUserAnchor(String reason,String toUserid,IMLVBLiveRoomListener.RequestJoinAnchorCallback callback);
+
     /**
      * 主播处理连麦请求
      *

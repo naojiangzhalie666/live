@@ -837,6 +837,7 @@ drawable bg_divider
 drawable bg_handsfree
 drawable bg_mute_mic
 drawable bg_search_divider
+drawable bg_zuans
 drawable blue_btn_bg
 drawable bottom_action_border
 drawable chat_bubble_myself
@@ -917,6 +918,7 @@ drawable live_create_room_btn
 drawable live_ic_group_live
 drawable message_send_border
 drawable message_send_fail
+drawable mine_talk
 drawable msg_editor_border
 drawable my_cursor
 drawable notification_action_background
@@ -1424,6 +1426,7 @@ layout message_adapter_content_tips
 layout message_adapter_content_trtc
 layout message_adapter_item_content
 layout message_adapter_item_empty
+layout message_adapter_item_zuans
 layout notification_action
 layout notification_action_tombstone
 layout notification_media_action

@@ -4,6 +4,25 @@ public class EventMessage {
     private String message;
     private int code;
 
+    private String openid = "";
+    private String acc_token="";
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public String getAcc_token() {
+        return acc_token;
+    }
+
+    public void setAcc_token(String acc_token) {
+        this.acc_token = acc_token;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -21,6 +40,12 @@ public class EventMessage {
     }
 
     public EventMessage() {
+    }
+
+    public EventMessage(String message,  String openid, String acc_token) {
+        this.message = message;
+        this.openid = openid;
+        this.acc_token = acc_token;
     }
 
     public EventMessage(String message) {

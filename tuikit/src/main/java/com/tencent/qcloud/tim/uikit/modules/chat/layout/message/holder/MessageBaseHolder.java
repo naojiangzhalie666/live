@@ -58,28 +58,34 @@ public abstract class MessageBaseHolder extends RecyclerView.ViewHolder {
             }
 
             // 具体消息holder
-            view = inflater.inflate(R.layout.message_adapter_item_content, parent, false);
-            switch (viewType) {
-                case MessageInfo.MSG_TYPE_TEXT:
-                    holder = new MessageTextHolder(view);
-                    break;
-                case MessageInfo.MSG_TYPE_IMAGE:
-                case MessageInfo.MSG_TYPE_VIDEO:
-                case MessageInfo.MSG_TYPE_CUSTOM_FACE:
-                    holder = new MessageImageHolder(view);
-                    break;
-                case MessageInfo.MSG_TYPE_AUDIO:
-                    holder = new MessageAudioHolder(view);
-                    break;
-                case MessageInfo.MSG_TYPE_FILE:
-                    holder = new MessageFileHolder(view);
-                    break;
-                case MessageInfo.MSG_TYPE_CUSTOM:
-                    holder = new MessageCustomHolder(view);
-                    break;
-            }
-            if (holder != null) {
-                ((MessageEmptyHolder) holder).setAdapter(adapter);
+            if (viewType == MessageInfo.MSG_STATUS_ZUANS) {
+                view = inflater.inflate(R.layout.message_adapter_item_zuans, parent, false);
+                holder = new MessageZuansHolder(view);
+                ((MessageBaseHolder) holder).setAdapter(adapter);
+            } else {
+                view = inflater.inflate(R.layout.message_adapter_item_content, parent, false);
+                switch (viewType) {
+                    case MessageInfo.MSG_TYPE_TEXT:
+                        holder = new MessageTextHolder(view);
+                        break;
+                    case MessageInfo.MSG_TYPE_IMAGE:
+                    case MessageInfo.MSG_TYPE_VIDEO:
+                    case MessageInfo.MSG_TYPE_CUSTOM_FACE:
+                        holder = new MessageImageHolder(view);
+                        break;
+                    case MessageInfo.MSG_TYPE_AUDIO:
+                        holder = new MessageAudioHolder(view);
+                        break;
+                    case MessageInfo.MSG_TYPE_FILE:
+                        holder = new MessageFileHolder(view);
+                        break;
+                    case MessageInfo.MSG_TYPE_CUSTOM:
+                        holder = new MessageCustomHolder(view);
+                        break;
+                }
+                if (holder != null) {
+                    ((MessageEmptyHolder) holder).setAdapter(adapter);
+                }
             }
 
             return holder;

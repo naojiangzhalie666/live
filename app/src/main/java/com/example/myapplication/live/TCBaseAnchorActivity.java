@@ -252,7 +252,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
                 mGuanzDialog.setOnDigClickListener(new GuanzDialog.OnDigClickListener() {
                     @Override
                     public void onInviteClickListener() {
-                        ToastUtil.showToast(TCBaseAnchorActivity.this,"邀请"+tcChatEntity.getSenderName()+"进行连线");
+                        startLinkMic(tcChatEntity.getUserid());
                     }
 
                     @Override
@@ -299,6 +299,35 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             }
         });
     }
+
+    /*邀请观众进行连麦*/
+    private void startLinkMic(String userid) {
+        mLiveRoom.requestJoinUserAnchor("连麦", userid, new RequestJoinAnchorCallback() {
+            @Override
+            public void onAccept() {
+                Log.i(TAG, "onAccept:观众接受已经接收连麦");
+                if(mGuanzDialog!=null&&mGuanzDialog.isShowing())
+                    mGuanzDialog.dismiss();
+            }
+
+            @Override
+            public void onReject(String reason) {
+                Toast.makeText(TCBaseAnchorActivity.this, reason, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTimeOut() {
+                Toast.makeText(TCBaseAnchorActivity.this, "连麦请求超时，观众没有做出回应", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(int errCode, String errInfo) {
+                Toast.makeText(TCBaseAnchorActivity.this, "连麦请求发生错误", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
     /*-------新增布局的一些设置--------*/
     private void initMineViews() {
         mGiftAnimatorLayout = findViewById(R.id.lottie_animator_layout);
@@ -572,6 +601,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setContent(text);
         entity.setType(TCConstants.TEXT_TYPE);
         entity.setHead(userInfo.avatar);
+        entity.setUserid(userInfo.userid);
         notifyMsg(entity);
     }
 
@@ -588,6 +618,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setContent("进场了");
         entity.setType(TCConstants.MEMBER_ENTER);
         entity.setHead(userInfo.avatar);
+        entity.setUserid(userInfo.userid);
+
         notifyMsg(entity);
     }
 
@@ -607,6 +639,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setContent("离开了");
         entity.setType(TCConstants.MEMBER_EXIT);
         entity.setHead(userInfo.avatar);
+        entity.setUserid(userInfo.userid);
+
         notifyMsg(entity);
     }
 
@@ -626,6 +660,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         //todo：修改显示类型
         entity.setType(TCConstants.PRAISE);
         entity.setHead(userInfo.avatar);
+        entity.setUserid(userInfo.userid);
+
         notifyMsg(entity);
     }
 
@@ -641,6 +677,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setContent(text);
         entity.setType(TCConstants.TEXT_TYPE);
         entity.setHead(userInfo.avatar);
+        entity.setUserid(userInfo.userid);
+
         notifyMsg(entity);
 
         if (mDanmuMgr != null) {
@@ -661,6 +699,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             entity.setType(TCConstants.TEXT_TYPE);
             entity.setIs_gift(true);
             entity.setHead(userInfo.avatar);
+            entity.setUserid(userInfo.userid);
+
             notifyMsg(entity);
             if (giftInfo != null) {
                 if (userInfo != null) {
@@ -719,6 +759,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setContent(msg);
         entity.setType(TCConstants.TEXT_TYPE);
         entity.setHead(mAvatarPicUrl);
+        entity.setUserid(mUserId);
+
         notifyMsg(entity);
 
         // 发送弹幕或发送房间信息

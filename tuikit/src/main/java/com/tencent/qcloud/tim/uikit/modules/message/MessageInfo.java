@@ -100,6 +100,10 @@ public class MessageInfo {
      */
     public static final int MSG_STATUS_REVOKE = 0x113;
     /**
+     * 钻石提醒
+     */
+    public static final int MSG_STATUS_ZUANS = 0x114;
+    /**
      * 消息正常状态
      */
     public static final int MSG_STATUS_NORMAL = 0;

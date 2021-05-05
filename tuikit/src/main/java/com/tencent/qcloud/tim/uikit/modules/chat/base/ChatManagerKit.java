@@ -61,6 +61,10 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
         mIsLoading = false;
     }
 
+    public ChatProvider getCurrentProvider() {
+        return mCurrentProvider;
+    }
+
     public void onReadReport(List<V2TIMMessageReceipt> receiptList) {
         TUIKitLog.i(TAG, "onReadReport:" + receiptList.size());
         if (!safetyCall()) {
@@ -232,7 +236,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                 if (code == REVOKE_TIME_OUT) {
                     ToastUtil.toastLongMessage(TUIKit.getAppContext().getString(R.string.send_two_mins));
                 } else {
-                    ToastUtil.toastLongMessage(TUIKit.getAppContext().getString(R.string.hold_say) + code + "=" + desc);
+                    ToastUtil.toastLongMessage(TUIKit.getAppContext().getString(R.string.send_two_mins));
                 }
             }
 

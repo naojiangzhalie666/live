@@ -2,13 +2,11 @@ package com.tencent.qcloud.tim.uikit.modules.chat.base;
 
 import android.text.TextUtils;
 
-import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMMessageReceipt;
 import com.tencent.qcloud.tim.uikit.modules.chat.interfaces.IChatProvider;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.MessageListAdapter;
 import com.tencent.qcloud.tim.uikit.modules.message.MessageInfo;
-import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +111,20 @@ public class ChatProvider implements IChatProvider {
         return flag;
     }
 
+    /*添加最后一条提醒*/
+    public boolean addZsMessageInfo(MessageInfo msg) {
+        if (msg == null) {
+            updateAdapter(MessageLayout.DATA_CHANGE_TYPE_LOAD, 0);
+            return true;
+        }
+        if (checkExist(msg)) {
+            return true;
+        }
+        boolean flag = mDataSource.add(msg);
+        updateAdapter(MessageLayout.DATA_CHANGE_TYPE_REFRESH, 0);
+        return flag;
+    }
+
     public boolean deleteMessageInfo(MessageInfo msg) {
         for (int i = 0; i < mDataSource.size(); i++) {
             if (mDataSource.get(i).getId().equals(msg.getId())) {
@@ -210,7 +222,7 @@ public class ChatProvider implements IChatProvider {
         updateAdapter(MessageLayout.DATA_CHANGE_TYPE_LOAD, 0);
     }
 
-    private void updateAdapter(int type, int data) {
+    public void updateAdapter(int type, int data) {
         if (mAdapter != null) {
             mAdapter.notifyDataSourceChanged(type, data);
         }

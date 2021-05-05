@@ -31,6 +31,7 @@ public class OnlineDialog extends Dialog {
     private String mPusherId; //主播id
     private String mUserid = "";
     private String mNickname = "";
+    private  OnItemLxListener mOnItemLxListener;
 
     public OnlineDialog(@NonNull Context context, List<TCSimpleUserInfo> mpList, String pusherid) {
         super(context);
@@ -38,6 +39,10 @@ public class OnlineDialog extends Dialog {
         mMapList = mpList;
         mPusherId = pusherid;
         mOnlineAdapter = new OnlineAdapter(context, mMapList, mPusherId);
+    }
+
+    public void setOnItemLxListener(OnItemLxListener onItemLxListener) {
+        mOnItemLxListener = onItemLxListener;
     }
 
     @Override
@@ -57,7 +62,6 @@ public class OnlineDialog extends Dialog {
                 TCSimpleUserInfo tcSimpleUserInfo = mMapList.get(pos);
                 mUserid = tcSimpleUserInfo.userid;
                 mNickname = tcSimpleUserInfo.nickname;
-                ToastUtil.showToast(mContext, "点击了" + pos);
             }
         });
 
@@ -102,11 +106,16 @@ public class OnlineDialog extends Dialog {
                 break;
             case R.id.dialog_online_invitelx:
                 if (!TextUtils.isEmpty(mNickname)) {
-                    ToastUtil.showToast(mContext, "邀请" + mNickname + "连线");
+                    if(mOnItemLxListener!=null)
+                        mOnItemLxListener.onItemLxLixtener(mUserid);
                 } else {
                     ToastUtil.showToast(mContext, "请先进行选择");
                 }
                 break;
         }
+    }
+
+    public interface OnItemLxListener {
+        void onItemLxLixtener(String userid);
     }
 }

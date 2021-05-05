@@ -9,7 +9,7 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
-import com.example.myapplication.ui.LoginActivity;
+import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.utils.httputil.HttpBackListener;
 import com.example.myapplication.utils.httputil.LiveHttp;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -24,6 +24,8 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHandler {
@@ -153,11 +155,12 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                Intent intent = new Intent(WXEntryActivity.this, LoginActivity.class);
-                intent.putExtra("wechat", true);
-                intent.putExtra("openId", openid);
-                intent.putExtra("accessToken", accToken);
-                startActivity(intent);
+                EventBus.getDefault().post(new EventMessage("wx_login",openid,accToken));
+//                Intent intent = new Intent(WXEntryActivity.this, LoginActivity.class);
+//                intent.putExtra("wechat", true);
+//                intent.putExtra("openId", openid);
+//                intent.putExtra("accessToken", accToken);
+//                startActivity(intent);
             }
 
             @Override
