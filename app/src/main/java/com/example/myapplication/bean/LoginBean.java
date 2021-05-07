@@ -9,15 +9,15 @@ public class LoginBean {
      * retMsg : 操作成功!
      */
 
-    private String retCode;
+    private int retCode;
     private RetDataBean retData;
     private String retMsg;
 
-    public String getRetCode() {
+    public int getRetCode() {
         return retCode;
     }
 
-    public void setRetCode(String retCode) {
+    public void setRetCode(int retCode) {
         this.retCode = retCode;
     }
 

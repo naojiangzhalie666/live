@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.WalletAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.pop_dig.BuyzActivity;
 import com.example.myapplication.pop_dig.ShimDialog;
 import com.example.myapplication.utils.datepicker.CustomDatePicker;
 import com.example.myapplication.utils.datepicker.DateFormatUtils;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import java.text.SimpleDateFormat;
@@ -38,7 +38,7 @@ import butterknife.OnClick;
  @time: 2021/3/27 14:10
  @变更历史:
  ********************************************************************/
-public class AdviceActivity extends BaseActivity {
+public class AdviceActivity extends LiveBaseActivity {
 
     @BindView(R.id.advice_content)
     TextView mAdviceContent;
@@ -82,6 +82,7 @@ public class AdviceActivity extends BaseActivity {
 
     private int mIndex;
     private boolean is_firstin = true;
+    private boolean show_zuanshi,show_money = true;
 
 
     @Override
@@ -160,35 +161,67 @@ public class AdviceActivity extends BaseActivity {
             case R.id.normal_shaixuan:
                 break;
             case R.id.advice_eye:
+                if(mIndex ==0){
+                    if(show_zuanshi){
+                        mAdviceEye.setImageResource(R.drawable.blue_close_eye);
+                        mAdviceNum.setText("*****");
+                    }else{
+                        mAdviceEye.setImageResource(R.drawable.blue_open_eye);
+                        mAdviceNum.setText("1241");
+                    }
+                    show_zuanshi=!show_zuanshi;
+
+                }else{
+                    if(show_money){
+                        mAdviceEye.setImageResource(R.drawable.blue_close_eye);
+                        mAdviceNum.setText("*****");
+                    }else{
+                        mAdviceEye.setImageResource(R.drawable.blue_open_eye);
+                        mAdviceNum.setText("2141.22");
+                    }
+                    show_money=!show_money;
+                }
                 break;
             case R.id.advice_zuans:
+                mIndex =0;
                 toGoAnima(mAdviceZuans);
                 mAdviceMoney.setTextColor(getResources().getColor(R.color.white));
                 mAdviceChongzhi.setVisibility(View.VISIBLE);
                 mAdviceConMoney.setVisibility(View.INVISIBLE);
                 mAdviceContent.setText("现有钻石（个）");
-                mAdviceNum.setText("1241");
+                if(show_zuanshi) {
+                    mAdviceEye.setImageResource(R.drawable.blue_open_eye);
+                    mAdviceNum.setText("1241");
+                }else{
+                    mAdviceEye.setImageResource(R.drawable.blue_close_eye);
+                    mAdviceNum.setText("*****");
+                }
                 mAdviceConBtmoney.setVisibility(View.GONE);
                 mAdviceConBtzuanshi.setVisibility(View.VISIBLE);
                 break;
             case R.id.advice_money:
+                mIndex =1;
                 toGoAnima(mAdviceMoney);
                 mAdviceZuans.setTextColor(getResources().getColor(R.color.white));
                 mAdviceChongzhi.setVisibility(View.INVISIBLE);
                 mAdviceConMoney.setVisibility(View.VISIBLE);
                 mAdviceContent.setText("累计收入（元）");
-                mAdviceNum.setText("2141.22");
+                if(show_money) {
+                    mAdviceEye.setImageResource(R.drawable.blue_open_eye);
+                    mAdviceNum.setText("2141.22");
+                }else{
+                    mAdviceEye.setImageResource(R.drawable.blue_close_eye);
+                    mAdviceNum.setText("*****");
+                }
                 mAdviceConBtmoney.setVisibility(View.VISIBLE);
                 mAdviceConBtzuanshi.setVisibility(View.GONE);
                 break;
             case R.id.advice_bt_srdetail:
                 statActivity(IncomeDetailActivity.class);
-                ToastShow("收益明细");
                 break;
             case R.id.advice_bt_tixian:
             case R.id.advice_bt_txmoney:
                 statActivity(WithdrawalActivity.class);
-                ToastShow("去提现");
                 break;
             case R.id.advice_bt_duihuan:
                 statActivity(ExchangeActivity.class);

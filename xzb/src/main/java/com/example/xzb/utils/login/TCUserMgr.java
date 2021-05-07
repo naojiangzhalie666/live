@@ -98,6 +98,10 @@ public class TCUserMgr {
         return mToken;
     }
 
+    public void setToken(String token) {
+        mToken = token;
+    }
+
     public String getUserId() {
         return mUserId;
     }

@@ -3,14 +3,15 @@ package com.example.myapplication.ui;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.WalletAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.pop_dig.BuyzActivity;
 import com.example.myapplication.utils.datepicker.CustomDatePicker;
 import com.example.myapplication.utils.datepicker.DateFormatUtils;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +35,7 @@ import butterknife.OnClick;
  @time: 2021/3/27 14:10
  @变更历史:
  ********************************************************************/
-public class NormalActivity extends BaseActivity {
+public class NormalActivity extends LiveBaseActivity {
 
     @BindView(R.id.advice_num)
     TextView mNormalZuannum;
@@ -44,9 +45,12 @@ public class NormalActivity extends BaseActivity {
     TextView mNormalEdtm;
     @BindView(R.id.normal_recy)
     RecyclerView mNormalRecy;
+    @BindView(R.id.advice_eye)
+    ImageView mNormalImgvEye;
     private CustomDatePicker customDatePickerSt;
     private List<Map<String,Object>> mStringList;
     private WalletAdapter mWalletAdapter;
+    private boolean show_money = true;
 
 
     @Override
@@ -81,7 +85,7 @@ public class NormalActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.back, R.id.advice_chongzhi, R.id.normal_sttm, R.id.normal_edtm, R.id.normal_shaixuan})
+    @OnClick({R.id.back, R.id.advice_chongzhi, R.id.normal_sttm, R.id.normal_edtm, R.id.normal_shaixuan,R.id.advice_eye})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -98,6 +102,16 @@ public class NormalActivity extends BaseActivity {
                 showDateDialog(mNormalEdtm, "2000-01-01 00:00:00", simpleDateFormat.format(new Date()));
                 break;
             case R.id.normal_shaixuan:
+                break;
+            case R.id.advice_eye:
+                if(show_money){
+                    mNormalImgvEye.setImageResource(R.drawable.blue_close_eye);
+                    mNormalZuannum.setText("*****");
+                }else{
+                    mNormalImgvEye.setImageResource(R.drawable.blue_open_eye);
+                    mNormalZuannum.setText("1241");
+                }
+                show_money=!show_money;
                 break;
         }
     }

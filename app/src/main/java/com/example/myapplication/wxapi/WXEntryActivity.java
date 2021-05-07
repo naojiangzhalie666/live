@@ -3,7 +3,6 @@ package com.example.myapplication.wxapi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -15,10 +14,6 @@ import com.example.myapplication.utils.httputil.LiveHttp;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelbiz.SubscribeMessage;
-import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
-import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessView;
-import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessWebview;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
@@ -31,6 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHandler {
     private static final String TAG = "WXEntryActivity";
     private IWXAPI api;
+    private boolean is_end =false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,8 +66,31 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
 
     @Override
     public void onResp(BaseResp resp) {
-        int result = 0;
+        if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+            if(!is_end) {
+                is_end = true;
+                SendAuth.Resp authResp = (SendAuth.Resp) resp;
+                final String code = authResp.code;
+                LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getWxtoken(Constant.APP_ID, Constant.APP_SECRECT, "authorization_code", code), new HttpBackListener() {
+                    @Override
+                    public void onSuccessListener(Object result) {
+                        super.onSuccessListener(result);
+                        JSONObject jsonObject = (JSONObject) result;
+                        try {
+                            getWxUserInfo(jsonObject.getString("openid"), jsonObject.getString("access_token"));
+                        } catch (JSONException e) {
+                            Log.e(TAG, "onSuccessListener:weChat in access_token perform failed");
+                        }
+                    }
 
+                    @Override
+                    public void onErrorLIstener(String error) {
+                        super.onErrorLIstener(error);
+                    }
+                });
+            }
+        }
+        int result = 0;
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 result = R.string.errcode_success;
@@ -82,66 +101,11 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 result = R.string.errcode_deny;
                 break;
-            case BaseResp.ErrCode.ERR_UNSUPPORT:
-                result = R.string.errcode_unsupported;
-                break;
             default:
                 result = R.string.errcode_unknown;
                 break;
         }
-        Toast.makeText(this, getString(result) + ", type=" + resp.getType(), Toast.LENGTH_SHORT).show();
-
-
-        if (resp.getType() == ConstantsAPI.COMMAND_SUBSCRIBE_MESSAGE) {
-            SubscribeMessage.Resp subscribeMsgResp = (SubscribeMessage.Resp) resp;
-            String text = String.format("openid=%s\ntemplate_id=%s\nscene=%d\naction=%s\nreserved=%s",
-                    subscribeMsgResp.openId, subscribeMsgResp.templateID, subscribeMsgResp.scene, subscribeMsgResp.action, subscribeMsgResp.reserved);
-            Log.e(TAG, "onResp: "+text );
-        }
-
-        if (resp.getType() == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
-            WXLaunchMiniProgram.Resp launchMiniProgramResp = (WXLaunchMiniProgram.Resp) resp;
-            String text = String.format("openid=%s\nextMsg=%s\nerrStr=%s",
-                    launchMiniProgramResp.openId, launchMiniProgramResp.extMsg, launchMiniProgramResp.errStr);
-
-            Log.e(TAG, "onResp: "+text );
-        }
-
-        if (resp.getType() == ConstantsAPI.COMMAND_OPEN_BUSINESS_VIEW) {
-            WXOpenBusinessView.Resp launchMiniProgramResp = (WXOpenBusinessView.Resp) resp;
-            String text = String.format("openid=%s\nextMsg=%s\nerrStr=%s\nbusinessType=%s",
-                    launchMiniProgramResp.openId, launchMiniProgramResp.extMsg, launchMiniProgramResp.errStr, launchMiniProgramResp.businessType);
-
-            Log.e(TAG, "onResp: "+text );
-        }
-
-        if (resp.getType() == ConstantsAPI.COMMAND_OPEN_BUSINESS_WEBVIEW) {
-            WXOpenBusinessWebview.Resp response = (WXOpenBusinessWebview.Resp) resp;
-            String text = String.format("businessType=%d\nresultInfo=%s\nret=%d", response.businessType, response.resultInfo, response.errCode);
-            Log.e(TAG, "onResp: "+text );
-        }
-
-        if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {//微信授权登录
-            SendAuth.Resp authResp = (SendAuth.Resp) resp;
-            final String code = authResp.code;
-            LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getWxtoken(Constant.APP_ID, Constant.APP_SECRECT, "authorization_code", code), new HttpBackListener() {
-                @Override
-                public void onSuccessListener(Object result) {
-                    super.onSuccessListener(result);
-                    JSONObject jsonObject = (JSONObject) result;
-                    try {
-                        getWxUserInfo(jsonObject.getString("openid"), jsonObject.getString("access_token"));
-                    } catch (JSONException e) {
-                        Log.e(TAG, "onSuccessListener:weChat in access_token perform failed");
-                    }
-                }
-
-                @Override
-                public void onErrorLIstener(String error) {
-                    super.onErrorLIstener(error);
-                }
-            });
-        }
+        Log.i(TAG, "onResp: "+ "openid = " + resp.openId+" result = "+result);
         finish();
     }
 

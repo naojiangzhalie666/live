@@ -15,6 +15,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.chat.ChatActivity;
 import com.example.myapplication.ui.MailListActivity;
+import com.example.myapplication.ui.NoticeActivity;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.qcloud.tim.uikit.base.BaseFragment;
 import com.tencent.qcloud.tim.uikit.component.TitleBarLayout;
@@ -89,6 +90,12 @@ public class MessageFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), MailListActivity.class));
+            }
+        });
+        mBaseView.findViewById(R.id.textView54).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), NoticeActivity.class));
             }
         });
         initTitleAction();

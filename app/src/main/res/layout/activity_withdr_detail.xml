@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ftwo"
+    tools:context=".ui.NormalActivity">
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/wallet_bg" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/title_top"
+        android:text="提现"
+        android:textColor="@color/login_txt"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_8"
+        app:layout_constraintBottom_toBottomOf="@+id/textView11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView11"
+        app:srcCompat="@drawable/back_ye" />
+
+    <TextView
+        android:id="@+id/advice_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:text="余额（元）"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/advice_num"
+        app:layout_constraintEnd_toEndOf="@+id/advice_num"
+        app:layout_constraintStart_toStartOf="@+id/advice_num" />
+
+    <TextView
+        android:id="@+id/advice_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/login_txt"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/advice_chongzhi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        app:layout_constraintVertical_bias="0.68"
+        tools:text="302212" />
+
+    <ImageView
+        android:id="@+id/advice_eye"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:paddingLeft="@dimen/dp_5"
+        android:paddingTop="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_16"
+        app:layout_constraintBottom_toBottomOf="@+id/advice_num"
+        app:layout_constraintStart_toEndOf="@+id/advice_num"
+        app:layout_constraintTop_toTopOf="@+id/advice_num"
+        app:srcCompat="@drawable/blue_open_eye" />
+
+    <TextView
+        android:id="@+id/advice_chongzhi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_circle_solder_lotxt"
+        android:paddingLeft="@dimen/dp_60"
+        android:paddingTop="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_60"
+        android:paddingBottom="@dimen/dp_6"
+        android:text="提现"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/normal_sttm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_corner_stoke_home"
+        android:drawableRight="@drawable/sanj_bt"
+        android:drawablePadding="@dimen/dp_2"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_4"
+        android:paddingRight="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_4"
+        android:text="2019年5月"
+        android:textColor="@color/home_txt"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+    <View
+        android:id="@+id/textView31"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/bg_circle_solder_setin"
+        app:layout_constraintBottom_toBottomOf="@+id/normal_sttm"
+        app:layout_constraintStart_toEndOf="@+id/normal_sttm"
+        app:layout_constraintTop_toTopOf="@+id/normal_sttm" />
+
+    <TextView
+        android:id="@+id/normal_edtm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/bg_corner_stoke_home"
+        android:drawableRight="@drawable/sanj_bt"
+        android:drawablePadding="@dimen/dp_2"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_4"
+        android:paddingRight="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_4"
+        android:text="2019年5月"
+        android:textColor="@color/home_txt"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/normal_sttm"
+        app:layout_constraintStart_toEndOf="@+id/textView31" />
+
+    <TextView
+        android:id="@+id/normal_shaixuan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:drawableRight="@drawable/mine_next"
+        android:drawablePadding="@dimen/dp_5"
+        android:text="全部"
+        android:textColor="@color/black_oneeight"
+        app:layout_constraintBaseline_toBaselineOf="@+id/normal_sttm"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/normal_recy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/normal_sttm" />
+</androidx.constraintlayout.widget.ConstraintLayout>

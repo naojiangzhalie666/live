@@ -11,18 +11,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.utils.TitleUtils;
 import com.example.myapplication.utils.keyboard.BaseKeyboard;
 import com.example.myapplication.utils.keyboard.KeyboardManager;
 import com.example.myapplication.utils.keyboard.NumberKeyboard;
-import com.superc.yyfflibrary.base.BaseActivity;
 
 import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class WithdrawalActivity extends BaseActivity {
+public class WithdrawalActivity extends LiveBaseActivity {
 
     @BindView(R.id.withdra_edt)
     EditText mEditText;

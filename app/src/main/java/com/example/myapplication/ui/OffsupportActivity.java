@@ -7,8 +7,8 @@ import android.widget.TextView;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.LiveglAdapter;
 import com.example.myapplication.adapter.NewfcAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.utils.TitleUtils;
-import com.superc.yyfflibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OffsupportActivity extends BaseActivity {
+public class OffsupportActivity extends LiveBaseActivity {
 
     @BindView(R.id.order_cz)
     TextView mOrderCz;

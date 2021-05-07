@@ -25,7 +25,7 @@
             android:layout_alignTop="@+id/title"
             android:layout_alignBottom="@+id/title"
             android:paddingLeft="@dimen/dp_12"
-            app:srcCompat="@drawable/back" />
+            app:srcCompat="@drawable/back_bold" />
 
         <TextView
             android:id="@+id/title"
@@ -45,7 +45,7 @@
         android:layout_marginTop="50dp"
         android:text="请输入手机号"
         android:textColor="@color/black"
-        android:textSize="26sp"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
@@ -68,7 +68,7 @@
             android:padding="@dimen/dp_5"
             android:text="+86"
             android:textColor="@color/nineninenine"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/bindphone_sanjiao"
@@ -85,9 +85,11 @@
             android:layout_toRightOf="@+id/bindphone_sanjiao"
             android:background="@null"
             android:hint="请输入你的手机号"
-            android:padding="@dimen/dp_5"
+            android:inputType="number"
+            android:maxLength="11"
+            android:padding="@dimen/dp_8"
             android:textColorHint="@color/nineninenine"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
 
         <View
@@ -99,12 +101,15 @@
     </RelativeLayout>
 
     <EditText
-        android:visibility="gone"
         android:id="@+id/bindphone_yzm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:hint="请输入验证码"
+        android:inputType="number"
+        android:padding="@dimen/dp_8"
+        android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/bindphone_sub"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/bindphone_note"

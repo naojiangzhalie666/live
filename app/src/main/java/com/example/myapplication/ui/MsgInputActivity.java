@@ -6,17 +6,35 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveBaseActivity;
+import com.example.myapplication.bean.BaseBean;
+import com.example.myapplication.bean.EventMessage;
+import com.example.myapplication.bean.UserInfoBean;
 import com.example.myapplication.fragment.NewFirstFragment;
 import com.example.myapplication.fragment.NewLastFragment;
 import com.example.myapplication.fragment.NewSecondFragment;
-import com.superc.yyfflibrary.base.BaseActivity;
+import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
+import com.example.xzb.Constantc;
+import com.google.gson.Gson;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
-public class MsgInputActivity extends BaseActivity {
+import static com.example.myapplication.base.Constant.LIVE_UPDATE_CODE;
+
+public class MsgInputActivity extends LiveBaseActivity {
 
     @BindView(R.id.msginput_next)
     Button mMsginputNext;
@@ -28,6 +46,7 @@ public class MsgInputActivity extends BaseActivity {
     private int now_num = 1;
     private int sex ;//1 男 2女
     private String old_nian = "";
+    private String old_pos = "";
     private String msg_last = "";
 
 
@@ -62,7 +81,6 @@ public class MsgInputActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().show(mNewSecondFragment);
             sex = mNewFirstFragment.sex;
             now_num+=1;
-            Log.e(TAG, "onClick: "+(sex ==1?"男":"女") );
         }else if(now_num ==2){
             if(TextUtils.isEmpty(mNewSecondFragment.old_nian)){
                 ToastShow("请选择年龄");
@@ -72,8 +90,8 @@ public class MsgInputActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.msginput_fram,mNewLastFragment).commit();
             getSupportFragmentManager().beginTransaction().show(mNewLastFragment);
             old_nian =mNewSecondFragment.old_nian;
+            old_pos = mNewSecondFragment.click_pos;
             mMsginputNext.setText("开启心灵之旅");
-            Log.e(TAG, "onClick: old_nian= "+old_nian );
             now_num+=1;
         }else{
             if(TextUtils.isEmpty(mNewLastFragment.msg_last)){
@@ -81,10 +99,62 @@ public class MsgInputActivity extends BaseActivity {
                 return;
             }
             msg_last = mNewLastFragment.msg_last;
-            Log.e(TAG, "onClick:sex "+ sex+" old_nian: "+old_nian+" msg_Last: "+msg_last);
-            statActivity(MainActivity.class);
-            finish();
+            Log.i(TAG, "onClick:sex "+ sex+" old_nian: "+old_nian+" msg_Last: "+msg_last);
+            toUpdateMsg();
         }
 
     }
+
+    /*put请求上传基本信息*/
+    private void toUpdateMsg(){
+        Map<String,Object> map =new HashMap<>();
+        map.put("age",old_pos);
+        map.put("gender",sex+"");
+        map.put("ico","");
+        map.put("id",Constantc.test_USERID);
+        map.put("interest",msg_last);
+        String result =new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().updateUserInfo(Constant.TOKEN,requestBody), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
+                if(baseBean.getRetCode() ==0){
+                    getUserInfo();
+                }else{
+                    ToastShow(baseBean.getRetMsg());
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    /*获取用户信息*/
+    private void getUserInfo() {
+        EventBus.getDefault().post(new EventMessage(LIVE_UPDATE_CODE));
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(Constant.TOKEN), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                UserInfoBean userInfoBean = new Gson().fromJson(result.toString(), UserInfoBean.class);
+                if (userInfoBean.getRetCode() == 0) {
+                    LiveShareUtil.getInstance(MsgInputActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                }
+                statActivity(MainActivity.class);
+                finish();
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
 }

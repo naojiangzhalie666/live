@@ -1,5 +1,6 @@
 package com.example.myapplication.ui;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,14 +9,34 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
-import com.superc.yyfflibrary.base.BaseActivity;
+import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveBaseActivity;
+import com.example.myapplication.bean.BaseBean;
+import com.example.myapplication.bean.LoginBean;
+import com.example.myapplication.bean.SignBean;
+import com.example.myapplication.bean.UserInfoBean;
+import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
+import com.example.xzb.Constantc;
+import com.example.xzb.utils.login.TCUserMgr;
+import com.google.gson.Gson;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+import com.tencent.liteav.AVCallManager;
+import com.tencent.liteav.login.ProfileManager;
+import com.tencent.liteav.login.UserModel;
+import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
+import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BindPhoneActivity extends BaseActivity {
+public class BindPhoneActivity extends LiveBaseActivity {
 
     @BindView(R.id.bindphone_note)
     TextView mBindphoneNote;
@@ -33,6 +54,8 @@ public class BindPhoneActivity extends BaseActivity {
     Button mBindphoneSub;
 
     private boolean havget_yzm = false;
+    private TCUserMgr mInstance;
+    private boolean isNeedUpmsg = true;
 
     @Override
     public int getContentLayoutId() {
@@ -59,25 +82,157 @@ public class BindPhoneActivity extends BaseActivity {
                 break;
             case R.id.bindphone_sub:
                 if (!havget_yzm) {
-                    getYzm();
+                    if(TextUtils.isEmpty(mBindphonePhonenum.getText().toString())||mBindphonePhonenum.getText().toString().length()!=11){
+                        ToastShow("请输入正确的手机号");
+                        return;
+                    }
+                    getYzm(mBindphonePhonenum.getText().toString());
                 }else{
-                    statActivity(MsgInputActivity.class);
-                    finish();
+                    if(TextUtils.isEmpty(mBindphoneYzm.getText().toString())){
+                        ToastShow("验证码不能为空");
+                        return;
+                    }
+                    toLogin(mBindphonePhonenum.getText().toString(),mBindphoneYzm.getText().toString(),"sms");
                 }
                 break;
         }
     }
+    /*获取验证码*/
+    private void getYzm(String phone) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().sendMsg( phone), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
+                if(baseBean.getRetCode() ==0){
+                    mBindphoneSub.setText("确认");
+                    mBindphoneNote.setText("请输入验证码");
+                    mBindphoneRela.setVisibility(View.INVISIBLE);
+                    mBindphoneYzm.setVisibility(View.VISIBLE);
+                    havget_yzm = true;
+                    ToastShow(baseBean.getRetData());
+                }else{
+                    ToastShow(baseBean.getRetMsg());
+                }
+            }
 
-    private void getYzm() {
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
 
-        if (true) {
-            mBindphoneSub.setText("确认");
-            mBindphoneNote.setText("请输入验证码");
-            mBindphoneRela.setVisibility(View.INVISIBLE);
-            mBindphoneYzm.setVisibility(View.VISIBLE);
-            havget_yzm = true;
+    /*登录*/
+    private void toLogin(String name,String pwd,String type){
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().login(name, pwd, type), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                LoginBean loginBean = new Gson().fromJson(result.toString(), LoginBean.class);
+                if (loginBean.getRetCode() == 0) {
+                    Constant.TOKEN = "bearer " + loginBean.getRetData().getToken();
+                    getUserInfo();
+                }else{
+                    ToastShow(loginBean.getRetMsg());
+                }
+            }
+            @Override
+            public void onErrorLIstener(String error) {
+
+            }
+        });
+    }
+    /*获取用户信息*/
+    private void getUserInfo() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(Constant.TOKEN), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                UserInfoBean userInfoBean = new Gson().fromJson(result.toString(), UserInfoBean.class);
+                if (userInfoBean.getRetCode() == 0) {
+                    thisLogin(userInfoBean.getRetData().getId());
+                    Constantc.USER_NAME = userInfoBean.getRetData().getNickname();//用户名
+                    Constantc.USER_UserAvatar = userInfoBean.getRetData().getIco();//头像
+                    Constantc.USER_CoverPic = userInfoBean.getRetData().getIco();//封面图
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).putPower(userInfoBean.getRetData().getType());//用户类型
+                    String interest = userInfoBean.getRetData().getInterest();
+                    if(TextUtils.isEmpty(interest)){
+                        isNeedUpmsg = true;
+                        statActivity(MsgInputActivity.class);
+                    }else{
+                        isNeedUpmsg =false;
+                    }
+
+                } else {
+                    ToastShow(userInfoBean.getRetMsg());
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+    /*获取直播的sign*/
+    private void thisLogin(String userid) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserSig(Constant.TOKEN), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                SignBean signBean = new Gson().fromJson(result.toString(), SignBean.class);
+                if (signBean.getRetCode() == 0) {
+                    Constantc.test_USERID = userid;
+                    Constantc.test_userSig = signBean.getRetData();
+                    gotLogin();
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    /*登录直播的IM并配置聊天的IM*/
+    private void gotLogin() {
+        mInstance = TCUserMgr.getInstance();
+        mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
+            @Override
+            public void onLoginBackListener(String userid, String usersig, long sdk_id) {
+                if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
+                    UserModel self = new UserModel();
+                    self.userId = userid;
+                    self.userSig = usersig;
+                    ProfileManager.getInstance().setUserModel(self);
+                    AVCallManager.getInstance().init(BindPhoneActivity.this);
+                }
+                loginTUIKitLive(sdk_id, userid, usersig);
+            }
+        });
+        mInstance.loginMLVB();
+        if (!isNeedUpmsg) {
+            statActivity(MainActivity.class);
+            finish();
         }
+    }
+    private static void loginTUIKitLive(long sdkAppid, String userId, String userSig) {
+        try {
+            Class<?> classz = Class.forName("com.tencent.qcloud.tim.tuikit.live.TUIKitLive");
+            Class<?> tClazz = Class.forName("com.tencent.qcloud.tim.tuikit.live.TUIKitLive$LoginCallback");
 
+            // 反射修改isAttachedTUIKit的值
+            Field field = classz.getDeclaredField("sIsAttachedTUIKit");
+            field.setAccessible(true);
+            field.set(null, true);
+
+            Method method = classz.getMethod("login", int.class, String.class, String.class, tClazz);
+            method.invoke(null, sdkAppid, userId, userSig, null);
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+            TUIKitLog.e("LoginActivity", "loginTUIKitLive error: " + e.getMessage());
+        }
     }
 
 }

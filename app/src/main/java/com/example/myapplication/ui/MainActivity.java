@@ -1,6 +1,7 @@
 package com.example.myapplication.ui;
 
 import com.example.myapplication.R;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.fragment.FindFragment;
 import com.example.myapplication.fragment.HomeFragment;
@@ -8,7 +9,6 @@ import com.example.myapplication.fragment.MessageFragment;
 import com.example.myapplication.fragment.MineFragment;
 import com.example.myapplication.views.MainViewpager;
 import com.example.myapplication.views.TabContainerView;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.superc.yyfflibrary.views.lowhurdles.TabFragmentAdapter;
 
@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageChangeListener {
     /*tab图标集合  未选中  选中*/
     private final int ICONS_RES[][] = {{R.drawable.home_unse, R.drawable.home_se}, {R.drawable.find_unse, R.drawable.find_se}, {R.drawable.msg_unse, R.drawable.msg_se}, {R.drawable.mine_unse, R.drawable.mine_se}};
     /* tab 颜色值*/

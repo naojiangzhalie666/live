@@ -99,6 +99,9 @@
                     android:id="@+id/mine_cons_eyezuanshi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_3"
+                    android:paddingLeft="@dimen/dp_3"
                     android:src="@drawable/mine_kai"
                     app:layout_constraintStart_toEndOf="@+id/mine_zuanshi"
                     app:layout_constraintTop_toTopOf="@+id/mine_zuanshi" />
@@ -170,6 +173,9 @@
                     android:id="@+id/mine_cons_eyemoney"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_3"
+                    android:paddingLeft="@dimen/dp_3"
                     android:src="@drawable/mine_kai"
                     app:layout_constraintStart_toEndOf="@+id/mine_money_tv"
                     app:layout_constraintTop_toTopOf="@+id/mine_money_tv" />
@@ -284,7 +290,7 @@
             android:id="@+id/mine_head"
             android:layout_width="@dimen/dp_80"
             android:layout_height="@dimen/dp_80"
-            android:src="@drawable/man_se"
+            android:src="@drawable/live_defaultimg"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

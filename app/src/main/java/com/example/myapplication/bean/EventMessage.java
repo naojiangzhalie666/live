@@ -1,7 +1,7 @@
 package com.example.myapplication.bean;
 
 public class EventMessage {
-    private String message;
+    private String message ="";
     private int code;
 
     private String openid = "";

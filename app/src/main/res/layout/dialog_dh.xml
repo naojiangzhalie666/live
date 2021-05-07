@@ -113,8 +113,8 @@
 
     <TextView
         android:id="@+id/dig_close"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_20"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_40"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

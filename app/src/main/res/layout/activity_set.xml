@@ -136,8 +136,8 @@
             android:layout_marginEnd="@dimen/dp_15"
             android:drawableRight="@drawable/mine_next"
             android:drawablePadding="@dimen/dp_5"
-            android:text="绑定后活的50钻石"
-            android:textColor="@color/red"
+            android:text="绑定后获得50钻石"
+            android:textColor="#FE3930"
             app:layout_constraintBaseline_toBaselineOf="@+id/set_bindwchattv"
             app:layout_constraintEnd_toEndOf="parent" />
 

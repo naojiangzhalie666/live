@@ -2,7 +2,9 @@ package com.example.myapplication.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
+import com.example.myapplication.bean.UserInfoBean;
 import com.google.gson.Gson;
 
 import java.lang.reflect.InvocationTargetException;
@@ -31,18 +33,29 @@ public class LiveShareUtil {
     }
 
     /**
-     * @param value 0 观众 1 咨询师 2 咨询机构  3 子咨询师
+     * @param value 1 观众 2 咨询师 3 咨询机构  4 子咨询师
      */
-    public void putPower(String value) {
+    public void putPower(int value) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putInt(APP_POWER, Integer.parseInt(value));
+        edit.putInt(APP_POWER, value);
         SharedPreferencesCompat.apply(edit);
     }
 
     public int getPower() {
         SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.getInt(APP_POWER, 0);
+    }
+
+    /*获取存储的用户信息*/
+    public UserInfoBean getUserInfo() {
+        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        String user = sp.getString("user", "");
+        if (TextUtils.isEmpty(user)) {
+            return null;
+        } else {
+            return new Gson().fromJson(user, UserInfoBean.class);
+        }
     }
 
     public void put(String name, Object value) {

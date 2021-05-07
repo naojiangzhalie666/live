@@ -5,13 +5,18 @@ import android.util.Log;
 import com.alibaba.fastjson.JSONObject;
 import com.example.myapplication.base.ApiService;
 import com.example.myapplication.base.LiveApplication;
+import com.example.myapplication.bean.EventMessage;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.ljy.devring.util.NetworkUtil;
 import com.superc.yyfflibrary.utils.ToastUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 import io.reactivex.Observable;
+
+import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 
 
 public class LiveHttp {
@@ -86,9 +91,12 @@ public class LiveHttp {
 
             @Override
             public void onError(HttpThrowable throwable) {
-                if (backListener != null) {
+                 if (backListener != null) {
                     backListener.onErrorLIstener(throwable.toString());
                 }
+                 if(throwable.errorType==HTTP_ERROR){//重新登录
+                     EventBus.getDefault().post(new EventMessage(1005));
+                 }
                 Log.e(TAG, "onError: " + throwable.toString());
             }
         }, TAG);

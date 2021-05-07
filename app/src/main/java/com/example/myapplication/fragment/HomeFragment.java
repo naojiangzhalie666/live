@@ -26,6 +26,7 @@ import com.example.myapplication.ui.ShowGoodsActivity;
 import com.example.myapplication.utils.LiveShareUtil;
 import com.example.xzb.Constantc;
 import com.example.xzb.utils.TCConstants;
+import com.example.xzb.utils.TCHTTPMgr;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.onlinelive.TCVideoInfo;
 import com.example.xzb.utils.onlinelive.TCVideoListMgr;
@@ -186,18 +187,19 @@ public class HomeFragment extends Fragment {
     }
 
     // TODO: 2021/4/9   获取直播数据
-    /*
-     * 现在报错--
-     * get_live_list error, code:202001, errInfo:[LiveRoom] getRoomList 失败[verify failed,please check your token![err=202001]]
-     * */
     private void getLiveData() {
-        mHomeSmart.finishRefresh();
+        String token = TCHTTPMgr.getInstance().getToken();
+        Log.e("LMVB+TOKEN= ", "getLiveData: "+token);
         TCVideoListMgr.getInstance().fetchLiveList(getActivity(), new TCVideoListMgr.Listener() {
             @Override
             public void onVideoList(int retCode, ArrayList<TCVideoInfo> result, boolean refresh) {
+                mHomeSmart.finishRefresh();
                 onRefreshVideoList(retCode, result, refresh);
             }
         });
+
+
+
     }
 
     private void onRefreshVideoList(final int retCode, final ArrayList<TCVideoInfo> result, final boolean refresh) {

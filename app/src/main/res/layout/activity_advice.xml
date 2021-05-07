@@ -218,7 +218,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/advice_num"
         app:layout_constraintStart_toEndOf="@+id/advice_num"
         app:layout_constraintTop_toTopOf="@+id/advice_num"
-        app:srcCompat="@drawable/mine_kai" />
+        app:srcCompat="@drawable/blue_open_eye" />
 
     <TextView
         android:id="@+id/advice_zuans"

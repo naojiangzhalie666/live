@@ -26,6 +26,7 @@ import butterknife.Unbinder;
  */
 public class NewSecondFragment extends Fragment {
     public String old_nian = "";
+    public String click_pos = "";
     @BindView(R.id.newsecond_recy)
     RecyclerView mNewsecondRecy;
     @BindView(R.id.sec_smart)
@@ -66,8 +67,9 @@ public class NewSecondFragment extends Fragment {
         mNewsecondRecy.setAdapter(mOldNianAdapter);
         mOldNianAdapter.setOnItemClickListener(new OldNianAdapter.OnItemClickListener() {
             @Override
-            public void onItemClickListener(String content) {
+            public void onItemClickListener(String content,int pos) {
                 old_nian = content;
+                click_pos =pos+"";
             }
         });
 

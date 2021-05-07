@@ -4,8 +4,8 @@ import android.view.View;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.HelpfaAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.utils.TitleUtils;
-import com.superc.yyfflibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class HelpabackActivity extends BaseActivity {
+public class HelpabackActivity extends LiveBaseActivity {
 
     @BindView(R.id.helpback_recy)
     RecyclerView mHelpbackRecy;

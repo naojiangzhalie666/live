@@ -2,6 +2,7 @@ package com.example.xzb.utils.http;
 
 import android.util.Log;
 
+import com.example.xzb.utils.TCHTTPMgr;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -65,6 +66,10 @@ public class HttpRequests {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public void setHeartBeatCallback(HeartBeatCallback callback) {
@@ -439,7 +444,7 @@ public class HttpRequests {
         request(request, HttpResponse.MergeStream.class, callback);
     }
 
-    public void login(long sdkAppID, String userID, String userSig, String platform, final OnResponseCallback<HttpResponse.LoginResponse> callback) {
+    public void login(long sdkAppID, final String userID, String userSig, String platform, final OnResponseCallback<HttpResponse.LoginResponse> callback) {
         try {
             String body = "";
             Request request = new Request.Builder().url(domain.concat("/login").concat(String.format("?sdkAppID=%s&userID=%s&userSig=%s&platform=%s", String.valueOf(sdkAppID), userID, userSig, platform)))
@@ -452,6 +457,7 @@ public class HttpRequests {
                     if (data != null) {
                         setUserID(data.userID);
                         setToken(data.token);
+                        TCHTTPMgr.getInstance().setUserIdAndToken(userID, data.token);
                     }
                     if (callback != null) {
                         callback.onResponse(retcode, retmsg, data);

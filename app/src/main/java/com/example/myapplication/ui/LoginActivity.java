@@ -1,17 +1,24 @@
 package com.example.myapplication.ui;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.bean.LoginBean;
+import com.example.myapplication.bean.SignBean;
+import com.example.myapplication.bean.UserInfoBean;
 import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.httputil.HttpBackListener;
 import com.example.myapplication.utils.httputil.LiveHttp;
@@ -19,7 +26,7 @@ import com.example.xzb.Constantc;
 import com.example.xzb.utils.TCConstants;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.google.gson.Gson;
-import com.superc.yyfflibrary.base.BaseActivity;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tencent.liteav.AVCallManager;
 import com.tencent.liteav.login.ProfileManager;
@@ -44,9 +51,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.example.myapplication.base.Constant.LIVE_UPDATE_CODE;
 import static com.example.myapplication.base.LiveApplication.api;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends LiveBaseActivity {
 
 
     @BindView(R.id.login_phonenum)
@@ -56,6 +64,7 @@ public class LoginActivity extends BaseActivity {
     private boolean mPermission = false;               // 是否已经授权
     private String login_name = Constantc.test_USERID;
     private TCUserMgr mInstance;
+    private boolean isNeedUpmsg = true;
 
     @Override
     public int getContentLayoutId() {
@@ -68,6 +77,7 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         mPermission = checkPublishPermission();
         EventBus.getDefault().register(this);
+        getPhoneNum();
     }
 
 
@@ -75,17 +85,28 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_loginthis:
-                Constant.IS_SHENHEING = false;
-                LiveShareUtil.getInstance(LoginActivity.this).putPower("1");
-                thisLogin();
-                login("liangtiandong", "123456", "");
+                if (mLoginImgv.getVisibility() == View.VISIBLE) {
+                    LiveShareUtil.getInstance(LoginActivity.this).putPower(2);//用户类型
+                    statActivity(MainActivity.class);
+                    finish();
+                    ToastShow("一键登录");
+                } else {
+                    ToastShow("请阅读并勾选协议");
+                }
                 break;
             case R.id.login_loginother:
-                ToastShow("其它手机号登录");
-                statActivity(BindPhoneActivity.class);
+                if (mLoginImgv.getVisibility() == View.VISIBLE) {
+                    statActivity(BindPhoneActivity.class);
+                } else {
+                    ToastShow("请阅读并勾选协议");
+                }
                 break;
             case R.id.ll_wx:
-                loginWx();
+                if (mLoginImgv.getVisibility() == View.VISIBLE) {
+                    loginWx();
+                } else {
+                    ToastShow("请阅读并勾选协议");
+                }
                 break;
             case R.id.login_rela:
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
@@ -93,17 +114,22 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     mLoginImgv.setVisibility(View.VISIBLE);
                 }
-
                 break;
         }
     }
 
+    /*登录*/
     private void login(String name, String pwd, String type) {
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().login(name, pwd, type), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 LoginBean loginBean = new Gson().fromJson(result.toString(), LoginBean.class);
-                thisLogin();
+                if (loginBean.getRetCode() == 0) {
+                    Constant.TOKEN = "bearer " + loginBean.getRetData().getToken();
+                    getUserInfo();
+                } else {
+                    ToastShow(loginBean.getRetMsg());
+                }
             }
 
             @Override
@@ -113,50 +139,81 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    private void loginWx() {
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "live_login_request_please";
-        api.sendReq(req);
-
-    }
-
-    private String user_openId, accessToken;
-    private boolean is_wechat;
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-       /* is_wechat = intent.getBooleanExtra("wechat", false);
-        user_openId = intent.getStringExtra("openId");
-        accessToken = intent.getStringExtra("accessToken");
-        if (is_wechat) {
-            login(accessToken, user_openId, "wx");
-        }*/
-    }
-
-    private void thisLogin() {
-        if (mLoginImgv.getVisibility() == View.VISIBLE) {
-            mInstance = TCUserMgr.getInstance();
-            mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
-                @Override
-                public void onLoginBackListener(String userid, String usersig, long sdk_id) {
-                    if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
-                        UserModel self = new UserModel();
-                        self.userId = userid;
-                        self.userSig = usersig;
-                        ProfileManager.getInstance().setUserModel(self);
-                        AVCallManager.getInstance().init(LoginActivity.this);
+    /*获取用户信息*/
+    private void getUserInfo() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(Constant.TOKEN), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                UserInfoBean userInfoBean = new Gson().fromJson(result.toString(), UserInfoBean.class);
+                if (userInfoBean.getRetCode() == 0) {
+                    thisLogin(userInfoBean.getRetData().getId());
+                    Constantc.USER_NAME = userInfoBean.getRetData().getNickname();//用户名
+                    Constantc.USER_UserAvatar = userInfoBean.getRetData().getIco();//头像
+                    Constantc.USER_CoverPic = userInfoBean.getRetData().getIco();//封面图
+                    LiveShareUtil.getInstance(LoginActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                    LiveShareUtil.getInstance(LoginActivity.this).putPower(userInfoBean.getRetData().getType());//用户类型
+                    String interest = userInfoBean.getRetData().getInterest();
+                    if (TextUtils.isEmpty(interest)) {
+                        isNeedUpmsg = true;
+                        statActivity(MsgInputActivity.class);
+                    } else {
+                        isNeedUpmsg = false;
                     }
-                    loginTUIKitLive(sdk_id, userid, usersig);
+
+                } else {
+                    ToastShow(userInfoBean.getRetMsg());
                 }
-            });
-            mInstance.loginMLVB();
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    /*获取直播的sign*/
+    private void thisLogin(String userid) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserSig(Constant.TOKEN), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                SignBean signBean = new Gson().fromJson(result.toString(), SignBean.class);
+                if (signBean.getRetCode() == 0) {
+                    Constantc.test_USERID = userid;
+                    Constantc.test_userSig = signBean.getRetData();
+                    gotLogin();
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    /*登录直播的IM并配置聊天的IM*/
+    private void gotLogin() {
+        mInstance = TCUserMgr.getInstance();
+        mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
+            @Override
+            public void onLoginBackListener(String userid, String usersig, long sdk_id) {
+                if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
+                    UserModel self = new UserModel();
+                    self.userId = userid;
+                    self.userSig = usersig;
+                    ProfileManager.getInstance().setUserModel(self);
+                    AVCallManager.getInstance().init(LoginActivity.this);
+                }
+                loginTUIKitLive(sdk_id, userid, usersig);
+            }
+        });
+        mInstance.loginMLVB();
+        if (!isNeedUpmsg) {
             statActivity(MainActivity.class);
             finish();
-        } else {
-            ToastShow("请阅读并勾选协议");
         }
     }
 
@@ -234,10 +291,17 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMsg(EventMessage msg){
-        if(msg.getMessage().equals("wx_login")){
-            login(msg.getAcc_token(),msg.getOpenid(), "wx");
+    public void onEventMsg(EventMessage msg) {
+        if (msg.getMessage().equals("wx_login")) {
+            login(msg.getAcc_token(), msg.getOpenid(), "wx");
+        } else if (msg.getCode() == 1005) {
+            ToastUtil.showToast(this, "登录过期，请重新登录!");
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        } else if (msg.getCode() == LIVE_UPDATE_CODE) {
+            finish();
         }
+
 
     }
 
@@ -262,6 +326,31 @@ public class LoginActivity extends BaseActivity {
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
             TUIKitLog.e("LoginActivity", "loginTUIKitLive error: " + e.getMessage());
         }
+    }
+
+    private void loginWx() {
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "live_login_request_please";
+        api.sendReq(req);
+
+    }
+
+    private void getPhoneNum() {
+        //获取手机号码
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+                String telphone = tm.getLine1Number();//获取本机号码
+                if(!TextUtils.isEmpty(telphone)) {
+                    mLoginPhonenum.setText(telphone);
+                }else{
+                    Log.e(TAG, "getPhoneNum:未获取到手机号 ");
+                }
+                return;
+            }
+        }
+
     }
 
 

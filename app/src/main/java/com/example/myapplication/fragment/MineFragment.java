@@ -13,9 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.VpAdapter;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.bean.UserInfoBean;
 import com.example.myapplication.pop_dig.CodeDialog;
 import com.example.myapplication.pop_dig.LogoutDialog;
 import com.example.myapplication.pop_dig.ShareDialog;
@@ -28,6 +30,7 @@ import com.example.myapplication.ui.NormalActivity;
 import com.example.myapplication.ui.OranizeActivity;
 import com.example.myapplication.ui.SetActivity;
 import com.example.myapplication.ui.SetInActivity;
+import com.example.myapplication.ui.WithdrDetailActivity;
 import com.example.myapplication.utils.LiveShareUtil;
 import com.ljy.devring.util.DensityUtil;
 import com.umeng.socialize.ShareAction;
@@ -102,6 +105,8 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
     private CodeDialog mCodeDialog;
     private LogoutDialog mLogoutDialog;
     private ShareDialog mShareDialog;
+    private String zuan ="0";
+    private String money = "0";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -135,7 +140,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                     mMineZuanshi.setText("*****");
                 } else {
                     mMineConsEyezuanshi.setImageResource(R.drawable.mine_kai);
-                    mMineZuanshi.setText("1244");
+                    mMineZuanshi.setText(zuan);
                 }
                 show_zuanshi = !show_zuanshi;
                 break;
@@ -145,7 +150,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                     mMineMoneyTv.setText("*****");
                 } else {
                     mMineConsEyemoney.setImageResource(R.drawable.mine_kai);
-                    mMineMoneyTv.setText("1244");
+                    mMineMoneyTv.setText(money);
                 }
                 show_money = !show_money;
                 break;
@@ -174,7 +179,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
             case R.id.mine_ruzhu:
                 if (mPower == Constant.POWER_NORMAL) {
                     startActivity(new Intent(getActivity(), SetInActivity.class));
-                }else{
+                } else {
                     mShareDialog.show();
                 }
                 break;
@@ -191,14 +196,22 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                 break;
             case R.id.mine_money_tv:
             case R.id.textView16:
-                Intent intent_ad = new Intent(getActivity(), AdviceActivity.class);
+           /*     Intent intent_ad = new Intent(getActivity(), AdviceActivity.class);
                 intent_ad.putExtra("index", 1);
-                startActivity(intent_ad);
+                startActivity(intent_ad);*/
+                startActivity(new Intent(getActivity(), WithdrDetailActivity.class));
                 break;
         }
     }
 
     private void init() {
+        UserInfoBean userInfo = LiveShareUtil.getInstance(getActivity()).getUserInfo();
+        if(userInfo!=null){
+            UserInfoBean.RetDataBean retData = userInfo.getRetData();
+            setData(retData);
+
+
+        }
         mLogoutDialog = new LogoutDialog(getActivity());
         mCodeDialog = new CodeDialog(getActivity());
         mFragments = new ArrayList<>();
@@ -236,21 +249,28 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
         mMineSmart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         mMineSmart.setEnableOverScrollBounce(true);//是否启用越界回弹*/
 
-        mMineZuanshi.setText("334");
-        mMineMoneyTv.setText("2334");
-        mMineDaojutv.setText("33");
-        mMineTitle.setText("谁告诉你空间");
-        mMineId.setText("ID 12233");
-        mMineLevel.setText("lv 3");
-        mMineHead.setImageResource(R.drawable.man_se);
-
         mLogoutDialog.setOnLogoutClickListener(new LogoutDialog.OnLogoutClickListener() {
             @Override
             public void onLogoutClickListener() {
+                LiveShareUtil.getInstance(getActivity()).clear();
                 getActivity().finish();
             }
         });
         mMineVp.addOnPageChangeListener(this);
+
+
+    }
+
+    private void setData(UserInfoBean.RetDataBean data){
+        zuan = String.valueOf(data.getDiamond());
+        money =String.valueOf(data.getBalance());
+        mMineZuanshi.setText(zuan);
+        mMineMoneyTv.setText(money);
+        mMineDaojutv.setText("--3--");
+        mMineTitle.setText(data.getNickname());
+        mMineId.setText("ID "+data.getId());
+        mMineLevel.setText("lv "+data.getLevel());
+        Glide.with(getActivity()).load(data.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).circleCrop().into(mMineHead);
 
 
     }
@@ -279,9 +299,10 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
 
     private void toScroll(int pos) {
         for (int i = 0; i < mMineLinator.getChildCount(); i++) {
-            mMineLinator.getChildAt(i).setSelected(i==pos?true:false);
+            mMineLinator.getChildAt(i).setSelected(i == pos ? true : false);
         }
     }
+
     private void initShare() {
         mShareDialog = new ShareDialog(getActivity());
         UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");

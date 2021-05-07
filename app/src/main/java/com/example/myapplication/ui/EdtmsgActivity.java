@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.GridImageAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.pop_dig.BotListDialog;
 import com.example.myapplication.utils.GlideEngine;
 import com.luck.picture.lib.PictureSelector;
@@ -21,7 +22,6 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.luck.picture.lib.tools.SdkVersionUtils;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import java.lang.ref.WeakReference;
@@ -34,7 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EdtmsgActivity extends BaseActivity {
+public class EdtmsgActivity extends LiveBaseActivity {
 
     @BindView(R.id.edtmsg_head)
     ImageView mEdtmsgHead;

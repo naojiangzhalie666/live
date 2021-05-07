@@ -7,9 +7,9 @@ import android.widget.TextView;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.GiftsAdapter;
 import com.example.myapplication.adapter.TimesAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.pop_dig.BuyzActivity;
 import com.example.myapplication.utils.TitleUtils;
-import com.superc.yyfflibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MybackpActivity extends BaseActivity {
+public class MybackpActivity extends LiveBaseActivity {
 
     @BindView(R.id.mybackp_gift)
     TextView mMybackpGift;

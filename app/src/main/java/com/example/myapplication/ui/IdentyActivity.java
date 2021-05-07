@@ -6,17 +6,17 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.fragment.identy.IdentyOneFragment;
 import com.example.myapplication.fragment.identy.IdentyThreeFragment;
 import com.example.myapplication.fragment.identy.IdentyTworagment;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class IdentyActivity extends BaseActivity {
+public class IdentyActivity extends LiveBaseActivity {
 
     @BindView(R.id.identy_one)
     TextView mIdentyOne;

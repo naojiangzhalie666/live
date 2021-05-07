@@ -12,7 +12,9 @@ import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.chat.BaseHelfActivity;
 import com.example.myapplication.chat.ChatActivity;
 import com.example.myapplication.chat.ChathelfFragment;
+import com.example.myapplication.ui.LoginActivity;
 import com.ljy.devring.util.DensityUtil;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 
@@ -94,6 +96,10 @@ public class ChathelfActivity extends BaseHelfActivity {
     public void getEventmsg(EventMessage msg){
         if(msg.getMessage().equals("chathelf_finish")){
             finish();
+        }else if(msg.getCode() == 1005){
+            ToastUtil.showToast(this,"登录过期，请重新登录!");
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
     }

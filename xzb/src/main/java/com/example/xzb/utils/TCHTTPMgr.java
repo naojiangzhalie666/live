@@ -54,6 +54,10 @@ public class TCHTTPMgr {
         mToken = token;
     }
 
+    public String getToken() {
+        return mToken;
+    }
+
     /**
      * 一般性的网络请求
      * <p>

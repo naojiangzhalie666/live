@@ -6,11 +6,11 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.fragment.setin.JgOneFragment;
 import com.example.myapplication.fragment.setin.JgTwoFragment;
 import com.example.myapplication.fragment.setin.ManOneFragment;
 import com.example.myapplication.fragment.setin.ManTwoFragment;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -25,7 +25,7 @@ import butterknife.OnClick;
  @time: 2021/3/26 8:43
  @变更历史:
  ********************************************************************/
-public class SetInActivity extends BaseActivity {
+public class SetInActivity extends LiveBaseActivity {
 
     @BindView(R.id.setin_man)
     TextView mSetinMan;

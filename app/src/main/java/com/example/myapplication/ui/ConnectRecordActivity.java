@@ -7,10 +7,10 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.ConecrecordAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.utils.TitleUtils;
 import com.example.myapplication.utils.datepicker.CustomDatePicker;
 import com.example.myapplication.utils.datepicker.DateFormatUtils;
-import com.superc.yyfflibrary.base.BaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ConnectRecordActivity extends BaseActivity {
+public class ConnectRecordActivity extends LiveBaseActivity {
 
     @BindView(R.id.editText)
     EditText mEditText;

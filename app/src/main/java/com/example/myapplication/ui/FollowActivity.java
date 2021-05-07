@@ -7,11 +7,11 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.FollowAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import butterknife.OnClick;
  @time: 2021/3/26 14:01
  @变更历史:
  ********************************************************************/
-public class FollowActivity extends BaseActivity {
+public class FollowActivity extends LiveBaseActivity {
 
     @BindView(R.id.follow_guanzhu)
     TextView mFollowGuanzhu;

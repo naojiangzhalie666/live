@@ -10,9 +10,9 @@
     android:background="@drawable/item_corner_man"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dp_8"
-    android:paddingBottom="@dimen/dp_8"
+    android:paddingTop="@dimen/dp_12"
+    android:paddingBottom="@dimen/dp_12"
     android:text="06后"
     android:textColor="@color/home_txt"
-    android:textSize="20sp"
+    android:textSize="16sp"
     android:textStyle="bold" />

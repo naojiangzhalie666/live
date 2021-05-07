@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.FIndAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.pop_dig.FavListDialog;
 import com.example.myapplication.utils.WheelPicker.picker.OptionPicker;
 import com.example.myapplication.utils.WheelPicker.widget.WheelView;
@@ -13,7 +14,6 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import butterknife.OnClick;
   @time: 2021/3/24 15:06
   @变更历史:
 ********************************************************************/
-public class FindActivity extends BaseActivity  {
+public class FindActivity extends LiveBaseActivity {
     @BindView(R.id.find_type)
     TextView mFindType;
     @BindView(R.id.find_state)

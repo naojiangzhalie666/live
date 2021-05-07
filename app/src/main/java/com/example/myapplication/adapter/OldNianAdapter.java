@@ -59,7 +59,7 @@ public class OldNianAdapter extends RecyclerView.Adapter<OldNianAdapter.ViewHold
                     content = (String) tv_new.getTag();
                     onClickView = v;
                     if(mOnItemClickListener!=null)
-                        mOnItemClickListener.onItemClickListener(content);
+                        mOnItemClickListener.onItemClickListener(content,position);
 
                 }
             }
@@ -74,7 +74,7 @@ public class OldNianAdapter extends RecyclerView.Adapter<OldNianAdapter.ViewHold
     }
 
     public interface OnItemClickListener {
-        void onItemClickListener(String content);
+        void onItemClickListener(String content,int pos);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

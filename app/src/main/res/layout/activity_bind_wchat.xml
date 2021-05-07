@@ -40,13 +40,12 @@
     <ImageView
         android:id="@+id/bind_wchat_head"
         android:layout_width="@dimen/dp_77"
-        android:scaleType="fitXY"
         android:layout_height="@dimen/dp_77"
         android:layout_marginTop="@dimen/dp_100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:srcCompat="@drawable/man_se" />
+        app:srcCompat="@drawable/live_defaultimg" />
 
     <TextView
         android:id="@+id/bind_wchat_name"

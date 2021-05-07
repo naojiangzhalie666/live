@@ -25,9 +25,12 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".pop_dig.BuyzActivity"
-            android:theme="@style/ActivityDialog_pay"
-            android:launchMode="singleTop"></activity>
+        <activity android:name=".ui.NoticeActivity"></activity>
+        <activity android:name=".ui.WithdrDetailActivity" />
+        <activity
+            android:name=".pop_dig.BuyzActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/ActivityDialog_pay" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -130,6 +133,7 @@
             android:launchMode="singleTask"
             android:taskAffinity="com.example.myapplication"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.myapplication.fileprovider"
@@ -137,11 +141,10 @@
             android:grantUriPermissions="true"
             tools:replace="android:authorities">
             <meta-data
-                tools:replace="android:resource"
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths_um" />
+                android:resource="@xml/filepaths_um"
+                tools:replace="android:resource" />
         </provider>
-
     </application>
 
 </manifest>

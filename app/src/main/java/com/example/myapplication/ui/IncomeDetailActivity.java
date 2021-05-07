@@ -7,10 +7,10 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.WalletAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.utils.TitleUtils;
 import com.example.myapplication.utils.datepicker.CustomDatePicker;
 import com.example.myapplication.utils.datepicker.DateFormatUtils;
-import com.superc.yyfflibrary.base.BaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class IncomeDetailActivity extends BaseActivity {
+public class IncomeDetailActivity extends LiveBaseActivity {
 
     @BindView(R.id.editText)
     EditText mEditText;
@@ -34,10 +34,12 @@ public class IncomeDetailActivity extends BaseActivity {
     TextView mNormalSttm;
     @BindView(R.id.normal_edtm)
     TextView mNormalEdtm;
+    @BindView(R.id.search)
+    TextView mNormalSearch;
     @BindView(R.id.normal_recy)
     RecyclerView mNormalRecy;
     private CustomDatePicker customDatePickerSt;
-    private List<Map<String,Object>> mStringList;
+    private List<Map<String, Object>> mStringList;
     private WalletAdapter mWalletAdapter;
 
 
@@ -50,11 +52,12 @@ public class IncomeDetailActivity extends BaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
+        mNormalSearch.requestFocus();
         initTvTime();
         mStringList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Map<String,Object> map = new HashMap<>();
-            map.put("show",false);
+            Map<String, Object> map = new HashMap<>();
+            map.put("show", false);
             mStringList.add(map);
         }
         mWalletAdapter = new WalletAdapter(this, mStringList);
@@ -65,7 +68,7 @@ public class IncomeDetailActivity extends BaseActivity {
             @Override
             public void onItemClickListener(int pos) {
                 Map<String, Object> map = mStringList.get(pos);
-                map.put("show",!(boolean)map.get("show"));
+                map.put("show", !(boolean) map.get("show"));
                 mWalletAdapter.notifyItemChanged(pos);
             }
         });
@@ -96,7 +99,7 @@ public class IncomeDetailActivity extends BaseActivity {
     private void initTvTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
         mNormalEdtm.setText(dateFormat.format(new Date()));
-        mNormalSttm.setText(dateFormat.format(new Date()) );
+        mNormalSttm.setText(dateFormat.format(new Date()));
     }
 
     /*
@@ -112,13 +115,13 @@ public class IncomeDetailActivity extends BaseActivity {
         customDatePickerSt = new CustomDatePicker(this, new CustomDatePicker.Callback() {
             @Override
             public void onTimeSelected(long timestamp) {
-                mtv.setText(DateFormatUtils.long2StrDay(timestamp, false,false));
+                mtv.setText(DateFormatUtils.long2StrDay(timestamp, false, false));
             }
         }, begin_tm, ed_tm);
         customDatePickerSt.setCanShowPreciseTime(false); // 是否显示时和分
         customDatePickerSt.setCanShowPreciseDay(false); // 是否显示天
         customDatePickerSt.setScrollLoop(true); // 允许循环滚动
         customDatePickerSt.setCanShowAnim(true);//开启滚动动画
-        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : (mtv.getText().toString()+"-01"));
+        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : (mtv.getText().toString() + "-01"));
     }
 }

@@ -5,22 +5,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
-import com.superc.yyfflibrary.base.BaseActivity;
+import com.example.myapplication.base.LiveBaseActivity;
+import com.example.myapplication.bean.UserInfoBean;
+import com.example.myapplication.utils.LiveShareUtil;
+import com.example.xzb.Constantc;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BindWchatActivity extends BaseActivity {
+public class BindWchatActivity extends LiveBaseActivity {
 
     @BindView(R.id.bind_wchat_head)
     ImageView mBindWchatHead;
     @BindView(R.id.bind_wchat_name)
     TextView mBindWchatName;
+    private UserInfoBean mUserInfo;
+    private String user_ico ="";
 
 
     @Override
@@ -32,9 +38,13 @@ public class BindWchatActivity extends BaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
-        mBindWchatName.setText("昵称？");
+        mBindWchatName.setText(Constantc.USER_NAME);
+        mUserInfo = LiveShareUtil.getInstance(this).getUserInfo();
+        if(mUserInfo!=null){
+            user_ico = mUserInfo.getRetData().getIco();
+        }
         RoundedCorners roundedCorners = new RoundedCorners(16);
-        Glide.with(this).load(R.drawable.pj_bg).apply(new RequestOptions().transform(roundedCorners)).into(mBindWchatHead);
+        Glide.with(this).load(user_ico).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mBindWchatHead);
 
 
     }

@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.ExchangeAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.pop_dig.RemindDialog;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ExchangeActivity extends BaseActivity {
+public class ExchangeActivity extends LiveBaseActivity {
 
     @BindView(R.id.exchange_num)
     TextView mExchangeNum;

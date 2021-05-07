@@ -10,9 +10,9 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.ShowGoodsAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.pop_dig.ShareDialog;
 import com.example.myapplication.utils.TitleUtils;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ShowGoodsActivity extends BaseActivity {
+public class ShowGoodsActivity extends LiveBaseActivity {
 
     @BindView(R.id.personal_head)
     ImageView mPersonalHead;

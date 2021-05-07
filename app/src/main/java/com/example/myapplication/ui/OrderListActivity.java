@@ -12,9 +12,9 @@ import com.example.myapplication.adapter.CzAdapter;
 import com.example.myapplication.adapter.LevelAdapter;
 import com.example.myapplication.adapter.PjAdapter;
 import com.example.myapplication.adapter.SjAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.pop_dig.PjDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OrderListActivity extends BaseActivity {
+public class OrderListActivity extends LiveBaseActivity {
 
     @BindView(R.id.order_cz)
     TextView mOrderCz;

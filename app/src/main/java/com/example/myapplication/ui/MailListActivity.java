@@ -8,11 +8,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.utils.TitleUtils;
 import com.example.myapplication.utils.indelistview.LetterListView;
 import com.example.myapplication.utils.indelistview.SortAdapter;
 import com.example.myapplication.utils.indelistview.User;
-import com.superc.yyfflibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MailListActivity extends BaseActivity {
+public class MailListActivity extends LiveBaseActivity {
 
     @BindView(R.id.mail_list)
     ListView mMailList;

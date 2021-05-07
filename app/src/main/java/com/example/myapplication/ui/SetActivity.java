@@ -1,6 +1,7 @@
 package com.example.myapplication.ui;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,16 +9,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.base.LiveBaseActivity;
+import com.example.myapplication.bean.UserInfoBean;
 import com.example.myapplication.pop_dig.ConphoneDialog;
 import com.example.myapplication.pop_dig.DhDialog;
-import com.superc.yyfflibrary.base.BaseActivity;
+import com.example.myapplication.utils.LiveShareUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
+import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SetActivity extends BaseActivity {
+public class SetActivity extends LiveBaseActivity {
 
     @BindView(R.id.set_head)
     ImageView mSetHead;
@@ -29,6 +33,8 @@ public class SetActivity extends BaseActivity {
     TextView mSetHuancunnum;
     private DhDialog mDhDialog;
     private ConphoneDialog mConphoneDialog;
+    private boolean is_bdwchat = false;
+    public static final int WECHAT_BD = 112;
 
 
     @Override
@@ -40,6 +46,10 @@ public class SetActivity extends BaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
+        UserInfoBean userInfo = LiveShareUtil.getInstance(this).getUserInfo();
+        if (userInfo != null) {
+            setData(userInfo.getRetData());
+        }
         mDhDialog = new DhDialog(this);
         mDhDialog.setOnDhClickListener(new DhDialog.OnDhClickListener() {
             @Override
@@ -48,7 +58,6 @@ public class SetActivity extends BaseActivity {
             }
         });
         RequestOptions requestOptions = new RequestOptions().circleCrop();
-        Glide.with(this).load(R.drawable.woman_se).apply(requestOptions).into(mSetHead);
         mConphoneDialog = new ConphoneDialog(this);
         mConphoneDialog.setOnSureClickListener(new ConphoneDialog.OnSureClickListener() {
             @Override
@@ -56,6 +65,17 @@ public class SetActivity extends BaseActivity {
                 toSetPhone(phone);
             }
         });
+
+    }
+
+    private void setData(UserInfoBean.RetDataBean userInfo) {
+        Glide.with(this).load(userInfo.getIco()).placeholder(R.drawable.man_se).error(R.drawable.man_se).circleCrop().into(mSetHead);
+        String unionID = userInfo.getUnionID();
+        is_bdwchat = TextUtils.isEmpty(unionID) ? false : true;
+        if (!TextUtils.isEmpty(unionID)) {
+            mSetBindwchattv.setText("已绑定");
+            mSetBindwchatRight.setVisibility(View.GONE);
+        }
 
     }
 
@@ -74,10 +94,11 @@ public class SetActivity extends BaseActivity {
                 startActivity(new Intent(this, EdtmsgActivity.class));
                 break;
             case R.id.set_wchat_con:
-                statActivity(BindWchatActivity.class);
-                ToastShow("绑定成功");
-                mSetBindwchattv.setText("已绑定");
-                mSetBindwchatRight.setText("18730612456");
+                if (!is_bdwchat) {
+                    startActivityForResult(new Intent(this,BindWchatActivity.class),WECHAT_BD);
+                }else{
+                    ToastShow("已绑定微信");
+                }
                 break;
             case R.id.set_yjcontact:
                 mConphoneDialog.show();
@@ -99,9 +120,19 @@ public class SetActivity extends BaseActivity {
 
     }
 
-    private void toSetPhone(String phone){
-        ToastShow("设置应急联系人"+phone);
+    private void toSetPhone(String phone) {
+        ToastShow("设置应急联系人" + phone);
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == WECHAT_BD && resultCode == RESULT_OK) {
+            is_bdwchat = true;
+            mSetBindwchattv.setText("已绑定");
+            mSetBindwchatRight.setVisibility(View.GONE);
+            ToastShow("绑定成功");
+        }
+    }
 }

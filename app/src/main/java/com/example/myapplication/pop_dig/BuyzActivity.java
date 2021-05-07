@@ -1,5 +1,6 @@
 package com.example.myapplication.pop_dig;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +17,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.adapter.BuyAdapter;
 import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.bean.EventMessage;
+import com.example.myapplication.ui.LoginActivity;
 import com.example.myapplication.utils.httputil.HttpBackListener;
 import com.example.myapplication.utils.httputil.LiveHttp;
 import com.example.myapplication.zfb.PayResult;
@@ -244,6 +246,10 @@ public class BuyzActivity extends AppCompatActivity {
                     ToastUtil.showToast(this, "取消支付");
                     break;
             }
+        }else if(message.getCode() == 1005){
+            ToastUtil.showToast(this,"登录过期，请重新登录!");
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 

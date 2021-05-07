@@ -8,6 +8,7 @@ public class Constant {
     public static final boolean PRINT_LOG = true;
     public static final boolean IS_JIAMI = false;
     public static final String BASE_URL = "http://172.16.66.225:9091/";
+    public static String TOKEN = null;
 
     /*临时使用*/
     public static final boolean IS_ZIXUNSHI = false;//主播是否为咨询师
@@ -25,11 +26,14 @@ public class Constant {
     public static final String APP_ID = "wxf577d166ba856289";//微信Appid
     public static final String APP_SECRECT = "2ed4c15ba396f03ed7f79cc5388d3d13";//微信Appsec
 
-    /*登录状态分类*/
-    public static final int POWER_NORMAL = 0;//普通
-    public static final int POWER_ZIXUNSHI = 1;//咨询师
-    public static final int POWER_ZIXUNJIGOU = 2;//咨询机构
-    public static final int POWER_ZIZIXNSHI = 3;//子咨询师
+    /*身份状态分类*/
+    public static final int POWER_NORMAL = 1;//普通
+    public static final int POWER_ZIXUNSHI = 2;//咨询师
+    public static final int POWER_ZIXUNJIGOU = 3;//咨询机构
+    public static final int POWER_ZIZIXNSHI = 4;//子咨询师
+
+    /*常量存储*/
+    public static final int LIVE_UPDATE_CODE = 1001;
 
     /*存储*/
     public static final String CHAT_INFO = "chatInfo";

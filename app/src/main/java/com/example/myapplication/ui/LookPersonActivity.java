@@ -14,6 +14,7 @@ import com.example.myapplication.adapter.PersonImageAdapter;
 import com.example.myapplication.adapter.PersonOneAdapter;
 import com.example.myapplication.adapter.PersonTwoAdapter;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.pop_dig.BtPopupWindow;
 import com.example.myapplication.pop_dig.ReportActivity;
 import com.example.myapplication.pop_dig.ReportDialog;
@@ -28,7 +29,6 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnItemClickListener;
 import com.luck.picture.lib.tools.SdkVersionUtils;
-import com.superc.yyfflibrary.base.BaseActivity;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -46,7 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LookPersonActivity extends BaseActivity {
+public class LookPersonActivity extends LiveBaseActivity {
 
     @BindView(R.id.personal_head)
     ImageView mPersonalHead;

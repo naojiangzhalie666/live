@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.LivedeAdapter;
+import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.utils.TitleUtils;
 import com.example.myapplication.utils.datepicker.CustomDatePicker;
 import com.example.myapplication.utils.datepicker.DateFormatUtils;
 import com.google.android.material.appbar.AppBarLayout;
-import com.superc.yyfflibrary.base.BaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LiveDetailActivity extends BaseActivity {
+public class LiveDetailActivity extends LiveBaseActivity {
 
     @BindView(R.id.coordinator)
     CoordinatorLayout mCoordinatorLayout;
