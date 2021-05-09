@@ -19,10 +19,6 @@ import com.tencent.rtmp.TXLog;
 
 import org.json.JSONObject;
 
-import static com.example.xzb.Constantc.USER_CoverPic;
-import static com.example.xzb.Constantc.USER_NAME;
-import static com.example.xzb.Constantc.USER_UserAvatar;
-
 /**
  * Module:   TCUserMgr
  * <p>
@@ -34,7 +30,7 @@ import static com.example.xzb.Constantc.USER_UserAvatar;
  * <p>
  * 3. 提供登录、注册、更新头像等
  * <p>
- * 4. 登录成功之后，会自动初始化 MLVB 组件 {@link TCUserMgr#loginMLVB()}
+ * 4. 登录成功之后，会自动初始化 MLVB 组件 {@link TCUserMgr#loginMLVB}
  */
 public class TCUserMgr {
     public static final String TAG = TCUserMgr.class.getSimpleName();
@@ -288,7 +284,7 @@ public class TCUserMgr {
                             mCosInfo.region = cosInfo.optString("Region");      // COS 的存储区域
                             mCosInfo.secretID = cosInfo.optString("SecretId");  // COS 的密钥ID
                             // 登录到 MLVB 组件
-                            loginMLVB();
+//                            loginMLVB();
 
                             // 拉取用户信息
                             fetchUserInfo(null);
@@ -335,7 +331,7 @@ public class TCUserMgr {
                 mUserSig = GenerateTestUserSig.genTestUserSig(mUserId);
 
                 // 登录到 MLVB 组件
-                loginMLVB();
+//                loginMLVB();
 
                 if (TextUtils.isEmpty(mNickName)) {
                     mNickName = NameGenerator.getRandomName();
@@ -419,22 +415,22 @@ public class TCUserMgr {
     /**
      * 初始化 MLVB 组件
      */
-    public void loginMLVB() {
+    public void loginMLVB(String userid,String nickName,String head,String cover,int sex,String usersign) {
         Constantc.mlvb_login = false;
         if (mContext == null) return;
-
-        mUserAvatar = USER_UserAvatar; //头像
-        mNickName = USER_NAME;//昵称
-        mCoverPic = USER_CoverPic;   //封面图
-        mSex =1;//性别
-        mUserId = Constantc.test_USERID;
-        mUserSig = Constantc.test_userSig;
+        mUserId =userid;
+        mNickName = nickName;//昵称
+        mUserAvatar =head; //头像
+        mCoverPic = cover;   //封面图
+        mSex =sex;//性别
+        mUserSig = usersign;
         mSdkAppID =Constantc.test_sdkAppID;
+
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.sdkAppID = mSdkAppID;
         loginInfo.userID =  mUserId;
         loginInfo.userSig = mUserSig;
-        loginInfo.userName = USER_NAME;
+        loginInfo.userName = mNickName;
         loginInfo.userAvatar = mUserAvatar;
         MLVBLiveRoom liveRoom = MLVBLiveRoom.sharedInstance(mContext);
         liveRoom.login(loginInfo, new IMLVBLiveRoomListener.LoginCallback() {

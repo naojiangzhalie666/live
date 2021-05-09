@@ -3,38 +3,50 @@ package com.example.myapplication.ui;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.base.LiveBaseActivity;
+import com.example.myapplication.bean.BaseBean;
 import com.example.myapplication.bean.UserInfoBean;
 import com.example.myapplication.pop_dig.ConphoneDialog;
 import com.example.myapplication.pop_dig.DhDialog;
 import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
+import com.google.gson.Gson;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SetActivity extends LiveBaseActivity {
 
     @BindView(R.id.set_head)
-    ImageView mSetHead;
+    CircleImageView mSetHead;
     @BindView(R.id.set_bindwchattv)
     TextView mSetBindwchattv;
     @BindView(R.id.set_bindwchat_right)
     TextView mSetBindwchatRight;
     @BindView(R.id.set_huancunnum)
     TextView mSetHuancunnum;
+    @BindView(R.id.set_yjcontact)
+    TextView mSetYjPhoneTv;
+    @BindView(R.id.set_yjlxr)
+    TextView mSetYjPhoneNum;
+
+
     private DhDialog mDhDialog;
     private ConphoneDialog mConphoneDialog;
     private boolean is_bdwchat = false;
     public static final int WECHAT_BD = 112;
+    private UserInfoBean mUserInfo;
 
 
     @Override
@@ -46,9 +58,9 @@ public class SetActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
-        UserInfoBean userInfo = LiveShareUtil.getInstance(this).getUserInfo();
-        if (userInfo != null) {
-            setData(userInfo.getRetData());
+        mUserInfo = LiveShareUtil.getInstance(this).getUserInfo();
+        if (mUserInfo != null) {
+            setData(mUserInfo.getRetData());
         }
         mDhDialog = new DhDialog(this);
         mDhDialog.setOnDhClickListener(new DhDialog.OnDhClickListener() {
@@ -69,17 +81,21 @@ public class SetActivity extends LiveBaseActivity {
     }
 
     private void setData(UserInfoBean.RetDataBean userInfo) {
-        Glide.with(this).load(userInfo.getIco()).placeholder(R.drawable.man_se).error(R.drawable.man_se).circleCrop().into(mSetHead);
+        Glide.with(this).load(userInfo.getIco()).placeholder(R.drawable.live_defaultimg).error(R.drawable.live_defaultimg).circleCrop().into(mSetHead);
         String unionID = userInfo.getUnionID();
         is_bdwchat = TextUtils.isEmpty(unionID) ? false : true;
         if (!TextUtils.isEmpty(unionID)) {
             mSetBindwchattv.setText("已绑定");
             mSetBindwchatRight.setVisibility(View.GONE);
         }
+        if (!TextUtils.isEmpty(userInfo.getEmergencyContact())) {
+            mSetYjPhoneTv.setText("应急联系人");
+            mSetYjPhoneNum.setText(userInfo.getEmergencyContact());
+        }
 
     }
 
-    @OnClick({R.id.set_duihuan, R.id.set_about, R.id.imgv_back, R.id.set_edtmsg_ll, R.id.set_wchat_con, R.id.set_yjcontact, R.id.set_xieyi, R.id.set_huancun_rela})
+    @OnClick({R.id.set_duihuan, R.id.set_about, R.id.imgv_back, R.id.set_edtmsg_ll, R.id.set_wchat_con, R.id.set_yjcontact, R.id.set_yjlxr, R.id.set_xieyi, R.id.set_huancun_rela})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgv_back:
@@ -95,13 +111,15 @@ public class SetActivity extends LiveBaseActivity {
                 break;
             case R.id.set_wchat_con:
                 if (!is_bdwchat) {
-                    startActivityForResult(new Intent(this,BindWchatActivity.class),WECHAT_BD);
-                }else{
+                    startActivityForResult(new Intent(this, BindWchatActivity.class), WECHAT_BD);
+                } else {
                     ToastShow("已绑定微信");
                 }
                 break;
             case R.id.set_yjcontact:
-                mConphoneDialog.show();
+            case R.id.set_yjlxr:
+                if (TextUtils.isEmpty(mSetYjPhoneNum.getText().toString()))
+                    mConphoneDialog.show();
                 break;
             case R.id.set_xieyi:
                 break;
@@ -121,7 +139,27 @@ public class SetActivity extends LiveBaseActivity {
     }
 
     private void toSetPhone(String phone) {
-        ToastShow("设置应急联系人" + phone);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().bindEmergencyPhone(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(), phone), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
+                if (baseBean.getRetCode() == 0) {
+                    mUserInfo.getRetData().setEmergencyContact(phone);
+                    LiveShareUtil.getInstance(LiveApplication.getmInstance()).put("user", mUserInfo);
+                    mSetYjPhoneTv.setText("应急联系人");
+                    mSetYjPhoneNum.setText(phone);
+
+                }
+                ToastShow(baseBean.getRetMsg());
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
 
     }
 

@@ -19,7 +19,7 @@
             android:layout_centerHorizontal="true"
             android:text="通知"
             android:textColor="@color/login_txt"
-            android:textSize="20sp" />
+            android:textSize="@dimen/titile_size" />
 
         <ImageView
             android:id="@+id/notic_back"

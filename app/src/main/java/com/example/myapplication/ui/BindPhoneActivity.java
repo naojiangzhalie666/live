@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.bean.BaseBean;
 import com.example.myapplication.bean.LoginBean;
@@ -18,7 +19,6 @@ import com.example.myapplication.bean.UserInfoBean;
 import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.httputil.HttpBackListener;
 import com.example.myapplication.utils.httputil.LiveHttp;
-import com.example.xzb.Constantc;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.google.gson.Gson;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
@@ -131,6 +131,7 @@ public class BindPhoneActivity extends LiveBaseActivity {
                 LoginBean loginBean = new Gson().fromJson(result.toString(), LoginBean.class);
                 if (loginBean.getRetCode() == 0) {
                     Constant.TOKEN = "bearer " + loginBean.getRetData().getToken();
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).putToken("bearer " + loginBean.getRetData().getToken());
                     getUserInfo();
                 }else{
                     ToastShow(loginBean.getRetMsg());
@@ -144,18 +145,19 @@ public class BindPhoneActivity extends LiveBaseActivity {
     }
     /*获取用户信息*/
     private void getUserInfo() {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(Constant.TOKEN), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
                 UserInfoBean userInfoBean = new Gson().fromJson(result.toString(), UserInfoBean.class);
                 if (userInfoBean.getRetCode() == 0) {
-                    thisLogin(userInfoBean.getRetData().getId());
-                    Constantc.USER_NAME = userInfoBean.getRetData().getNickname();//用户名
-                    Constantc.USER_UserAvatar = userInfoBean.getRetData().getIco();//头像
-                    Constantc.USER_CoverPic = userInfoBean.getRetData().getIco();//封面图
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERID,userInfoBean.getRetData().getId());
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERNAME,userInfoBean.getRetData().getNickname());
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERHEAD,userInfoBean.getRetData().getIco());
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERCOVER,userInfoBean.getRetData().getIco());
                     LiveShareUtil.getInstance(BindPhoneActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
                     LiveShareUtil.getInstance(BindPhoneActivity.this).putPower(userInfoBean.getRetData().getType());//用户类型
+                    thisLogin(userInfoBean.getRetData());
                     String interest = userInfoBean.getRetData().getInterest();
                     if(TextUtils.isEmpty(interest)){
                         isNeedUpmsg = true;
@@ -176,16 +178,15 @@ public class BindPhoneActivity extends LiveBaseActivity {
         });
     }
     /*获取直播的sign*/
-    private void thisLogin(String userid) {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserSig(Constant.TOKEN), new HttpBackListener() {
+    private void thisLogin(UserInfoBean.RetDataBean bean) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserSig(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
                 SignBean signBean = new Gson().fromJson(result.toString(), SignBean.class);
                 if (signBean.getRetCode() == 0) {
-                    Constantc.test_USERID = userid;
-                    Constantc.test_userSig = signBean.getRetData();
-                    gotLogin();
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERSIGN, signBean.getRetData());
+                    gotLogin(bean,signBean.getRetData());
                 }
             }
 
@@ -197,7 +198,7 @@ public class BindPhoneActivity extends LiveBaseActivity {
     }
 
     /*登录直播的IM并配置聊天的IM*/
-    private void gotLogin() {
+    private void gotLogin(UserInfoBean.RetDataBean bean,String sign) {
         mInstance = TCUserMgr.getInstance();
         mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
             @Override
@@ -212,7 +213,7 @@ public class BindPhoneActivity extends LiveBaseActivity {
                 loginTUIKitLive(sdk_id, userid, usersig);
             }
         });
-        mInstance.loginMLVB();
+        mInstance.loginMLVB(bean.getId(),bean.getNickname(),bean.getIco(),bean.getIco(),bean.getGender(),sign);
         if (!isNeedUpmsg) {
             statActivity(MainActivity.class);
             finish();

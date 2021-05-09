@@ -14,8 +14,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.bean.MineTCVideoInfo;
 import com.example.xzb.utils.TCUtils;
-import com.example.xzb.utils.onlinelive.TCVideoInfo;
 
 import java.util.List;
 
@@ -25,12 +25,12 @@ import butterknife.ButterKnife;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private Context mContext;
-    private List<TCVideoInfo> mLists;
+    private List<MineTCVideoInfo> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private OnLastClickListener mOnLastClickListener;
 
-    public HomeAdapter(Context context, List<TCVideoInfo> stringList) {
+    public HomeAdapter(Context context, List<MineTCVideoInfo> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -51,7 +51,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return vh;
     }
 
-    public void setLists(List<TCVideoInfo> lists) {
+    public void setLists(List<MineTCVideoInfo> lists) {
         mLists = lists;
         notifyDataSetChanged();
     }
@@ -66,19 +66,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             vh.mItemHomerecyLinear.setVisibility(View.VISIBLE);
             vh.mItemHomeImgRenz.setVisibility(View.VISIBLE);
             vh.mItemHomeImgSun.setVisibility(View.VISIBLE);
-            TCVideoInfo data = mLists.get(position);
-            vh.mItemHomerecyBiao.setText("人气主播");
+            MineTCVideoInfo data = mLists.get(position);
+            vh.mItemHomerecyBiao.setText(data.lable);
             vh.mItemHomerecyRenqi.setText("" + data.viewerCount); //直播观看人数
             vh.mItemHomerecyName.setText(TextUtils.isEmpty(data.nickname) ? TCUtils.getLimitString(data.userId, 10) : TCUtils.getLimitString(data.nickname, 10));   //主播昵称
             vh.mItemHomerecyTitle.setText(TCUtils.getLimitString(data.title.trim(), 10));//直播标题
             //直播封面
             String cover = data.frontCover;
-//            if (TextUtils.isEmpty(cover)) {
-//                vh.mItemHomerecyImgv.setImageResource(R.drawable.home_grad);
-//            } else {
             RoundedCorners roundedCorners = new RoundedCorners(15);
             Glide.with(mContext).load(cover).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners )).placeholder(R.drawable.home_grad).error(R.drawable.home_grad).into(vh.mItemHomerecyImgv);
-//            }
+            int push_size = data.push_size;
+            if(push_size>1){
+                vh.mItemHomerecyImgv.setBackgroundResource(R.drawable.home_white);
+                vh.mItemHomerecyImgvState.setVisibility(View.VISIBLE);
+                vh.mItemHomerecyImgvState.setImageResource(R.drawable.home_media);
+                vh.mItemHomerecyName.setTextColor(mContext.getResources().getColor(R.color.black));
+                vh.mItemHomerecyLinear.setVisibility(View.GONE);
+                vh.mItemHomerecyTitle.setVisibility(View.GONE);
+            }
+
            /* switch (position) {
                 case 0:
                     vh.mItemHomerecyImgv.setBackgroundResource(R.drawable.home_white);

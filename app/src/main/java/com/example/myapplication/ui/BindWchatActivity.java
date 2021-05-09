@@ -1,5 +1,7 @@
 package com.example.myapplication.ui;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,14 +12,22 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.base.LiveBaseActivity;
+import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.bean.UserInfoBean;
 import com.example.myapplication.utils.LiveShareUtil;
-import com.example.xzb.Constantc;
+import com.google.gson.Gson;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.example.myapplication.base.LiveApplication.api;
 
 public class BindWchatActivity extends LiveBaseActivity {
 
@@ -26,7 +36,7 @@ public class BindWchatActivity extends LiveBaseActivity {
     @BindView(R.id.bind_wchat_name)
     TextView mBindWchatName;
     private UserInfoBean mUserInfo;
-    private String user_ico ="";
+    private String user_ico = "";
 
 
     @Override
@@ -38,13 +48,13 @@ public class BindWchatActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
-        mBindWchatName.setText(Constantc.USER_NAME);
         mUserInfo = LiveShareUtil.getInstance(this).getUserInfo();
-        if(mUserInfo!=null){
+        if (mUserInfo != null) {
             user_ico = mUserInfo.getRetData().getIco();
+            mBindWchatName.setText(mUserInfo.getRetData().getNickname());
         }
         RoundedCorners roundedCorners = new RoundedCorners(16);
-        Glide.with(this).load(user_ico).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mBindWchatHead);
+        Glide.with(this).load(user_ico).apply(new RequestOptions().transform(new CenterCrop(), roundedCorners)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mBindWchatHead);
 
 
     }
@@ -56,8 +66,40 @@ public class BindWchatActivity extends LiveBaseActivity {
                 finish();
                 break;
             case R.id.bind_wchat_bind:
-                ToastShow("绑定微信");
+                loginWx();
                 break;
         }
     }
+
+    private void loginWx() {
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "live_login_request_please";
+        api.sendReq(req);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMsg(EventMessage msg) {
+        if (msg.getMessage().equals("wx_login")) {
+            toBindWxTo(msg.getOpenid());
+//            login(msg.getAcc_token(), msg.getOpenid(), "wx");
+        } else if (msg.getCode() == 1005) {
+            ToastUtil.showToast(this, "登录过期，请重新登录!");
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+
+
+    }
+
+    /*提交服务器openid进行绑定*/
+    private void toBindWxTo(String openid) {
+        ToastShow("微信 + Openid= " + openid);
+        Log.i(TAG, "微信 + Openid= " + openid);
+        mUserInfo.getRetData().setUnionID(openid);
+        LiveShareUtil.getInstance(this).put("user", new Gson().toJson(mUserInfo));//保存用户信息
+        setResult(RESULT_OK);
+
+    }
+
 }

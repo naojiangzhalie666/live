@@ -5,16 +5,26 @@ import android.graphics.Paint;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.GridImageAdapter;
+import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.base.LiveBaseActivity;
+import com.example.myapplication.bean.BaseBean;
+import com.example.myapplication.bean.UserInfoBean;
 import com.example.myapplication.pop_dig.BotListDialog;
+import com.example.myapplication.pop_dig.InterestDialog;
 import com.example.myapplication.utils.GlideEngine;
+import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.WheelPicker.picker.OptionPicker;
+import com.example.myapplication.utils.WheelPicker.widget.WheelView;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
+import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.animators.AnimationType;
 import com.luck.picture.lib.config.PictureConfig;
@@ -33,11 +43,14 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class EdtmsgActivity extends LiveBaseActivity {
 
     @BindView(R.id.edtmsg_head)
-    ImageView mEdtmsgHead;
+    CircleImageView mEdtmsgHead;
     @BindView(R.id.edtmsg_name)
     EditText mEdtmsgName;
     @BindView(R.id.edtmsg_nameone)
@@ -54,11 +67,24 @@ public class EdtmsgActivity extends LiveBaseActivity {
     TextView mEdtmsgInterest;
     @BindView(R.id.edtmsg_age)
     TextView mEdtmsgAge;
+    @BindView(R.id.textView277)
+    TextView mEdtf;
+    @BindView(R.id.edtmsg_ll_iswj)
+    LinearLayout mEdtmsgllisWj;
 
     private String[] mStrings = new String[]{"05后", "00后", "95后", "90后", "85后", "80后", "75后", "70后", "60后"};
     private List<Map<String, Object>> mMapList;
     private BotListDialog mBotListDialog;
+    private List<Map<String,Object>> mListStrings;
+    private String[] mStrings_inter = new String[]{"情感修复", "婚姻家庭", "恋爱关系", "亲子关系", "职场问题", "个人成长", "人际关系", "第三者问题", "心理健康检测", "未成年人心理"};
+    private InterestDialog mInterestDialog;
+
     private GridImageAdapter mAdapter;
+    private OptionPicker mPicker;
+    private int select_pos = 0;
+    private int old_pos ;
+    private String inter_content = "";
+    private String userId="";
 
 
     @Override
@@ -70,6 +96,11 @@ public class EdtmsgActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
+        UserInfoBean userInfo = LiveShareUtil.getInstance(this).getUserInfo();
+        if (userInfo != null) {
+            userId =userInfo.getRetData().getId();
+            setData(userInfo.getRetData());
+        }
         initPicSelect();
         mEdtmsgNametwo.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mMapList = new ArrayList<>();
@@ -81,19 +112,44 @@ public class EdtmsgActivity extends LiveBaseActivity {
         mBotListDialog = new BotListDialog(this, mMapList);
         mBotListDialog.setOnItemCLickListener(new BotListDialog.OnItemCLickListener() {
             @Override
-            public void onItemClickListener(String content) {
+            public void onItemClickListener(String content,int pos) {
                 mEdtmsgAge.setText(content);
-                ToastShow(content);
+                old_pos =pos;
+            }
+        });
+        mListStrings = new ArrayList<>();
+        for (int i = 0; i < mStrings_inter.length; i++) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("title", mStrings_inter[i]);
+            map.put("id",i);
+            mListStrings.add(map);
+        }
+        mInterestDialog = new InterestDialog(this,mListStrings);
+        mInterestDialog.setOnItemCLickListener(new InterestDialog.OnItemCLickListener() {
+            @Override
+            public void onItemClickListener(String content) {
+                mEdtmsgInterest.setText(content);
+                inter_content =content;
             }
         });
 
-        mEdtmsgInterest.setText("抑郁焦虑，情商提升");
-        mEdtmsgAge.setText("00后");
-        mEdtmsgSex.setText("男");
-        mEdtmsgId.setText("315235");
-
-
     }
+
+    private void setData(UserInfoBean.RetDataBean userInfo) {
+        Glide.with(this).load(userInfo.getIco()).placeholder(R.drawable.live_defaultimg).error(R.drawable.live_defaultimg).circleCrop().into(mEdtmsgHead);
+        mEdtmsgName.setText(userInfo.getNickname());
+        mEdtmsgAge.setText(userInfo.getAge() + "");
+        mEdtmsgSex.setText(userInfo.getGender() == 1 ? "男" : "女");
+        select_pos = userInfo.getGender() == 1 ? 0 : 1;
+        mEdtmsgId.setText(userInfo.getId());
+        mEdtmsgInterest.setText(userInfo.getInterest());
+        inter_content = userInfo.getInterest();
+
+        mEdtf.requestFocus();
+
+        initSecPick();
+    }
+
 
     @OnClick({R.id.imgv_back, R.id.edtmsg_head, R.id.edtmsg_nametwo, R.id.edtmsg_namechange, R.id.textView30, R.id.edtmsg_sex, R.id.textView35, R.id.edtmsg_interest, R.id.textView33, R.id.edtmsg_age, R.id.edtmsg_save})
     public void onClick(View view) {
@@ -108,26 +164,93 @@ public class EdtmsgActivity extends LiveBaseActivity {
                 ToastShow("违禁词规则");
                 break;
             case R.id.edtmsg_namechange:
-                ToastShow("换个名字");
+                toChangeName();
                 break;
             case R.id.edtmsg_sex:
             case R.id.textView30:
-
+                mPicker.show();
                 break;
             case R.id.edtmsg_interest:
             case R.id.textView35:
-
+                mInterestDialog.show();
                 break;
             case R.id.edtmsg_age:
             case R.id.textView33:
                 mBotListDialog.show();
                 break;
             case R.id.edtmsg_save:
+                toSubMit();
                 break;
         }
     }
 
-    private void initPicSelect(){
+    /*提交*/
+    private void toSubMit() {
+        if (true) {//如果名字违禁
+            mEdtmsgllisWj.setVisibility(View.VISIBLE);
+        } else {
+            mEdtmsgllisWj.setVisibility(View.GONE);
+        }
+//        ? "男" : "女";
+        Map<String,Object> map =new HashMap<>();
+        map.put("age",old_pos);
+        map.put("gender",select_pos == 0 ?1:2);
+        map.put("ico","");
+        map.put("id", userId);
+        map.put("interest",inter_content);
+        String result =new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().updateUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(),requestBody), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
+                if(baseBean.getRetCode() ==0){
+                    getUserInfo();
+                }else{
+                    ToastShow(baseBean.getRetMsg());
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+
+    }
+    /*获取用户信息*/
+    private void getUserInfo() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                UserInfoBean userInfoBean = new Gson().fromJson(result.toString(), UserInfoBean.class);
+                if (userInfoBean.getRetCode() == 0) {
+                    LiveShareUtil.getInstance(EdtmsgActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                } else {
+                    ToastShow(userInfoBean.getRetMsg());
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    /*接口访问换名字*/
+    private void toChangeName() {
+        mEdtmsgName.setText("你好，这个不违禁");
+        mEdtmsgName.setSelection(mEdtmsgName.getText().toString().length());
+        mEdtmsgllisWj.setVisibility(View.GONE);
+
+
+    }
+
+    private void initPicSelect() {
         mAdapter = new GridImageAdapter(this, onAddPicClickListener);
 
     }
@@ -162,6 +285,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
                 .minimumCompressSize(100)// 小于多少kb的图片不压缩
                 .forResult(new MyResultCallback(mAdapter));
     }
+
     /**
      * 返回结果回调
      */
@@ -191,10 +315,31 @@ public class EdtmsgActivity extends LiveBaseActivity {
             Log.i(TAG, "PictureSelector Cancel");
         }
     }
+
     private GridImageAdapter.onAddPicClickListener onAddPicClickListener = new GridImageAdapter.onAddPicClickListener() {
         @Override
         public void onAddPicClick() {
             toSelectPic();
         }
     };
+
+    private void initSecPick() {
+        mPicker = new OptionPicker(this, new String[]{"男", "女"});
+        mPicker.setCanceledOnTouchOutside(false);
+        mPicker.setDividerRatio(WheelView.DividerConfig.FILL);
+//        picker.setShadowColor(Color.RED, 40);
+        mPicker.setSelectedIndex(select_pos);
+        mPicker.setCycleDisable(true);
+        mPicker.setTextSize(16);
+        mPicker.setSubmitTextColor(getResources().getColor(R.color.black));
+        mPicker.setCancelTextColor(getResources().getColor(R.color.black));
+        mPicker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+            @Override
+            public void onOptionPicked(int index, String item) {
+                select_pos = index;
+                mEdtmsgSex.setText(item);
+            }
+        });
+    }
+
 }

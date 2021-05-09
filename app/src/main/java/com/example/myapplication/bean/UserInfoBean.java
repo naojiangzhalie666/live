@@ -107,7 +107,7 @@ public class UserInfoBean {
         private int age;
         private String interest;
         private double diamond;
-        private Object emergencyContact;
+        private String emergencyContact;
         private Object fansNum;
         private Object inviteNum;
         private Object exp;
@@ -349,11 +349,11 @@ public class UserInfoBean {
             this.diamond = diamond;
         }
 
-        public Object getEmergencyContact() {
+        public String getEmergencyContact() {
             return emergencyContact;
         }
 
-        public void setEmergencyContact(Object emergencyContact) {
+        public void setEmergencyContact(String emergencyContact) {
             this.emergencyContact = emergencyContact;
         }
 

@@ -33,7 +33,7 @@ public class Constant {
     public static final int POWER_ZIZIXNSHI = 4;//子咨询师
 
     /*常量存储*/
-    public static final int LIVE_UPDATE_CODE = 1001;
+    public static final int LIVE_UPDATE_CODE = 1001;//首次设置后获取完用户信息--关闭登录页
 
     /*存储*/
     public static final String CHAT_INFO = "chatInfo";

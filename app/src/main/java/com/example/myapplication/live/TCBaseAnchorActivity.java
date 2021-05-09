@@ -426,6 +426,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
                     .put("title", mTitle)
                     .put("frontcover", mCoverPicUrl)
                     .put("location", mLocation)
+                    .put("label","人气主播")
                     .toString();
         } catch (JSONException e) {
             roomInfo = mTitle;

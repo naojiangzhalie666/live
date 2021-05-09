@@ -44,12 +44,63 @@ public interface ApiService {
 
     /**
      * 获取手机验证码
-     * @param token
      * @param phone
      * @return
      */
     @GET("sendMsgController/sendMsg")
     Observable<JSONObject> sendMsg(@Query("phone")String phone);
+
+    /**
+     * 设置应急联系人
+     * @param token
+     * @param phone
+     * @return
+     */
+    @POST("userController/bindEmergencyContact")
+    Observable<JSONObject> bindEmergencyPhone(@Header("Authorization")String token,@Query("phone")String phone);
+
+    /**
+     *
+     * @param mtoken   自己的TOKEN
+     * @param index    当前页数
+     * @param cnt       请求数量
+     * @param userID
+     * @param token     MLVB的token
+     * @return
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("liveController/getRoomList")
+    Observable<JSONObject> getRoomList(@Header("Authorization")String mtoken,@Body RequestBody body);
+
+    /**
+     * 查询我关注的
+     * @param mtoken
+     * @return
+     */
+    @GET("attentionController/myAttention")
+    Observable<JSONObject> getMyAttention(@Header("Authorization")String mtoken);
+
+    /**
+     * 查询关注我的--我的粉丝
+     * @param mtoken
+     * @return
+     */
+    @GET("attentionController/attentionMe")
+    Observable<JSONObject> getAttentionMe(@Header("Authorization")String mtoken);
+
+    /**
+     *
+     * @param mtoken
+     * @param attId     要关注的人:id
+     * @param flag      1  关注  2取消关注
+     * @return
+     */
+    @POST("attentionController/addAttention")
+    Observable<JSONObject> addAttention(@Header("Authorization")String mtoken,@Query("attId")String attId,@Query("flag")String flag);
+
+
+
+
 
 
     /*获取微信支付数据*/
@@ -59,9 +110,6 @@ public interface ApiService {
     /*获取支付宝支付数据*/
     @GET("testController/appALiPay")
     Observable<JSONObject> getZFBPayinfo();
-
-
-
 
     /**
      * 微信获取accrss_token

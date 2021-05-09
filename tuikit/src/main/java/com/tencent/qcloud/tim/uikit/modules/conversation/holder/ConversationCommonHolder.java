@@ -108,8 +108,13 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         messageText.setText("");
         timelineText.setText("");
         if (lastMsg != null) {
-            if (lastMsg.getExtra() != null) {
+            /*if (lastMsg.getExtra() != null) {
                 String result = emojiJudge(lastMsg.getExtra().toString());
+                messageText.setText(Html.fromHtml(result));
+                messageText.setTextColor(rootView.getResources().getColor(R.color.list_bottom_text_bg));
+            }*/
+            if (lastMsg.getExtra() != null&& !TextUtils.equals(TUIKit.getAppContext().getString(R.string.custom_msg), lastMsg.getExtra().toString())) {
+                     String result = emojiJudge(lastMsg.getExtra().toString());
                 messageText.setText(Html.fromHtml(result));
                 messageText.setTextColor(rootView.getResources().getColor(R.color.list_bottom_text_bg));
             }

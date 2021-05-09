@@ -82,6 +82,8 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
                 TitleUtils.setStatusTextColor(false, this);
                 break;
             case 1:
+                if(mFindFragment!=null)
+                    mFindFragment.onResume();
                 TitleUtils.setStatusTextColor(true, this);
                 break;
             case 2:

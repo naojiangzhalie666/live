@@ -16,6 +16,12 @@ public class LiveShareUtil {
     private static LiveShareUtil mShareUtil;
     private static Context mContext;
     public static final String APP_POWER = "app_power";
+    public static final String APP_TOKEN = "app_token";
+    public static final String APP_USERID = "app_userid";
+    public static final String APP_USERNAME = "app_name";
+    public static final String APP_USERSIGN = "app_sign";//用户签名
+    public static final String APP_USERHEAD = "app_head";//头像
+    public static final String APP_USERCOVER = "app_cover";//封面图
 
     private LiveShareUtil() {
     }
@@ -45,6 +51,19 @@ public class LiveShareUtil {
     public int getPower() {
         SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.getInt(APP_POWER, 0);
+    }
+
+    /*存储及获取Token*/
+    public void putToken(String value) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString(APP_TOKEN, value);
+        SharedPreferencesCompat.apply(edit);
+    }
+
+    public String getToken() {
+        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        return sp.getString(APP_TOKEN, "");
     }
 
     /*获取存储的用户信息*/

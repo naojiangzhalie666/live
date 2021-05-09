@@ -285,16 +285,17 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ImageView
-            android:id="@+id/mine_head"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_80"
+        <de.hdodenhof.circleimageview.CircleImageView
             android:src="@drawable/live_defaultimg"
+            android:id="@+id/mine_head"
+            android:padding="@dimen/dp_2"
+            android:background="@drawable/bg_circle_white"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

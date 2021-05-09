@@ -35,7 +35,7 @@
             android:layout_centerHorizontal="true"
             android:text="零钱提现"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="@dimen/titile_size" />
     </RelativeLayout>
 
     <TextView

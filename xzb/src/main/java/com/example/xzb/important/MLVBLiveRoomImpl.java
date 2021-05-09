@@ -307,6 +307,9 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             }
         });
     }
+    public void setRoomList(ArrayList<RoomInfo> roomList) {
+        mRoomList = roomList;
+    }
 
     /**
      * 获取观众列表
@@ -773,7 +776,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             String toUserID = getRoomCreator(mCurrRoomID);
             IMMessageMgr imMessageMgr = mIMMessageMgr;
             if (imMessageMgr != null) {
-                imMessageMgr.sendC2CCustomMessage(toUserID, content, new IMMessageMgr.Callback() {
+                imMessageMgr.sendC2COnlineCustomMessage(toUserID, content, new IMMessageMgr.Callback() {
                     @Override
                     public void onError(final int code, final String errInfo) {
                         callbackOnThread(new Runnable() {
@@ -840,7 +843,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             String toUserID = toUserid;
             IMMessageMgr imMessageMgr = mIMMessageMgr;
             if (imMessageMgr != null) {
-                imMessageMgr.sendC2CCustomMessage(toUserID, content, new IMMessageMgr.Callback() {
+                imMessageMgr.sendC2COnlineCustomMessage(toUserID, content, new IMMessageMgr.Callback() {
                     @Override
                     public void onError(final int code, final String errInfo) {
                         callbackOnThread(new Runnable() {
@@ -901,7 +904,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             String content = new Gson().toJson(response, new TypeToken<CommonJson<JoinAnchorResponse>>(){}.getType());
             IMMessageMgr imMessageMgr = mIMMessageMgr;
             if (imMessageMgr != null) {
-                imMessageMgr.sendC2CCustomMessage(userID, content, new IMMessageMgr.Callback() {
+                imMessageMgr.sendC2COnlineCustomMessage(userID, content, new IMMessageMgr.Callback() {
                     @Override
                     public void onError(final int code, final String errInfo) {
 
@@ -1085,7 +1088,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             String content = new Gson().toJson(response, new TypeToken<CommonJson<KickoutResponse>>(){}.getType());
             IMMessageMgr imMessageMgr = mIMMessageMgr;
             if (imMessageMgr != null) {
-                imMessageMgr.sendC2CCustomMessage(userID, content, new IMMessageMgr.Callback() {
+                imMessageMgr.sendC2COnlineCustomMessage(userID, content, new IMMessageMgr.Callback() {
                     @Override
                     public void onError(final int code, final String errInfo) {
 

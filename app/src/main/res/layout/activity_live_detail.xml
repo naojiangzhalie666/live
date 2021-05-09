@@ -52,7 +52,7 @@
                         android:paddingTop="@dimen/title_top"
                         android:text="直播数据"
                         android:textColor="@color/login_txt"
-                        android:textSize="20sp" />
+                        android:textSize="@dimen/titile_size" />
 
                     <ImageView
                         android:id="@+id/back"

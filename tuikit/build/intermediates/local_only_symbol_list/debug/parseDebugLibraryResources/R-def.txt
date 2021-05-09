@@ -279,6 +279,7 @@ id chat_input_layout
 id chat_message_input
 id chat_message_layout
 id chat_notice_layout
+id chat_rela_all
 id chat_time_tv
 id chat_tips_tv
 id chat_title_bar

@@ -9,19 +9,21 @@ import android.widget.TextView;
 import com.example.myapplication.R;
 
 import java.util.List;
+import java.util.Map;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OldLastAdapter extends RecyclerView.Adapter<OldLastAdapter.ViewHolder> {
+public class BotInterAdapter extends RecyclerView.Adapter<BotInterAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mLists;
+    private List<Map<String, Object>> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
-    private String content="";
+    private String content = "";
+    private String content_id = "";
 
-    public OldLastAdapter(Context context, List<String> stringList) {
+    public BotInterAdapter(Context context, List<Map<String, Object>> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -33,32 +35,34 @@ public class OldLastAdapter extends RecyclerView.Adapter<OldLastAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.item_recynian, parent, false);
+        View view = mInflater.inflate(R.layout.item_bot_recy, parent, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        String bean = mLists.get(position);
-        vh.mItemNianTitle.setText(bean);
-        vh.mItemNianTitle.setTag(bean);
-        vh.mItemNianTitle.setOnClickListener(new View.OnClickListener() {
+        Map<String, Object> bean = mLists.get(position);
+        String title = (String) bean.get("title");
+        vh.mItemBtTv.setText(title);
+        vh.mItemBtTv.setTag(bean);
+        vh.mItemBtTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView tv_new = v.findViewById(R.id.item_nian_title);
-                String now_con = (String) tv_new.getTag();
-                if(content.contains(now_con)){
-                    tv_new.setTextColor(mContext.getResources().getColor(R.color.home_txt));
-                    tv_new.setBackgroundResource(R.drawable.item_corner_man);
-                    String tag = (String) tv_new.getTag();
-                    content= content.replaceAll(tag+",","");
-                }else {
-                    tv_new.setTextColor(mContext.getResources().getColor(R.color.login_txt));
-                    tv_new.setBackgroundResource(R.drawable.item_corner_manse);
-                    content += (String) tv_new.getTag()+",";
+                TextView tv_new = v.findViewById(R.id.item_bt_tv);
+                Map<String, Object> tag = (Map<String, Object>) v.getTag();
+                String new_titl = (String) tag.get("title");
+                int new_id = (int) tag.get("id");
+                if (content.contains(new_titl)) {
+                    tv_new.setBackgroundResource(R.drawable.home_ft);
+                    content = content.replaceAll(new_titl + ",", "");
+                    content_id = content_id.replaceAll(new_id + ",", "");
+                } else {
+                    tv_new.setBackgroundResource(R.drawable.home_bf);
+                    content += new_titl + ",";
+                    content_id += new_id + ",";
                 }
-                if(mOnItemClickListener!=null)
+                if (mOnItemClickListener != null)
                     mOnItemClickListener.onItemClickListener(content);
             }
         });
@@ -76,8 +80,8 @@ public class OldLastAdapter extends RecyclerView.Adapter<OldLastAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.item_nian_title)
-        TextView mItemNianTitle;
+        @BindView(R.id.item_bt_tv)
+        TextView mItemBtTv;
 
         ViewHolder(View view) {
             super(view);

@@ -9,8 +9,12 @@ import android.view.ViewGroup;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.FindgetAdapter;
+import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.ui.MailListActivity;
+import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -179,6 +183,30 @@ public class FindFragment extends Fragment {
             getFragmentManager().beginTransaction().replace(R.id.find_fram, mFindMatchFragment).commitAllowingStateLoss();
             getFragmentManager().beginTransaction().show(mFindMatchFragment);
         }
+    }
+
+    private void getMyGz(){
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyAttention(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getMyGz();
+
     }
 
     @Override

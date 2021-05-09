@@ -76,7 +76,7 @@ public class LiveHttp {
 
     public void toGetData(Observable observable, HttpBackListener backListener) {
         if(!NetworkUtil.isNetWorkAvailable(LiveApplication.getmInstance())){
-            ToastUtil.showToast(LiveApplication.getmInstance(),"网络不可用,请检查");
+            ToastUtil.showToast(LiveApplication.getmInstance(),"网络不可用,请检查网络");
             return;
         }
 

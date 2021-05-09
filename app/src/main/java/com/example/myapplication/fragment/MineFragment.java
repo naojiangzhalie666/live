@@ -50,6 +50,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,7 +82,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
     @BindView(R.id.constraintLayout2)
     ConstraintLayout mConstraintLayout2;
     @BindView(R.id.mine_head)
-    ImageView mMineHead;
+    CircleImageView mMineHead;
     @BindView(R.id.mine_vp)
     ViewPager mMineVp;
     @BindView(R.id.mine_edtline)

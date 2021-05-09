@@ -73,7 +73,7 @@
             android:layout_centerHorizontal="true"
             android:text="测试"
             android:textColor="@color/login_txt"
-            android:textSize="20sp" />
+            android:textSize="@dimen/titile_size" />
 
     </RelativeLayout>
 

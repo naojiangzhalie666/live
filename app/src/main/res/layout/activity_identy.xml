@@ -26,7 +26,7 @@
         android:layout_marginTop="@dimen/title_top"
         android:text="身份认证"
         android:textColor="@color/login_txt"
-        android:textSize="20sp"
+        android:textSize="@dimen/titile_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

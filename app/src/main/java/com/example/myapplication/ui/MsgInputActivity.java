@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.bean.BaseBean;
 import com.example.myapplication.bean.EventMessage;
@@ -17,7 +17,6 @@ import com.example.myapplication.fragment.NewSecondFragment;
 import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.httputil.HttpBackListener;
 import com.example.myapplication.utils.httputil.LiveHttp;
-import com.example.xzb.Constantc;
 import com.google.gson.Gson;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
@@ -111,11 +110,11 @@ public class MsgInputActivity extends LiveBaseActivity {
         map.put("age",old_pos);
         map.put("gender",sex+"");
         map.put("ico","");
-        map.put("id",Constantc.test_USERID);
+        map.put("id",LiveShareUtil.getInstance(this).get(LiveShareUtil.APP_USERID,""));
         map.put("interest",msg_last);
         String result =new Gson().toJson(map);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().updateUserInfo(Constant.TOKEN,requestBody), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().updateUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(),requestBody), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
@@ -138,7 +137,7 @@ public class MsgInputActivity extends LiveBaseActivity {
     /*获取用户信息*/
     private void getUserInfo() {
         EventBus.getDefault().post(new EventMessage(LIVE_UPDATE_CODE));
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(Constant.TOKEN), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);

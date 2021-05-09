@@ -589,6 +589,58 @@ public class IMMessageMgr implements TIMMessageListener {
             }
         });
     }
+/**
+     * 发送CC（端到端）自定义消息
+     * @param toUserID  接收者userID
+     * @param content   自定义消息的内容
+     * @param callback
+     */
+    public void sendC2COnlineCustomMessage(final @NonNull String toUserID, final @NonNull String content, final Callback callback) {
+        if (!mLoginSuccess){
+            mMessageListener.onDebugLog("[sendCustomMessage] IM 没有初始化");
+            if (callback != null)
+                callback.onError(-1, "IM 没有初始化");
+            return;
+        }
+
+        this.runOnHandlerThread(new Runnable() {
+            @Override
+            public void run() {
+                TIMMessage message = new TIMMessage();
+                try {
+                    TIMCustomElem customElem = new TIMCustomElem();
+                    customElem.setData(content.getBytes("UTF-8"));
+                    message.addElement(customElem);
+                }
+                catch (Exception e) {
+                    printDebugLog("[sendCustomMessage] 发送CC{%s}消息失败，组包异常", toUserID);
+                    if (callback != null) {
+                        callback.onError(-1, "发送CC消息失败");
+                    }
+                    return;
+                }
+
+                TIMConversation conversation = TIMManager.getInstance().getConversation(TIMConversationType.C2C, toUserID);
+                conversation.sendOnlineMessage(message, new TIMValueCallBack<TIMMessage>() {
+                    @Override
+                    public void onError(int i, String s) {
+                        printDebugLog("[sendCustomMessage] 发送CC{%s}消息失败: %s(%d)", toUserID, s, i);
+
+                        if (callback != null)
+                            callback.onError(i, s);
+                    }
+
+                    @Override
+                    public void onSuccess(TIMMessage timMessage) {
+                        printDebugLog("[sendCustomMessage] 发送CC消息成功");
+
+                        if (callback != null)
+                            callback.onSuccess();
+                    }
+                });
+            }
+        });
+    }
 
     public void getGroupMembers(final String groupId, final int maxSize, final TIMValueCallBack<List<TIMUserProfile>> cb) {
         this.runOnHandlerThread(new Runnable() {

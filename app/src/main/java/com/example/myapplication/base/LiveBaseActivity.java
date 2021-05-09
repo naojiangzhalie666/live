@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.myapplication.bean.EventMessage;
-import com.example.myapplication.ui.MailListActivity;
+import com.example.myapplication.ui.LoginActivity;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.ToastUtil;
 
@@ -36,7 +36,7 @@ public abstract class LiveBaseActivity extends BaseActivity {
         if(msg.getCode() == 1005){
             ToastUtil.showToast(this,"登录过期，请重新登录!");
             finish();
-            startActivity(new Intent(this, MailListActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
     }

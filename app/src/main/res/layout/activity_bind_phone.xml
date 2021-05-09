@@ -34,7 +34,7 @@
             android:layout_centerHorizontal="true"
             android:text="绑定手机"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="@dimen/titile_size" />
     </RelativeLayout>
 
     <TextView

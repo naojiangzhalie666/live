@@ -57,7 +57,7 @@ public class BotReAdapter extends RecyclerView.Adapter<BotReAdapter.ViewHolder> 
                     tv_new.setBackgroundResource(R.drawable.home_bf);
                     onClickView = view;
                     if(mOnItemClickListener!=null)
-                        mOnItemClickListener.onItemClickListener((String) tv_new.getTag());
+                        mOnItemClickListener.onItemClickListener((String) tv_new.getTag(),position);
                 }
             }
         });
@@ -70,8 +70,9 @@ public class BotReAdapter extends RecyclerView.Adapter<BotReAdapter.ViewHolder> 
         return mLists == null ? 0 : mLists.size();
     }
 
-    public interface OnItemClickListener {
-        void onItemClickListener(String  content);
+    public static abstract class OnItemClickListener {
+        public void onItemClickListener(String  content,int pos){};
+        public void onItemClickListener(String  content){};
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,14 +1,14 @@
 package com.tencent.qcloud.tim.uikit.modules.chat.layout.message;
 
+import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.tencent.qcloud.tim.uikit.R;
+import com.tencent.qcloud.tim.uikit.TUIKit;
 import com.tencent.qcloud.tim.uikit.modules.chat.interfaces.IChatProvider;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.holder.GroupMessageHelper;
-import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.holder.IGroupMessageClickListener;
+import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.holder.MessageBaseHolder;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.holder.MessageContentHolder;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.holder.MessageCustomHolder;
@@ -20,6 +20,9 @@ import com.tencent.qcloud.tim.uikit.utils.BackgroundTasks;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public class MessageListAdapter extends RecyclerView.Adapter {
@@ -162,7 +165,18 @@ public class MessageListAdapter extends RecyclerView.Adapter {
         if (provider == null) {
             mDataSource.clear();
         } else {
-            mDataSource = provider.getDataSource();
+            /*去掉不支持的自定义消息后*/
+            List<MessageInfo> dataSource  =provider.getDataSource();
+            for (int i = 0; i < dataSource.size(); i++) {
+                MessageInfo msg = dataSource.get(i);
+                if (msg.getExtra() != null&& TextUtils.equals(TUIKit.getAppContext().getString(R.string.custom_msg), msg.getExtra().toString())) {
+//                    dataSource.remove(i);
+                }else{
+                    mDataSource.add(msg);
+                }
+            }
+            /*原数据*/
+//            mDataSource = dataSource;
             provider.setAdapter(this);
         }
         notifyDataSourceChanged(MessageLayout.DATA_CHANGE_TYPE_REFRESH, getItemCount());

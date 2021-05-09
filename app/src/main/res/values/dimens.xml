@@ -5,4 +5,5 @@
     <dimen name="picker_view_height">160dp</dimen>
     <dimen name="date_unit_text_size">18sp</dimen>
     <dimen name="title_top">@dimen/dp_35</dimen>
+    <dimen name="titile_size">18sp</dimen>
 </resources>

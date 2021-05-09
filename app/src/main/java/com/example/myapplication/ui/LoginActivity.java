@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.bean.LoginBean;
@@ -62,7 +63,6 @@ public class LoginActivity extends LiveBaseActivity {
     @BindView(R.id.login_imgv)
     ImageView mLoginImgv;
     private boolean mPermission = false;               // 是否已经授权
-    private String login_name = Constantc.test_USERID;
     private TCUserMgr mInstance;
     private boolean isNeedUpmsg = true;
 
@@ -84,9 +84,14 @@ public class LoginActivity extends LiveBaseActivity {
     @OnClick({R.id.login_loginthis, R.id.login_loginother, R.id.ll_wx, R.id.login_rela})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.login_loginthis:
+            case R.id.login_loginthis://一键登录
+                if(Constantc.use_old){
+                    theOldLoginMlvb();
+                    return;
+                }
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
                     LiveShareUtil.getInstance(LoginActivity.this).putPower(2);//用户类型
+                    thisLogin(LiveShareUtil.getInstance(this).getUserInfo().getRetData());//暂时使用缓存
                     statActivity(MainActivity.class);
                     finish();
                     ToastShow("一键登录");
@@ -94,21 +99,21 @@ public class LoginActivity extends LiveBaseActivity {
                     ToastShow("请阅读并勾选协议");
                 }
                 break;
-            case R.id.login_loginother:
+            case R.id.login_loginother://其它手机号登录
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
                     statActivity(BindPhoneActivity.class);
                 } else {
                     ToastShow("请阅读并勾选协议");
                 }
                 break;
-            case R.id.ll_wx:
+            case R.id.ll_wx://微信登录
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
                     loginWx();
                 } else {
                     ToastShow("请阅读并勾选协议");
                 }
                 break;
-            case R.id.login_rela:
+            case R.id.login_rela://协议
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
                     mLoginImgv.setVisibility(View.GONE);
                 } else {
@@ -126,6 +131,7 @@ public class LoginActivity extends LiveBaseActivity {
                 LoginBean loginBean = new Gson().fromJson(result.toString(), LoginBean.class);
                 if (loginBean.getRetCode() == 0) {
                     Constant.TOKEN = "bearer " + loginBean.getRetData().getToken();
+                    LiveShareUtil.getInstance(LoginActivity.this).putToken("bearer " + loginBean.getRetData().getToken());
                     getUserInfo();
                 } else {
                     ToastShow(loginBean.getRetMsg());
@@ -141,18 +147,19 @@ public class LoginActivity extends LiveBaseActivity {
 
     /*获取用户信息*/
     private void getUserInfo() {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(Constant.TOKEN), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
                 UserInfoBean userInfoBean = new Gson().fromJson(result.toString(), UserInfoBean.class);
                 if (userInfoBean.getRetCode() == 0) {
-                    thisLogin(userInfoBean.getRetData().getId());
-                    Constantc.USER_NAME = userInfoBean.getRetData().getNickname();//用户名
-                    Constantc.USER_UserAvatar = userInfoBean.getRetData().getIco();//头像
-                    Constantc.USER_CoverPic = userInfoBean.getRetData().getIco();//封面图
+                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERID,userInfoBean.getRetData().getId());
+                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERNAME,userInfoBean.getRetData().getNickname());
+                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERHEAD,userInfoBean.getRetData().getIco());
+                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERCOVER,userInfoBean.getRetData().getIco());
                     LiveShareUtil.getInstance(LoginActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
                     LiveShareUtil.getInstance(LoginActivity.this).putPower(userInfoBean.getRetData().getType());//用户类型
+                    thisLogin(userInfoBean.getRetData());
                     String interest = userInfoBean.getRetData().getInterest();
                     if (TextUtils.isEmpty(interest)) {
                         isNeedUpmsg = true;
@@ -174,16 +181,15 @@ public class LoginActivity extends LiveBaseActivity {
     }
 
     /*获取直播的sign*/
-    private void thisLogin(String userid) {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserSig(Constant.TOKEN), new HttpBackListener() {
+    private void thisLogin(UserInfoBean.RetDataBean bean) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserSig(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
                 SignBean signBean = new Gson().fromJson(result.toString(), SignBean.class);
                 if (signBean.getRetCode() == 0) {
-                    Constantc.test_USERID = userid;
-                    Constantc.test_userSig = signBean.getRetData();
-                    gotLogin();
+                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERSIGN, signBean.getRetData());
+                    gotLogin(bean,signBean.getRetData());
                 }
             }
 
@@ -195,7 +201,7 @@ public class LoginActivity extends LiveBaseActivity {
     }
 
     /*登录直播的IM并配置聊天的IM*/
-    private void gotLogin() {
+    private void gotLogin(UserInfoBean.RetDataBean bean,String sign) {
         mInstance = TCUserMgr.getInstance();
         mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
             @Override
@@ -210,7 +216,7 @@ public class LoginActivity extends LiveBaseActivity {
                 loginTUIKitLive(sdk_id, userid, usersig);
             }
         });
-        mInstance.loginMLVB();
+        mInstance.loginMLVB(bean.getId(),bean.getNickname(),bean.getIco(),bean.getIco(),bean.getGender(),sign);
         if (!isNeedUpmsg) {
             statActivity(MainActivity.class);
             finish();
@@ -333,7 +339,6 @@ public class LoginActivity extends LiveBaseActivity {
         req.scope = "snsapi_userinfo";
         req.state = "live_login_request_please";
         api.sendReq(req);
-
     }
 
     private void getPhoneNum() {
@@ -342,15 +347,35 @@ public class LoginActivity extends LiveBaseActivity {
             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
                 TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
                 String telphone = tm.getLine1Number();//获取本机号码
-                if(!TextUtils.isEmpty(telphone)) {
+                if (!TextUtils.isEmpty(telphone)) {
                     mLoginPhonenum.setText(telphone);
-                }else{
+                } else {
                     Log.e(TAG, "getPhoneNum:未获取到手机号 ");
                 }
                 return;
             }
         }
 
+    }
+    /*---------------------------原可连麦数据-------------------------------*/
+    private void theOldLoginMlvb(){
+        mInstance = TCUserMgr.getInstance();
+        mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
+            @Override
+            public void onLoginBackListener(String userid, String usersig, long sdk_id) {
+                if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
+                    UserModel self = new UserModel();
+                    self.userId = userid;
+                    self.userSig = usersig;
+                    ProfileManager.getInstance().setUserModel(self);
+                    AVCallManager.getInstance().init(LoginActivity.this);
+                }
+                loginTUIKitLive(sdk_id, userid, usersig);
+                statActivity(MainActivity.class);
+                finish();
+            }
+        });
+        mInstance.loginMLVB(Constantc.test_USERID,Constantc.USER_NAME, Constantc.USER_UserAvatar,Constantc.USER_CoverPic,1,Constantc.test_userSig);
     }
 
 

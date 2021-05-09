@@ -17,6 +17,10 @@ import com.example.myapplication.adapter.HomeAdapter;
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.bean.EventMessage;
+import com.example.myapplication.bean.MineTCVideoInfo;
+import com.example.myapplication.bean.RoomBean;
+import com.example.myapplication.bean.SignBean;
+import com.example.myapplication.bean.UserInfoBean;
 import com.example.myapplication.live.TCAudienceActivity;
 import com.example.myapplication.live.TCCameraAnchorActivity;
 import com.example.myapplication.ui.FindActivity;
@@ -24,12 +28,18 @@ import com.example.myapplication.ui.LookPersonActivity;
 import com.example.myapplication.ui.OranizeActivity;
 import com.example.myapplication.ui.ShowGoodsActivity;
 import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
 import com.example.xzb.Constantc;
+import com.example.xzb.important.MLVBLiveRoom;
+import com.example.xzb.important.MLVBLiveRoomImpl;
 import com.example.xzb.utils.TCConstants;
 import com.example.xzb.utils.TCHTTPMgr;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.onlinelive.TCVideoInfo;
 import com.example.xzb.utils.onlinelive.TCVideoListMgr;
+import com.example.xzb.utils.roomutil.RoomInfo;
+import com.google.gson.Gson;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -43,12 +53,15 @@ import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,6 +72,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,12 +90,15 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.home_camera)
     ImageView mImgv_camera;
 
-    private List<TCVideoInfo> mLists;
+    private List<MineTCVideoInfo> mLists;
     private HomeAdapter mHomeAdapter;
 
     private Unbinder unbinder;
     private int mPower;
     private TCUserMgr mInstance;
+    private UserInfoBean mUserInfo;
+    private String mUserId;
+    private int page = 0;
 
 
     @Override
@@ -111,8 +129,8 @@ public class HomeFragment extends Fragment {
                 break;
             case R.id.home_newman:
                 startActivity(new Intent(getActivity(), ShowGoodsActivity.class));//商品套餐页面
-                Toast toast =Toast.makeText(getActivity(),"跳转商品页面",Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER,0,0);
+                Toast toast = Toast.makeText(getActivity(), "跳转商品页面", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
                 break;
         }
@@ -120,6 +138,8 @@ public class HomeFragment extends Fragment {
 
 
     private void init() {
+        mUserInfo = LiveShareUtil.getInstance(getActivity()).getUserInfo();
+        mUserId = mUserInfo.getRetData().getId();
         mPower = LiveShareUtil.getInstance(getActivity()).getPower();
         if (mPower == Constant.POWER_NORMAL) {
             mImgv_camera.setVisibility(View.GONE);
@@ -130,13 +150,16 @@ public class HomeFragment extends Fragment {
         mHomeSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 0;
+                mHomeSmart.setEnableLoadMore(true);
                 getLiveData();
             }
         });
         mHomeSmart.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mHomeSmart.finishLoadMore();
+                ++page;
+                getLiveData();
             }
         });
 
@@ -159,7 +182,7 @@ public class HomeFragment extends Fragment {
                         return;
                     }
                     if (0 == mLastClickTime || System.currentTimeMillis() - mLastClickTime > 1000) {
-                        TCVideoInfo item = mLists.get(pos);
+                        MineTCVideoInfo item = mLists.get(pos);
                         if (item == null) {
                             Log.e("Home", "live list item is null at position:" + pos);
                             return;
@@ -182,63 +205,87 @@ public class HomeFragment extends Fragment {
         if (Constantc.mlvb_login) {
             getLiveData();
         } else {
+            if (Constantc.use_old) {
+                theOldLoginMlvb();
+                return;
+            }
             loginMLVB();
         }
     }
 
-    // TODO: 2021/4/9   获取直播数据
     private void getLiveData() {
-        String token = TCHTTPMgr.getInstance().getToken();
-        Log.e("LMVB+TOKEN= ", "getLiveData: "+token);
-        TCVideoListMgr.getInstance().fetchLiveList(getActivity(), new TCVideoListMgr.Listener() {
+        if (Constantc.use_old) {
+            /*原生直播列表获取--要不要调用？*/
+            TCVideoListMgr.getInstance().fetchLiveList(getActivity(), new TCVideoListMgr.Listener() {
+                @Override
+                public void onVideoList(int retCode, ArrayList<TCVideoInfo> result, boolean refresh) {
+                    mHomeSmart.finishRefresh();
+                    mHomeSmart.finishLoadMore();
+                    onRefreshVideoList(retCode, result, refresh);
+                }
+            });
+            return;
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("index", 0);
+        map.put("cnt", 10);
+        map.put("userID", mUserId);
+        map.put("token", TCHTTPMgr.getInstance().getToken());
+        String result = new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getRoomList(LiveShareUtil.getInstance(getActivity()).getToken(), requestBody), new HttpBackListener() {
             @Override
-            public void onVideoList(int retCode, ArrayList<TCVideoInfo> result, boolean refresh) {
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
                 mHomeSmart.finishRefresh();
-                onRefreshVideoList(retCode, result, refresh);
+                mHomeSmart.finishLoadMore();
+                RoomBean bean = new Gson().fromJson(result.toString(), RoomBean.class);
+                if (bean.getRetCode() == 0) {
+                    if (page == 0) {
+                        mLists.clear();
+                    }
+                    toZhData(bean.getRetData());
+                } else {
+                    Toast.makeText(getActivity(), bean.getRetMsg(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
             }
         });
 
-
-
     }
 
-    private void onRefreshVideoList(final int retCode, final ArrayList<TCVideoInfo> result, final boolean refresh) {
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (retCode == 0) {
-                        mLists.clear();
-                        if (result != null) {
-                            mLists.addAll(result);
-                        }
-                        if (refresh) {
-                            mHomeAdapter.setLists(mLists);
-                        }
-                    } else {
-                        Toast.makeText(getActivity(), "刷新列表失败", Toast.LENGTH_LONG).show();
-                    }
-                    /*mEmptyView.setVisibility(adapter.getCount() == 0? View.VISIBLE: View.GONE);
-                    mSwipeRefreshLayout.setRefreshing(false);*/
+    /*获取直播的sign*/
+    private void loginMLVB() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserSig(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                SignBean signBean = new Gson().fromJson(result.toString(), SignBean.class);
+                if (signBean.getRetCode() == 0) {
+                    LiveShareUtil.getInstance(getActivity()).put(LiveShareUtil.APP_USERSIGN, signBean.getRetData());
+                    loginMLVBEnd(signBean.getRetData());
                 }
-            });
-        }
-    }
+            }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
     }
 
     /**
      * MLVB的登录
      */
-    private void loginMLVB() {
+    private void loginMLVBEnd(String sign) {
         mInstance = TCUserMgr.getInstance();
         mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
             @Override
-            public void onLoginBackListener(String userid, String usersig,long sdk_id) {
+            public void onLoginBackListener(String userid, String usersig, long sdk_id) {
                 if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
                     UserModel self = new UserModel();
                     self.userId = userid;
@@ -251,7 +298,76 @@ public class HomeFragment extends Fragment {
                 Log.i("HomeFragment", "onSuccess: MLVB登录成功");
             }
         });
-        mInstance.loginMLVB();
+        UserInfoBean.RetDataBean retData = mUserInfo.getRetData();
+        mInstance.loginMLVB(retData.getId(), retData.getNickname(), retData.getIco(), retData.getIco(), retData.getGender(), sign);
+    }
+
+    /*整合直播数据*/
+    private void toZhData(List<RoomBean.RetDataBean> data) {
+        if (data == null || data.size() < 10) {
+            mHomeSmart.setEnableLoadMore(false);
+        }
+        ArrayList<MineTCVideoInfo> infos = new ArrayList();
+        for (RoomBean.RetDataBean value : data) {
+            List<RoomBean.RetDataBean.PushersBean> pushers = value.pushers;
+
+            MineTCVideoInfo info = new MineTCVideoInfo();
+            info.playUrl = value.mixedPlayURL;
+            info.title = value.roomName;
+            info.userId = value.roomCreator;
+            info.groupId = value.roomID;
+            info.roomInfo = value.roomInfo;
+            info.viewerCount = value.audienceCount;
+            info.livePlay = true;
+            if (pushers != null && !pushers.isEmpty()) {
+                RoomBean.RetDataBean.PushersBean pusher = pushers.get(0);
+                info.nickname = pusher.userName;
+                info.avatar = pusher.userAvatar;
+                info.push_size = pushers.size();
+            }
+            try {
+                JSONObject jsonRoomInfo = new JSONObject(value.roomInfo);
+                info.title = jsonRoomInfo.optString("title");
+                info.frontCover = jsonRoomInfo.optString("frontcover");
+                info.location = jsonRoomInfo.optString("location");
+                info.lable = jsonRoomInfo.optString("label");
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (!TextUtils.isEmpty(value.roomInfo)) {
+                    info.title = value.roomInfo;
+                }
+            }
+            try {
+                JSONObject jsonCunstomInfo = new JSONObject(value.custom);
+                info.likeCount = jsonCunstomInfo.optInt("praise");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            infos.add(info);
+        }
+        mLists.addAll(infos);
+        mHomeAdapter.notifyDataSetChanged();
+        toSetOldData();
+
+    }
+
+    /*填充之前获取直播列表时的数据*/
+    private void toSetOldData() {
+        ArrayList<RoomInfo> room_infos = new ArrayList<>();
+        for (int i = 0; i < mLists.size(); i++) {
+            MineTCVideoInfo mineTCVideoInfo = mLists.get(i);
+            RoomInfo roomInfo = new RoomInfo();
+            roomInfo.audienceCount = mineTCVideoInfo.viewerCount;
+            roomInfo.roomName = mineTCVideoInfo.title;
+            roomInfo.roomInfo = mineTCVideoInfo.roomInfo;
+            roomInfo.roomID = mineTCVideoInfo.groupId;
+            roomInfo.roomCreator = mineTCVideoInfo.userId;
+            roomInfo.mixedPlayURL = mineTCVideoInfo.playUrl;
+            room_infos.add(roomInfo);
+        }
+
+        MLVBLiveRoomImpl liveRoom = (MLVBLiveRoomImpl) MLVBLiveRoom.sharedInstance(getActivity());
+        liveRoom.setRoomList(room_infos);
     }
 
     /**
@@ -259,7 +375,7 @@ public class HomeFragment extends Fragment {
      *
      * @param item 视频数据
      */
-    private void startLivePlay(final TCVideoInfo item) {
+    private void startLivePlay(final MineTCVideoInfo item) {
         Intent intent = null;
         if (item.livePlay) {
             intent = new Intent(getActivity(), TCAudienceActivity.class);
@@ -309,7 +425,6 @@ public class HomeFragment extends Fragment {
         try {
             Class<?> classz = Class.forName("com.tencent.qcloud.tim.tuikit.live.TUIKitLive");
             Class<?> tClazz = Class.forName("com.tencent.qcloud.tim.tuikit.live.TUIKitLive$LoginCallback");
-
             // 反射修改isAttachedTUIKit的值
             Field field = classz.getDeclaredField("sIsAttachedTUIKit");
             field.setAccessible(true);
@@ -317,7 +432,7 @@ public class HomeFragment extends Fragment {
 
             Method method = classz.getMethod("login", int.class, String.class, String.class, tClazz);
             method.invoke(null, sdkAppid, userId, userSig, null);
-        }catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
             TUIKitLog.e("LoginActivity", "loginTUIKitLive error: " + e.getMessage());
         }
     }
@@ -326,14 +441,20 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (Constantc.mlvb_login) {
+            page = 0;
             getLiveData();
         } else {
+            if (Constantc.use_old) {
+                theOldLoginMlvb();
+                return;
+            }
             loginMLVB();
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMsg(EventMessage msg){
-        if(msg.getMessage().equals("fresh_home")){
+    public void onEventMsg(EventMessage msg) {
+        if (msg.getMessage().equals("fresh_home")) {
             if (Constantc.mlvb_login) {
                 getLiveData();
             } else {
@@ -348,4 +469,78 @@ public class HomeFragment extends Fragment {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+/*---------------------------原可连麦数据-------------------------------*/
+    private void theOldLoginMlvb() {
+        mInstance = TCUserMgr.getInstance();
+        mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
+            @Override
+            public void onLoginBackListener(String userid, String usersig, long sdk_id) {
+                if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
+                    UserModel self = new UserModel();
+                    self.userId = userid;
+                    self.userSig = usersig;
+                    ProfileManager.getInstance().setUserModel(self);
+                    AVCallManager.getInstance().init(getActivity());
+                }
+                loginTUIKitLive(sdk_id, userid, usersig);
+                getLiveData();
+            }
+        });
+        mInstance.loginMLVB(Constantc.test_USERID, Constantc.USER_NAME, Constantc.USER_UserAvatar, Constantc.USER_CoverPic, 1, Constantc.test_userSig);
+    }
+
+    private void onRefreshVideoList(final int retCode, final ArrayList<TCVideoInfo> result, final boolean refresh) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (retCode == 0 ) {
+                        mLists.clear();
+                        if (result != null) {
+                            mLists.addAll(toCLone(result));
+                        }
+                        if (refresh) {
+                            mHomeAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "刷新列表失败", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+    }
+
+    private List<MineTCVideoInfo> toCLone( ArrayList<TCVideoInfo> result){
+        List<MineTCVideoInfo> list =new ArrayList<>();
+        for (int i = 0; i < result.size(); i++) {
+            TCVideoInfo tcVideoInfo = result.get(i);
+            MineTCVideoInfo mineTCVideoInfo =new MineTCVideoInfo();
+            mineTCVideoInfo.push_size =1;
+            mineTCVideoInfo.lable = "人气主播";
+            mineTCVideoInfo.avatar =tcVideoInfo.avatar;
+            mineTCVideoInfo.createTime =tcVideoInfo.createTime;
+            mineTCVideoInfo.fileId = tcVideoInfo.fileId;
+            mineTCVideoInfo.frontCover = tcVideoInfo.frontCover;
+            mineTCVideoInfo.groupId = tcVideoInfo.groupId;
+            mineTCVideoInfo.hlsPlayUrl = tcVideoInfo.hlsPlayUrl;
+            mineTCVideoInfo.likeCount = tcVideoInfo.likeCount;
+            mineTCVideoInfo.livePlay = tcVideoInfo.livePlay;
+            mineTCVideoInfo.location = tcVideoInfo.location;
+            mineTCVideoInfo.nickname =tcVideoInfo.nickname;
+            mineTCVideoInfo.playUrl =tcVideoInfo.playUrl;
+            mineTCVideoInfo.title = tcVideoInfo.title;
+            mineTCVideoInfo.userId = tcVideoInfo.userId;
+            mineTCVideoInfo.viewerCount =tcVideoInfo.viewerCount;
+            list.add(mineTCVideoInfo);
+        }
+        return list;
+    }
+
+
 }
