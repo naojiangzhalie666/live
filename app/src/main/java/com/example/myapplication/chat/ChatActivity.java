@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.ui.LoginActivity;
 import com.example.myapplication.utils.TitleUtils;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -71,11 +72,12 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void startSplashActivity(Bundle bundle) {
-//        Intent intent = new Intent(ChatActivity.this, SplashActivity.class);
-//        if (bundle != null) {
-//            intent.putExtras(bundle);
-//        }
-//        startActivity(intent);
+        Intent intent = new Intent(ChatActivity.this, LoginActivity.class);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+        ToastShow("登录失效，请重新登录");
         finish();
     }
 }

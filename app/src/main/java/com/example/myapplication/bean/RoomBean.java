@@ -520,7 +520,7 @@ public class RoomBean {
 
         public static class PushersBean {
             /**
-             * userAvatar :
+             * userAvatar :                 推流人的头像地址
              * userName : 英姿焕发的天鹅
              * userID : 1024859055654637588
              */

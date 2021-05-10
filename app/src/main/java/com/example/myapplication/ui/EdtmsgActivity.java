@@ -2,6 +2,7 @@ package com.example.myapplication.ui;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import com.example.myapplication.adapter.GridImageAdapter;
 import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.base.LiveBaseActivity;
 import com.example.myapplication.bean.BaseBean;
+import com.example.myapplication.bean.UploadBean;
 import com.example.myapplication.bean.UserInfoBean;
 import com.example.myapplication.pop_dig.BotListDialog;
 import com.example.myapplication.pop_dig.InterestDialog;
@@ -34,7 +36,12 @@ import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.luck.picture.lib.tools.SdkVersionUtils;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.net.FileNameMap;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +52,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class EdtmsgActivity extends LiveBaseActivity {
@@ -75,16 +83,17 @@ public class EdtmsgActivity extends LiveBaseActivity {
     private String[] mStrings = new String[]{"05后", "00后", "95后", "90后", "85后", "80后", "75后", "70后", "60后"};
     private List<Map<String, Object>> mMapList;
     private BotListDialog mBotListDialog;
-    private List<Map<String,Object>> mListStrings;
+    private List<Map<String, Object>> mListStrings;
     private String[] mStrings_inter = new String[]{"情感修复", "婚姻家庭", "恋爱关系", "亲子关系", "职场问题", "个人成长", "人际关系", "第三者问题", "心理健康检测", "未成年人心理"};
     private InterestDialog mInterestDialog;
 
     private GridImageAdapter mAdapter;
     private OptionPicker mPicker;
     private int select_pos = 0;
-    private int old_pos ;
+    private int old_pos;
     private String inter_content = "";
-    private String userId="";
+    private String userId = "";
+    private String pic_url = "";
 
 
     @Override
@@ -98,7 +107,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
         ButterKnife.bind(this);
         UserInfoBean userInfo = LiveShareUtil.getInstance(this).getUserInfo();
         if (userInfo != null) {
-            userId =userInfo.getRetData().getId();
+            userId = userInfo.getRetData().getId();
             setData(userInfo.getRetData());
         }
         initPicSelect();
@@ -112,30 +121,31 @@ public class EdtmsgActivity extends LiveBaseActivity {
         mBotListDialog = new BotListDialog(this, mMapList);
         mBotListDialog.setOnItemCLickListener(new BotListDialog.OnItemCLickListener() {
             @Override
-            public void onItemClickListener(String content,int pos) {
+            public void onItemClickListener(String content, int pos) {
                 mEdtmsgAge.setText(content);
-                old_pos =pos;
+                old_pos = pos;
             }
         });
         mListStrings = new ArrayList<>();
         for (int i = 0; i < mStrings_inter.length; i++) {
             Map<String, Object> map = new HashMap<>();
             map.put("title", mStrings_inter[i]);
-            map.put("id",i);
+            map.put("id", i);
             mListStrings.add(map);
         }
-        mInterestDialog = new InterestDialog(this,mListStrings);
+        mInterestDialog = new InterestDialog(this, mListStrings);
         mInterestDialog.setOnItemCLickListener(new InterestDialog.OnItemCLickListener() {
             @Override
             public void onItemClickListener(String content) {
                 mEdtmsgInterest.setText(content);
-                inter_content =content;
+                inter_content = content;
             }
         });
 
     }
 
     private void setData(UserInfoBean.RetDataBean userInfo) {
+        pic_url = userInfo.getIco();
         Glide.with(this).load(userInfo.getIco()).placeholder(R.drawable.live_defaultimg).error(R.drawable.live_defaultimg).circleCrop().into(mEdtmsgHead);
         mEdtmsgName.setText(userInfo.getNickname());
         mEdtmsgAge.setText(userInfo.getAge() + "");
@@ -144,6 +154,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
         mEdtmsgId.setText(userInfo.getId());
         mEdtmsgInterest.setText(userInfo.getInterest());
         inter_content = userInfo.getInterest();
+        old_pos=userInfo.getAge();
 
         mEdtf.requestFocus();
 
@@ -192,24 +203,24 @@ public class EdtmsgActivity extends LiveBaseActivity {
             mEdtmsgllisWj.setVisibility(View.GONE);
         }
 //        ? "男" : "女";
-        Map<String,Object> map =new HashMap<>();
-        map.put("age",old_pos);
-        map.put("gender",select_pos == 0 ?1:2);
-        map.put("ico","");
+        Map<String, Object> map = new HashMap<>();
+        map.put("age", old_pos);
+        map.put("gender", select_pos == 0 ? 1 : 2);
+        map.put("ico", pic_url);
         map.put("id", userId);
-        map.put("interest",inter_content);
-        String result =new Gson().toJson(map);
+        map.put("interest", inter_content);
+        String result = new Gson().toJson(map);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().updateUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(),requestBody), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().updateUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(), requestBody), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
-                if(baseBean.getRetCode() ==0){
+                BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
+                if (baseBean.getRetCode() == 0) {
                     getUserInfo();
-                }else{
-                    ToastShow(baseBean.getRetMsg());
                 }
+                ToastShow(baseBean.getRetMsg());
+
 
             }
 
@@ -220,6 +231,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
         });
 
     }
+
     /*获取用户信息*/
     private void getUserInfo() {
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
@@ -279,7 +291,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
                 .isCamera(true)// 是否显示拍照按钮
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 .isEnableCrop(false)// 是否裁剪
-                .isCompress(false)// 是否压缩
+                .isCompress(true)// 是否压缩
                 .synOrAsy(false)//同步true或异步false 压缩 默认同步
 //                .selectionData(mAdapter.getData())// 是否传入已选图片
                 .minimumCompressSize(100)// 小于多少kb的图片不压缩
@@ -307,6 +319,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
                 String path = result.get(0).getRealPath();
                 RequestOptions requestOptions = new RequestOptions().circleCrop();
                 Glide.with(EdtmsgActivity.this).load(path).apply(requestOptions).into(mEdtmsgHead);
+                toUpHead(result.get(0));
             }
         }
 
@@ -340,6 +353,54 @@ public class EdtmsgActivity extends LiveBaseActivity {
                 mEdtmsgSex.setText(item);
             }
         });
+    }
+
+    private void toUpHead(LocalMedia localMedia) {
+        String path = localMedia.getRealPath();
+        if (TextUtils.isEmpty(path)) {
+            path = localMedia.getPath();
+        }
+        File img = new File(path);
+        String names = img.getName();
+        RequestBody requestFile = RequestBody.create(MediaType.parse(guessMimeType(img.getPath())), img);
+        MultipartBody.Part body = null;
+        try {
+            body = MultipartBody.Part.createFormData("file", URLEncoder.encode(names, "UTF-8"), requestFile);
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "toAddClient: 文件名异常" + names + e.toString());
+        }
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().upLoadFile(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(), body), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                UploadBean bean = new Gson().fromJson(result.toString(), UploadBean.class);
+                if (bean.getRetCode() == 0) {
+                    pic_url = bean.getRetData().getUrl();
+                }
+                ToastShow(bean.getRetMsg());
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+
+
+    }
+
+    private String guessMimeType(String path) {
+        FileNameMap fileNameMap = URLConnection.getFileNameMap();
+        String contentTypeFor = null;
+        try {
+            contentTypeFor = fileNameMap.getContentTypeFor(URLEncoder.encode(path, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if (contentTypeFor == null) {
+            contentTypeFor = "application/octet-stream";
+        }
+        return contentTypeFor;
     }
 
 }

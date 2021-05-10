@@ -10,17 +10,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.bean.AttentionBean;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SortAdapter extends BaseAdapter{
 
-    private List<User> list = null;
+    private List<AttentionBean.RetDataBean.DatasBean> list = null;
     private Context mContext;
 
-    public SortAdapter(Context mContext, List<User> list) {
+    public SortAdapter(Context mContext, List<AttentionBean.RetDataBean.DatasBean> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -39,7 +41,7 @@ public class SortAdapter extends BaseAdapter{
 
     public View getView(final int position, View view, ViewGroup arg2) {
         ViewHolder vh;
-        final User user = list.get(position);
+        final AttentionBean.RetDataBean.DatasBean user = list.get(position);
         if (view == null) {
             vh = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.item_maillist, null);
@@ -56,27 +58,25 @@ public class SortAdapter extends BaseAdapter{
         } else {
             vh = (ViewHolder) view.getTag();
         }
-
         //根据position获取首字母作为目录catalog
-        String catalog = list.get(position).getFirstLetter();
-
+        String catalog = list.get(position).getInitials();
         //如果当前位置等于该分类首字母的Char的位置 ，则认为是第一次出现
         if(position == getPositionForSection(catalog)){
             vh.catalog.setVisibility(View.VISIBLE);
-            vh.catalog.setText(user.getFirstLetter().toUpperCase());
+            vh.catalog.setText(user.getInitials().toUpperCase());
         }else{
             vh.catalog.setVisibility(View.GONE);
         }
-        vh.mItemFindrecyTitle.setText(list.get(position).getName());
-        Glide.with(mContext).load(R.drawable.bg).apply(new RequestOptions().circleCrop()).into(vh.mItemFindrecyImgv);
+        vh.mItemFindrecyTitle.setText(list.get(position).getNickname());
+        Glide.with(mContext).load(user.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).circleCrop().into(vh.mItemFindrecyImgv);
 
         vh.mItemFindrecyStatetop.setText("去留言");
-        vh.mItemFindrecyTvstate.setVisibility(View.VISIBLE);
+        vh.mItemFindrecyTvstate.setVisibility(View.GONE);
         vh.mItemFindrecyLlnow.setVisibility(View.GONE);
-        vh.mItemFindrecyTvstate.setText("[ 待上线 ]");
+//        vh.mItemFindrecyTvstate.setText("[ 待上线 ]");
         vh.mItemFindrecyImgv.setBackgroundResource(0);
         vh.mtv_type.setVisibility(View.GONE);
-        switch (position) {
+       /* switch (position) {
             case 0:
                 vh.mtv_type.setVisibility(View.VISIBLE);
                 vh.mItemFindrecyImgv.setBackgroundResource(R.drawable.bg_circle_stoke_hom);
@@ -98,7 +98,7 @@ public class SortAdapter extends BaseAdapter{
                 vh.mItemFindrecyStatetop.setText("去私聊");
                 break;
         }
-
+*/
         return view;
 
     }
@@ -114,7 +114,7 @@ public class SortAdapter extends BaseAdapter{
         TextView mtv_type;
         ImageView mItemFindrectwo;
         TextView mItemFindrecyTitle;
-        ImageView mItemFindrecyImgv;
+        CircleImageView mItemFindrecyImgv;
 
     }
 
@@ -123,7 +123,7 @@ public class SortAdapter extends BaseAdapter{
      */
     public int getPositionForSection(String catalog) {
         for (int i = 0; i < getCount(); i++) {
-            String sortStr = list.get(i).getFirstLetter();
+            String sortStr = list.get(i).getInitials();
             if (catalog.equalsIgnoreCase(sortStr)) {
                 return i;
             }

@@ -44,4 +44,13 @@ public class Constant {
     public static final String AUTO_LOGIN = "auto_login";
     public static final String LOGOUT = "logout";
     public static final String ICON_URL = "icon_url";
+
+    /*直播*/
+    public static final String LIVE_JGNAME ="jigou_name";
+    public static final String LIVE_ISJG=  "jigou_yes";
+    public static final String LIVE_ISGZ = "user_guanzhu";
+    public static final String LVIE_ISLIANX = "live_islianxian";
+    public static final String LIVE_LIANXHEAD ="live_lxhead";
+    public static final String LIVE_LXUSERID = "live_lxuserid";
+
 }

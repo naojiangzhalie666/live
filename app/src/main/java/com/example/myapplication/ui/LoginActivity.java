@@ -90,10 +90,8 @@ public class LoginActivity extends LiveBaseActivity {
                     return;
                 }
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
+                    getUserInfo();//暂时使用缓存
                     LiveShareUtil.getInstance(LoginActivity.this).putPower(2);//用户类型
-                    thisLogin(LiveShareUtil.getInstance(this).getUserInfo().getRetData());//暂时使用缓存
-                    statActivity(MainActivity.class);
-                    finish();
                     ToastShow("一键登录");
                 } else {
                     ToastShow("请阅读并勾选协议");

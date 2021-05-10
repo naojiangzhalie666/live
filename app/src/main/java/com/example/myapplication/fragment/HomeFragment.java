@@ -319,11 +319,17 @@ public class HomeFragment extends Fragment {
             info.roomInfo = value.roomInfo;
             info.viewerCount = value.audienceCount;
             info.livePlay = true;
+            info.type =value.getUserInfo().getType();
+            info.mUserInfoBean =value.getUserInfo();
             if (pushers != null && !pushers.isEmpty()) {
                 RoomBean.RetDataBean.PushersBean pusher = pushers.get(0);
                 info.nickname = pusher.userName;
                 info.avatar = pusher.userAvatar;
                 info.push_size = pushers.size();
+                if(pushers.size()>1){//正在连线中的用户信息
+                    info.lxavatar = pushers.get(1).userAvatar;
+                    info.lxUserid=pushers.get(1).userID;
+                }
             }
             try {
                 JSONObject jsonRoomInfo = new JSONObject(value.roomInfo);
@@ -396,6 +402,13 @@ public class HomeFragment extends Fragment {
         intent.putExtra(TCConstants.COVER_PIC, item.frontCover);
         intent.putExtra(TCConstants.TIMESTAMP, item.createTime);
         intent.putExtra(TCConstants.ROOM_TITLE, item.title);
+        intent.putExtra(Constant.LIVE_JGNAME, "缺少咨询机构名称");
+        intent.putExtra(Constant.LIVE_ISJG, item.type);
+        intent.putExtra(Constant.LIVE_JGNAME,true);//是否关注了该主播---字段还没有
+        intent.putExtra(Constant.LVIE_ISLIANX,item.push_size>1?true:false);//是否正在连线
+        intent.putExtra(Constant.LIVE_LIANXHEAD,item.lxavatar);//连线中的用户头像
+        intent.putExtra(Constant.LIVE_LXUSERID,item.lxUserid);//连线中的用户id
+
         startActivityForResult(intent, START_LIVE_PLAY);
     }
 

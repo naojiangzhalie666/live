@@ -1,10 +1,7 @@
 package com.tencent.qcloud.tim.uikit.modules.chat.layout.message;
 
-import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.tencent.qcloud.tim.uikit.R;
-import com.tencent.qcloud.tim.uikit.TUIKit;
 import com.tencent.qcloud.tim.uikit.modules.chat.interfaces.IChatProvider;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.holder.GroupMessageHelper;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.holder.IGroupMessageClickListener;
@@ -167,16 +164,16 @@ public class MessageListAdapter extends RecyclerView.Adapter {
         } else {
             /*去掉不支持的自定义消息后*/
             List<MessageInfo> dataSource  =provider.getDataSource();
-            for (int i = 0; i < dataSource.size(); i++) {
-                MessageInfo msg = dataSource.get(i);
-                if (msg.getExtra() != null&& TextUtils.equals(TUIKit.getAppContext().getString(R.string.custom_msg), msg.getExtra().toString())) {
-//                    dataSource.remove(i);
-                }else{
-                    mDataSource.add(msg);
-                }
-            }
+//            for (int i = 0; i < dataSource.size(); i++) {
+//                MessageInfo msg = dataSource.get(i);
+//                if (msg.getExtra() != null&& TextUtils.equals(TUIKit.getAppContext().getString(R.string.custom_msg), msg.getExtra().toString())) {
+////                    dataSource.remove(i);
+//                }else{
+//                    mDataSource.add(msg);
+//                }
+//            }
             /*原数据*/
-//            mDataSource = dataSource;
+            mDataSource = dataSource;
             provider.setAdapter(this);
         }
         notifyDataSourceChanged(MessageLayout.DATA_CHANGE_TYPE_REFRESH, getItemCount());

@@ -31,6 +31,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveApplication;
+import com.example.myapplication.bean.BaseBean;
 import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.pop_dig.BaseDialog;
 import com.example.myapplication.pop_dig.BuyzActivity;
@@ -39,6 +41,9 @@ import com.example.myapplication.pop_dig.ChathelfActivity;
 import com.example.myapplication.pop_dig.ShareDialog;
 import com.example.myapplication.ui.LookPersonActivity;
 import com.example.myapplication.ui.OranizeActivity;
+import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
 import com.example.xzb.Constantc;
 import com.example.xzb.R;
 import com.example.xzb.important.IMLVBLiveRoomListener;
@@ -65,6 +70,8 @@ import com.example.xzb.utils.login.TCELKReportMgr;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.roomutil.AnchorInfo;
 import com.example.xzb.utils.roomutil.AudienceInfo;
+import com.google.gson.Gson;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.liteav.demo.beauty.view.BeautyPanel;
@@ -101,6 +108,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -153,6 +161,12 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private String mUserId = "";           // 我的id
     private String mNickname = "";         // 我的昵称
     private String mAvatar = "";           // 我的头像
+    private String user_jigou = "";        // 机构名称
+    private int user_type;                 //用户类型：1-普通用户；2-咨询师；3-主机构；4-子机构
+    private boolean is_guanzhu;            //是否关注了该主播
+    private boolean is_lianxianz;          //是否正在连线 ---true 连线中  false没有连线
+    private String mPuserLxAvatar = "";     //正在连线中的用户头像
+    private String mPuserLxUserid = "";     //正在连线中的用户id
     private String mFileId = "";
     private String mTimeStamp = "";
     //头像列表控件
@@ -236,6 +250,12 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         mFileId = intent.getStringExtra(TCConstants.FILE_ID);
         mTimeStamp = intent.getStringExtra(TCConstants.TIMESTAMP);
         mTitle = intent.getStringExtra(TCConstants.ROOM_TITLE);
+        user_type = intent.getIntExtra(Constant.LIVE_ISJG, 0);
+        is_guanzhu = intent.getBooleanExtra(Constant.LIVE_JGNAME, false);
+        is_lianxianz = intent.getBooleanExtra(Constant.LVIE_ISLIANX, false);
+        if (user_type > 2) {
+            user_jigou = intent.getStringExtra(Constant.LIVE_JGNAME);
+        }
         mUserId = TCUserMgr.getInstance().getUserId();
         mNickname = TCUserMgr.getInstance().getNickname();
         mAvatar = TCUserMgr.getInstance().getAvatar();
@@ -294,17 +314,19 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
             }
         });
-
-
-        mtv_jg.setText("天宇新航心理咨询机构");
+        if (user_type > 2) {
+            mtv_jg.setVisibility(View.VISIBLE);
+            mtv_jg.setText(user_jigou);
+        }
+        mtv_gg.setText(is_guanzhu ? "取消关注" : "关注");
         mtv_title.setText(mTitle);
-        mtv_name.setText(mNickname);
-        mtv_id.setText("边框ID：" + "124124");
+        mtv_name.setText(mPusherNickname);
+        mtv_id.setText("边框ID：" + mPusherId);
         mtv_date.setText(new SimpleDateFormat("yyyy.MM.dd").format(new Date()));
         mtv_gg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(TCAudienceActivity.this, "关注该主播", Toast.LENGTH_SHORT).show();
+                toChangeGz();
             }
         });
         mCar_strs = new ArrayList<>();
@@ -357,7 +379,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         mMemberCount = (TextView) findViewById(R.id.anchor_tv_member_counts);
 
         mCurrentAudienceCount++;
-        mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentAudienceCount));
+        mMemberCount.setText("人气" + String.format(Locale.CHINA, "%d", mCurrentAudienceCount));
         mChatMsgListAdapter = new TCChatMsgListAdapter(this, mListViewMsg, mArrayListChatEntity);
         mListViewMsg.setAdapter(mChatMsgListAdapter);
 
@@ -409,6 +431,26 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
         TCUtils.blurBgPic(this, mBgImageView, mCoverUrl, R.drawable.bg);
     }
+    /*进行关注及取消关注操作*/
+    private void toChangeGz(){
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().addAttention(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(), mPusherId, is_guanzhu?"2":"1"), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
+                if(baseBean.getRetCode() == 0){
+                    is_guanzhu = !is_guanzhu;
+                    mtv_gg.setText(is_guanzhu ? "取消关注" : "关注");
+                }
+                ToastUtil.showToast(TCAudienceActivity.this,baseBean.getRetMsg());
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
 
 
     /*-----礼物逻辑     始-----*/
@@ -424,8 +466,9 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     }
 
     private void showGiftPanel() {
-        mGiftPanelView = new GiftPanelViewImp(this);
+        mGiftPanelView = new GiftPanelViewImp(this,mAvatar);
         mGiftPanelView.setMoney_zuan(now_zuanshi + "");
+        mGiftPanelView.setJingYAndNeedZunas(10,"30个钻石");
         mGiftPanelView.init(mGiftInfoDataHandler);
         mGiftPanelView.setGiftPanelDelegate(new GiftPanelDelegate() {
             @Override
@@ -455,6 +498,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         if (is_lw) {/*发送成功  礼物进行钻石消耗   背包不消耗钻石*/
             now_zuanshi -= giftInfo.price;
             mGiftPanelView.setMoney_zuan(now_zuanshi + "");
+            mGiftPanelView.setJingYAndNeedZunas(new Random().nextInt(100),new Random().nextInt(1000)+"个钻石");
         } else {//背包中发送会减少数量
             mGiftPanelView.notiBbGift();
 
@@ -568,6 +612,11 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             public void onSuccess() {
                 mBgImageView.setVisibility(View.GONE);
                 mLiveRoom.sendRoomCustomMsg(String.valueOf(TCConstants.IMCMD_ENTER_LIVE), "", null);
+                if(is_lianxianz){//主播正在连麦中的展示效果
+                    mPuserLxAvatar = getIntent().getStringExtra(Constant.LIVE_LIANXHEAD);
+                    mPuserLxUserid = getIntent().getStringExtra(Constant.LIVE_LXUSERID);
+                    onRecvRoomCustomMsg("","","",mPuserLxAvatar,String.valueOf(IMCMD_CONTACT),mPuserLxUserid);
+                }
 //                TCELKReportMgr.getInstance().reportELK(TCConstants.ELK_ACTION_LIVE_PLAY, TCUserMgr.getInstance().getUserId(), 10000, "进入LiveRoom成功", null);
             }
         });
@@ -647,7 +696,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
             @Override
             public void onError(int code, String errInfo) {
-                Toast.makeText(TCAudienceActivity.this, "连麦请求发生错误" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(TCAudienceActivity.this, "连麦请求发生错误", Toast.LENGTH_SHORT).show();
                 hideNoticeToast();
                 mBtnLinkMic.setEnabled(true);
                 mBtnLinkMic.setVisibility(View.VISIBLE);
@@ -1280,7 +1329,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         } else if (id == R.id.audience_car) {
             mCarDialog.show();
         } else if (id == R.id.anchor_camera) {
-            mTxLivePusher= mLiveRoom.getTxLivePusher();
+            mTxLivePusher = mLiveRoom.getTxLivePusher();
             if (is_open) {
                 TXLivePushConfig config = mTxLivePusher.getConfig();
                 //设置推送到主播端的垫片--图片
@@ -1409,7 +1458,8 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             });
         }
     }
-    private void initShare(){
+
+    private void initShare() {
         mShareDialog = new ShareDialog(this);
         UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");
         web.setTitle("边框心理");//标题
@@ -1598,10 +1648,9 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         if (null != mBroadcastTimer) {
             mBroadcastTimerTask.cancel();
         }
-        mBroadcastTimer=null;
+        mBroadcastTimer = null;
         mtv_ctcTm.setText("0");
     }
-
 
 
 }

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.pop_dig.BaseDialog;
+import com.example.myapplication.pop_dig.CarDialog;
 import com.example.myapplication.pop_dig.MeslistActivity;
 import com.example.myapplication.pop_dig.OnlineDialog;
 import com.example.myapplication.pop_dig.ShareDialog;
@@ -45,9 +46,11 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -97,6 +100,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     private List<TCSimpleUserInfo> mOnlin_entits;
     private int mPower;
     private ShareDialog mShareDialog;
+    private List<Map<String, Object>> mCar_strs;
+    private CarDialog mCarDialog;//购物车弹窗
 
 
 
@@ -221,6 +226,12 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 startActivity(intent);
             }
         });
+        mCar_strs = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            Map<String, Object> map = new HashMap<>();
+            mCar_strs.add(map);
+        }
+        mCarDialog = new CarDialog(this, mCar_strs);
     }
 
     /*邀请观众进行连麦*/
@@ -563,7 +574,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         } else if (id == R.id.btn_online) {
             mOnlineDialog.show();
         } else if (id == R.id.camera_car) {
-            startActivity(new Intent(this, LookPersonActivity.class));//咨询师页面
+            mCarDialog.show();
+//            startActivity(new Intent(this, LookPersonActivity.class));//咨询师页面
         } else if (id == R.id.camera_siliao) {
             startActivity(new Intent(this, MeslistActivity.class));
         } else if (id == R.id.btn_share) {

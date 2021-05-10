@@ -55,9 +55,6 @@ import com.yf.xzbgift.base.Constants;
 import com.yf.xzbgift.imple.DefaultGiftAdapterImp;
 import com.yf.xzbgift.imple.GiftAdapter;
 import com.yf.xzbgift.imple.GiftInfoDataHandler;
-import com.yf.xzbgift.imple.GiftPanelDelegate;
-import com.yf.xzbgift.imple.GiftPanelViewImp;
-import com.yf.xzbgift.imple.IGiftPanelView;
 import com.yf.xzbgift.important.GiftAnimatorLayout;
 import com.yf.xzbgift.important.GiftInfo;
 import com.yf.xzbgift.important.TUIKitLive;
@@ -335,7 +332,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
 
     private void showGiftPanel() {
-        IGiftPanelView giftPanelView = new GiftPanelViewImp(this);
+      /*  IGiftPanelView giftPanelView = new GiftPanelViewImp(this);
         giftPanelView.init(mGiftInfoDataHandler);
         giftPanelView.setGiftPanelDelegate(new GiftPanelDelegate() {
             @Override
@@ -353,7 +350,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
             }
         });
-        giftPanelView.show();
+        giftPanelView.show();*/
     }
 
     //发送礼物消息出去同时展示礼物动画和弹幕

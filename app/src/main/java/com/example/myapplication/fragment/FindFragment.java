@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.FindgetAdapter;
 import com.example.myapplication.base.LiveApplication;
+import com.example.myapplication.bean.AttentionBean;
 import com.example.myapplication.bean.EventMessage;
 import com.example.myapplication.ui.MailListActivity;
 import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.httputil.HttpBackListener;
 import com.example.myapplication.utils.httputil.LiveHttp;
+import com.google.gson.Gson;
+import com.superc.yyfflibrary.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,7 +61,7 @@ public class FindFragment extends Fragment {
     ConstraintLayout mFindLimittm;
 
     private FindgetAdapter mFindgetAdapter;
-    private List<String> mStrings;
+    private List<AttentionBean.RetDataBean.DatasBean> mAttens;
     private Unbinder unbinder;
     private FindMatchFragment mFindMatchFragment;
     private FindNoviceFragment mFindNoviceFragment;
@@ -103,11 +106,8 @@ public class FindFragment extends Fragment {
             getFragmentManager().beginTransaction().add(R.id.find_fram, mFindNoviceFragment).commit();
             getFragmentManager().beginTransaction().show(mFindNoviceFragment);
         }
-        mStrings = new ArrayList<>();
-        for (int i = 0; i < 16; i++) {
-            mStrings.add("");
-        }
-        mFindgetAdapter = new FindgetAdapter(getActivity(), mStrings);
+        mAttens = new ArrayList<>();
+        mFindgetAdapter = new FindgetAdapter(getActivity(), mAttens);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         mFindRecytop.setLayoutManager(linearLayoutManager);
         mFindRecytop.setAdapter(mFindgetAdapter);
@@ -184,12 +184,18 @@ public class FindFragment extends Fragment {
             getFragmentManager().beginTransaction().show(mFindMatchFragment);
         }
     }
-
+    /*获取我的关注*/
     private void getMyGz(){
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyAttention(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
+                AttentionBean bean = new Gson().fromJson(result.toString(),AttentionBean.class);
+                if(bean.getRetCode() ==0){
+                    toSetAttenData(bean.getRetData());
+                }else{
+                    ToastUtil.showToast(getActivity(),bean.getRetMsg());
+                }
 
             }
 
@@ -201,12 +207,23 @@ public class FindFragment extends Fragment {
 
     }
 
+    private void toSetAttenData(List<AttentionBean.RetDataBean> dataBeanList){
+        mAttens.clear();
+        List<AttentionBean.RetDataBean.DatasBean> datasBeans  = new ArrayList<>();
+        for (int i = 0; i < dataBeanList.size(); i++) {
+            AttentionBean.RetDataBean retDataBean = dataBeanList.get(i);
+            List<AttentionBean.RetDataBean.DatasBean> datas = retDataBean.getDatas();
+            datasBeans.addAll(datas);
+        }
+        mAttens.addAll(datasBeans);
+        mFindgetAdapter.notifyDataSetChanged();
+    }
+
 
     @Override
     public void onResume() {
         super.onResume();
         getMyGz();
-
     }
 
     @Override

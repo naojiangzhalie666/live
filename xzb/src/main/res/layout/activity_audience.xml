@@ -134,13 +134,15 @@
         <include
             android:id="@+id/layout_live_pusher_info"
             layout="@layout/layout_live_pusher_info"
-            android:layout_width="145dp"
+            android:layout_width="165dp"
             android:layout_height="35dp"
             android:layout_margin="5dp" />
 
         <TextView
             android:id="@+id/cam_jgname"
             android:layout_width="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout_live_pusher_info"
             android:layout_alignLeft="@+id/layout_live_pusher_info"

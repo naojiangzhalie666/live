@@ -180,6 +180,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cons" />
 
+    <TextView
+        android:id="@+id/mail_tv_nodata"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="暂无数据..."
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/dp_60"
+        android:textColor="@color/nineninenine"
+        android:textSize="18sp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cons" />
+
+
     <com.example.myapplication.utils.indelistview.LetterListView
         android:id="@+id/let_bar"
         android:layout_width="wrap_content"

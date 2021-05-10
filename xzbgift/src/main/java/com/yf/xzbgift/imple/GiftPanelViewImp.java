@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.yf.xzbgift.R;
 import com.yf.xzbgift.imple.adapter.GiftPanelAdapter;
@@ -39,6 +41,9 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
     private GiftPanelDelegate mGiftPanelDelegate;
     private GiftInfoDataHandler mGiftInfoDataHandler;
     private TextView mtv_money, mtv_cz, mtv_send, mtv_lw, mtv_bb;
+    private ImageView mimg_head;
+    private ProgressBar mProgressBar_eve;
+    private TextView mNeedZsNum;
     private View mline;
     private String money_zuan;
     private boolean is_chongz = true;
@@ -48,11 +53,13 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
     private List<GiftInfo> giftInfoList_back;
     private int bb_pos = -1;
     private int line_startDis = 0;
+    private String user_icon = "";
 
 
-    public GiftPanelViewImp(Context context) {
+    public GiftPanelViewImp(Context context, String icon) {
         super(context, R.style.live_action_sheet_theme);
         mContext = context;
+        user_icon = icon;
         mGiftViews = new ArrayList<>();
         mGifts_bb = new ArrayList<>();
         setContentView(R.layout.live_dialog_gift_panel);
@@ -62,6 +69,9 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
     private void initView() {
         giftInfoList_back = new ArrayList<>();
         mInflater = LayoutInflater.from(mContext);
+        mimg_head = findViewById(R.id.gift_head);
+        mProgressBar_eve = findViewById(R.id.progressBar);
+        mNeedZsNum = findViewById(R.id.need_zuansnum);
         mtv_money = findViewById(R.id.gift_money);
         mtv_cz = findViewById(R.id.btn_charge);
         mtv_send = findViewById(R.id.btn_send);
@@ -74,7 +84,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
         mDotsLayout = findViewById(R.id.dots_container);
         mDotsLayout_bb = findViewById(R.id.dots_containerbb);
 
-
+        Glide.with(mContext).load(user_icon).error(R.drawable.live_default_head_img).placeholder(R.drawable.live_default_head_img).circleCrop().into(mimg_head);
         mtv_money.setText(money_zuan);
 
         mtv_cz.setOnClickListener(new View.OnClickListener() {
@@ -282,18 +292,18 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
         @Override
         public void onPageSelected(int position) {
             for (int i = 0; i < (is_lw ? mDotsLayout.getChildCount() : mDotsLayout_bb.getChildCount()); i++) {
-                (is_lw ?mDotsLayout:mDotsLayout_bb).getChildAt(i).setSelected(false);
+                (is_lw ? mDotsLayout : mDotsLayout_bb).getChildAt(i).setSelected(false);
             }
             (is_lw ? mDotsLayout : mDotsLayout_bb).getChildAt(position).setSelected(true);
             for (int i = 0; i < (is_lw ? mGiftViews.size() : mGifts_bb.size()); i++) {//清除选中，当礼物页面切换到另一个礼物页面
                 RecyclerView view = (RecyclerView) (is_lw ? mGiftViews.get(i) : mGifts_bb.get(i));
                 GiftPanelAdapter adapter = (GiftPanelAdapter) view.getAdapter();
-                if(is_lw) {
+                if (is_lw) {
                     if (mGiftController != null) {
                         int selectPageIndex = mGiftController.getSelectPageIndex();
                         adapter.clearSelection(selectPageIndex);
                     }
-                }else{
+                } else {
                     if (mGiftController_bb != null) {
                         int selectPageIndex = mGiftController_bb.getSelectPageIndex();
                         adapter.clearSelection(selectPageIndex);
@@ -400,5 +410,12 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
                 mtv_cz.setText("发送");
             }
         }
+    }
+
+    @Override
+    public void setJingYAndNeedZunas(int eve, String zuan) {
+        mProgressBar_eve.setProgress(eve);
+        mNeedZsNum.setText(zuan);
+
     }
 }

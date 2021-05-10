@@ -3,13 +3,16 @@ package com.example.myapplication.base;
 import com.alibaba.fastjson.JSONObject;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -98,7 +101,9 @@ public interface ApiService {
     @POST("attentionController/addAttention")
     Observable<JSONObject> addAttention(@Header("Authorization")String mtoken,@Query("attId")String attId,@Query("flag")String flag);
 
-
+    @Multipart
+    @POST("minioAction/upload")
+    Observable<JSONObject> upLoadFile(@Header("Authorization")String mtoken,@Part MultipartBody.Part map);
 
 
 

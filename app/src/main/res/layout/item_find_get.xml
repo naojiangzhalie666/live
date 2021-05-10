@@ -4,28 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/dp_10"
-    android:layout_marginRight="@dimen/dp_10"
     android:gravity="center"
     android:orientation="vertical">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/findget_imgv"
-        android:layout_width="@dimen/dp_40"
+        android:layout_width="@dimen/dp_60"
         android:layout_height="@dimen/dp_40"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/findget_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="1"
+        android:paddingLeft="@dimen/dp_5"
         android:paddingTop="@dimen/dp_7"
+        android:paddingRight="@dimen/dp_5"
         android:textColor="@color/black"
         android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/findget_imgv"
+        app:layout_constraintStart_toStartOf="@+id/findget_imgv"
         app:layout_constraintTop_toBottomOf="@+id/findget_imgv"
         tools:text="关注的人" />
 </androidx.constraintlayout.widget.ConstraintLayout>

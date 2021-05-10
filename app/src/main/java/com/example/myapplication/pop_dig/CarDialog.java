@@ -16,6 +16,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.adapter.CarshowAdapter;
 import com.example.myapplication.ui.OranizeActivity;
 import com.example.myapplication.ui.ShowGoodsActivity;
+import com.ljy.devring.util.DensityUtil;
 import com.superc.yyfflibrary.utils.ToastUtil;
 
 import java.util.List;
@@ -58,6 +59,7 @@ public class CarDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_car);
+//        getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, mMapList.size() > 4 ? DensityUtil.dp2px(mContext, 400) : RelativeLayout.LayoutParams.WRAP_CONTENT);
         getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         getWindow().setBackgroundDrawableResource(R.color.transparent);
         getWindow().setGravity(Gravity.BOTTOM);
@@ -77,11 +79,7 @@ public class CarDialog extends Dialog {
                 ToastUtil.showToast(mContext, "进行购买" + pos);
             }
         });
-        if (mMapList.size() > 5) {
-            mDialogCarRecy.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 700));
-        } else {
-            mDialogCarRecy.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        }
+        mDialogCarRecy.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mMapList.size() > 4 ? DensityUtil.dp2px(mContext, 300) : ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     @OnClick({R.id.dialog_car_zhinan, R.id.dialog_car_charge, R.id.dialog_car_more})

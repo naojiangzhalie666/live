@@ -4,18 +4,28 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.base.Constant;
+import com.example.myapplication.base.LiveApplication;
 import com.example.myapplication.base.LiveBaseActivity;
+import com.example.myapplication.bean.AttentionBean;
+import com.example.myapplication.chat.ChatActivity;
+import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.TitleUtils;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
 import com.example.myapplication.utils.indelistview.LetterListView;
 import com.example.myapplication.utils.indelistview.SortAdapter;
-import com.example.myapplication.utils.indelistview.User;
+import com.google.gson.Gson;
+import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,15 +49,17 @@ public class MailListActivity extends LiveBaseActivity {
     TextView mMailTxltwoo;
     @BindView(R.id.mail_txlthreee)
     TextView mMailTxlthreee;
+    @BindView(R.id.mail_tv_nodata)
+    TextView mMailTvNodata;
     @BindView(R.id.mail_list_line)
     View mMailLine;
-    private ArrayList<User> list_gzmine;
+    private ArrayList<AttentionBean.RetDataBean.DatasBean> list_gzmine;
 
     private boolean is_user = false;
     private SortAdapter mAdapter;
     private int line_startDis = 0;
     private boolean is_first = true;
-    private String mType="0";
+    private String mType = "0";
 
 
     @Override
@@ -69,15 +81,15 @@ public class MailListActivity extends LiveBaseActivity {
 
         initV();
         Intent intent = getIntent();
-        if(intent!=null){
+        if (intent != null) {
             String index = intent.getStringExtra("index");
-            if(!TextUtils.isEmpty(index)&&index.equals("end")){
+            if (!TextUtils.isEmpty(index) && index.equals("end")) {
                 mMailTxlthreee.performClick();
                 mType = "2";
-            }else {
+            } else {
                 getGzmine();
             }
-        }else{
+        } else {
             getGzmine();
         }
     }
@@ -127,81 +139,115 @@ public class MailListActivity extends LiveBaseActivity {
             @Override
             public void word(String word, int index) {
                 for (int i = 0; i < list_gzmine.size(); i++) {
-                    if (word.equalsIgnoreCase(list_gzmine.get(i).getFirstLetter())) {
+                    if (word.equalsIgnoreCase(list_gzmine.get(i).getInitials())) {
                         mMailList.setSelection(i); // 选择到首字母出现的位置
                         return;
                     }
                 }
             }
         });
+        mMailList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                AttentionBean.RetDataBean.DatasBean datasBean = list_gzmine.get(pos);
+                startChatActivity(datasBean.getAttId(),datasBean.getNickname());
+            }
+        });
+    }
+    private void startChatActivity(String id,String title) {
+        ChatInfo chatInfo = new ChatInfo();
+        chatInfo.setType(V2TIMConversation.V2TIM_C2C);
+        chatInfo.setId(id);
+        chatInfo.setChatName(title);
+        Intent intent = new Intent(this,ChatActivity.class);
+        intent.putExtra(Constant.CHAT_INFO, chatInfo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      startActivity(intent);
     }
 
+    /*关注我的--我的粉丝*/
     private void getGzmine() {
-        mMailList.setSelection(0);
         list_gzmine.clear();
-        list_gzmine.add(new User("大娃"));
-        list_gzmine.add(new User("二娃"));
-        list_gzmine.add(new User("三娃"));
-        list_gzmine.add(new User("四娃"));
-        list_gzmine.add(new User("五娃"));
-        list_gzmine.add(new User("六娃"));
-        list_gzmine.add(new User("七娃"));
-        list_gzmine.add(new User("喜羊羊"));
-        list_gzmine.add(new User("美羊羊"));
-        list_gzmine.add(new User("懒羊羊"));
-        list_gzmine.add(new User("沸羊羊"));
-        list_gzmine.add(new User("暖羊羊"));
-        Collections.sort(list_gzmine); // 对list进行排序，需要让User实现Comparable接口重写compareTo方法
+        mMailTvNodata.setVisibility(View.GONE);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getAttentionMe(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                AttentionBean bean = new Gson().fromJson(result.toString(), AttentionBean.class);
+                if (bean.getRetCode() == 0) {
+                    List<AttentionBean.RetDataBean> retData = bean.getRetData();
+                    toSetAttenData(retData);
+                } else {
+                    mMailTvNodata.setVisibility(View.VISIBLE);
+                    list_gzmine.clear();
+                    mAdapter.notifyDataSetChanged();
+                    ToastShow(bean.getRetMsg());
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
         mAdapter.notifyDataSetChanged();
     }
 
+    /*我的关注*/
     private void getWodGz() {
         toGoAnima(mMailTxltwoo);
-        mMailList.setSelection(0);
-        list_gzmine.clear();
-        list_gzmine.add(new User("懒羊羊"));
-        list_gzmine.add(new User("沸羊羊"));
-        list_gzmine.add(new User("暖羊羊"));
-        list_gzmine.add(new User("慢羊羊"));
-        list_gzmine.add(new User("灰太狼"));
-        list_gzmine.add(new User("红太狼"));
-        list_gzmine.add(new User("孙悟空"));
-        list_gzmine.add(new User("黑猫警长"));
-        list_gzmine.add(new User("舒克"));
-        list_gzmine.add(new User("贝塔"));
-        list_gzmine.add(new User("海尔"));
-        list_gzmine.add(new User("阿凡提"));
-        list_gzmine.add(new User("邋遢大王"));
-        list_gzmine.add(new User("哪吒"));
-        list_gzmine.add(new User("没头脑"));
-        list_gzmine.add(new User("不高兴"));
-        list_gzmine.add(new User("蓝皮鼠"));
-        list_gzmine.add(new User("大脸猫"));
-        list_gzmine.add(new User("大头儿子"));
-        list_gzmine.add(new User("小头爸爸"));
-        Collections.sort(list_gzmine); // 对list进行排序，需要让User实现Comparable接口重写compareTo方法
-        mAdapter.notifyDataSetChanged();
+        mMailTvNodata.setVisibility(View.GONE);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyAttention(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                AttentionBean bean = new Gson().fromJson(result.toString(), AttentionBean.class);
+                if (bean.getRetCode() == 0) {
+                    List<AttentionBean.RetDataBean> retData = bean.getRetData();
+                    toSetAttenData(retData);
+                } else {
+                    mMailTvNodata.setVisibility(View.VISIBLE);
+                    list_gzmine.clear();
+                    mAdapter.notifyDataSetChanged();
+                    ToastShow(bean.getRetMsg());
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
     }
 
+    /*咨询师列表*/
     private void getZxsList() {
         toGoAnima(mMailTxlthreee);
-        mMailList.setSelection(0);
-        list_gzmine.clear();
-        list_gzmine.add(new User("小头爸爸"));
-        list_gzmine.add(new User("蓝猫"));
-        list_gzmine.add(new User("淘气"));
-        list_gzmine.add(new User("叶峰"));
-        list_gzmine.add(new User("楚天歌"));
-        list_gzmine.add(new User("江流儿"));
-        list_gzmine.add(new User("Tom"));
-        list_gzmine.add(new User("Jerry"));
-        list_gzmine.add(new User("12345"));
-        list_gzmine.add(new User("54321"));
-        list_gzmine.add(new User("_(:з」∠)_"));
-        list_gzmine.add(new User("……%￥#￥%#"));
-        Collections.sort(list_gzmine); // 对list进行排序，需要让User实现Comparable接口重写compareTo方法
-        mAdapter.notifyDataSetChanged();
+        mMailTvNodata.setVisibility(View.GONE);
 
+
+
+        list_gzmine.clear();
+        mAdapter.notifyDataSetChanged();
+        mMailTvNodata.setVisibility(View.VISIBLE);
+
+    }
+
+    private void toSetAttenData(List<AttentionBean.RetDataBean> dataBeanList) {
+        list_gzmine.clear();
+        List<AttentionBean.RetDataBean.DatasBean> datasBeans = new ArrayList<>();
+        for (int i = 0; i < dataBeanList.size(); i++) {
+            AttentionBean.RetDataBean retDataBean = dataBeanList.get(i);
+            List<AttentionBean.RetDataBean.DatasBean> datas = retDataBean.getDatas();
+            datasBeans.addAll(datas);
+        }
+        list_gzmine.addAll(datasBeans);
+        mAdapter.notifyDataSetChanged();
+        if(datasBeans.size() ==0){
+            mMailTvNodata.setVisibility(View.VISIBLE);
+        }
     }
 
     private void toGoAnima(TextView textView) {
@@ -214,6 +260,7 @@ public class MailListActivity extends LiveBaseActivity {
         anim.start();
         line_startDis = go_distance;
     }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

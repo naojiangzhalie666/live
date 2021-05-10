@@ -22,6 +22,14 @@ public interface IGiftPanelView {
 
     //设置钻石数量
     void setMoney_zuan(String money_zuan);
+
+    /**
+     *
+     * @param eve  当前经验值
+     * @param zuan  需要再送多少钻石可升级
+     */
+    void setJingYAndNeedZunas(int eve,String zuan);
+
     //更新背包数量
     void notiBbGift();
 

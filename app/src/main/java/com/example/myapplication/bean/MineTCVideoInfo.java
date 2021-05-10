@@ -23,11 +23,15 @@ public class MineTCVideoInfo extends TCVideoInfo {
     public String   frontCover;     // 直播封面
     public String   location;       // 定位信息
     public String   avatar;         // 头像
+    public String   lxavatar;       //连线中用户头像
+    public String   lxUserid;       //连线中用户id
     public String   createTime;     // 开播时间
     public String   hlsPlayUrl;     // HLS播放链接
     public String   lable;//标签
     public String   roomInfo;
     public int push_size;//推流个数
+    public int type;//用户类型：1-普通用户；2-咨询师；3-主机构；4-子机构
+    public RoomBean.RetDataBean.UserInfoBean mUserInfoBean;
 
 
     public MineTCVideoInfo() {}

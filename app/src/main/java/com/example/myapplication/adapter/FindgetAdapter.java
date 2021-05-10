@@ -4,26 +4,26 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.bean.AttentionBean;
 
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FindgetAdapter extends RecyclerView.Adapter<FindgetAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mLists;
+    private List<AttentionBean.RetDataBean.DatasBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
 
-    public FindgetAdapter(Context context, List<String> stringList) {
+    public FindgetAdapter(Context context, List<AttentionBean.RetDataBean.DatasBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -42,10 +42,10 @@ public class FindgetAdapter extends RecyclerView.Adapter<FindgetAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        String bean = mLists.get(position);
-        RequestOptions requestOptions =new RequestOptions().circleCrop();
-        Glide.with(mContext).load(R.drawable.man_se).apply(requestOptions).into(vh.mFindgetImgv);
-        vh.mFindgetName.setText("关注的人"+(position+1));
+        AttentionBean.RetDataBean.DatasBean bean = mLists.get(position);
+        vh.mFindgetName.setText(bean.getNickname());
+        Glide.with(mContext).load(bean.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).circleCrop().into(vh.mFindgetImgv);
+
 
     }
 
@@ -60,7 +60,7 @@ public class FindgetAdapter extends RecyclerView.Adapter<FindgetAdapter.ViewHold
 
     static class ViewHolder   extends RecyclerView.ViewHolder{
         @BindView(R.id.findget_imgv)
-        ImageView mFindgetImgv;
+        CircleImageView mFindgetImgv;
         @BindView(R.id.findget_name)
         TextView mFindgetName;
 

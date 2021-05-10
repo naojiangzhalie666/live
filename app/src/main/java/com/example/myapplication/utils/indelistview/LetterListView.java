@@ -115,7 +115,7 @@ public class LetterListView extends View {
             canvas.drawCircle(barCenterX, selectTouchRectF.top +radius/2 , radius, paint);
 
             //绘制提示
-            canvas.drawBitmap(hintBg, hintBgSizeRecF, hintBgRectF, null);
+//            canvas.drawBitmap(hintBg, hintBgSizeRecF, hintBgRectF, null);
             //绘制提示文字
             textPaint.setTextSize(45f);
             textPaint.setColor(Color.BLUE);
