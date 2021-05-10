@@ -101,6 +101,12 @@ public interface ApiService {
     @POST("attentionController/addAttention")
     Observable<JSONObject> addAttention(@Header("Authorization")String mtoken,@Query("attId")String attId,@Query("flag")String flag);
 
+    /**
+     * 单文件上传
+     * @param mtoken
+     * @param map       文件
+     * @return
+     */
     @Multipart
     @POST("minioAction/upload")
     Observable<JSONObject> upLoadFile(@Header("Authorization")String mtoken,@Part MultipartBody.Part map);
