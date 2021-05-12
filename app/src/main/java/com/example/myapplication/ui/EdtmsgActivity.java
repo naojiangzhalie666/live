@@ -291,7 +291,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
                 .isCamera(true)// 是否显示拍照按钮
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 .isEnableCrop(false)// 是否裁剪
-                .isCompress(true)// 是否压缩
+                .isCompress(false)// 是否压缩
                 .synOrAsy(false)//同步true或异步false 压缩 默认同步
 //                .selectionData(mAdapter.getData())// 是否传入已选图片
                 .minimumCompressSize(100)// 小于多少kb的图片不压缩
@@ -369,6 +369,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "toAddClient: 文件名异常" + names + e.toString());
         }
+        showLoad();
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().upLoadFile(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(), body), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
@@ -378,11 +379,13 @@ public class EdtmsgActivity extends LiveBaseActivity {
                     pic_url = bean.getRetData().getUrl();
                 }
                 ToastShow(bean.getRetMsg());
+                hideLoad();
             }
 
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
             }
         });
 

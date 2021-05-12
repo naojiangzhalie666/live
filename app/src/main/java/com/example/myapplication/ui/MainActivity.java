@@ -125,4 +125,12 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(mMineFragment!=null&&mMineFragment.isVisible()){
+            mMineFragment.toUpdateData();
+        }
+    }
 }

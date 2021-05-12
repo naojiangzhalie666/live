@@ -29,40 +29,42 @@
         <activity android:name=".ui.WithdrDetailActivity" />
         <activity
             android:name=".pop_dig.BuyzActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTop"  android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog_pay" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true"
+            android:exported="true"  android:screenOrientation="portrait"
             android:launchMode="singleTop"
             android:theme="@style/ActivityDialog_pay" />
         <activity
-            android:name=".pop_dig.MeslistActivity"
+            android:name=".pop_dig.MeslistActivity"  android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog_helf" />
         <activity
             android:name=".pop_dig.ChathelfActivity"
-            android:theme="@style/ActivityDialog_helf" />
+            android:theme="@style/ActivityDialog_helf"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".ui.HelpabackActivity" />
         <activity
-            android:name=".pop_dig.ReportActivity"
+            android:name=".pop_dig.ReportActivity"  android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog" />
-        <activity android:name=".ui.MybackpActivity" />
-        <activity android:name=".ui.OffsupportActivity" />
-        <activity android:name=".ui.ConnectRecordActivity" />
-        <activity android:name=".ui.LiveDetailActivity" />
-        <activity android:name=".live.PrepareActivity" />
-        <activity android:name=".live.LiveActivity" />
-        <activity android:name=".ui.MailListActivity" />
-        <activity android:name=".ui.IncomeDetailActivity" />
+        <activity android:name=".ui.MybackpActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.OffsupportActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ConnectRecordActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.LiveDetailActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".live.PrepareActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".live.LiveActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.MailListActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.IncomeDetailActivity"   android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.WithdrawalActivity"
+            android:name=".ui.WithdrawalActivity"  android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.ShowGoodsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
-            android:name=".ui.OranizeActivity"
+            android:name=".ui.OranizeActivity"  android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".ui.LookPersonActivity"
@@ -70,22 +72,25 @@
             android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
             android:name=".chat.ChatActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name=".ui.IdentyActivity" />
-        <activity android:name=".ui.BindWchatActivity" />
-        <activity android:name=".ui.ExchangeActivity" />
-        <activity android:name=".ui.AdviceActivity" />
-        <activity android:name=".ui.NormalActivity" />
-        <activity android:name=".ui.OrderListActivity" />
-        <activity android:name=".ui.FollowActivity" />
-        <activity android:name=".ui.EdtmsgActivity" />
-        <activity android:name=".ui.SetActivity" />
-        <activity android:name=".ui.SetInActivity" />
-        <activity android:name=".ui.FindActivity" />
-        <activity android:name=".ui.MsgInputActivity" />
-        <activity android:name=".ui.BindPhoneActivity" />
-        <activity android:name=".ui.TestActivity">
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".ui.IdentyActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.BindWchatActivity"   android:screenOrientation="portrait" />
+        <activity android:name=".ui.ExchangeActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.AdviceActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.NormalActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.OrderListActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.FollowActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.EdtmsgActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SetActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SetInActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+        <activity android:name=".ui.FindActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.MsgInputActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.BindPhoneActivity"   android:screenOrientation="portrait"/>
+        <activity android:name=".ui.TestActivity"   android:screenOrientation="portrait">
 
             <!--
             <intent-filter>
@@ -98,7 +103,7 @@
         </activity>
         <activity
             android:name=".ui.LoginActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -107,7 +112,7 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"   android:screenOrientation="portrait">
 
             <!--
               <intent-filter>

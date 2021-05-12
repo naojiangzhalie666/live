@@ -111,6 +111,34 @@ public interface ApiService {
     @POST("minioAction/upload")
     Observable<JSONObject> upLoadFile(@Header("Authorization")String mtoken,@Part MultipartBody.Part map);
 
+    /**
+     *咨询师标签--兴趣爱好
+     * @param token
+     * @return
+     */
+    @GET("couLabelController")
+    Observable<JSONObject> getCouLabel(@Header("Authorization")String token);
+
+    /**
+     * 咨询师入驻申请
+     * @param token
+     * @param body
+     * @return
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("couCounselorController")
+    Observable<JSONObject> toSubmitZxs(@Header("Authorization")String token,@Body RequestBody body);
+
+     /**
+     * 咨询机构入驻申请
+     * @param token
+     * @param body
+     * @return
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("couMechanismController")
+    Observable<JSONObject> toSubmitZxjg(@Header("Authorization")String token,@Body RequestBody body);
+
 
 
 

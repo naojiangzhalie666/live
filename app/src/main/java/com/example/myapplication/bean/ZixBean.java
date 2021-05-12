@@ -8,8 +8,12 @@ import java.util.Map;
 public class ZixBean {
     private String name;
     private String xxpath;
+    private String xxUrl;
     private String stTm;
     private String edTm;
+    private String stTTm;//用于展示的时间  --开始时间
+    private String edTTm;//用于展示的时间  -- 结束时间
+
     private List<LocalMedia> mLocalMedia;
     private List<Map<String, Object>> mMapList;
     private int count = 0;
@@ -30,6 +34,40 @@ public class ZixBean {
         mLocalMedia = localMedia;
         this.stTm = stTm;
         this.edTm = edTm;
+    }
+
+      public ZixBean(List<LocalMedia> localMedia, List<Map<String, Object>> mapList, String stTm, String edTm,String stTTm,String edTTm) {
+        mMapList = mapList;
+        mLocalMedia = localMedia;
+        this.stTm = stTm;
+        this.edTm = edTm;
+        this.stTTm =stTTm;
+        this.edTTm =edTTm;
+    }
+
+
+    public String getXxUrl() {
+        return xxUrl;
+    }
+
+    public void setXxUrl(String xxUrl) {
+        this.xxUrl = xxUrl;
+    }
+
+    public String getStTTm() {
+        return stTTm;
+    }
+
+    public void setStTTm(String stTTm) {
+        this.stTTm = stTTm;
+    }
+
+    public String getEdTTm() {
+        return edTTm;
+    }
+
+    public void setEdTTm(String edTTm) {
+        this.edTTm = edTTm;
     }
 
     public int getCount() {
@@ -90,7 +128,7 @@ public class ZixBean {
 
     @Override
     public String toString() {
-        return "ZixBean{" +
+        return "{" +
                 "name='" + name + '\'' +
                 ", xxpath='" + xxpath + '\'' +
                 ", stTm='" + stTm + '\'' +

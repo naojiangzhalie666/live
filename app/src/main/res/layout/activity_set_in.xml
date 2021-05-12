@@ -21,15 +21,14 @@
         android:id="@+id/setin_man"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:background="@drawable/bg_circle_solder_lotxt"
         android:gravity="center"
         android:minWidth="@dimen/dp_80"
         android:paddingTop="@dimen/dp_2"
         android:paddingBottom="@dimen/dp_2"
         android:text="咨询师"
-
         android:textColor="@color/setin_se"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toStartOf="@+id/setin_jigou"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +46,7 @@
         android:paddingBottom="@dimen/dp_2"
         android:text="咨询机构"
         android:textColor="@color/login_txt"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/setin_man"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/setin_man"
@@ -86,8 +86,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
->
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/t"

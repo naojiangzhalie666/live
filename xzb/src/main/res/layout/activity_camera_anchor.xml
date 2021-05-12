@@ -182,9 +182,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/live_zuan"
+                    android:drawablePadding="3dp"
                     android:paddingRight="2dp"
                     android:paddingBottom="2dp"
-                    android:drawablePadding="3dp"
                     android:text="实时收入"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
@@ -368,24 +368,24 @@
                     android:onClick="onClick" />
 
                 <Button
+                    android:id="@+id/camera_siliao"
                     android:layout_width="@dimen/live_btn_size"
                     android:layout_height="@dimen/live_btn_size"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:onClick="onClick"
-                    android:id="@+id/camera_siliao"
-                    android:background="@drawable/audice_siliao" />
+                    android:background="@drawable/audice_siliao"
+                    android:onClick="onClick" />
 
                 <Button
+                    android:id="@+id/camera_car"
                     android:layout_width="@dimen/live_btn_size"
                     android:layout_height="@dimen/live_btn_size"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
-                    android:onClick="onClick"
-                    android:id="@+id/camera_car"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/audice_car" />
+                    android:background="@drawable/audice_car"
+                    android:onClick="onClick" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -533,7 +533,8 @@
         android:layout_height="match_parent"
         android:background="#99000000"
         android:padding="10dp"
-        tools:visibility="gone">
+        android:visibility="visible"
+        tools:visibility="visible">
 
         <ImageView
             android:id="@+id/reback"
@@ -574,27 +575,38 @@
             android:id="@+id/refresh_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClick"
             android:layout_below="@+id/input_title"
             android:layout_alignRight="@+id/input_title"
             android:src="@drawable/live_refresh" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/mine_recy"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="8dp"
-            android:text="选个与本次直播内容相关性最高的标签用户精准度更高哦"
-            android:textColor="#ffff" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mine_recy"
+        <LinearLayout
+            android:id="@+id/mine_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_above="@+id/btn_start_room"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/refresh_title"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:orientation="vertical"
+            android:layout_marginRight="20dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/mine_recy"
+                android:layout_marginBottom="8dp"
+                android:text="选个与本次直播内容相关性最高的标签用户精准度更高哦"
+                android:textColor="#ffff" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mine_recy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+            />
+
+        </LinearLayout>
+
+
 
 
         <Button
@@ -620,12 +632,14 @@
             android:textSize="10sp" />
 
     </RelativeLayout>
+
     <com.yf.xzbgift.important.GiftAnimatorLayout
         android:id="@+id/lottie_animator_layout"
-        android:layout_gravity="left|bottom"
-        android:layout_marginBottom="@dimen/live_gift_panel_height"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/live_gift_lottie_view_height" />
+        android:layout_height="@dimen/live_gift_lottie_view_height"
+        android:layout_gravity="left|bottom"
+        android:layout_marginBottom="@dimen/live_gift_panel_height" />
+
     <com.example.xzb.utils.countdown.CountDownTimerView
         android:id="@+id/countdown_timer_view"
         android:layout_width="wrap_content"

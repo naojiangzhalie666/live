@@ -47,6 +47,7 @@ public class MsgInputActivity extends LiveBaseActivity {
     private String old_nian = "";
     private String old_pos = "";
     private String msg_last = "";
+    private String msg_lastId =  "";
 
 
 
@@ -98,7 +99,8 @@ public class MsgInputActivity extends LiveBaseActivity {
                 return;
             }
             msg_last = mNewLastFragment.msg_last;
-            Log.i(TAG, "onClick:sex "+ sex+" old_nian: "+old_nian+" msg_Last: "+msg_last);
+            msg_lastId = mNewLastFragment.msg_lastId;
+            Log.i(TAG, "onClick:sex "+ sex+" old_nian: "+old_nian+" msg_Last: "+msg_lastId);
             toUpdateMsg();
         }
 
@@ -111,7 +113,7 @@ public class MsgInputActivity extends LiveBaseActivity {
         map.put("gender",sex+"");
         map.put("ico","");
         map.put("id",LiveShareUtil.getInstance(this).get(LiveShareUtil.APP_USERID,""));
-        map.put("interest",msg_last);
+        map.put("interest",msg_lastId);
         String result =new Gson().toJson(map);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().updateUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(),requestBody), new HttpBackListener() {

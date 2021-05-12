@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.listener.OnItemLongClickListener;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -245,8 +248,10 @@ public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.View
             if (chooseModel == PictureMimeType.ofAudio()) {
                 viewHolder.mImg.setImageResource(R.drawable.picture_audio_placeholder);
             } else {
+                RoundedCorners roundedCorners = new RoundedCorners(8);
                 Glide.with(viewHolder.itemView.getContext()).load(PictureMimeType.isContent(path) && !media.isCut() && !media.isCompressed() ? Uri.parse(path) : path)
                         .centerCrop()
+                        .apply(new RequestOptions().transform(new CenterCrop(),roundedCorners ))
                         .placeholder(R.color.app_color_f6)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(viewHolder.mImg);

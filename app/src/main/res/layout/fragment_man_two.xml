@@ -33,7 +33,7 @@
                 android:focusableInTouchMode="true"
                 android:text="擅长方向"
                 android:textColor="@color/black_oneeight"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/textView25"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,7 +64,7 @@
                 android:layout_marginTop="10dp"
                 android:text="资质审核"
                 android:textColor="@color/black_oneeight"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/textView26"
                 app:layout_constraintTop_toBottomOf="@+id/mantwo_top_recy" />
 
@@ -82,13 +82,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:minWidth="@dimen/dp_80"
+                android:gravity="center"
                 android:background="@drawable/bg_corner_ft"
                 android:drawableRight="@drawable/mine_next"
                 android:drawablePadding="@dimen/dp_5"
                 android:padding="@dimen/dp_8"
                 android:text="2019年5月6日"
                 android:textColor="@color/home_txt"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView45" />
 
@@ -112,8 +114,10 @@
                 android:drawablePadding="@dimen/dp_5"
                 android:padding="@dimen/dp_8"
                 android:text="2019年5月6日"
+                android:minWidth="@dimen/dp_80"
+                android:gravity="center"
                 android:textColor="@color/home_txt"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/mantwo_sttm"
                 app:layout_constraintStart_toEndOf="@+id/textView31" />
 
@@ -130,7 +134,7 @@
                 android:paddingBottom="@dimen/dp_16"
                 android:text="参考示例：\n接受XXX心理咨询培训，获取XXX心理咨询师证书。"
                 android:textColor="@color/nineninenine"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 app:layout_constraintTop_toBottomOf="@+id/mantwo_sttm" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -163,7 +167,7 @@
                 android:focusableInTouchMode="true"
                 android:text="其他说明"
                 android:textColor="@color/black_oneeight"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -175,7 +179,7 @@
                 android:gravity="left|top"
                 android:hint="如果您有其他要说明的信息，请在此处留言。"
                 android:padding="@dimen/dp_8"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/manone_" />
@@ -202,7 +206,7 @@
             android:background="@drawable/bg_circle_solder_setin"
             android:text="提交审核"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

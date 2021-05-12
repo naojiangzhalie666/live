@@ -6,6 +6,7 @@
     android:layout_marginLeft="@dimen/dp_1_5"
     android:layout_marginRight="@dimen/dp_1_5"
     android:layout_marginTop="@dimen/dp_3"
+    android:background="@drawable/bg_corner_ft"
     android:gravity="center_vertical">
 
     <ImageView
@@ -18,10 +19,11 @@
         android:id="@+id/pic_add_ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_color_f6"
+        android:background="@drawable/bg_corner_ft"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageView
             android:id="@+id/fiv_add"
@@ -34,12 +36,14 @@
             android:id="@+id/pic_miaoshuone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            tools:text="新增资质"
             android:textColor="#D1D1D1"
-            android:textSize="12sp" />
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/pic_miaoshutwo"
             android:layout_width="wrap_content"
+            tools:text="(上传资质证书)"
             android:layout_height="wrap_content"
             android:textColor="#D1D1D1"
             android:textSize="10sp" />

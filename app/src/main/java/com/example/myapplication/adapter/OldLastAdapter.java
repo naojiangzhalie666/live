@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.bean.InterestBean;
 
 import java.util.List;
 
@@ -16,12 +17,13 @@ import butterknife.ButterKnife;
 
 public class OldLastAdapter extends RecyclerView.Adapter<OldLastAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mLists;
+    private List<InterestBean.RetDataBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private String content="";
+    private String select_id = "";
 
-    public OldLastAdapter(Context context, List<String> stringList) {
+    public OldLastAdapter(Context context, List<InterestBean.RetDataBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -40,26 +42,29 @@ public class OldLastAdapter extends RecyclerView.Adapter<OldLastAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        String bean = mLists.get(position);
-        vh.mItemNianTitle.setText(bean);
+        InterestBean.RetDataBean bean = mLists.get(position);
+        vh.mItemNianTitle.setText(bean.getLabelName());
         vh.mItemNianTitle.setTag(bean);
         vh.mItemNianTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView tv_new = v.findViewById(R.id.item_nian_title);
-                String now_con = (String) tv_new.getTag();
+                InterestBean.RetDataBean  now_bean = (InterestBean.RetDataBean) tv_new.getTag();
+                String now_con =  now_bean.getLabelName();
+                String id = now_bean.getId();
                 if(content.contains(now_con)){
                     tv_new.setTextColor(mContext.getResources().getColor(R.color.home_txt));
                     tv_new.setBackgroundResource(R.drawable.item_corner_man);
-                    String tag = (String) tv_new.getTag();
-                    content= content.replaceAll(tag+",","");
+                    content= content.replaceAll(now_con+",","");
+                    select_id = select_id.replaceAll(id+",","");
                 }else {
                     tv_new.setTextColor(mContext.getResources().getColor(R.color.login_txt));
                     tv_new.setBackgroundResource(R.drawable.item_corner_manse);
-                    content += (String) tv_new.getTag()+",";
+                    content += now_con+",";
+                    select_id += id+",";
                 }
                 if(mOnItemClickListener!=null)
-                    mOnItemClickListener.onItemClickListener(content);
+                    mOnItemClickListener.onItemClickListener(content,select_id);
             }
         });
 
@@ -72,7 +77,7 @@ public class OldLastAdapter extends RecyclerView.Adapter<OldLastAdapter.ViewHold
     }
 
     public interface OnItemClickListener {
-        void onItemClickListener(String content);
+        void onItemClickListener(String content,String selectId);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

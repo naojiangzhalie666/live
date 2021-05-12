@@ -173,4 +173,13 @@ public class SetActivity extends LiveBaseActivity {
             ToastShow("绑定成功");
         }
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mUserInfo = LiveShareUtil.getInstance(this).getUserInfo();
+        if (mUserInfo != null) {
+            setData(mUserInfo.getRetData());
+        }
+    }
 }

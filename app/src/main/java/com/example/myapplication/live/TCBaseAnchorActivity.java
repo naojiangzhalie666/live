@@ -16,6 +16,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,10 +27,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.adapter.QianAdapter;
+import com.example.myapplication.base.LiveApplication;
+import com.example.myapplication.bean.InterestBean;
 import com.example.myapplication.pop_dig.GuanzDialog;
 import com.example.myapplication.pop_dig.ReportActivity;
+import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
 import com.example.xzb.R;
-import com.example.xzb.adapter.QianAdapter;
 import com.example.xzb.important.IMLVBLiveRoomListener;
 import com.example.xzb.important.MLVBCommonDef;
 import com.example.xzb.important.MLVBLiveRoom;
@@ -54,6 +61,7 @@ import com.example.xzb.utils.login.TCELKReportMgr;
 import com.example.xzb.utils.login.TCUserMgr;
 import com.example.xzb.utils.roomutil.AnchorInfo;
 import com.example.xzb.utils.roomutil.AudienceInfo;
+import com.google.gson.Gson;
 import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.rtmp.TXLog;
 import com.yf.xzbgift.imple.DefaultGiftAdapterImp;
@@ -69,10 +77,9 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -130,11 +137,11 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     private RelativeLayout mControllLayer;
 
     /*---------------布局新增数据---------------------------*/
-    private TextView mtv_name, mtv_gg, mtv_id, mtv_date,mtv_jg,mtv_title;
-    private List<Map<String, Object>> mqianStrs;
+    private TextView mtv_name, mtv_gg, mtv_id, mtv_date, mtv_jg, mtv_title;
+    private List<InterestBean.RetDataBean> mqianStrs;
     private QianAdapter mQianAdapter;
     private TextView mtv_one;
-    private ImageView mtv_back;
+    private ImageView mtv_back,imgv_refresh;
     private RecyclerView mRec_qian;
     private EditText medt_title;
     private LiveCloseDialog mLiveCloseDialog;
@@ -143,7 +150,9 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     private GiftAdapter mGiftAdapter;
     private GiftInfoDataHandler mGiftInfoDataHandler;
     private GuanzDialog mGuanzDialog;
-
+    private String[] mString_titles = new String[]{"婚前婚后1", "婚前婚后2", "婚前婚后3", "婚前婚后4", "婚前婚后5",
+            "婚前婚后5", "婚前婚后7", "婚前婚后8", "婚前婚后9", "婚前婚后10", "婚前婚后11", "婚前婚后12", "婚前婚后13",
+            "婚前婚后14", "婚前婚后15", "婚前婚后16"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,32 +197,31 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         mRela_befor = findViewById(R.id.rela_before);
         mtv_one = findViewById(R.id.tvone);
         mtv_back = findViewById(R.id.reback);
+        imgv_refresh = findViewById(R.id.refresh_title);
         mRec_qian = findViewById(R.id.mine_recy);
         medt_title = findViewById(R.id.input_title);
         mCountDownTimerView = findViewById(R.id.countdown_timer_view);
         GridLayoutManager manager = new GridLayoutManager(this, 3);
         mRec_qian.setLayoutManager(manager);
         mqianStrs = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("select", false);
-            mqianStrs.add(map);
-        }
         mQianAdapter = new QianAdapter(this, mqianStrs);
         mRec_qian.setAdapter(mQianAdapter);
         mQianAdapter.setOnItemClickListener(new QianAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(int pos) {
                 for (int i = 0; i < mqianStrs.size(); i++) {
-                    Map<String, Object> map = mqianStrs.get(i);
+                    InterestBean.RetDataBean map = mqianStrs.get(i);
                     if (i == pos) {
-                        boolean select = (boolean) map.get("select");
-                        map.put("select", !select);
+                        map.setSelect(true);
+                    } else {
+                        map.setSelect(false);
                     }
                 }
-                mQianAdapter.notifyItemChanged(pos);
+                mQianAdapter.notifyDataSetChanged();
+               medt_title.setText(mString_titles[0]);
             }
         });
+        getInterest();
         mtv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -248,7 +256,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int postion, long l) {
                 TCChatEntity tcChatEntity = mArrayListChatEntity.get(postion);
-                mGuanzDialog = new GuanzDialog(TCBaseAnchorActivity.this,tcChatEntity);
+                mGuanzDialog = new GuanzDialog(TCBaseAnchorActivity.this, tcChatEntity);
                 mGuanzDialog.setOnDigClickListener(new GuanzDialog.OnDigClickListener() {
                     @Override
                     public void onInviteClickListener() {
@@ -262,12 +270,12 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
                     @Override
                     public void onJinyanClickListener() {
-                        ToastUtil.showToast(TCBaseAnchorActivity.this,"禁言"+tcChatEntity.getSenderName());
+                        ToastUtil.showToast(TCBaseAnchorActivity.this, "禁言" + tcChatEntity.getSenderName());
                     }
 
                     @Override
                     public void onRenmingClickListener() {
-                        ToastUtil.showToast(TCBaseAnchorActivity.this,"任命"+tcChatEntity.getSenderName()+"为助理");
+                        ToastUtil.showToast(TCBaseAnchorActivity.this, "任命" + tcChatEntity.getSenderName() + "为助理");
                     }
                 });
                 mGuanzDialog.show();
@@ -281,11 +289,11 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             @Override
             public void onClick(View v) {
                 String title = medt_title.getText().toString().trim();
-                if(TextUtils.isEmpty(title)){
+                if (TextUtils.isEmpty(title)) {
                     title = medt_title.getHint().toString();
                 }
                 mtv_title.setText(title.trim());
-                mTitle =title.trim();
+                mTitle = title.trim();
                 mRela_befor.setVisibility(View.INVISIBLE);
                 mControllLayer.setVisibility(View.VISIBLE);
                 mCountDownTimerView.countDownAnimation(CountDownTimerView.DEFAULT_COUNTDOWN_NUMBER);
@@ -306,7 +314,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             @Override
             public void onAccept() {
                 Log.i(TAG, "onAccept:观众接受已经接收连麦");
-                if(mGuanzDialog!=null&&mGuanzDialog.isShowing())
+                if (mGuanzDialog != null && mGuanzDialog.isShowing())
                     mGuanzDialog.dismiss();
             }
 
@@ -347,7 +355,6 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         mtv_date.setText(new SimpleDateFormat("yyyy.MM.dd").format(new Date()));
 
 
-
     }
 
 
@@ -356,8 +363,12 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         int id = v.getId();
         if (id == R.id.btn_close) {
             showExitInfoDialog("当前正在直播，是否退出直播？", false);
-        }else if (id == R.id.btn_message_input) {
+        } else if (id == R.id.btn_message_input) {
             showInputMsgDialog();
+        }else if(id == R.id.refresh_title){
+            Animation animation = AnimationUtils.loadAnimation(this,R.anim.live_refresh);
+            imgv_refresh.startAnimation(animation);
+            medt_title.setText(toChangeTitle());
         }
     }
 
@@ -426,7 +437,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
                     .put("title", mTitle)
                     .put("frontcover", mCoverPicUrl)
                     .put("location", mLocation)
-                    .put("label","人气主播")
+                    .put("label", "人气主播")
                     .toString();
         } catch (JSONException e) {
             roomInfo = mTitle;
@@ -686,8 +697,9 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             mDanmuMgr.addDanmu(userInfo.avatar, userInfo.nickname, text);
         }
     }
+
     /**
-    /**
+     * /**
      * 处理礼物弹幕消息
      */
     private void handleGiftMsg(TCSimpleUserInfo userInfo, String giftId) {
@@ -696,7 +708,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             /*发送消息到列表*/
             TCChatEntity entity = new TCChatEntity();
             entity.setSenderName(userInfo.nickname);
-            entity.setContent("送了一个 "+giftInfo.title);
+            entity.setContent("送了一个 " + giftInfo.title);
             entity.setType(TCConstants.TEXT_TYPE);
             entity.setIs_gift(true);
             entity.setHead(userInfo.avatar);
@@ -912,7 +924,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
     @Override
     public void onError(int errCode, String errInfo) {
-        Log.e("StandardCallback", "onError: errCode= "+errCode  +" errInfo= "+errInfo );
+        Log.e("StandardCallback", "onError: errCode= " + errCode + " errInfo= " + errInfo);
     }
 
     @Override
@@ -951,6 +963,33 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         if (null != mBroadcastTimer) {
             mBroadcastTimerTask.cancel();
         }
+    }
+
+    /*获取兴趣爱好列表展示*/
+    private void getInterest() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getCouLabel(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                InterestBean interestBean = new Gson().fromJson(result.toString(), InterestBean.class);
+                if (interestBean.getRetCode() == 0) {
+                    mqianStrs.addAll(interestBean.getRetData());
+                    mQianAdapter.notifyDataSetChanged();
+                } else {
+                    ToastUtil.showToast(TCBaseAnchorActivity.this, interestBean.getRetMsg());
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    private String toChangeTitle() {
+        return mString_titles[new Random().nextInt(mString_titles.length)];
     }
 
 }

@@ -4,16 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Window;
+import android.view.View;
 
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.bean.EventMessage;
-import com.example.myapplication.chat.BaseHelfActivity;
+import com.example.myapplication.chat.BaseChatActivity;
 import com.example.myapplication.chat.ChatActivity;
 import com.example.myapplication.chat.ChathelfFragment;
 import com.example.myapplication.ui.LoginActivity;
-import com.ljy.devring.util.DensityUtil;
+import com.example.myapplication.utils.AndroidBug5497Workaround;
 import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 
 import static com.tencent.imsdk.v2.V2TIMManager.V2TIM_STATUS_LOGINED;
 
-public class ChathelfActivity extends BaseHelfActivity {
+public class ChathelfActivity extends BaseChatActivity {
     private static final String TAG = ChatActivity.class.getSimpleName();
 
     private ChathelfFragment mChatFragment;
@@ -35,13 +35,20 @@ public class ChathelfActivity extends BaseHelfActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_chathelf);
+        AndroidBug5497Workaround.assistActivity(this);
         ButterKnife.bind(this);
-        getWindow().setLayout(Constraints.LayoutParams.MATCH_PARENT, DensityUtil.dp2px(this,400));
+        getWindow().setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.MATCH_PARENT);
         getWindow().setGravity(Gravity.BOTTOM);
         chat(getIntent());
         EventBus.getDefault().register(this);
+        findViewById(R.id.chathelf_ll).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
 

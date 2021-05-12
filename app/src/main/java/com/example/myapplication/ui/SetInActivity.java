@@ -1,5 +1,6 @@
 package com.example.myapplication.ui;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -7,16 +8,26 @@ import android.widget.TextView;
 import com.example.myapplication.R;
 import com.example.myapplication.base.Constant;
 import com.example.myapplication.base.LiveBaseActivity;
+import com.example.myapplication.bean.BaseBean;
+import com.example.myapplication.bean.UserInfoBean;
+import com.example.myapplication.bean.live_mine.ZxjgBean;
+import com.example.myapplication.bean.live_mine.ZxsBean;
 import com.example.myapplication.fragment.setin.JgOneFragment;
 import com.example.myapplication.fragment.setin.JgTwoFragment;
 import com.example.myapplication.fragment.setin.ManOneFragment;
 import com.example.myapplication.fragment.setin.ManTwoFragment;
+import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
+import com.google.gson.Gson;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /********************************************************************
  @version: 1.0.0
@@ -36,11 +47,17 @@ public class SetInActivity extends LiveBaseActivity {
     @BindView(R.id.setin_con_end)
     ConstraintLayout mSetinConend;
 
-    private JgOneFragment mJgOneFragment;
-    private JgTwoFragment mJgTwoFragment;
+
     private ManOneFragment mManOneFragment;
     private ManTwoFragment mManTwoFragment;
-    private boolean is_man = true;
+
+    private JgOneFragment mJgOneFragment;
+    private JgTwoFragment mJgTwoFragment;
+
+    private boolean is_man = true;      //true 选择的为咨询师  false 选择为咨询机构
+    public ZxsBean mZxsBean;            //咨询师入驻实体
+    public ZxjgBean mZxjgBean;          //咨询机构入驻实体
+    private UserInfoBean mUserInfo;     //登录帐号实体数据
 
 
     @Override
@@ -52,7 +69,12 @@ public class SetInActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         ButterKnife.bind(this);
-        if(Constant.IS_SHENHEING){
+        mZxsBean = new ZxsBean();
+        mZxjgBean = new ZxjgBean();
+        mUserInfo = LiveShareUtil.getInstance(this).getUserInfo();
+        mZxsBean.userId = mUserInfo.getRetData().getId();
+        mZxjgBean.userId = mUserInfo.getRetData().getId();
+        if (Constant.IS_SHENHEING) {
             mSetinConend.setVisibility(View.VISIBLE);
             return;
         }
@@ -106,14 +128,73 @@ public class SetInActivity extends LiveBaseActivity {
 
     public void toSub() {
         if (is_man) {
-            Constant.IS_SHENHEING = true;
-            mSetinConend.setVisibility(View.VISIBLE);
+            toCommitMan();
         } else {
-            Constant.IS_SHENHEING = true;
-            mSetinConend.setVisibility(View.VISIBLE);
+            toCommitZxjg();
         }
+    }
+
+    /**
+     * 咨询师入驻上传提交
+     */
+    private void toCommitMan() {
+        String result = new Gson().toJson(mZxsBean);
+        Log.i(TAG, "咨询师上传参数： " + result);
+        showLoad();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().toSubmitZxs(token, requestBody), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                hideLoad();
+                BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
+                if (baseBean.getRetCode() == 0) {
+                    Constant.IS_SHENHEING = true;//应该是userInfo接口返回一个状态---修改为审核中
+                    mSetinConend.setVisibility(View.VISIBLE);
+                }
+                ToastShow(baseBean.getRetMsg());
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                hideLoad();
+            }
+        });
+
+    }
+
+    /**
+     * 咨询机构上传提交
+     */
+    private void toCommitZxjg(){
+        String result = new Gson().toJson(mZxjgBean);
+        Log.i(TAG, "咨询机构上传参数： " + result);
+        showLoad();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().toSubmitZxjg(token, requestBody), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                hideLoad();
+                BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
+                if (baseBean.getRetCode() == 0) {
+                    Constant.IS_SHENHEING = true;//应该是userInfo接口返回一个状态---修改为审核中
+                    mSetinConend.setVisibility(View.VISIBLE);
+                }
+                ToastShow(baseBean.getRetMsg());
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                hideLoad();
+            }
+        });
 
 
+//        Constant.IS_SHENHEING = true;
+//        mSetinConend.setVisibility(View.VISIBLE);
     }
 
 }

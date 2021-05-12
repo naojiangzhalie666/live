@@ -60,12 +60,13 @@ public class ZixAdapter extends RecyclerView.Adapter<ZixAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
+//        vh.setIsRecyclable(false);
         ZixBean bean = mLists.get(position);
         if(!TextUtils.isEmpty(bean.getXxpath())){
             Glide.with(mContext).load(bean.getXxpath()).into(vh.mItemZxXxpic);
         }
-        vh.mItemZxSttm.setText(bean.getStTm());
-        vh.mItemZxEdtm.setText(bean.getEdTm());
+        vh.mItemZxSttm.setText(bean.getStTTm());
+        vh.mItemZxEdtm.setText(bean.getEdTTm());
         GridImageAdapter mAdapter = new GridImageAdapter(mContext, new GridImageAdapter.onAddPicClickListener() {
             @Override
             public void onAddPicClick() {
@@ -76,12 +77,22 @@ public class ZixAdapter extends RecyclerView.Adapter<ZixAdapter.ViewHolder> {
         mAdapter.setList(bean.getLocalMedia());
         mAdapter.setShow_add(true);
         mAdapter.setShow_zdy(true, "新增资质", "(上传资质证书)");
-        mAdapter.setCan_caozuo(false);
+        mAdapter.setCan_caozuo(true);
+        mAdapter.setOnDeleteClickListener(new GridImageAdapter.OnDeleteClickListener() {
+            @Override
+            public void onDeleteClickListener(int pos) {
+                bean.getMapList().remove(pos);
+                bean.setCount(bean.getCount()-1);
+            }
+        });
         FullyGridLayoutManager manager = new FullyGridLayoutManager(mContext, 3, GridLayoutManager.VERTICAL, false);
         vh.mItemZxZzrecy.setLayoutManager(manager);
 //        vh.mItemZxZzrecy.addItemDecoration(new GridSpacingItemDecoration(3, ScreenUtils.dip2px(mContext, 8), false));
         vh.mItemZxZzrecy.setAdapter(mAdapter);
-
+        vh.mItemZxName.setTag(bean);
+        vh.mItemZxName.setText(bean.getName());
+        if(!TextUtils.isEmpty(bean.getName()))
+        vh.mItemZxName.setSelection(bean.getName().length());
         vh.mItemZxName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -95,7 +106,8 @@ public class ZixAdapter extends RecyclerView.Adapter<ZixAdapter.ViewHolder> {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                bean.setName(vh.mItemZxName.getText().toString());
+                ZixBean bean_now = (ZixBean) vh.mItemZxName.getTag();
+                bean_now.setName(vh.mItemZxName.getText().toString());
             }
         });
 
@@ -179,7 +191,8 @@ public class ZixAdapter extends RecyclerView.Adapter<ZixAdapter.ViewHolder> {
         @BindView(R.id.item_zx_sttm)
         TextView mItemZxSttm;
         @BindView(R.id.item_zx_edtm)
-        TextView mItemZxEdtm;
+        TextView mItemZxEdtm; @BindView(R.id.textVie45)
+        TextView mItemtv;
         @BindView(R.id.item_zx_zzrecy)
         RecyclerView mItemZxZzrecy;
 

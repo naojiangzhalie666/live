@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.bean.InterestBean;
 
 import java.util.List;
 
@@ -16,13 +17,14 @@ import butterknife.ButterKnife;
 
 public class RuzhuAdapter extends RecyclerView.Adapter<RuzhuAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mLists;
+    private List<InterestBean.RetDataBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private View onClickView;
     private String content="";
+    private String select_id = "";
 
-    public RuzhuAdapter(Context context, List<String> stringList) {
+    public RuzhuAdapter(Context context, List<InterestBean.RetDataBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -41,26 +43,29 @@ public class RuzhuAdapter extends RecyclerView.Adapter<RuzhuAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        String bean = mLists.get(position);
-        vh.mItemNianTitle.setText(bean);
+        InterestBean.RetDataBean bean = mLists.get(position);
+        vh.mItemNianTitle.setText(bean.getLabelName());
         vh.mItemNianTitle.setTag(bean);
         vh.mItemNianTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView tv_new = v.findViewById(R.id.item_nian_title);
-                String now_con = (String) tv_new.getTag();
+                InterestBean.RetDataBean  now_bean = (InterestBean.RetDataBean) tv_new.getTag();
+                String now_con =  now_bean.getLabelName();
+                String id = now_bean.getId();
                 if(content.contains(now_con)){
                     tv_new.setTextColor(mContext.getResources().getColor(R.color.sixsixsix));
-                    tv_new.setBackgroundResource(R.drawable.bg_circle_stoke_gray);
-                    String tag = (String) tv_new.getTag();
-                    content= content.replaceAll(tag+",","");
+                    tv_new.setBackgroundResource(R.drawable.bg_circle_stoke_dc);
+                    content= content.replaceAll(now_con+",","");
+                    select_id = select_id.replaceAll(id+",","");
                 }else {
                     tv_new.setTextColor(mContext.getResources().getColor(R.color.white));
                     tv_new.setBackgroundResource(R.drawable.bg_circle_solder_setin);
-                    content += (String) tv_new.getTag()+",";
+                    content +=now_con+",";
+                    select_id += id+",";
                 }
                 if(mOnItemClickListener!=null)
-                    mOnItemClickListener.onItemClickListener(content);
+                    mOnItemClickListener.onItemClickListener(content,select_id);
             }
         });
 
@@ -73,7 +78,7 @@ public class RuzhuAdapter extends RecyclerView.Adapter<RuzhuAdapter.ViewHolder> 
     }
 
     public interface OnItemClickListener {
-        void onItemClickListener(String content);
+        void onItemClickListener(String content,String selectId);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

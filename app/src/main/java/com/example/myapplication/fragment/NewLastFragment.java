@@ -8,7 +8,14 @@ import android.view.ViewGroup;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.OldLastAdapter;
+import com.example.myapplication.base.LiveApplication;
+import com.example.myapplication.bean.InterestBean;
+import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
+import com.google.gson.Gson;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.superc.yyfflibrary.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +33,14 @@ import butterknife.Unbinder;
  */
 public class NewLastFragment extends Fragment {
     public String msg_last = "";
+    public String msg_lastId = "";
     private Unbinder unbinder;
     @BindView(R.id.newsecond_recy)
     RecyclerView mNewLastRecy;
     @BindView(R.id.last_smart)
     SmartRefreshLayout mNewLastSmart;
-    private List<String> mListStrings;
+    private List<InterestBean.RetDataBean> mListStrings;
     private OldLastAdapter mOldNianAdapter;
-    private String[] mStrings = new String[]{"情感修复", "婚姻家庭", "恋爱关系", "亲子关系", "职场问题", "个人成长", "人际关系", "第三者问题", "心理健康检测", "未成年人心理"};
 
 
     @Override
@@ -56,17 +63,40 @@ public class NewLastFragment extends Fragment {
         mNewLastSmart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         mNewLastSmart.setEnableOverScrollBounce(true);//是否启用越界回弹
         mListStrings = new ArrayList<>();
-        for (int i = 0; i < mStrings.length; i++) {
-            mListStrings.add(mStrings[i]);
-        }
         mOldNianAdapter = new OldLastAdapter(getActivity(), mListStrings);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         mNewLastRecy.setLayoutManager(gridLayoutManager);
         mNewLastRecy.setAdapter(mOldNianAdapter);
         mOldNianAdapter.setOnItemClickListener(new OldLastAdapter.OnItemClickListener() {
             @Override
-            public void onItemClickListener(String content) {
+            public void onItemClickListener(String content,String selectid) {
                 msg_last = content;
+                msg_lastId =selectid;
+            }
+        });
+        getInterest();
+    }
+
+
+    /*获取兴趣爱好列表展示*/
+    private void getInterest() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getCouLabel(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                InterestBean interestBean = new Gson().fromJson(result.toString(), InterestBean.class);
+                if (interestBean.getRetCode() == 0) {
+                    mListStrings.addAll(interestBean.getRetData());
+                    mOldNianAdapter.notifyDataSetChanged();
+                } else {
+                    ToastUtil.showToast(getActivity(), interestBean.getRetMsg());
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
             }
         });
 

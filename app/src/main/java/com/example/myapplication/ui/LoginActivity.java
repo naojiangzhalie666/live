@@ -145,6 +145,7 @@ public class LoginActivity extends LiveBaseActivity {
 
     /*获取用户信息*/
     private void getUserInfo() {
+        showLoad();
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
@@ -157,6 +158,7 @@ public class LoginActivity extends LiveBaseActivity {
                     LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERCOVER,userInfoBean.getRetData().getIco());
                     LiveShareUtil.getInstance(LoginActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
                     LiveShareUtil.getInstance(LoginActivity.this).putPower(userInfoBean.getRetData().getType());//用户类型
+//                    LiveShareUtil.getInstance(LoginActivity.this).putPower(1);//用户类型
                     thisLogin(userInfoBean.getRetData());
                     String interest = userInfoBean.getRetData().getInterest();
                     if (TextUtils.isEmpty(interest)) {
@@ -200,6 +202,7 @@ public class LoginActivity extends LiveBaseActivity {
 
     /*登录直播的IM并配置聊天的IM*/
     private void gotLogin(UserInfoBean.RetDataBean bean,String sign) {
+        hideLoad();
         mInstance = TCUserMgr.getInstance();
         mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
             @Override

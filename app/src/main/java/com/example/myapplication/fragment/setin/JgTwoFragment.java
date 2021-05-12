@@ -14,12 +14,20 @@ import android.widget.EditText;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.GridImageAdapter;
 import com.example.myapplication.adapter.ZixAdapter;
+import com.example.myapplication.base.LiveApplication;
+import com.example.myapplication.base.LiveBaseFragment;
+import com.example.myapplication.bean.UploadBean;
 import com.example.myapplication.bean.ZixBean;
+import com.example.myapplication.bean.live_mine.ZxjgBean;
 import com.example.myapplication.ui.SetInActivity;
 import com.example.myapplication.utils.FullyGridLayoutManager;
 import com.example.myapplication.utils.GlideEngine;
+import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.datepicker.CustomDatePicker;
 import com.example.myapplication.utils.datepicker.DateFormatUtils;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
+import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.animators.AnimationType;
 import com.luck.picture.lib.config.PictureConfig;
@@ -30,8 +38,14 @@ import com.luck.picture.lib.listener.OnItemClickListener;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.luck.picture.lib.tools.ScreenUtils;
 import com.luck.picture.lib.tools.SdkVersionUtils;
+import com.superc.yyfflibrary.utils.DateUtil;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.net.FileNameMap;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,13 +63,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class JgTwoFragment extends Fragment {
+public class JgTwoFragment extends LiveBaseFragment {
     private static final String TAG = "JgTwoFragment";
 
     @BindView(R.id.jgtwo_tprecy)
@@ -76,6 +93,7 @@ public class JgTwoFragment extends Fragment {
     public static final int SELECT_ZZ = 113;
     private CustomDatePicker customDatePickerSt;
     private boolean is_other = false;
+    private List<String> mLists_others;
 
 
     @Override
@@ -99,29 +117,88 @@ public class JgTwoFragment extends Fragment {
         switch (view.getId()) {
             case R.id.jgtwo_add:
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                mZixBeans.add(new ZixBean(new ArrayList<>(),new ArrayList<>(), dateFormat.format(new Date()), dateFormat.format(new Date())));
+                SimpleDateFormat dateFormat_show = new SimpleDateFormat("yyyy年MM月dd日");
+                mZixBeans.add(new ZixBean(new ArrayList<>(), new ArrayList<>(), dateFormat.format(new Date())+" 00:00:00", dateFormat.format(new Date())+" 00:00:00", dateFormat_show.format(new Date()), dateFormat_show.format(new Date())));
                 mZixAdapter.notifyDataSetChanged();
                 break;
             case R.id.setin_next:
-                mActivity.toSub();
-                for (int i = 0; i < mZixBeans.size(); i++) {
-                    ZixBean zixBean = mZixBeans.get(i);
-                    Log.e(TAG, "onClick: "+zixBean.toString() );
-                    for (int j = 0; j < zixBean.getMapList().size(); j++) {
-                        Map<String, Object> map = zixBean.getMapList().get(j);
-                        Log.e(TAG, "onClick: "+map.get("path")+"  st= "+map.get("sttm")+" edtm= "+map.get("edtm"));
-                    }
-                    Log.e(TAG, "----------------------------------------------------" );
-                }
+                toSubmit();
                 break;
         }
     }
 
+    private void toSubmit() {
+        // TODO: 2021/5/12 放开图片上传并注释掉如下
+        /*-----------测试用 start--------------------*/
+    /*    for (int i = 0; i < mZixBeans.size(); i++) {
+            ZixBean zixBean = mZixBeans.get(i);
+            Log.e(TAG, "咨询机构: ----------------------------------------------------start");
+            Log.e(TAG, "咨询机构: " + zixBean.toString());
+            Log.e(TAG, "咨询机构: "+new Gson().toJson(zixBean));
+            Log.e(TAG, "咨询机构: ----------------------------------------------------end");
+        }
+        return;*/
+        /*-----------测试用 end--------------------*/
+
+        if(mZixBeans.size()<0){
+            ToastShow("请至少上传一位咨询师信息");
+            return;
+        }
+        List<ZxjgBean.DataBean> mZxjgbeans =new ArrayList<>();
+        for (int i = 0; i < mZixBeans.size(); i++) {
+            ZixBean zixBean = mZixBeans.get(i);
+            ZxjgBean.DataBean bean = new ZxjgBean.DataBean();
+            Log.e(TAG, "onClick: " + zixBean.toString());
+            if(TextUtils.isEmpty(zixBean.getName())){
+               ToastShow("请输咨询师名称");
+               return;
+            }
+            if(TextUtils.isEmpty(zixBean.getXxUrl())){
+                ToastShow("请上传咨询师形象照");
+                return;
+            }
+            bean.couName =zixBean.getName();
+            List<String> xx_lists = new ArrayList<>();
+            xx_lists.add(zixBean.getXxUrl());
+            bean.imageList = xx_lists;
+            if(zixBean.getMapList().size()==0){
+                ToastShow("请上传您咨询师资质");
+                return;
+            }
+            List<ZxjgBean.DataBean.quaBeList> quaBeLists = new ArrayList<>();
+            for (int j = 0; j < zixBean.getMapList().size(); j++) {
+                Map<String, Object> map = zixBean.getMapList().get(j);
+                ZxjgBean.DataBean.quaBeList quaBe =new ZxjgBean.DataBean.quaBeList();
+                quaBe.setEndDate((String) map.get("edtm"));
+                quaBe.setStartDate((String) map.get("sttm"));
+                quaBe.setImgUrl((String) map.get("url"));
+                quaBeLists.add(quaBe);
+                Log.e(TAG, "onClick:url= "+map.get("url")+"  path= " + map.get("path") + "  st= " + map.get("sttm") + " edtm= " + map.get("edtm"));
+            }
+            bean.quaBeList =quaBeLists;
+            Log.e(TAG, "----------------------------------------------------");
+            mZxjgbeans.add(bean);
+        }
+        mActivity.mZxjgBean.couBasicBeList  =mZxjgbeans;
+        String other_content = "";
+        if (!TextUtils.isEmpty(mMantwoOtherEdt.getText().toString())) {
+            other_content += mMantwoOtherEdt.getText().toString() + ",";
+        }
+        for (int i = 0; i < mLists_others.size(); i++) {
+            other_content += mLists_others.get(i) + ",";
+        }
+        if (other_content.endsWith(",")) {
+            mActivity.mZxsBean.other = other_content.substring(0, other_content.length() - 1);
+        }
+        mActivity.toSub();
+    }
+
     private void init() {
+        mLists_others = new ArrayList<>();
         initRecy();
         mZixAdapter.setOnItemClickListener(new ZixAdapter.OnItemClickListener() {
             @Override
-            public void onAddZzClickListener(int pos) {
+            public void onAddZzClickListener(int pos) {//资质图片
                 super.onAddZzClickListener(pos);
                 mZixBean = mZixBeans.get(pos);
                 position = pos;
@@ -131,7 +208,7 @@ public class JgTwoFragment extends Fragment {
             }
 
             @Override
-            public void onStTmClickListener(int pos) {
+            public void onStTmClickListener(int pos) {//开始时间
                 super.onStTmClickListener(pos);
                 mZixBean = mZixBeans.get(pos);
                 position = pos;
@@ -140,7 +217,7 @@ public class JgTwoFragment extends Fragment {
             }
 
             @Override
-            public void onEdTmClickListener(int pos) {
+            public void onEdTmClickListener(int pos) {//结束时间
                 super.onEdTmClickListener(pos);
                 mZixBean = mZixBeans.get(pos);
                 position = pos;
@@ -149,7 +226,7 @@ public class JgTwoFragment extends Fragment {
             }
 
             @Override
-            public void onAddXXpiClistener(int pos) {
+            public void onAddXXpiClistener(int pos) {//形象照
                 super.onAddXXpiClistener(pos);
                 mZixBean = mZixBeans.get(pos);
                 position = pos;
@@ -161,8 +238,11 @@ public class JgTwoFragment extends Fragment {
 
     private void initRecy() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat_show = new SimpleDateFormat("yyyy年MM月dd日");
         mZixBeans = new ArrayList<>();
-        mZixBeans.add(new ZixBean(new ArrayList<>(),new ArrayList<>(), dateFormat.format(new Date()), dateFormat.format(new Date())));
+        mZixBean = new ZixBean(new ArrayList<>(), new ArrayList<>(), dateFormat.format(new Date())+" 00:00:00",
+                dateFormat.format(new Date())+" 00:00:00", dateFormat_show.format(new Date()), dateFormat_show.format(new Date()));
+        mZixBeans.add(mZixBean);
         mZixAdapter = new ZixAdapter(getActivity(), mZixBeans);
         mZixAdapter.setActivity(getActivity());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()) {
@@ -186,8 +266,14 @@ public class JgTwoFragment extends Fragment {
         mOtherAdapter = new GridImageAdapter(getActivity(), onAddZiPicClickListener);
         mOtherAdapter.setShow_add(true);
         mOtherAdapter.setSelectMax(100);
-        mOtherAdapter.setCan_caozuo(false);
+        mOtherAdapter.setCan_caozuo(true);
         mMantwoOtherRecy.setAdapter(mOtherAdapter);
+        mOtherAdapter.setOnDeleteClickListener(new GridImageAdapter.OnDeleteClickListener() {
+            @Override
+            public void onDeleteClickListener(int pos) {
+                mLists_others.remove(pos);
+            }
+        });
         mOtherAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -329,15 +415,13 @@ public class JgTwoFragment extends Fragment {
             List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
             switch (requestCode) {
                 case SELECT_XX:
-                    mZixBean.setXxpath(selectList.get(0).getPath());
-                    mZixAdapter.notifyItemChanged(position);
-                    break;
-                case SELECT_OTHER:
-                    mOtherAdapter.getData().addAll(selectList);
-                    mOtherAdapter.notifyDataSetChanged();
+                    toUpFile(TextUtils.isEmpty(selectList.get(0).getRealPath()) ? selectList.get(0).getPath() : selectList.get(0).getRealPath(), 1, selectList);
+//                    mZixBean.setXxpath(TextUtils.isEmpty(selectList.get(0).getRealPath()) ? selectList.get(0).getPath() : selectList.get(0).getRealPath());
+//                    mZixAdapter.notifyItemChanged(position);
                     break;
                 case SELECT_ZZ:
-                    List<LocalMedia> localMedia = mZixBean.getLocalMedia();
+                    toUpFile(TextUtils.isEmpty(selectList.get(0).getRealPath()) ? selectList.get(0).getPath() : selectList.get(0).getRealPath(), 2, selectList);
+                    /*List<LocalMedia> localMedia = mZixBean.getLocalMedia();
                     localMedia.addAll(selectList);
                     mZixAdapter.notifyItemChanged(position);
                     int count = mZixBean.getCount();
@@ -346,12 +430,93 @@ public class JgTwoFragment extends Fragment {
                     map.put("edtm", mZixBean.getEdTm());
                     map.put("path", selectList.get(0).getPath());
                     mZixBean.getMapList().add(map);
-                    mZixBean.setCount(count + 1);
+                    mZixBean.setCount(count + 1);*/
+                    break;
+                case SELECT_OTHER:
+                    toUpFile(TextUtils.isEmpty(selectList.get(0).getRealPath()) ? selectList.get(0).getPath() : selectList.get(0).getRealPath(), 3, selectList);
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    /**
+     * @param path 文件路径
+     * @param type 1--形象照  2--资质   3--其它
+     */
+    private void toUpFile(String path, int type, List<LocalMedia> selectList) {
+//        String path = localMedia.getRealPath();
+//        if (TextUtils.isEmpty(path)) {
+//            path = localMedia.getPath();
+//        }
+        File img = new File(path);
+        String names = img.getName();
+        RequestBody requestFile = RequestBody.create(MediaType.parse(guessMimeType(img.getPath())), img);
+        MultipartBody.Part body = null;
+        try {
+            body = MultipartBody.Part.createFormData("file", URLEncoder.encode(names, "UTF-8"), requestFile);
+        } catch (UnsupportedEncodingException e) {
+            Log.e("ManOneFragment", "toAddClient: 文件名异常" + names + e.toString());
+        }
+        showLoad();
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().upLoadFile(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(), body), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                UploadBean bean = new Gson().fromJson(result.toString(), UploadBean.class);
+                if (bean.getRetCode() == 0) {
+                    switch (type) {
+                        case 1:
+                            mZixBean.setXxUrl(bean.getRetData().getUrl());
+                            mZixBean.setXxpath(path);
+                            mZixAdapter.notifyItemChanged(position);
+                            break;
+                        case 2:
+                            List<LocalMedia> localMedia = mZixBean.getLocalMedia();
+                            localMedia.addAll(selectList);
+                            mZixAdapter.notifyItemChanged(position);
+                            int count = mZixBean.getCount();
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("sttm", mZixBean.getStTm());
+                            map.put("edtm", mZixBean.getEdTm());
+                            map.put("path", selectList.get(0).getPath());
+                            map.put("url", bean.getRetData().getUrl());
+                            mZixBean.getMapList().add(map);
+                            mZixBean.setCount(count + 1);
+                            break;
+                        case 3:
+                            mLists_others.add(bean.getRetData().getUrl());
+                            mOtherAdapter.getData().addAll(selectList);
+                            mOtherAdapter.notifyDataSetChanged();
+                            break;
+                    }
+                }
+//                ToastShow(bean.getRetMsg());
+                hideLoad();
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                ToastShow("上传失败，请重试");
+                hideLoad();
+            }
+        });
+    }
+
+    private String guessMimeType(String path) {
+        FileNameMap fileNameMap = URLConnection.getFileNameMap();
+        String contentTypeFor = null;
+        try {
+            contentTypeFor = fileNameMap.getContentTypeFor(URLEncoder.encode(path, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if (contentTypeFor == null) {
+            contentTypeFor = "application/octet-stream";
+        }
+        return contentTypeFor;
     }
 
     /*
@@ -369,13 +534,15 @@ public class JgTwoFragment extends Fragment {
             public void onTimeSelected(long timestamp) {
                 if (is_start) {
                     mZixBean.setStTm(DateFormatUtils.long2Str(timestamp, false));
+                    mZixBean.setStTTm(DateUtil.getTimeStr(String.valueOf(timestamp / 1000), "yyyy年MM月dd日"));
                 } else {
                     mZixBean.setEdTm(DateFormatUtils.long2Str(timestamp, false));
+                    mZixBean.setEdTTm(DateUtil.getTimeStr(String.valueOf(timestamp / 1000), "yyyy年MM月dd日"));
                 }
                 int count = mZixBean.getCount();
-                if(count>=1) {
-                    mZixBean.getMapList().get(count - 1).put("sttm", mZixBean.getStTm());
-                    mZixBean.getMapList().get(count - 1).put("edtm", mZixBean.getEdTm());
+                if (count >= 1) {
+                    mZixBean.getMapList().get(count - 1).put("sttm", mZixBean.getStTm()+" 00:00:00");
+                    mZixBean.getMapList().get(count - 1).put("edtm", mZixBean.getEdTm()+" 00:00:00");
                 }
                 mZixAdapter.notifyItemChanged(position);
             }

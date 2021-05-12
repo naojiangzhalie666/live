@@ -33,7 +33,7 @@
                 android:focusableInTouchMode="true"
                 android:text="头像"
                 android:textColor="@color/black_oneeight"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/textView25"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,7 +55,7 @@
                 android:layout_marginTop="15dp"
                 android:text="机构名称"
                 android:textColor="@color/black_oneeight"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/textView26"
                 app:layout_constraintTop_toBottomOf="@+id/textView42" />
 
@@ -76,7 +76,7 @@
                 android:gravity="right"
                 android:hint="机构对外品牌名"
                 android:textColor="@color/black_oneeight"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView45"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -99,7 +99,7 @@
                 android:layout_marginTop="15dp"
                 android:text="机构电话"
                 android:textColor="@color/black_oneeight"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/textView26"
                 app:layout_constraintTop_toBottomOf="@+id/textView43" />
 
@@ -121,7 +121,7 @@
                 android:hint="请填写机构电话"
                 android:inputType="number"
                 android:textColor="@color/black_oneeight"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textVi45"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -144,7 +144,7 @@
                 android:layout_marginTop="15dp"
                 android:text="机构地址"
                 android:textColor="@color/black_oneeight"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/textView26"
                 app:layout_constraintTop_toBottomOf="@+id/textVi43" />
 
@@ -165,7 +165,7 @@
                 android:gravity="right"
                 android:hint="请填写机构地址"
                 android:textColor="@color/black_oneeight"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textVie45"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -188,7 +188,7 @@
                 android:layout_marginTop="15dp"
                 android:text="营业执照"
                 android:textColor="@color/black_oneeight"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/textView27"
                 app:layout_constraintTop_toBottomOf="@+id/textVie43" />
 
@@ -210,7 +210,7 @@
                 android:gravity="right"
                 android:hint="请上传企业LOGO"
                 android:textColor="@color/black_oneeight"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/jgone_tv"
                 app:layout_constraintEnd_toStartOf="@+id/jgone_head" />
 
@@ -219,7 +219,7 @@
                 android:layout_width="@dimen/dp_23"
                 android:layout_height="@dimen/dp_23"
                 android:layout_marginRight="@dimen/dp_5"
-                android:background="@drawable/bg_circle_solder_ef"
+                android:background="@drawable/bg_circle_dc"
                 app:layout_constraintBottom_toBottomOf="@+id/tvtv"
                 app:layout_constraintEnd_toStartOf="@+id/tvone"
                 app:layout_constraintTop_toTopOf="@+id/tvtv" />
@@ -287,7 +287,7 @@
                 android:padding="@dimen/dp_5"
                 android:text="相关证件"
                 android:textColor="@color/nineninenine"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 app:layout_constraintEnd_toEndOf="@+id/jgone_confrond"
                 app:layout_constraintStart_toStartOf="@+id/jgone_confrond"
                 app:layout_constraintTop_toBottomOf="@+id/jgone_confrond" />
@@ -339,7 +339,7 @@
                 android:padding="@dimen/dp_5"
                 android:text="相关证件"
                 android:textColor="@color/nineninenine"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 app:layout_constraintEnd_toEndOf="@+id/jgone_conback"
                 app:layout_constraintStart_toStartOf="@+id/jgone_conback"
                 app:layout_constraintTop_toBottomOf="@+id/jgone_conback" />
@@ -365,7 +365,7 @@
                 android:focusableInTouchMode="true"
                 android:text="机构简介"
                 android:textColor="@color/black_oneeight"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/textView29"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -389,7 +389,7 @@
                 android:hint="这是一段自我介绍，建议50-100字："
                 android:minHeight="@dimen/dp_80"
                 android:padding="@dimen/dp_8"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/jgone_" />
@@ -407,7 +407,7 @@
             android:background="@drawable/bg_circle_solder_setin"
             android:text="下一页"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

@@ -14,11 +14,20 @@ import android.widget.TextView;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.GridImageAdapter;
 import com.example.myapplication.adapter.RuzhuAdapter;
+import com.example.myapplication.base.LiveApplication;
+import com.example.myapplication.base.LiveBaseFragment;
+import com.example.myapplication.bean.InterestBean;
+import com.example.myapplication.bean.UploadBean;
+import com.example.myapplication.bean.live_mine.ZxsBean;
 import com.example.myapplication.ui.SetInActivity;
 import com.example.myapplication.utils.FullyGridLayoutManager;
 import com.example.myapplication.utils.GlideEngine;
+import com.example.myapplication.utils.LiveShareUtil;
 import com.example.myapplication.utils.datepicker.CustomDatePicker;
 import com.example.myapplication.utils.datepicker.DateFormatUtils;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
+import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.animators.AnimationType;
 import com.luck.picture.lib.config.PictureConfig;
@@ -29,8 +38,15 @@ import com.luck.picture.lib.listener.OnItemClickListener;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.luck.picture.lib.tools.ScreenUtils;
 import com.luck.picture.lib.tools.SdkVersionUtils;
+import com.superc.yyfflibrary.utils.DateUtil;
+import com.superc.yyfflibrary.utils.ToastUtil;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.net.FileNameMap;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,11 +63,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ManTwoFragment extends Fragment {
+public class ManTwoFragment extends LiveBaseFragment {
     private static final String TAG = "ManTwoFragment";
     @BindView(R.id.mantwo_top_recy)
     RecyclerView mMantwoTopRecy;
@@ -71,8 +90,15 @@ public class ManTwoFragment extends Fragment {
     private GridImageAdapter mAdapter;
     private GridImageAdapter mOtherAdapter;
     private boolean is_other = false;
-    private List<Map<String,Object>> mLists_Zizhi;
-    private int now_zizhipos= 0;
+    private List<Map<String, Object>> mLists_Zizhi;
+    private List<String> mLists_others;
+    private List<InterestBean.RetDataBean> mListStrings;
+    private RuzhuAdapter mRuzhuAdapter;
+    private int now_zizhipos = 0;
+    public String msg_last = "";
+    public String msg_lastId = "";
+    public String stt_tm, edd_tm;
+    private List<String> mShanchang;
 
 
     @Override
@@ -93,55 +119,116 @@ public class ManTwoFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mantwo_sttm:
-                showDateDialog(mMantwoSttm, "2000-01-01 00:00:00", mMantwoEdtm.getText().toString() + " 23:59:59");
+                showDateDialog(mMantwoSttm, "2000-01-01 00:00:00", edd_tm + " 23:59:59", true);
                 break;
             case R.id.mantwo_edtm:
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                showDateDialog(mMantwoEdtm, "2000-01-01 00:00:00", simpleDateFormat.format(new Date()));
+                showDateDialog(mMantwoEdtm, "2000-01-01 00:00:00", simpleDateFormat.format(new Date()), false);
                 break;
             case R.id.setin_next:
-                mActivity.toSub();
-                for (int i = 0; i < mLists_Zizhi.size(); i++) {
-                    Map<String, Object> map = mLists_Zizhi.get(i);
-                    String sttm = (String) map.get("sttm");
-                    String edtm = (String) map.get("edtm");
-                    Log.e(TAG, "onClick: "+map.get("path")+" st= "+sttm+" ed="+edtm );
-                }
+                toJudgeGo();
                 break;
         }
     }
 
+    private void toJudgeGo() {
+        if (TextUtils.isEmpty(msg_lastId)) {
+            ToastShow("请选择您的擅长方向");
+            return;
+        }
+        if (mLists_Zizhi.size() == 0) {
+            ToastShow("请上传您的资质");
+            return;
+        }
+        List<String> bdaList = new ArrayList<>();
+        String[] split = msg_lastId.split(",");
+        for (int i = 0; i < split.length; i++) {
+            bdaList.add(split[i]);
+        }
+        mActivity.mZxsBean.setBdaList(bdaList);
+        List<ZxsBean.quaBeList> quaBeLists = new ArrayList<>();
+        for (int i = 0; i < mLists_Zizhi.size(); i++) {
+            Map<String, Object> map = mLists_Zizhi.get(i);
+            ZxsBean.quaBeList quaBe = new ZxsBean.quaBeList();
+            String st_tmm = (String) map.get("sttm");
+            String ed_tmm = (String) map.get("edtm");
+            quaBe.setStartDate(DateUtil.getTimeStr(DateUtil.getTimeLong(st_tmm, "yyyy年MM月dd日 HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
+            quaBe.setEndDate(DateUtil.getTimeStr(DateUtil.getTimeLong(ed_tmm, "yyyy年MM月dd日 HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
+            quaBe.setImgUrl((String) map.get("path"));
+            quaBeLists.add(quaBe);
+        }
+        mActivity.mZxsBean.setQuaBeList(quaBeLists);
+        String other_content = "";
+        if (!TextUtils.isEmpty(mMantwoOtherEdt.getText().toString())) {
+            other_content += mMantwoOtherEdt.getText().toString() + ",";
+        }
+        for (int i = 0; i < mLists_others.size(); i++) {
+            other_content += mLists_others.get(i) + ",";
+        }
+        if (other_content.endsWith(",")) {
+            mActivity.mZxsBean.other = other_content.substring(0, other_content.length() - 1);
+        }
+
+        mActivity.toSub();
+    }
+
+
     private void init() {
-        mLists_Zizhi =  new ArrayList<>();
+        mLists_Zizhi = new ArrayList<>();
+        mLists_others = new ArrayList<>();
+        mShanchang = new ArrayList<>();
+
         initTvTime();
         initTypeSe();
         initRightRecy();
 
+        getInterest();
+    }
+
+    /*获取兴趣爱好列表展示*/
+    private void getInterest() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getCouLabel(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                InterestBean interestBean = new Gson().fromJson(result.toString(), InterestBean.class);
+                if (interestBean.getRetCode() == 0) {
+                    mListStrings.addAll(interestBean.getRetData());
+                    mRuzhuAdapter.notifyDataSetChanged();
+                } else {
+                    ToastUtil.showToast(getActivity(), interestBean.getRetMsg());
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
 
     }
 
+
     /*----------------------图片RecyclerView---------------------*/
-    private String msg_last;
-    private List<String> mListStrings;
-    private RuzhuAdapter mRuzhuAdapter;
-    private String[] mStrings = new String[]{"情感修复", "婚姻家庭", "恋爱关系", "亲子关系", "职场问题", "个人成长", "人际关系", "第三者问题", "心理健康检测", "未成年人心理"};
 
     private void initTypeSe() {
         mListStrings = new ArrayList<>();
-        for (int i = 0; i < mStrings.length; i++) {
-            mListStrings.add(mStrings[i]);
-        }
         mRuzhuAdapter = new RuzhuAdapter(getActivity(), mListStrings);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         mMantwoTopRecy.setLayoutManager(gridLayoutManager);
         mMantwoTopRecy.setAdapter(mRuzhuAdapter);
         mRuzhuAdapter.setOnItemClickListener(new RuzhuAdapter.OnItemClickListener() {
             @Override
-            public void onItemClickListener(String content) {
+            public void onItemClickListener(String content, String select_id) {
                 msg_last = content;
+                if (TextUtils.isEmpty(select_id)) {
+                    msg_lastId = "";
+                } else if (select_id.endsWith(",")) {
+                    msg_lastId = select_id.substring(0, select_id.length() - 1);
+                }
             }
         });
-
 
     }
 
@@ -158,8 +245,15 @@ public class ManTwoFragment extends Fragment {
         mAdapter.setShow_add(true);
         mAdapter.setShow_zdy(true, "新增资质", "(上传资质证书)");
         mAdapter.setSelectMax(100);
-        mAdapter.setCan_caozuo(false);
+        mAdapter.setCan_caozuo(true);
         mMantwoZizhiRecy.setAdapter(mAdapter);
+        mAdapter.setOnDeleteClickListener(new GridImageAdapter.OnDeleteClickListener() {
+            @Override
+            public void onDeleteClickListener(int pos) {
+                mLists_Zizhi.remove(pos);
+                now_zizhipos -= 1;
+            }
+        });
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -198,8 +292,14 @@ public class ManTwoFragment extends Fragment {
         mOtherAdapter = new GridImageAdapter(getActivity(), onAddZiPicClickListener);
         mOtherAdapter.setShow_add(true);
         mOtherAdapter.setSelectMax(100);
-        mOtherAdapter.setCan_caozuo(false);
+        mOtherAdapter.setCan_caozuo(true);
         mMantwoOtherRecy.setAdapter(mOtherAdapter);
+        mOtherAdapter.setOnDeleteClickListener(new GridImageAdapter.OnDeleteClickListener() {
+            @Override
+            public void onDeleteClickListener(int pos) {
+                mLists_others.remove(pos);
+            }
+        });
         mOtherAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -258,18 +358,11 @@ public class ManTwoFragment extends Fragment {
         @Override
         public void onResult(List<LocalMedia> result) {
             if (mAdapterWeakReference.get() != null) {
-                toAddClient(result);
-                List<LocalMedia> data = mAdapterWeakReference.get().getData();
-                data.addAll(result);
-                mAdapterWeakReference.get().setList(data);
-                mAdapterWeakReference.get().notifyDataSetChanged();
-                initTvTime();
-                Map<String,Object> map =new HashMap<>();
-                map.put("path",result.get(0).getPath());
-                map.put("sttm",mMantwoSttm.getText().toString());
-                map.put("edtm",mMantwoEdtm.getText().toString());
-                mLists_Zizhi.add(map);
-                now_zizhipos+=1;
+//                List<LocalMedia> data = mAdapterWeakReference.get().getData();
+//                data.addAll(result);
+//                mAdapterWeakReference.get().setList(data);
+//                mAdapterWeakReference.get().notifyDataSetChanged();
+                toUpFile(TextUtils.isEmpty(result.get(0).getRealPath()) ? result.get(0).getPath() : result.get(0).getRealPath(), is_other ? 2 : 1, mAdapterWeakReference, result);
             }
         }
 
@@ -307,7 +400,77 @@ public class ManTwoFragment extends Fragment {
                 .synOrAsy(false)//同步true或异步false 压缩 默认同步
 //                .selectionData(mAdapter.getData())// 是否传入已选图片
                 .minimumCompressSize(100)// 小于多少kb的图片不压缩
-                .forResult(new MyResultCallback(is_other?mOtherAdapter:mAdapter));
+                .forResult(new MyResultCallback(is_other ? mOtherAdapter : mAdapter));
+    }
+
+    /**
+     * @param path 文件路径
+     * @param type 1-资质 2其他说明
+     */
+    private void toUpFile(String path, int type, WeakReference<GridImageAdapter> mAdapterWeakReference, List<LocalMedia> result_data) {
+//        String path = localMedia.getRealPath();
+//        if (TextUtils.isEmpty(path)) {
+//            path = localMedia.getPath();
+//        }
+        File img = new File(path);
+        String names = img.getName();
+        RequestBody requestFile = RequestBody.create(MediaType.parse(guessMimeType(img.getPath())), img);
+        MultipartBody.Part body = null;
+        try {
+            body = MultipartBody.Part.createFormData("file", URLEncoder.encode(names, "UTF-8"), requestFile);
+        } catch (UnsupportedEncodingException e) {
+            Log.e("ManOneFragment", "toAddClient: 文件名异常" + names + e.toString());
+        }
+        showLoad();
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().upLoadFile(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(), body), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                UploadBean bean = new Gson().fromJson(result.toString(), UploadBean.class);
+                if (bean.getRetCode() == 0) {
+                    switch (type) {
+                        case 1:
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("path", bean.getRetData().getUrl());
+                            map.put("sttm", mMantwoSttm.getText().toString() + " 00:00:00");
+                            map.put("edtm", mMantwoEdtm.getText().toString() + " 00:00:00");
+                            mLists_Zizhi.add(map);
+                            now_zizhipos += 1;
+                            initTvTime();
+                            break;
+                        case 2:
+                            mLists_others.add(bean.getRetData().getUrl());
+                            break;
+                    }
+                    List<LocalMedia> data = mAdapterWeakReference.get().getData();
+                    data.addAll(result_data);
+                    mAdapterWeakReference.get().setList(data);
+                    mAdapterWeakReference.get().notifyDataSetChanged();
+                }
+//                ToastShow(bean.getRetMsg());
+                hideLoad();
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                hideLoad();
+            }
+        });
+    }
+
+    private String guessMimeType(String path) {
+        FileNameMap fileNameMap = URLConnection.getFileNameMap();
+        String contentTypeFor = null;
+        try {
+            contentTypeFor = fileNameMap.getContentTypeFor(URLEncoder.encode(path, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if (contentTypeFor == null) {
+            contentTypeFor = "application/octet-stream";
+        }
+        return contentTypeFor;
     }
 
     /*上传图片*/
@@ -342,10 +505,14 @@ public class ManTwoFragment extends Fragment {
             }
         });*/
     }
+
     private void initTvTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        mMantwoEdtm.setText(dateFormat.format(new Date()));
-        mMantwoSttm.setText(dateFormat.format(new Date()));
+        SimpleDateFormat dateFormat_wenz = new SimpleDateFormat("yyyy年MM月dd日");
+        edd_tm = dateFormat.format(new Date());
+        stt_tm = dateFormat.format(new Date());
+        mMantwoEdtm.setText(dateFormat_wenz.format(new Date()));
+        mMantwoSttm.setText(dateFormat_wenz.format(new Date()));
     }
 
     /*
@@ -355,23 +522,29 @@ public class ManTwoFragment extends Fragment {
      * @param begin_tm 日期选择的开始日期
      * @param ed_tm    日期选择的结束日期
      */
-    private void showDateDialog(final TextView mtv, String begin_tm, String ed_tm) {
+    private void showDateDialog(final TextView mtv, String begin_tm, String ed_tm, boolean is_start) {
         SimpleDateFormat sdf_no = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
         String now_date = sdf_no.format(new Date());
         customDatePickerSt = new CustomDatePicker(getActivity(), new CustomDatePicker.Callback() {
             @Override
             public void onTimeSelected(long timestamp) {
-                mtv.setText(DateFormatUtils.long2Str(timestamp, false));
-                if(now_zizhipos>=1) {
-                    mLists_Zizhi.get(now_zizhipos - 1).put("sttm", mMantwoSttm.getText().toString());
-                    mLists_Zizhi.get(now_zizhipos - 1).put("edtm", mMantwoEdtm.getText().toString());
+                mtv.setText(DateUtil.getTimeStr(String.valueOf(timestamp / 1000), "yyyy年MM月dd日"));
+//                mtv.setText(DateFormatUtils.long2Str(timestamp, false));
+                if (is_start) {
+                    stt_tm = DateFormatUtils.long2Str(timestamp, false);
+                } else {
+                    edd_tm = DateFormatUtils.long2Str(timestamp, false);
+                }
+                if (now_zizhipos >= 1) {
+                    mLists_Zizhi.get(now_zizhipos - 1).put("sttm", mMantwoSttm.getText().toString() + " 00:00:00");
+                    mLists_Zizhi.get(now_zizhipos - 1).put("edtm", mMantwoEdtm.getText().toString() + " 00:00:00");
                 }
             }
         }, begin_tm, ed_tm);
         customDatePickerSt.setCanShowPreciseTime(false); // 是否显示时和分
         customDatePickerSt.setScrollLoop(true); // 允许循环滚动
         customDatePickerSt.setCanShowAnim(true);//开启滚动动画
-        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : mtv.getText().toString());
+        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date :(is_start?stt_tm:edd_tm));
 
     }
 

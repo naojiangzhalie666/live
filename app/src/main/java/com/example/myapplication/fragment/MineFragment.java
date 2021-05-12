@@ -210,8 +210,6 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
         if(userInfo!=null){
             UserInfoBean.RetDataBean retData = userInfo.getRetData();
             setData(retData);
-
-
         }
         mLogoutDialog = new LogoutDialog(getActivity());
         mCodeDialog = new CodeDialog(getActivity());
@@ -377,5 +375,13 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
 
         }
     };
+
+    public void toUpdateData(){
+        UserInfoBean userInfo = LiveShareUtil.getInstance(getActivity()).getUserInfo();
+        if(userInfo!=null){
+            UserInfoBean.RetDataBean retData = userInfo.getRetData();
+            setData(retData);
+        }
+    }
 
 }

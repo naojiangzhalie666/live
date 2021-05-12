@@ -4,6 +4,8 @@ package com.example.myapplication.fragment.setin;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +13,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.base.LiveApplication;
+import com.example.myapplication.base.LiveBaseFragment;
+import com.example.myapplication.bean.UploadBean;
 import com.example.myapplication.ui.SetInActivity;
 import com.example.myapplication.utils.GlideEngine;
+import com.example.myapplication.utils.LiveShareUtil;
+import com.example.myapplication.utils.httputil.HttpBackListener;
+import com.example.myapplication.utils.httputil.LiveHttp;
+import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.animators.AnimationType;
 import com.luck.picture.lib.config.PictureConfig;
@@ -22,6 +33,12 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.SdkVersionUtils;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.FileNameMap;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -30,17 +47,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ManOneFragment extends Fragment {
+public class ManOneFragment extends LiveBaseFragment {
 
 
     @BindView(R.id.manone_head)
-    ImageView mManoneHead;
+    CircleImageView mManoneHead;
     @BindView(R.id.manone_name)
     EditText mManoneName;
     @BindView(R.id.manone_frond)
@@ -57,6 +78,8 @@ public class ManOneFragment extends Fragment {
     public final static int SELECT_HEAD = 110;
     public final static int SELECT_XX = 111;
     private SetInActivity mActivity;
+    private String couHeadImg, frontIdPhoto, behindIdPhoto,  imageList;
+    private String couName, perIntroduce;
 
 
     @Override
@@ -73,7 +96,7 @@ public class ManOneFragment extends Fragment {
         mActivity = (SetInActivity) getActivity();
     }
 
-    @OnClick({R.id.manone_head, R.id.manone_frond, R.id.manone_back, R.id.manone_xxpic, R.id.tvtv, R.id.tvone,R.id.manone_xxadd,R.id.setin_next})
+    @OnClick({R.id.manone_head, R.id.manone_frond, R.id.manone_back, R.id.manone_xxpic, R.id.tvtv, R.id.tvone, R.id.manone_xxadd, R.id.setin_next})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.manone_frond:
@@ -96,15 +119,54 @@ public class ManOneFragment extends Fragment {
                 toSelectHead();
                 break;
             case R.id.setin_next:
-                mActivity.goNext();
+                toJudgeGo();
                 break;
         }
+    }
+
+    private void toJudgeGo() {
+        couName = mManoneName.getText().toString();
+        perIntroduce = mManoneJianjie.getText().toString();
+        if (TextUtils.isEmpty(couHeadImg)) {
+            ToastShow("请上传头像");
+            return;
+        }
+        if (TextUtils.isEmpty(couName)) {
+            ToastShow("姓名不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(frontIdPhoto)) {
+            ToastShow("请上传身份证正面");
+            return;
+        }
+        if (TextUtils.isEmpty(behindIdPhoto)) {
+            ToastShow("请上传身份证反面");
+            return;
+        }
+        if (TextUtils.isEmpty( imageList)) {
+            ToastShow("请上传形象照");
+            return;
+        }
+        if (TextUtils.isEmpty(perIntroduce)) {
+            ToastShow("个人简介不能为空");
+            return;
+        }
+        mActivity.mZxsBean.couHeadImg =couHeadImg;
+        mActivity.mZxsBean.couName =couName;
+        mActivity.mZxsBean.perIntroduce = perIntroduce;
+        mActivity.mZxsBean.frontIdPhoto =frontIdPhoto;
+        mActivity.mZxsBean.behindIdPhoto =behindIdPhoto;
+        List<String> img_list =new ArrayList<>();
+        img_list.add(imageList);
+        mActivity.mZxsBean.setImageList(img_list);
+        mActivity.goNext();
     }
 
     private void toSelectPic() {
         // 进入相册 以下是例子：不需要的api可以不写
         PictureSelector.create(this)
-                .openCamera(PictureMimeType.ofImage())//单独使用相机 媒体类型 PictureMimeType.ofImage()、ofVideo()
+//                .openCamera(PictureMimeType.ofImage())//单独使用相机 媒体类型 PictureMimeType.ofImage()、ofVideo()
+                .openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                 .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
                 .isWeChatStyle(true)// 是否开启微信图片选择风格
                 .isPageStrategy(true)// 是否开启分页策略 & 每页多少条；默认开启
@@ -175,14 +237,13 @@ public class ManOneFragment extends Fragment {
             switch (requestCode) {
                 case PictureConfig.REQUEST_CAMERA:
                     // 结果回调
-                    Glide.with(getActivity()).load(selectList.get(0).getCutPath()).into(is_back ? mManoneBack : mManoneFrond);
+                    toUpFile(selectList.get(0).getCutPath(), is_back ? 3 : 2);
                     break;
                 case SELECT_HEAD:
-                    RequestOptions requestOptions = new RequestOptions().circleCrop();
-                    Glide.with(getActivity()).load(selectList.get(0).getPath()).apply(requestOptions).into(mManoneHead);
+                    toUpFile(TextUtils.isEmpty(selectList.get(0).getRealPath())?selectList.get(0).getPath():selectList.get(0).getRealPath(), 1);
                     break;
                 case SELECT_XX:
-                    Glide.with(getActivity()).load(selectList.get(0).getPath()).into(mManoneXxpic);
+                    toUpFile(TextUtils.isEmpty(selectList.get(0).getRealPath())?selectList.get(0).getPath():selectList.get(0).getRealPath(), 4);
                     break;
                 default:
                     break;
@@ -190,6 +251,79 @@ public class ManOneFragment extends Fragment {
         }
     }
 
+    /**
+     * @param path 文件路径
+     * @param type 1-头像 2身份证正面  3身份证反面  4形象照
+     */
+    private void toUpFile(String path, int type) {
+//        String path = localMedia.getRealPath();
+//        if (TextUtils.isEmpty(path)) {
+//            path = localMedia.getPath();
+//        }
+        File img = new File(path);
+        String names = img.getName();
+        RequestBody requestFile = RequestBody.create(MediaType.parse(guessMimeType(img.getPath())), img);
+        MultipartBody.Part body = null;
+        try {
+            body = MultipartBody.Part.createFormData("file", URLEncoder.encode(names, "UTF-8"), requestFile);
+        } catch (UnsupportedEncodingException e) {
+            Log.e("ManOneFragment", "toAddClient: 文件名异常" + names + e.toString());
+        }
+        showLoad();
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().upLoadFile(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(), body), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                UploadBean bean = new Gson().fromJson(result.toString(), UploadBean.class);
+                if (bean.getRetCode() == 0) {
+                    switch (type) {
+                        case 1:
+                            couHeadImg = bean.getRetData().getUrl();
+                            RequestOptions requestOptions = new RequestOptions().circleCrop();
+                            Glide.with(getActivity()).load(path).apply(requestOptions).into(mManoneHead);
+                            break;
+                        case 2:
+                            frontIdPhoto = bean.getRetData().getUrl();
+                            RoundedCorners roundedCorners = new RoundedCorners(8);
+                            Glide.with(getActivity()).load(path).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners )).into(mManoneFrond);
+                            break;
+                        case 3:
+                            behindIdPhoto = bean.getRetData().getUrl();
+                            RoundedCorners roundedCb = new RoundedCorners(8);
+                            Glide.with(getActivity()).load(path).apply(new RequestOptions().transform(new CenterCrop(),roundedCb )).into(mManoneBack);
+                            break;
+                        case 4:
+                             imageList = bean.getRetData().getUrl();
+                            Glide.with(getActivity()).load(path).into(mManoneXxpic);
+                            break;
+                    }
+                }
+//                ToastShow(bean.getRetMsg());
+                hideLoad();
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                ToastShow("上传失败，请重试");
+                hideLoad();
+            }
+        });
+    }
+
+    private String guessMimeType(String path) {
+        FileNameMap fileNameMap = URLConnection.getFileNameMap();
+        String contentTypeFor = null;
+        try {
+            contentTypeFor = fileNameMap.getContentTypeFor(URLEncoder.encode(path, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if (contentTypeFor == null) {
+            contentTypeFor = "application/octet-stream";
+        }
+        return contentTypeFor;
+    }
 
     @Override
     public void onDestroyView() {
