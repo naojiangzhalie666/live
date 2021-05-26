@@ -6,4 +6,7 @@ public abstract class GiftAdapter {
      * @param callback
      */
     public abstract void queryGiftInfoList(OnGiftListQueryCallback callback);
+
+    public abstract void queryGiftMineList(OnGiftListQueryCallback callback);
+
 }

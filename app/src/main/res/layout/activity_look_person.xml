@@ -16,8 +16,10 @@
         <ImageView
             android:id="@+id/personal_head"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
+            android:layout_height="@dimen/dp_196"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -36,6 +38,7 @@
         <ImageView
             android:id="@+id/personal_more"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_13"
             android:padding="@dimen/dp_13"
@@ -48,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="181dp" />
+            app:layout_constraintGuide_begin="@dimen/dp_171" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -145,7 +148,7 @@
                 android:gravity="center"
                 android:text="确定"
                 android:textColor="@color/white"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -213,10 +216,10 @@
                 android:background="@drawable/personal_sure"
                 android:gravity="center"
                 android:text="确定"
-                android:textColor="@color/white"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/textView63"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView63"
                 app:srcCompat="@drawable/personal_edt" />
 
 
@@ -297,6 +300,7 @@
                 android:id="@+id/personal_fouredt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:paddingLeft="@dimen/dp_20"
                 app:layout_constraintBottom_toBottomOf="@+id/tt"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -324,6 +328,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tt"
+                app:layout_constraintVertical_bias="0.0"
                 tools:itemCount="1" />
 
             <TextView

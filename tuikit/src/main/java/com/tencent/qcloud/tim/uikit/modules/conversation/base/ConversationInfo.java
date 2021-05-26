@@ -1,15 +1,14 @@
 package com.tencent.qcloud.tim.uikit.modules.conversation.base;
 
 import android.graphics.Bitmap;
-import androidx.annotation.NonNull;
 
-import com.tencent.imsdk.conversation.Conversation;
-import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.qcloud.tim.uikit.modules.message.MessageInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 public class ConversationInfo implements Serializable, Comparable<ConversationInfo> {
 
@@ -89,6 +88,9 @@ public class ConversationInfo implements Serializable, Comparable<ConversationIn
     }
 
     public String getId() {
+        if(id.contains(".")){
+            id =id.substring(0,id.indexOf("."));
+        }
         return id;
     }
 

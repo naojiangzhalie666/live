@@ -90,6 +90,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/cz_grad_chaoh"
         android:gravity="center"
+        android:visibility="gone"
         android:paddingLeft="@dimen/dp_5"
         android:paddingTop="@dimen/dp_1"
         android:paddingRight="@dimen/dp_5"

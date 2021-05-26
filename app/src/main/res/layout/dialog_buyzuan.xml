@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/bg_corner_white_tp">
 
 
@@ -11,35 +11,36 @@
         android:id="@+id/textView81"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginBottom="17dp"
+        android:paddingTop="@dimen/dp_17"
         android:text="充值"
         android:textColor="@color/black_oneeight"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView82"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <View
         android:id="@+id/textView82"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_1"
-        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginBottom="8dp"
         android:background="@color/ftwo"
+        app:layout_constraintBottom_toTopOf="@+id/textView88"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView81" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView88"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="账户余额:"
         android:textColor="@color/sixsixsix"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView82" />
+        app:layout_constraintBottom_toTopOf="@+id/buz_scroll"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/dig_buy_lastzuan"
@@ -53,29 +54,43 @@
         app:layout_constraintStart_toEndOf="@+id/textView88"
         tools:text="10" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dig_buy_recy"
+    <ScrollView
+        android:id="@+id/buz_scroll"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView90"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView88"
-        tools:itemCount="3"
-        tools:listitem="@layout/item_buyzuan" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/buz_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dig_buy_recy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_buyzuan" />
+        </LinearLayout>
+
+    </ScrollView>
 
     <TextView
         android:id="@+id/textView90"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
         android:text="充值代表已阅读并同意"
         android:textColor="@color/nineninenine"
         android:textSize="10sp"
-        app:layout_constraintStart_toStartOf="@+id/dig_buy_recy"
-        app:layout_constraintTop_toBottomOf="@+id/dig_buy_recy" />
+        app:layout_constraintBottom_toTopOf="@+id/dig_buy_wchat"
+        app:layout_constraintStart_toStartOf="@+id/buz_scroll" />
 
     <TextView
         android:id="@+id/dig_buy_xieyi"
@@ -93,66 +108,69 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/bg_circle_green"
         android:gravity="center"
         android:padding="@dimen/dp_8"
         android:text="充值"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/textView94"
         app:layout_constraintEnd_toStartOf="@+id/dig_buy_zfb"
-        app:layout_constraintStart_toStartOf="@+id/dig_buy_recy"
-        app:layout_constraintTop_toBottomOf="@+id/textView90" />
+        app:layout_constraintStart_toStartOf="@+id/buz_scroll" />
+
     <TextView
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/cz_jz"
-        app:layout_constraintCircleAngle="75"
+        android:gravity="center"
         android:text="加赠30%"
         android:textColor="@color/white"
-        android:gravity="center"
-        app:layout_constraintCircleRadius="@dimen/dp_55"
         app:layout_constraintCircle="@+id/dig_buy_wchat"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintCircleAngle="75"
+        app:layout_constraintCircleRadius="@dimen/dp_55" />
+
     <TextView
         android:id="@+id/dig_buy_zfb"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/dp_10"
         android:background="@drawable/bg_circle_blue"
         android:gravity="center"
         android:padding="@dimen/dp_8"
         android:text="充值"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/dig_buy_recy"
+        app:layout_constraintBottom_toBottomOf="@+id/dig_buy_wchat"
+        app:layout_constraintEnd_toEndOf="@+id/buz_scroll"
         app:layout_constraintStart_toEndOf="@+id/dig_buy_wchat"
-        app:layout_constraintTop_toBottomOf="@+id/textView90" />
+        app:layout_constraintTop_toTopOf="@+id/dig_buy_wchat" />
+
     <TextView
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/cz_jz"
-        app:layout_constraintCircleAngle="75"
+        android:gravity="center"
         android:text="加赠30%"
         android:textColor="@color/white"
-        android:gravity="center"
-        app:layout_constraintCircleRadius="@dimen/dp_55"
         app:layout_constraintCircle="@+id/dig_buy_zfb"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintCircleAngle="75"
+        app:layout_constraintCircleRadius="@dimen/dp_55" />
+
     <View
         android:id="@+id/textView94"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_4"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/ftwo"
+        app:layout_constraintBottom_toTopOf="@+id/dig_buy_cancel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dig_buy_zfb" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/dig_buy_cancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:gravity="center"
         android:paddingTop="@dimen/dp_8"
         android:paddingBottom="@dimen/dp_16"
@@ -160,6 +178,5 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView94" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

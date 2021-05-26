@@ -9,13 +9,13 @@
 
     <ImageView
         android:id="@+id/item_findrecy_imgv"
-        android:layout_width="@dimen/dp_71"
-        android:layout_height="@dimen/dp_71"
+        android:layout_width="@dimen/dp_77"
+        android:layout_height="@dimen/dp_77"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
-        android:background="@color/login_txt"
-        android:scaleType="fitXY"
+        android:src="@drawable/live_defaultimg"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:textColor="@color/threethree"
-        android:textSize="12sp"
+        android:textSize="11sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/item_findrecy_title"
@@ -57,9 +57,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:drawableRight="@drawable/find_more"
-        android:drawablePadding="@dimen/dp_5"
+        android:drawablePadding="@dimen/dp_8"
         android:textColor="#A0A0A0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/item_findrecy_imgv"
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_2"
             android:textColor="@color/threethree"
-            android:textSize="12sp"
+            android:textSize="11sp"
             tools:text="[ 待上线 ]" />
 
 

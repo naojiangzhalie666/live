@@ -67,7 +67,7 @@
         android:paddingEnd="20dp"
         android:paddingBottom="20dp">
 
-        <com.example.myapplication.utils.datepicker.PickerView
+        <com.tyxh.framlive.utils.datepicker.PickerView
             android:id="@+id/dpv_year"
             android:layout_width="0dp"
             android:layout_height="@dimen/picker_view_height"
@@ -82,7 +82,7 @@
             android:textColor="@color/date_picker_text_light"
             android:textSize="@dimen/date_unit_text_size" />
 
-        <com.example.myapplication.utils.datepicker.PickerView
+        <com.tyxh.framlive.utils.datepicker.PickerView
             android:id="@+id/dpv_month"
             android:layout_width="0dp"
             android:layout_height="@dimen/picker_view_height"
@@ -97,7 +97,7 @@
             android:textColor="@color/date_picker_text_light"
             android:textSize="@dimen/date_unit_text_size" />
 
-        <com.example.myapplication.utils.datepicker.PickerView
+        <com.tyxh.framlive.utils.datepicker.PickerView
             android:id="@+id/dpv_day"
             android:layout_width="0dp"
             android:layout_height="@dimen/picker_view_height"
@@ -113,7 +113,7 @@
             android:textColor="@color/date_picker_text_light"
             android:textSize="@dimen/date_unit_text_size" />
 
-        <com.example.myapplication.utils.datepicker.PickerView
+        <com.tyxh.framlive.utils.datepicker.PickerView
             android:id="@+id/dpv_hour"
             android:layout_width="0dp"
             android:layout_height="@dimen/picker_view_height"
@@ -129,7 +129,7 @@
             android:textColor="@color/date_picker_text_light"
             android:textSize="@dimen/date_unit_text_size" />
 
-        <com.example.myapplication.utils.datepicker.PickerView
+        <com.tyxh.framlive.utils.datepicker.PickerView
             android:id="@+id/dpv_minute"
             android:layout_width="0dp"
             android:layout_height="@dimen/picker_view_height"

@@ -505,7 +505,7 @@
                 android:layout_marginBottom="10dp"
                 android:visibility="gone">
 
-                <com.example.xzb.ui.views.TCHeartLayout
+                <com.tyxh.xzb.ui.views.TCHeartLayout
                     android:id="@+id/heart_layout"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
@@ -633,14 +633,14 @@
 
     </RelativeLayout>
 
-    <com.yf.xzbgift.important.GiftAnimatorLayout
+  <!--  <com.yf.xzbgift.important.GiftAnimatorLayout
         android:id="@+id/lottie_animator_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/live_gift_lottie_view_height"
         android:layout_gravity="left|bottom"
-        android:layout_marginBottom="@dimen/live_gift_panel_height" />
+        android:layout_marginBottom="@dimen/live_gift_panel_height" />-->
 
-    <com.example.xzb.utils.countdown.CountDownTimerView
+    <com.tyxh.xzb.utils.countdown.CountDownTimerView
         android:id="@+id/countdown_timer_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

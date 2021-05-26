@@ -345,6 +345,36 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
                     Log.d(TAG, "request data failed, the message:" + errorMsg);
                 }
             });
+            mGiftInfoDataHandler.queryGiftMineList(new GiftInfoDataHandler.GiftQueryCallback() {
+                @Override
+                public void onQuerySuccess(final List<GiftInfo> giftInfoList) {
+                    //确保更新UI数据在主线程中执行
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+//                            giftInfoList_back.clear();
+//                            for (int i = 0; i < 25; i++) {
+//                                GiftInfo giftInfo = new GiftInfo();
+//                                giftInfo.title = "鸡蛋" + i;
+//                                giftInfo.price = 10 * (i + 1);
+//                                giftInfo.giftPicUrl = "https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e1fe9925bc315c60c412f6be8eb1cb13485477d8.jpg";
+//                                giftInfo.giftId = (i + 1) + "";
+//                                giftInfo.gift_count = (i + 1) + "";
+//                                giftInfoList_back.add(giftInfo);
+//                            }
+
+
+                            giftInfoList_back = giftInfoList;
+//                            initGiftData(giftInfoList);
+                        }
+                    });
+                }
+
+                @Override
+                public void onQueryFailed(String errorMsg) {
+                    Log.d(TAG, "request data failed, the message:" + errorMsg);
+                }
+            });
         }
     }
 
@@ -359,7 +389,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
             is_chongz = false;
             mtv_cz.setText("发送");
         } else {
-            giftInfoList_back.clear();
+          /*  giftInfoList_back.clear();
             for (int i = 0; i < 25; i++) {
                 GiftInfo giftInfo = new GiftInfo();
                 giftInfo.title = "鸡蛋" + i;
@@ -368,7 +398,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
                 giftInfo.giftId = (i + 1) + "";
                 giftInfo.gift_count = (i + 1) + "";
                 giftInfoList_back.add(giftInfo);
-            }
+            }*/
             initGiftData(giftInfoList_back);
             if (mGiftController_bb.getSelectGiftInfo() != null) {
                 is_chongz = false;

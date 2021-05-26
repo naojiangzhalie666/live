@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/dp_85"
         android:text="****"
         android:textColor="@color/login_txt"
-        android:textSize="36sp"
+        android:textSize="38sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,6 +25,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="11sp"
         android:layout_marginTop="@dimen/dp_10"
         android:text="认证服务由中国移动提供"
         android:textColor="@color/login_txt"
@@ -103,7 +104,7 @@
                 android:gravity="center"
                 android:text="微信一键登录"
                 android:textColor="#425C59"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -146,9 +147,9 @@
                 android:layout_marginBottom="@dimen/dp_24"
                 android:layout_toRightOf="@+id/login_cbxieyi"
                 android:paddingLeft="@dimen/dp_6"
-                android:text="我已阅读并同意《中国移动认证服务条款》和《用户协议》、 《隐私政策》"
+                tools:text="我已阅读并同意《中国移动认证服务条款》和《用户协议》、 《隐私政策》"
                 android:textColor="#425C59"
-                android:textSize="11sp" />
+                android:textSize="10sp" />
 
         </RelativeLayout>
 

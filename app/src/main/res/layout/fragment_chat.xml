@@ -68,14 +68,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView15">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/chat_head"
                 android:layout_width="@dimen/dp_60"
                 android:layout_height="@dimen/dp_60"
                 android:layout_marginStart="12dp"
+                android:background="@drawable/bg_blue"
+                android:padding="@dimen/dp_1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/live_defaultimg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/man_se" />
+              />
 
             <TextView
                 android:id="@+id/chat_id"
@@ -120,6 +124,7 @@
                 android:text="直播中"
                 android:textColor="@color/white"
                 android:textSize="10sp"
+                android:visibility="gone"
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingRight="@dimen/dp_10"
                 android:paddingTop="@dimen/dp_2"

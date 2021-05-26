@@ -198,7 +198,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cons" />
 
 
-    <com.example.myapplication.utils.indelistview.LetterListView
+    <com.tyxh.framlive.utils.indelistview.LetterListView
         android:id="@+id/let_bar"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

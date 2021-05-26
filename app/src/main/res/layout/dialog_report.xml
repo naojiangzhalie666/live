@@ -44,8 +44,8 @@
         android:layout_height="wrap_content"
         android:background="@color/ftwo"
         android:paddingTop="@dimen/dp_16"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView26">
 
@@ -100,20 +100,22 @@
             <TextView
                 android:id="@+id/dig_report_reason"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:paddingLeft="@dimen/dp_5"
-                android:layout_marginLeft="@dimen/dp_5"
-                android:drawableRight="@drawable/sanj_bt"
-                android:textColorHint="@color/sixsixsix"
-                android:paddingRight="@dimen/dp_5"
+                android:layout_height="0dp"
+                android:layout_marginStart="6dp"
                 android:background="@drawable/bg_stroke_gray"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView116"
-                app:layout_constraintStart_toEndOf="@+id/textView116"
-                android:minWidth="@dimen/dp_80"
-                android:gravity="center"
+                android:drawableRight="@drawable/sanj_bt"
                 android:drawablePadding="@dimen/dp_5"
-               android:hint="色情暴力" />
+                android:gravity="center"
+                android:minWidth="@dimen/dp_80"
+                android:paddingLeft="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_5"
+                android:textColor="@color/black"
+                android:textColorHint="@color/sixsixsix"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView116"
+                app:layout_constraintStart_toEndOf="@+id/textView116"
+                app:layout_constraintTop_toTopOf="@+id/textView116"
+                tools:text="色情暴力" />
 
             <TextView
                 android:id="@+id/textView108"

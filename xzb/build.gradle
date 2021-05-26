@@ -43,10 +43,9 @@ dependencies {
 //  弹幕功能需要依赖此库
     compile 'com.github.ctiao:dfm:0.4.4'
 //  Demo 依赖的图片加载库
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
     // 美颜面板
     compile project(':beautysettingkit')
     // 音效面板
     compile project(':audioeffectsettingkit')
-    compile project(path: ':xzbgift')
 }

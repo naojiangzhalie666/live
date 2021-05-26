@@ -6,4 +6,10 @@
     <dimen name="date_unit_text_size">18sp</dimen>
     <dimen name="title_top">@dimen/dp_35</dimen>
     <dimen name="titile_size">18sp</dimen>
+
+    <!-- 礼物 -->
+    <dimen name="live_text_max_show_width">80dp</dimen>
+    <dimen name="live_gift_panel_height">300dp</dimen>
+    <dimen name="live_gift_lottie_view_height">400dp</dimen>
+
 </resources>

@@ -9,25 +9,27 @@
     android:layout_marginRight="@dimen/dp_4"
     android:background="@drawable/bg_stroke_setin">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_times_img"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dp_8"
+        android:src="@drawable/live_defaultimg"
+        android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="w,1:1.6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mine_flower" />
+      />
 
     <TextView
         android:id="@+id/item_times_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_3"
-        android:layout_marginBottom="@dimen/dp_3"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginBottom="@dimen/dp_6"
         android:textColor="@color/black_oneeight"
-        android:textSize="12sp"
+        android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/item_times_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,10 +43,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_4"
         android:layout_marginEnd="@dimen/dp_4"
-        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_6"
         android:textSize="9sp"
         android:background="@drawable/mine_grad"
-        android:padding="@dimen/dp_2"
+        android:paddingLeft="@dimen/dp_2"
+        android:paddingRight="@dimen/dp_2"
+        android:paddingTop="@dimen/dp_4"
+        android:paddingBottom="@dimen/dp_4"
         android:text="1分数疏解"
         android:textColor="@color/login_txt"
         android:gravity="center"

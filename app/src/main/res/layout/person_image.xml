@@ -13,6 +13,7 @@
         android:layout_width="@dimen/dp_90"
         android:layout_height="@dimen/dp_90"
         android:layout_marginTop="@dimen/dp_10"
+        android:scaleType="centerCrop"
         android:background="@drawable/bg_home_corner"
         tools:src="@color/app_color_f6" />
 

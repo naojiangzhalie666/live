@@ -56,15 +56,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chat_dig_bg" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/dig_talk_head"
-            android:layout_width="@dimen/dp_63"
-            android:layout_height="@dimen/dp_63"
+            android:layout_width="@dimen/dp_65"
+            android:layout_height="@dimen/dp_65"
             app:layout_constraintBottom_toBottomOf="@+id/imageView20"
+            android:background="@drawable/bg_circle_white"
+            android:padding="@dimen/dp_1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/live_defaultimg"
+            android:scaleType="centerCrop"
             app:layout_constraintTop_toBottomOf="@+id/imageView20"
-            app:srcCompat="@drawable/man_se" />
+           />
 
         <TextView
             android:id="@+id/dig_talk_name"
@@ -74,8 +78,8 @@
             android:textColor="@color/black_oneeight"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/dig_talk_sex"
-            app:layout_constraintStart_toStartOf="@+id/dig_talk_head"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dig_talk_head"
             tools:text="李二蛋" />
 
@@ -85,7 +89,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/dig_talk_name"
-            app:layout_constraintEnd_toEndOf="@+id/dig_talk_head"
             app:layout_constraintStart_toEndOf="@+id/dig_talk_name"
             app:layout_constraintTop_toTopOf="@+id/dig_talk_name"
             app:srcCompat="@drawable/chat_dig_man" />
@@ -94,6 +97,7 @@
             android:id="@+id/dig_talk_bezhu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginStart="8dp"
             android:background="@drawable/bg_circle_stoke_dc"
             android:paddingLeft="@dimen/dp_6"

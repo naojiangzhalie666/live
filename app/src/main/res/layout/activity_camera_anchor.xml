@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.tencent.rtmp.ui.TXCloudVideoView
+            android:id="@+id/anchor_video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+        <!--连麦窗口  开始-->
+        <FrameLayout
+            android:id="@+id/video_fram"
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="120dp"
+            android:layout_marginRight="8dp">
+
+            <com.tencent.rtmp.ui.TXCloudVideoView
+                android:id="@+id/video_contact"
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/video_ll_contactline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="已连线"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/video_ctc_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        tools:text="12:22" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="收益"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/video_ctc_get"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        tools:text="44" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/video_background1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.5"
+                android:background="@color/black"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/video_imageview1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/video_out1"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignTop="@id/video_fram"
+            android:layout_alignRight="@id/video_fram"
+            android:layout_gravity="top|right"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/btn_kick_out"
+            android:onClick="onClick"
+            android:visibility="invisible" />
+        <!--连麦窗口  结束-->
+
+        <RelativeLayout
+            android:id="@+id/anchor_rl_controllLayer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/title_top"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <include
+                android:id="@+id/layout_live_pusher_info"
+                layout="@layout/layout_live_pusher_info"
+                android:layout_width="145dp"
+                android:layout_height="35dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:id="@+id/cam_jgname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_live_pusher_info"
+                android:layout_alignLeft="@+id/layout_live_pusher_info"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/pusher_info_background"
+                android:drawableLeft="@drawable/live_blue"
+                android:drawablePadding="3dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="2dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                tools:text="天宇新航心理咨询机构" />
+
+            <TextView
+                android:id="@+id/cam_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cam_jgname"
+                android:layout_alignLeft="@+id/layout_live_pusher_info"
+                android:layout_alignRight="@+id/layout_live_pusher_info"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_corner_gr"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="2dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                tools:text="天宇新航心理咨询机构天宇新航心理咨询机构" />
+
+            <LinearLayout
+                android:id="@+id/cam_getzuans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cam_title"
+                android:layout_alignLeft="@+id/layout_live_pusher_info"
+                android:layout_alignRight="@+id/layout_live_pusher_info"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/pusher_info_background"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/live_zuan"
+                    android:drawablePadding="3dp"
+                    android:paddingRight="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="实时收入"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="0"
+                    android:textColor="@color/colorSendName6"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="2dp"
+                    android:text="钻"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_meiyan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/layout_live_pusher_info"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/beauty_btnface"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/live_meiyan"
+                    android:onClick="onClick" />
+
+                <Button
+                    android:id="@+id/beauty_btn"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/live_lvjing"
+                    android:onClick="onClick" />
+
+                <Button
+                    android:id="@+id/switch_cam"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/live_camera"
+                    android:onClick="onClick" />
+
+                <Button
+                    android:id="@+id/audience_btn_linkmic"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/linkmic_on"
+                    android:onClick="onClick" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/cam_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_meiyan"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                tools:text="边框ID：123456" />
+
+            <TextView
+                android:id="@+id/cam_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cam_id"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                tools:text="2022.3.36" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/anchor_rv_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_toRightOf="@+id/layout_live_pusher_info"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/tool_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="25dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/btn_message_input"
+                    android:layout_width="@dimen/heart_anim_length"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pusher_info_background"
+                    android:drawableLeft="@drawable/icon_message"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:onClick="onClick"
+                    android:padding="5dp"
+                    android:text="说点什么~"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+
+
+                <Button
+                    android:id="@+id/anchor_btn_flash"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:background="@drawable/icon_flash"
+                    android:onClick="onClick"
+                    android:visibility="gone" />
+
+                <!-- android:id = "@+id/switch_cam" -->
+                <Button
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:background="@drawable/icon_switch_camera_on"
+                    android:onClick="onClick"
+                    android:visibility="gone" />
+
+                <!--      android:id="@+id/beauty_btn"  -->
+                <Button
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:background="@drawable/icon_beauty_drawable"
+                    android:onClick="onClick"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn_audio_ctrl"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:background="@drawable/music_big"
+                    android:onClick="onClick"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/btn_share"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/icon_share"
+                    android:onClick="onClick" />
+
+                <ImageView
+                    android:id="@+id/btn_online"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/live_online"
+                    android:onClick="onClick" />
+
+                <Button
+                    android:id="@+id/camera_siliao"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/audice_siliao"
+                    android:onClick="onClick" />
+
+                <Button
+                    android:id="@+id/camera_car"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/audice_car"
+                    android:onClick="onClick" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp" />
+
+                <Button
+                    android:id="@+id/btn_close"
+                    android:layout_width="@dimen/live_btn_size"
+                    android:layout_height="@dimen/live_btn_size"
+                    android:background="@drawable/btn_close"
+                    android:onClick="onClick" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/im_msg_listview"
+                android:layout_width="250dp"
+                android:layout_height="10dp"
+                android:layout_alignBottom="@+id/tool_bar"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="10dp"
+                android:cacheColorHint="#00000000"
+                android:divider="#3c421b1b"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="none"
+                android:stackFromBottom="true"
+                android:transcriptMode="normal" />
+
+            <com.tencent.liteav.audiosettingkit.AudioEffectPanel
+                android:id="@+id/anchor_audio_control"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone" />
+
+            <com.tencent.liteav.demo.beauty.view.BeautyPanel
+                android:id="@+id/beauty_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/layoutFaceBeauty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="0dp"
+                android:background="@color/white"
+                android:clickable="true"
+                android:minHeight="105dp"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_publish_beauty"
+                        android:textSize="16sp" />
+
+                    <SeekBar
+                        android:id="@+id/beauty_seekbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="false"
+                        android:maxHeight="1.0dip"
+                        android:minHeight="1.0dip"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="18dp"
+                        android:progressDrawable="@drawable/beauty_seekbar_progress"
+                        android:thumb="@drawable/beauty_seekbar_icon"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_publish_white"
+                        android:textSize="16sp" />
+
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="false"
+                        android:maxHeight="1.0dip"
+                        android:minHeight="1.0dip"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="18dp"
+                        android:progressDrawable="@drawable/beauty_seekbar_progress"
+                        android:thumb="@drawable/beauty_seekbar_icon"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--点赞动画-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone">
+
+                <com.tyxh.xzb.ui.views.TCHeartLayout
+                    android:id="@+id/heart_layout"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:focusable="true" />
+            </RelativeLayout>
+            <!--点赞动画-->
+
+
+            <!--弹幕-->
+            <master.flame.danmaku.ui.widget.DanmakuView
+                android:id="@+id/anchor_danmaku_view"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <!--直播前画面-->
+    <RelativeLayout
+        android:id="@+id/rela_before"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:padding="10dp"
+        android:visibility="visible"
+        tools:visibility="gone">
+
+        <ImageView
+            android:id="@+id/reback"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/back_white" />
+
+        <TextView
+            android:id="@+id/tvone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reback"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:text="给直播起个关联度高的标题吸引更多用户吧！"
+            android:textColor="#ffffffff" />
+
+        <EditText
+            android:id="@+id/input_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvone"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@null"
+            android:gravity="left|top"
+            android:hint="婚前昏后大变样，教你十一招回到解放前！"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            android:textColorHint="#88ffffff"
+            android:textSize="22sp" />
+
+        <ImageView
+            android:id="@+id/refresh_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:layout_below="@+id/input_title"
+            android:layout_alignRight="@+id/input_title"
+            android:src="@drawable/live_refresh" />
+
+
+        <LinearLayout
+            android:id="@+id/mine_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_start_room"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/refresh_title"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical"
+            android:layout_marginRight="20dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/mine_recy"
+                android:layout_marginBottom="8dp"
+                android:text="选个与本次直播内容相关性最高的标签用户精准度更高哦"
+                android:textColor="#ffff" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mine_recy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+            />
+
+        </LinearLayout>
+
+
+
+
+        <Button
+            android:id="@+id/btn_start_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/xieyi"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:background="@drawable/live_btbg"
+            android:text="开始直播"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/xieyi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:text="直播即代表你同意《边框心理主播协议》"
+            android:textColor="#ffffffff"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+
+    <com.tyxh.framlive.xzbgift.important.GiftAnimatorLayout
+        android:id="@+id/lottie_animator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/live_gift_lottie_view_height"
+        android:layout_gravity="left|bottom"
+        android:layout_marginBottom="@dimen/live_gift_panel_height" />
+
+    <com.tyxh.xzb.utils.countdown.CountDownTimerView
+        android:id="@+id/countdown_timer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent" />
+</FrameLayout>

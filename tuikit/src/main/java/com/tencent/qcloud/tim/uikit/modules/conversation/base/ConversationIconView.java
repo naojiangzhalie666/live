@@ -48,6 +48,7 @@ public class ConversationIconView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.profile_icon_view, this);
         mIconView = findViewById(R.id.profile_icon);
+        mIconView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         ((SynthesizedImageView) mIconView).defaultImage(0);
     }
 

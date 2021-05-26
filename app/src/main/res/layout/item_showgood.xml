@@ -64,7 +64,7 @@
             android:background="@drawable/bg_circle_solder_lotxt"
             android:gravity="center"
             android:layout_marginBottom="@dimen/dp_5"
-            android:text="天"
+            android:text="分"
             android:textColor="@color/home_txt"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/item_goods_day"

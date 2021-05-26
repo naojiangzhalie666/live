@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
         android:background="@color/white"
+        android:visibility="gone"
         android:drawableRight="@drawable/mine_next"
         android:drawablePadding="@dimen/dp_5"
         android:padding="@dimen/dp_15"
@@ -262,7 +263,7 @@
             android:drawableRight="@drawable/mine_next"
             android:drawablePadding="@dimen/dp_5"
             android:paddingRight="@dimen/dp_15"
-            android:text="1223"
+            tools:text="1223"
             android:textColor="@color/nineninenine"
             android:textSize="13sp" />
 

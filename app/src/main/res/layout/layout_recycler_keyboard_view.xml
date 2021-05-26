@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:background="@color/c_d8d3cf">
 
-        <com.example.myapplication.utils.keyboard.BaseKeyboardView
+        <com.tyxh.framlive.utils.keyboard.BaseKeyboardView
             android:id="@+id/keyboard_view"
             android:layout_marginTop="9dp"
             android:layout_marginBottom="9dp"

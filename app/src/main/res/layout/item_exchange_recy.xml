@@ -11,13 +11,15 @@
     android:background="@drawable/bg_corner_ex_white">
 
     <ImageView
+        android:id="@+id/imgv_zuan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_8"
         android:layout_marginTop="@dimen/dp_8"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/item_ex_zuanshi"
-        app:layout_constraintEnd_toStartOf="@+id/item_ex_zuanshi"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/item_ex_zuanshi"
         app:srcCompat="@drawable/mine_zuanshi" />
 
@@ -26,13 +28,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/dp_22"
+        android:layout_marginTop="@dimen/dp_3"
         android:layout_marginBottom="@dimen/dp_30"
         android:textColor="@color/black"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/item_ex_frondz"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_ex_frondz"
+        app:layout_constraintStart_toEndOf="@+id/imgv_zuan"
         tools:text="200" />
 
     <TextView
@@ -69,8 +71,8 @@
         android:text="超值"
         android:textColor="@color/white"
         android:textSize="10dp"
-        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+       />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

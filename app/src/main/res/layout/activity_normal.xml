@@ -49,8 +49,9 @@
         android:text="现有钻石（个）"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/advice_num"
-        app:layout_constraintEnd_toEndOf="@+id/advice_num"
-        app:layout_constraintStart_toStartOf="@+id/advice_num" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/advice_num"

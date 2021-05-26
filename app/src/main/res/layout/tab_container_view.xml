@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true">
 
-        <com.example.myapplication.views.TabIconView
+        <com.tyxh.framlive.views.TabIconView
             android:id="@+id/iv_tab_icon"
             android:layout_width="@dimen/tab_icon_width"
             android:layout_height="@dimen/tab_icon_height"

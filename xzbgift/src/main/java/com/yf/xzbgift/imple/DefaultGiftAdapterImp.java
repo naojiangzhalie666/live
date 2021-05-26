@@ -13,20 +13,54 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class DefaultGiftAdapterImp extends GiftAdapter implements HttpGetRequest.HttpListener {
+public class DefaultGiftAdapterImp extends GiftAdapter {
     private static final String TAG = "DefaultGiftAdapterImp";
 
-    private static final int    CORE_POOL_SIZE = 5;
+    private static final int CORE_POOL_SIZE = 5;
     private static final String GIFT_DATA_URL = "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/gift_data.json";
+    private static final String GIFT_DATA_URL_BACK = "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/gift_data.json";
 
-    private GiftBeanThreadPool      mGiftBeanThreadPool;
+    private GiftBeanThreadPool mGiftBeanThreadPool;
     private OnGiftListQueryCallback mOnGiftListQueryCallback;
+    private OnGiftListQueryCallback mOnGiftListMineQueryCallback;
 
     @Override
     public void queryGiftInfoList(final OnGiftListQueryCallback callback) {
         mOnGiftListQueryCallback = callback;
         ThreadPoolExecutor threadPoolExecutor = getThreadExecutor();
-        HttpGetRequest request = new HttpGetRequest(GIFT_DATA_URL, this);
+        HttpGetRequest request = new HttpGetRequest(GIFT_DATA_URL, new HttpGetRequest.HttpListener() {
+            @Override
+            public void success(String response) {
+                handleResponseMessage(response);
+            }
+
+            @Override
+            public void onFailed(String message) {
+                if (mOnGiftListQueryCallback != null) {
+                    mOnGiftListQueryCallback.onGiftListQueryFailed(message);
+                }
+            }
+        });
+        threadPoolExecutor.execute(request);
+    }
+
+    @Override
+    public void queryGiftMineList(OnGiftListQueryCallback callback) {
+        mOnGiftListMineQueryCallback = callback;
+        ThreadPoolExecutor threadPoolExecutor = getThreadExecutor();
+        HttpGetRequest request = new HttpGetRequest(GIFT_DATA_URL, new HttpGetRequest.HttpListener() {
+            @Override
+            public void success(String response) {
+                handleMineResponseMessage(response);
+            }
+
+            @Override
+            public void onFailed(String message) {
+                if (mOnGiftListMineQueryCallback != null) {
+                    mOnGiftListMineQueryCallback.onGiftListQueryFailed(message);
+                }
+            }
+        });
         threadPoolExecutor.execute(request);
     }
 
@@ -37,17 +71,6 @@ public class DefaultGiftAdapterImp extends GiftAdapter implements HttpGetRequest
         return mGiftBeanThreadPool;
     }
 
-    @Override
-    public void success(String response) {
-        handleResponseMessage(response);
-    }
-
-    @Override
-    public void onFailed(String message) {
-        if (mOnGiftListQueryCallback != null) {
-            mOnGiftListQueryCallback.onGiftListQueryFailed(message);
-        }
-    }
 
     private void handleResponseMessage(String response) {
         if (response == null) {
@@ -59,6 +82,20 @@ public class DefaultGiftAdapterImp extends GiftAdapter implements HttpGetRequest
         if (giftDataList != null) {
             if (mOnGiftListQueryCallback != null) {
                 mOnGiftListQueryCallback.onGiftListQuerySuccess(giftDataList);
+            }
+        }
+    }
+    /*我的背包请求*/
+    private void handleMineResponseMessage(String response) {
+        if (response == null) {
+            return;
+        }
+        Gson gson = new Gson();
+        BeanMyBack giftBean = gson.fromJson(response, BeanMyBack.class);
+        final List<GiftData> giftDataList = transformMineGiftInfoList(giftBean);
+        if (giftDataList != null) {
+            if (mOnGiftListMineQueryCallback != null) {
+                mOnGiftListMineQueryCallback.onGiftListQuerySuccess(giftDataList);
             }
         }
     }
@@ -79,6 +116,27 @@ public class DefaultGiftAdapterImp extends GiftAdapter implements HttpGetRequest
             giftData.type = bean.getType();
             giftData.price = bean.getPrice();
             giftData.giftPicUrl = bean.getGiftImageUrl();
+            giftData.lottieUrl = bean.getLottieUrl();
+            giftInfoList.add(giftData);
+        }
+        return giftInfoList;
+    }
+    private List<GiftData> transformMineGiftInfoList(BeanMyBack giftBean) {
+        if (giftBean == null) {
+            return null;
+        }
+        List<BeanMyBack.RetDataBean> giftBeanList = giftBean.getRetData();
+        if (giftBeanList == null) {
+            return null;
+        }
+        List<GiftData> giftInfoList = new ArrayList<>();
+        for (BeanMyBack.RetDataBean bean : giftBeanList) {
+            GiftData giftData = new GiftData();
+            giftData.giftId = bean.getId();
+            giftData.title = bean.getProName();
+            giftData.type = bean.getGiftType();
+            giftData.price = bean.getGiftPrice();
+            giftData.giftPicUrl = bean.getImgUrl();
             giftData.lottieUrl = bean.getLottieUrl();
             giftInfoList.add(giftData);
         }

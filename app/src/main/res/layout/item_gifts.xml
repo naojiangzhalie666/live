@@ -4,20 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/bg_stroke_setin"
     android:layout_width="match_parent"
-    android:layout_marginTop="@dimen/dp_5"
-    android:layout_marginLeft="@dimen/dp_4"
-    android:layout_marginRight="@dimen/dp_4"
+    android:layout_marginTop="@dimen/dp_14"
+    android:layout_marginLeft="@dimen/dp_6"
+    android:layout_marginRight="@dimen/dp_6"
     android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/item_gifts_img"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="w,1:1.6"
+        app:layout_constraintDimensionRatio="w,1:1.2"
+        android:layout_margin="@dimen/dp_2"
         app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mine_flower" />
+        app:srcCompat="@drawable/live_defaultimg" />
 
     <TextView
         android:id="@+id/item_gifts_title"

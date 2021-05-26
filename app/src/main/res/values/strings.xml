@@ -51,6 +51,13 @@
     <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
     <string name="app_tip">提示</string>
     <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+    <string name="live_gift_send">Send %s</string>
+    <string name="live_gift_give_gift">赠送</string>
+    <string name="live_gift_game_currency">钻石%d</string>
+    <string name="live_gift_charge">充值</string>
+    <string name="live_message_me">"我"</string>
+    <string name="live_message_send_fail">"消息发生失败[%1$d]:%2$s"</string>
+    <string name="data_failed">"数据加载失败,稍后请重试"</string>
 
 
 </resources>

@@ -16,7 +16,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.myapplication"
+        applicationId "com.tyxh.framlive"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
@@ -96,5 +96,8 @@ dependencies {
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.6.5'//微信官方SDK依赖库
     implementation 'com.sina.weibo.sdk:core:10.10.0:openDefaultRelease@aar'//新浪微博官方SDK依赖库
     implementation 'com.wang.avi:library:2.1.3'
+    implementation 'com.airbnb.android:lottie:3.4.2'
+    implementation "org.java-websocket:Java-WebSocket:1.4.0"
+    implementation 'com.github.Justson.AgentWeb:agentweb-core:v4.1.9' // (必选)
 
 }

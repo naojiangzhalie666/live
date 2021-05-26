@@ -20,9 +20,8 @@
             <ImageView
                 android:id="@+id/personal_head"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                app:layout_constraintBottom_toTopOf="@+id/guideline10"
+                android:layout_height="@dimen/dp_221"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -48,18 +47,11 @@
                 app:srcCompat="@drawable/personal_share" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.28" />
-
-            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.24076608" />
+                app:layout_constraintGuide_begin="@dimen/dp_160" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,8 +59,10 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline11">
+                app:layout_constraintTop_toTopOf="@+id/guideline11"
+                app:layout_constraintVertical_bias="0.0">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -107,7 +101,7 @@
                         android:text="\@平台保障  @专属服务"
                         android:textColor="@color/home_txt"
                         android:textSize="10sp"
-                        android:textStyle="bold"
+                        android:alpha="0.6"
                         app:layout_constraintBottom_toBottomOf="@+id/personal_namee"
                         app:layout_constraintLeft_toRightOf="@+id/personal_namee"
                         app:layout_constraintTop_toTopOf="@+id/personal_namee" />
@@ -179,7 +173,7 @@
                         android:text="确定"
                         android:textColor="@color/white"
                         android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView63"
+                        app:layout_constraintTop_toTopOf="@+id/textView63"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:srcCompat="@drawable/personal_edt" />
 
@@ -448,10 +442,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/ttvv"
+            android:textColor="@color/red_goods"
+            tools:text="20" />
+
+        <TextView
+            android:id="@+id/showgoods_zuanshicha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/showgoods_zuanshi"
             android:drawableRight="@drawable/order_zuanshi"
             android:drawablePadding="@dimen/dp_5"
             android:textColor="@color/red_goods"
-            tools:text="20(还差480)" />
+            tools:text="(还差480)" />
 
         <TextView
             android:id="@+id/showgoods_buy"

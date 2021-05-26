@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.myapplication">
+    package="com.tyxh.framlive">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -18,79 +18,148 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
-        android:name=".base.LiveApplication"
+        android:name="com.tyxh.framlive.base.LiveApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.NoticeActivity"></activity>
-        <activity android:name=".ui.WithdrDetailActivity" />
         <activity
-            android:name=".pop_dig.BuyzActivity"
-            android:launchMode="singleTop"  android:screenOrientation="portrait"
-            android:theme="@style/ActivityDialog_pay" />
+            android:name="com.tyxh.framlive.ui.WebVActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true"  android:screenOrientation="portrait"
+            android:name="com.tyxh.framlive.ui.NoticeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.WithdrDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.pop_dig.BuyzActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog_pay" />
         <activity
-            android:name=".pop_dig.MeslistActivity"  android:screenOrientation="portrait"
+            android:name="com.tyxh.framlive.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityDialog_pay" />
+        <activity
+            android:name="com.tyxh.framlive.pop_dig.MeslistActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog_helf" />
+        <activity android:name="com.tyxh.framlive.ui.HelpabackActivity" />
         <activity
-            android:name=".pop_dig.ChathelfActivity"
-            android:theme="@style/ActivityDialog_helf"
+            android:name="com.tyxh.framlive.pop_dig.ReportActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <activity android:name=".ui.HelpabackActivity" />
-        <activity
-            android:name=".pop_dig.ReportActivity"  android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog" />
-        <activity android:name=".ui.MybackpActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.OffsupportActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ConnectRecordActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.LiveDetailActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".live.PrepareActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".live.LiveActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MailListActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.IncomeDetailActivity"   android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.WithdrawalActivity"  android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing" />
+            android:name="com.tyxh.framlive.ui.MybackpActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.ShowGoodsActivity"
+            android:name="com.tyxh.framlive.ui.OffsupportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.ConnectRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.LiveDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.live.PrepareActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.live.LiveActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.MailListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.IncomeDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.WithdrawalActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.tyxh.framlive.ui.ShowGoodsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
-            android:name=".ui.OranizeActivity"  android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity
-            android:name=".ui.LookPersonActivity"
+            android:name="com.tyxh.framlive.ui.OranizeActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".chat.ChatActivity"
+            android:name="com.tyxh.framlive.ui.LookPersonActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.tyxh.framlive.pop_dig.ChathelfActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityDialog_chathelf"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.tyxh.framlive.chat.ChatActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".ui.IdentyActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.BindWchatActivity"   android:screenOrientation="portrait" />
-        <activity android:name=".ui.ExchangeActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.AdviceActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.NormalActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.OrderListActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.FollowActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.EdtmsgActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.SetActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.SetInActivity"
+        <activity
+            android:name="com.tyxh.framlive.ui.IdentyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.BindWchatActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.ExchangeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.AdviceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.NormalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.OrderListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.FollowActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.EdtmsgActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.SetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.SetInActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
-        <activity android:name=".ui.FindActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MsgInputActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.BindPhoneActivity"   android:screenOrientation="portrait"/>
-        <activity android:name=".ui.TestActivity"   android:screenOrientation="portrait">
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name="com.tyxh.framlive.ui.FindActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.MsgInputActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.BindPhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tyxh.framlive.ui.TestTwoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name="com.tyxh.framlive.ui.TestActivity"
+            android:screenOrientation="portrait">
 
             <!--
             <intent-filter>
@@ -102,8 +171,10 @@
 
         </activity>
         <activity
-            android:name=".ui.LoginActivity"
-            android:launchMode="singleTask"  android:screenOrientation="portrait">
+            android:name="com.tyxh.framlive.ui.LoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/StartStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -111,8 +182,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MainActivity"
-            android:launchMode="singleTask"   android:screenOrientation="portrait">
+            android:name="com.tyxh.framlive.ui.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/StartStyle">
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name="com.tyxh.framlive.ui.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
 
             <!--
               <intent-filter>
@@ -123,25 +208,25 @@
             -->
         </activity>
         <activity
-            android:name=".live.TCCameraAnchorActivity"
+            android:name="com.tyxh.framlive.live.TCCameraAnchorActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".live.TCAudienceActivity"
+            android:name="com.tyxh.framlive.live.TCAudienceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/PlayerTheme"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.tyxh.framlive.wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:taskAffinity="com.example.myapplication"
+            android:taskAffinity="com.tyxh.framlive"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.myapplication.fileprovider"
+            android:authorities="com.tyxh.framlive.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true"
             tools:replace="android:authorities">

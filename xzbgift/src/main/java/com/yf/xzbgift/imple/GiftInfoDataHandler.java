@@ -38,6 +38,29 @@ public class GiftInfoDataHandler {
             });
         }
     }
+    public void queryGiftMineList(final GiftQueryCallback callback){
+        if (mGiftAdapter != null) {
+            mGiftAdapter.queryGiftMineList(new OnGiftListQueryCallback() {
+                @Override
+                public void onGiftListQuerySuccess(List<GiftData> giftDataList) {
+                    List<GiftInfo> giftInfoList = transformGiftMineList(giftDataList);
+                    if (callback != null) {
+                        callback.onQuerySuccess(giftInfoList);
+                    }
+                }
+
+                @Override
+                public void onGiftListQueryFailed(String errorMessage) {
+                    if (callback != null) {
+                        callback.onQueryFailed(errorMessage);
+                    }
+                }
+            });
+        }
+    }
+
+
+
 
     private List<GiftInfo> transformGiftInfoList(List<GiftData> giftDataList) {
         List<GiftInfo> giftInfoList = new ArrayList<>();
@@ -57,6 +80,24 @@ public class GiftInfoDataHandler {
         }
         return giftInfoList;
     }
+
+    private List<GiftInfo> transformGiftMineList(List<GiftData> giftDataList) {
+        List<GiftInfo> giftInfoList = new ArrayList<>();
+        if (giftDataList != null) {
+            for (GiftData giftData : giftDataList) {
+                GiftInfo giftInfo = new GiftInfo();
+                giftInfo.giftId = giftData.giftId;
+                giftInfo.title = giftData.title;
+                giftInfo.type = giftData.type;
+                giftInfo.price = giftData.price;
+                giftInfo.giftPicUrl = giftData.giftPicUrl;
+                giftInfo.lottieUrl = giftData.lottieUrl;
+                giftInfoList.add(giftInfo.copy());
+            }
+        }
+        return giftInfoList;
+    }
+
 
     public GiftInfo getGiftInfo(String giftId) {
         return mGiftInfoMap.get(giftId);

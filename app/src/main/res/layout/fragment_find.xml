@@ -16,33 +16,33 @@
         android:layout_marginTop="@dimen/dp_8"
         android:layout_marginRight="@dimen/dp_4"
         android:background="@drawable/bg_add_circle"
-        android:src="@drawable/ruzhu_add"
-        android:padding="@dimen/dp_10"
         android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:src="@drawable/ruzhu_add"
         android:textColor="@color/white"
         android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="@+id/findget_name"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/find_name"
+        app:layout_constraintStart_toStartOf="@+id/find_name"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/find_name"
         android:layout_width="0dp"
-        android:gravity="center"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/dp_10"
         android:paddingTop="@dimen/dp_7"
         android:text="添加关注"
         android:textColor="@color/black"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
+        android:textSize="9sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/find_recytop"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/dp_14"
         android:layout_marginTop="@dimen/dp_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/find_name"
@@ -102,7 +102,7 @@
             android:id="@+id/find_wonder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_14"
+            android:layout_marginStart="@dimen/dp_8"
             android:layout_weight="1"
             android:gravity="bottom"
             android:orientation="vertical">
@@ -142,7 +142,7 @@
             android:id="@+id/find_limittm"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_14"
+            android:layout_marginStart="@dimen/dp_8"
             android:layout_weight="1"
             android:gravity="bottom"
             android:orientation="vertical">
@@ -183,7 +183,7 @@
             android:id="@+id/find_pipei"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_14"
+            android:layout_marginStart="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_14"
             android:layout_weight="1">
 

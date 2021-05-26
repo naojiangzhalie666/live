@@ -5,12 +5,21 @@
     android:id="@+id/chathelf_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".chat.ChatActivity">
+
+    <View
+        android:id="@+id/chathelf_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+ />
 
     <FrameLayout
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_220" />
+        android:layout_weight="1"
+        android:layout_height="0dp"
+       />
 
 </LinearLayout>

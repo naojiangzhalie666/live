@@ -50,6 +50,7 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/exchange_num"
         app:layout_constraintEnd_toEndOf="@+id/exchange_num"
+        app:layout_constraintHorizontal_bias="0.29"
         app:layout_constraintStart_toStartOf="@+id/exchange_num" />
 
     <TextView
