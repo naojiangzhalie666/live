@@ -41,8 +41,19 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_13"
             app:layout_constraintBottom_toBottomOf="@+id/personal_back"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/personal_share" />
+        <ImageView
+            android:id="@+id/personal_more"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_13"
+            android:padding="@dimen/dp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/personal_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/personal_ddd" />
 
 
         <androidx.constraintlayout.widget.Guideline

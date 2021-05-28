@@ -11,6 +11,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.animators.AnimationType;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.listener.OnItemClickListener;
+import com.luck.picture.lib.tools.SdkVersionUtils;
+import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.PersonImageAdapter;
 import com.tyxh.framlive.adapter.PersonTwoAdapter;
@@ -25,6 +38,8 @@ import com.tyxh.framlive.bean.JgBean;
 import com.tyxh.framlive.bean.UploadBean;
 import com.tyxh.framlive.bean.UserDetailBean;
 import com.tyxh.framlive.chat.ChatActivity;
+import com.tyxh.framlive.pop_dig.BtPopupWindow;
+import com.tyxh.framlive.pop_dig.ReportActivity;
 import com.tyxh.framlive.pop_dig.ShareDialog;
 import com.tyxh.framlive.utils.GlideEngine;
 import com.tyxh.framlive.utils.GlideRoundTransUtils;
@@ -33,19 +48,6 @@ import com.tyxh.framlive.utils.MyLinearLayoutManager;
 import com.tyxh.framlive.utils.TitleUtils;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.google.gson.Gson;
-import com.ljy.devring.DevRing;
-import com.ljy.devring.http.support.observer.CommonObserver;
-import com.ljy.devring.http.support.throwable.HttpThrowable;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.animators.AnimationType;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.listener.OnItemClickListener;
-import com.luck.picture.lib.tools.SdkVersionUtils;
-import com.tencent.imsdk.v2.V2TIMConversation;
-import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -118,6 +120,10 @@ public class OranizeActivity extends LiveBaseActivity {
     RecyclerView mPersonalPhotorecy;
     @BindView(R.id.con_user)
     ConstraintLayout mCons_bt;
+    @BindView(R.id.personal_more)
+    ImageView mImgvMore;
+    @BindView(R.id.personal_share)
+    ImageView mImgvShare;
 
     private boolean is_user = true;                     //是否为观看者身份进入--true 是  false不是(自己点击--可编辑)
     private List<JgBean> mLocalMedias;                  //咨询师展示列表
@@ -136,6 +142,7 @@ public class OranizeActivity extends LiveBaseActivity {
     private String query_userid;                //查询人 -id
     private String jigou_id = "";               //机构   -id
     private String mNickname = "";              //机构   -名称
+    private BtPopupWindow mBtPopupWindow;
 
 
     @Override
@@ -153,7 +160,7 @@ public class OranizeActivity extends LiveBaseActivity {
         mPersonalName.setEnabled(false);
         mPersonalGeren.setEnabled(false);
         mPersonalJigou.setEnabled(false);
-//        mPower = 3;
+        mBtPopupWindow = new BtPopupWindow(this);
         mPower = LiveShareUtil.getInstance(this).getPower();
         Intent intent = getIntent();
         if (intent != null) {
@@ -168,6 +175,7 @@ public class OranizeActivity extends LiveBaseActivity {
             mPersonalFouredt.setVisibility(View.GONE);
             mPersonalFiveedt.setVisibility(View.GONE);
             mCons_bt.setVisibility(View.VISIBLE);
+            mImgvMore.setVisibility(View.VISIBLE);
         } else {//是自己身份点击过来的--且为咨询机构可修改
             if (mPower == Constant.POWER_ZIXUNJIGOU) {
                 mPersonalOneedt.setVisibility(View.VISIBLE);
@@ -182,6 +190,7 @@ public class OranizeActivity extends LiveBaseActivity {
                 mPersonalFouredt.setVisibility(View.GONE);
                 mPersonalFiveedt.setVisibility(View.GONE);
             }
+            mImgvShare.setVisibility(View.VISIBLE);
         }
         /*第一个横向咨询师列表*/
         mLocalMedias = new ArrayList<>();
@@ -280,11 +289,25 @@ public class OranizeActivity extends LiveBaseActivity {
                 showPic(selectList, position);
             }
         });
+        mBtPopupWindow.setOnItemClickListener(new BtPopupWindow.OnItemClickListener() {
+            @Override
+            public void onRuzhuClickListener() {
+                startActivity(new Intent(OranizeActivity.this, SetInActivity.class));
+            }
+
+            @Override
+            public void onJubaoClickListener() {
+                Intent int_report = new Intent(OranizeActivity.this, ReportActivity.class);
+                int_report.putExtra("per_id", query_userid);
+                int_report.putExtra("per_type", "咨询机构");
+                startActivity(int_report);
+            }
+        });
 
 
     }
 
-    @OnClick({R.id.personal_back, R.id.personal_share, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt,
+    @OnClick({R.id.personal_back, R.id.personal_share,R.id.personal_more, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt,
             R.id.personal_threesure, R.id.personal_fouredt, R.id.personal_foursure, R.id.personal_fiveedt, R.id.personal_fivesure, R.id.look_btshare, R.id.look_bttalk})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -352,6 +375,9 @@ public class OranizeActivity extends LiveBaseActivity {
             case R.id.personal_fivesure:
                 commitUserI();
                 break;
+            case R.id.personal_more:
+                mBtPopupWindow.showAsDropDown(mImgvMore, 0, 0);
+                break;
         }
     }
 
@@ -366,6 +392,12 @@ public class OranizeActivity extends LiveBaseActivity {
         intent.putExtra(Constant.CHAT_INFO, chatInfo);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getDetail();
     }
 
     /*获取咨询机构信息*/
@@ -398,11 +430,13 @@ public class OranizeActivity extends LiveBaseActivity {
     private void setData(UserDetailBean.RetDataBean retData) {
         if (retData.getCouMechanism() != null) {
             UserDetailBean.RetDataBean.CouMechanismBean couMechanism = retData.getCouMechanism();
-            jigou_id =couMechanism.getId()+"";
+            jigou_id = couMechanism.getId() + "";
             mPersonalName.setText(couMechanism.getMeName());
             mPersonalJigou.setText(couMechanism.getMeAddress());
             mPersonalId.setText("ID:" + jigou_id);
             mPersonalGeren.setText(couMechanism.getMeIntroduce());
+            mLocalMedias_bt.clear();
+            mLocalMediasBt_strs.clear();
             List<UserDetailBean.RetDataBean.CouMechanismBean.CouPicBean> couPiclist = couMechanism.getCouPiclist();
             for (int i = 0; i < couPiclist.size(); i++) {
                 UserDetailBean.RetDataBean.CouMechanismBean.CouPicBean couPicBean = couPiclist.get(i);
@@ -415,13 +449,14 @@ public class OranizeActivity extends LiveBaseActivity {
         }
 
         if (retData.getCounselorBeans() != null) {
+            mLocalMedias.clear();
             List<UserDetailBean.RetDataBean.CounselorBeansBean> counselorBeans = retData.getCounselorBeans();
             for (int i = 0; i < counselorBeans.size(); i++) {
                 UserDetailBean.RetDataBean.CounselorBeansBean counselorBeansBean = counselorBeans.get(i);
                 List<UserDetailBean.RetDataBean.CounselorBeansBean.CouPicBean> couPiclist = counselorBeansBean.getCouPiclist();
 
                 JgBean localMedia = new JgBean();
-                if(couPiclist!=null&&couPiclist.size()>0){
+                if (couPiclist != null && couPiclist.size() > 0) {
                     UserDetailBean.RetDataBean.CounselorBeansBean.CouPicBean couPicBean = couPiclist.get(0);
                     localMedia.setPath(couPicBean.getImgUrl());
                 }
@@ -453,22 +488,22 @@ public class OranizeActivity extends LiveBaseActivity {
 
     /*修改个人信息*/
     private void commitUserD(boolean is_top) {
-        if(TextUtils.isEmpty(jigou_id)){
+        if (TextUtils.isEmpty(jigou_id)) {
             ToastShow("机构数据获取失败，稍后请重试");
             return;
         }
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().patchCou(token, jigou_id, "3", mPersonalName.getText().toString(), mPersonalGeren.getText().toString(),mPersonalJigou.getText().toString()), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().patchCou(token, jigou_id, "3", mPersonalName.getText().toString(), mPersonalGeren.getText().toString(), mPersonalJigou.getText().toString()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
                 BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
-                if(baseBean.getRetCode() ==0){
-                    if(is_top) {
+                if (baseBean.getRetCode() == 0) {
+                    if (is_top) {
                         mPersonalOnesure.setVisibility(View.GONE);
                         mPersonalOneedt.setVisibility(View.VISIBLE);
                         mPersonalName.setEnabled(false);
                         mPersonalJigou.setEnabled(false);
-                    }else{
+                    } else {
                         mPersonalThreesure.setVisibility(View.GONE);
                         mPersonalThreeedt.setVisibility(View.VISIBLE);
                         mPersonalGeren.setEnabled(false);
@@ -577,7 +612,7 @@ public class OranizeActivity extends LiveBaseActivity {
             ToastShow("请至少上传一张形象照");
             return;
         }
-        if(TextUtils.isEmpty(jigou_id)){
+        if (TextUtils.isEmpty(jigou_id)) {
             ToastShow("机构数据获取失败，稍后请重试");
             return;
         }
@@ -592,7 +627,7 @@ public class OranizeActivity extends LiveBaseActivity {
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
                 BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
-                if(baseBean.getRetCode() ==0){
+                if (baseBean.getRetCode() == 0) {
                     mPersonalFivesure.setVisibility(View.GONE);
                     mPersonalFiveedt.setVisibility(View.VISIBLE);
                     mPersonImageAdapter_bt.setShow_add(false);
@@ -608,15 +643,15 @@ public class OranizeActivity extends LiveBaseActivity {
         });
     }
 
-    private void comitZxs(){
+    private void comitZxs() {
         List<ZxsBean> mzxsLists = new ArrayList<>();
         for (int i = 0; i < mLocalMedias.size(); i++) {
             JgBean jgBean = mLocalMedias.get(i);
-            if(TextUtils.isEmpty(jgBean.getName())){
+            if (TextUtils.isEmpty(jgBean.getName())) {
                 ToastShow("咨询师名称不能为空");
                 return;
             }
-            ZxsBean bean =new ZxsBean(jgBean.getName(),jgBean.getPath(),jigou_id);
+            ZxsBean bean = new ZxsBean(jgBean.getName(), jgBean.getPath(), jigou_id);
             mzxsLists.add(bean);
         }
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), new Gson().toJson(mzxsLists));
@@ -624,8 +659,8 @@ public class OranizeActivity extends LiveBaseActivity {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
-                if(baseBean.getRetCode() ==0){
+                BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
+                if (baseBean.getRetCode() == 0) {
                     mPersonalTwosure.setVisibility(View.GONE);
                     mPersonalTwoedt.setVisibility(View.VISIBLE);
                     mPersonImageAdapter.setShow_add(false);
@@ -639,7 +674,6 @@ public class OranizeActivity extends LiveBaseActivity {
                 super.onErrorLIstener(error);
             }
         });
-
 
 
     }
@@ -843,8 +877,8 @@ public class OranizeActivity extends LiveBaseActivity {
         }
     };
 
-    private class ZxsBean{
-        private String couName ;
+    private class ZxsBean {
+        private String couName;
         private String imgUrl;
         private String meId;
 

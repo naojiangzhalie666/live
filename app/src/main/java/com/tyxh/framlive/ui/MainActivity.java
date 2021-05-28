@@ -1,7 +1,14 @@
 package com.tyxh.framlive.ui;
 
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.heytap.msp.push.HeytapPushManager;
+import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.hms.aaid.HmsInstanceId;
+import com.huawei.hms.common.ApiException;
+import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+import com.superc.yyfflibrary.views.lowhurdles.TabFragmentAdapter;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveBaseActivity;
@@ -10,11 +17,16 @@ import com.tyxh.framlive.fragment.FindFragment;
 import com.tyxh.framlive.fragment.HomeFragment;
 import com.tyxh.framlive.fragment.MessageFragment;
 import com.tyxh.framlive.fragment.MineFragment;
+import com.tyxh.framlive.thirdpush.BrandUtil;
+import com.tyxh.framlive.thirdpush.OPPOPushImpl;
+import com.tyxh.framlive.thirdpush.PrivateConstants;
+import com.tyxh.framlive.thirdpush.ThirdPushTokenMgr;
+import com.tyxh.framlive.utils.LiveLog;
 import com.tyxh.framlive.utils.NavigaUtils;
 import com.tyxh.framlive.views.MainViewpager;
 import com.tyxh.framlive.views.TabContainerView;
-import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
-import com.superc.yyfflibrary.views.lowhurdles.TabFragmentAdapter;
+import com.vivo.push.IPushActionListener;
+import com.vivo.push.PushClient;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,6 +60,7 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         EventBus.getDefault().register(this);
+        prepareThirdPushToken();
         mHomeFragment = new HomeFragment();
         mFindFragment = new FindFragment();
         mMessageFragment = new MessageFragment();
@@ -71,6 +84,58 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
 
 
     }
+
+    /*各大平台推送*/
+    private void prepareThirdPushToken(){
+        ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
+        if (BrandUtil.isBrandHuawei()) {
+            // 华为离线推送
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        // read from agconnect-services.json
+                        String appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
+                        String token = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
+                        LiveLog.i(TAG, "huawei get token:" + token);
+                        if(!TextUtils.isEmpty(token)) {
+                            ThirdPushTokenMgr.getInstance().setThirdPushToken(token);
+                            ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
+                        }
+                    } catch (ApiException e) {
+                        LiveLog.e(TAG, "huawei get token failed, " + e);
+                    }
+                }
+            }.start();
+        } else if (BrandUtil.isBrandVivo()) {
+            // vivo离线推送
+            LiveLog.i(TAG, "vivo support push: " + PushClient.getInstance(getApplicationContext()).isSupport());
+            PushClient.getInstance(getApplicationContext()).turnOnPush(new IPushActionListener() {
+                @Override
+                public void onStateChanged(int state) {
+                    if (state == 0) {
+                        String regId = PushClient.getInstance(getApplicationContext()).getRegId();
+                        LiveLog.i(TAG, "vivopush open vivo push success regId = " + regId);
+                        ThirdPushTokenMgr.getInstance().setThirdPushToken(regId);
+                        ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
+                    } else {
+                        // 根据vivo推送文档说明，state = 101 表示该vivo机型或者版本不支持vivo推送，链接：https://dev.vivo.com.cn/documentCenter/doc/156
+                        LiveLog.i(TAG, "vivopush open vivo push fail state = " + state);
+                    }
+                }
+            });
+        }
+        else if (HeytapPushManager.isSupportPush()) {
+            // oppo离线推送
+            OPPOPushImpl oppo = new OPPOPushImpl();
+            oppo.createNotificationChannel(this);
+            HeytapPushManager.register(this, PrivateConstants.OPPO_PUSH_APPKEY, PrivateConstants.OPPO_PUSH_APPSECRET, oppo);
+        }
+        /*else if (BrandUtil.isGoogleServiceSupport()) {
+            // 谷歌推送
+        }*/
+    }
+
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -135,7 +200,7 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     protected void onRestart() {
         super.onRestart();
         if(mMineFragment!=null&&mMineFragment.isVisible()){
-            mMineFragment.toUpdateData();
+//            mMineFragment.toUpdateData();
         }
     }
     /*判断应用是否展示虚拟键*/

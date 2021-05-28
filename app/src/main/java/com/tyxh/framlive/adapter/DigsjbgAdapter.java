@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.bean.ContctBean;
 
 import java.util.List;
 
@@ -17,11 +18,11 @@ import butterknife.ButterKnife;
 
 public class DigsjbgAdapter extends RecyclerView.Adapter<DigsjbgAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mLists;
+    private List<ContctBean.RetDataBean.ListBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
 
-    public DigsjbgAdapter(Context context, List<String> stringList) {
+    public DigsjbgAdapter(Context context, List<ContctBean.RetDataBean.ListBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -40,15 +41,16 @@ public class DigsjbgAdapter extends RecyclerView.Adapter<DigsjbgAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        String bean = mLists.get(position);
-        if(position%2==0){
+        ContctBean.RetDataBean.ListBean bean = mLists.get(position);
+        int type = bean.getType();
+        if(type==1){//1 视频  2语音
             vh.mItemServiceHead.setImageResource(R.drawable.sjbg_video);
         }else{
             vh.mItemServiceHead.setImageResource(R.drawable.sjbg_line);
         }
-        vh.mItemServiceTitle.setText("这里是录入"+position);
-        vh.mItemServiceNum.setText("2021.03.2"+position);
-        vh.mItemServiceGo.setText((position+1)+"0分钟");
+        vh.mItemServiceTitle.setText(bean.getTitle());
+        vh.mItemServiceNum.setText(bean.getCreateDate());
+        vh.mItemServiceGo.setText(bean.getTimes());
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

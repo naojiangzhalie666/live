@@ -27,15 +27,18 @@
 
     <TextView
         android:id="@+id/item_service_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
+       android:maxLines="2"
+        android:ellipsize="end"
         android:textColor="@color/black_oneeight"
         app:layout_constraintBottom_toTopOf="@+id/item_service_num"
-        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintEnd_toStartOf="@+id/item_service_go"
         app:layout_constraintStart_toEndOf="@+id/item_service_head"
         app:layout_constraintTop_toTopOf="@+id/item_service_head"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="一对一专属咨询" />
 
     <TextView

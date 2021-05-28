@@ -51,7 +51,7 @@ import static android.view.View.GONE;
  * A simple {@link Fragment} subclass.
  */
 public class MessageFragment extends BaseFragment {
-
+    private static final String TAG = "MessageFragment";
     private ConversationLayout mConversationLayout;
     private View mBaseView;
     private TextView mtv_notic, mtv_content, mtv_time, mtv_nomsg;
@@ -65,11 +65,13 @@ public class MessageFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBaseView = inflater.inflate(R.layout.fragment_message, container, false);
         initView();
+        Log.e(TAG, "onCreateView: " );
         return mBaseView;
     }
 
 
     private void initView() {
+        Log.e(TAG, "initView: ");
         // 从布局文件中获取会话列表面板
         mConversationLayout = mBaseView.findViewById(R.id.conversation_layout);
         mtv_nomsg = mBaseView.findViewById(R.id.message_nomsg);

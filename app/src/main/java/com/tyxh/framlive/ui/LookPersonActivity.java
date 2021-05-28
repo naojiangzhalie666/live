@@ -117,6 +117,8 @@ public class LookPersonActivity extends LiveBaseActivity {
     RecyclerView mPersonalThiredrecy;
     @BindView(R.id.personal_more)
     ImageView mPersonalThireDd;
+    @BindView(R.id.personal_share)
+    ImageView mPersonalShare;
 
 
     private List<String> mStr_listones;
@@ -189,6 +191,7 @@ public class LookPersonActivity extends LiveBaseActivity {
                 mPersonalBtShare.setVisibility(View.VISIBLE);
                 mPersonalBtTalk.setVisibility(View.VISIBLE);
             }
+            mPersonalShare.setVisibility(View.VISIBLE);
         }
 
         /*第一个横向列表*/
@@ -262,13 +265,13 @@ public class LookPersonActivity extends LiveBaseActivity {
 //                    map.setSelect(!sel);
 //                    mPersonTwoAdapter.notifyItemChanged(pos);
 //                } else if (mPersonalFouredt.getVisibility() == View.VISIBLE) {
-                    UserDetailBean.RetDataBean.ServicePackagesBean servicePackagesBean = mStr_listtwos.get(pos);
-                    Intent inttt = new Intent(LookPersonActivity.this, ShowGoodsActivity.class);
-                    inttt.putExtra("data", servicePackagesBean);
-                    inttt.putExtra("name", "情感咨询师-" + mPersonalName.getText().toString());
-                    inttt.putExtra("query_id", query_userid);
-                    inttt.putExtra("is_user", is_user);
-                    startActivity(inttt);//商品套餐页面
+                UserDetailBean.RetDataBean.ServicePackagesBean servicePackagesBean = mStr_listtwos.get(pos);
+                Intent inttt = new Intent(LookPersonActivity.this, ShowGoodsActivity.class);
+                inttt.putExtra("data", servicePackagesBean);
+                inttt.putExtra("name", "情感咨询师-" + mPersonalName.getText().toString());
+                inttt.putExtra("query_id", query_userid);
+                inttt.putExtra("is_user", is_user);
+                startActivity(inttt);//商品套餐页面
 //                }
             }
         });
@@ -290,7 +293,7 @@ public class LookPersonActivity extends LiveBaseActivity {
 
     }
 
-    @OnClick({R.id.personal_back, R.id.personal_more, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt,
+    @OnClick({R.id.personal_back, R.id.personal_more, R.id.personal_share, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt,
             R.id.personal_threesure, R.id.personal_fouredt, R.id.personal_foursure, R.id.look_btshare, R.id.look_bttalk})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -301,6 +304,7 @@ public class LookPersonActivity extends LiveBaseActivity {
                 mBtPopupWindow.showAsDropDown(mPersonalThireDd, 0, 0);
                 break;
             case R.id.look_btshare:
+            case R.id.personal_share:
                 mShareDialog.show();
                 break;
             case R.id.look_bttalk:
@@ -352,6 +356,7 @@ public class LookPersonActivity extends LiveBaseActivity {
                 break;
         }
     }
+
     private void startChatActivity(String title) {
         ChatInfo chatInfo = new ChatInfo();
         chatInfo.setType(V2TIMConversation.V2TIM_C2C);
@@ -365,23 +370,29 @@ public class LookPersonActivity extends LiveBaseActivity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getDetail();
+    }
+
     /*修改个人信息*/
     private void commitUserD(boolean is_top) {
-        if(TextUtils.isEmpty(zxs_id)){
+        if (TextUtils.isEmpty(zxs_id)) {
             ToastShow("咨询师数据获取失败，稍后请重试");
             return;
         }
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().patchCou(token, zxs_id, "2", mPersonalName.getText().toString(), mPersonalGeren.getText().toString(),""), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().patchCou(token, zxs_id, "2", mPersonalName.getText().toString(), mPersonalGeren.getText().toString(), ""), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
                 BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
-                if(baseBean.getRetCode() ==0){
-                    if(is_top){
+                if (baseBean.getRetCode() == 0) {
+                    if (is_top) {
                         mPersonalOnesure.setVisibility(View.GONE);
                         mPersonalOneedt.setVisibility(View.VISIBLE);
                         mPersonalName.setEnabled(false);
-                    }else{
+                    } else {
                         mPersonalThreesure.setVisibility(View.GONE);
                         mPersonalThreeedt.setVisibility(View.VISIBLE);
                         mPersonalGeren.setEnabled(false);
@@ -402,11 +413,11 @@ public class LookPersonActivity extends LiveBaseActivity {
 
     /*修改个人形象*/
     private void commitUserI() {
-        if(mLocalMedias_strs!=null&&mLocalMedias_strs.size()<=0){
+        if (mLocalMedias_strs != null && mLocalMedias_strs.size() <= 0) {
             ToastShow("请至少上传一张形象照");
             return;
         }
-        if(TextUtils.isEmpty(zxs_id)){
+        if (TextUtils.isEmpty(zxs_id)) {
             ToastShow("咨询师数据获取失败，稍后请重试");
             return;
         }
@@ -420,8 +431,8 @@ public class LookPersonActivity extends LiveBaseActivity {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
-                if(baseBean.getRetCode() ==0){
+                BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
+                if (baseBean.getRetCode() == 0) {
                     mPersonalTwosure.setVisibility(View.GONE);
                     mPersonalTwoedt.setVisibility(View.VISIBLE);
                     mPersonImageAdapter.setCan_caozuo(false);
@@ -441,7 +452,7 @@ public class LookPersonActivity extends LiveBaseActivity {
     /**
      * @param path 文件路径
      */
-    private void toUpFile(String path,List<LocalMedia> selectList) {
+    private void toUpFile(String path, List<LocalMedia> selectList) {
 //        String path = localMedia.getRealPath();
 //        if (TextUtils.isEmpty(path)) {
 //            path = localMedia.getPath();
@@ -507,7 +518,7 @@ public class LookPersonActivity extends LiveBaseActivity {
                             setData(retData);
                         }
                     }
-                }else{
+                } else {
                     ToastShow(result.getRetMsg());
                 }
             }
@@ -526,12 +537,14 @@ public class LookPersonActivity extends LiveBaseActivity {
     private void setData(UserDetailBean.RetDataBean retData) {
         if (retData.getCounselorBeans() != null && retData.getCounselorBeans().size() != 0) {
             UserDetailBean.RetDataBean.CounselorBeansBean beansBean = retData.getCounselorBeans().get(0);
-            zxs_id = beansBean.getId()+"";
+            zxs_id = beansBean.getId() + "";
             mPersonalName.setText(beansBean.getCouName());
             mPersonalJigou.setText("无");
             mPersonalId.setText("ID:" + zxs_id);
             mPersonalGeren.setText(beansBean.getPerIntroduce());
             List<UserDetailBean.RetDataBean.CounselorBeansBean.CouPicBean> couPiclist = beansBean.getCouPiclist();
+            mLocalMedias.clear();
+            mLocalMedias_strs.clear();
             for (int i = 0; i < couPiclist.size(); i++) {
                 UserDetailBean.RetDataBean.CounselorBeansBean.CouPicBean couPicBean = couPiclist.get(i);
                 LocalMedia localMedia = new LocalMedia();
@@ -544,6 +557,7 @@ public class LookPersonActivity extends LiveBaseActivity {
         if (retData.getUser() != null) {
             UserDetailBean.RetDataBean.UserBean user = retData.getUser();
             mNickname = user.getNickname();
+            mStr_listones.clear();
             String interest = retData.getUser().getInterest();
             if (interest.endsWith(",")) {
                 interest = interest.substring(0, interest.length() - 1);
@@ -638,7 +652,7 @@ public class LookPersonActivity extends LiveBaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-            toUpFile(TextUtils.isEmpty(selectList.get(0).getRealPath())?selectList.get(0).getPath():selectList.get(0).getRealPath(),selectList);
+            toUpFile(TextUtils.isEmpty(selectList.get(0).getRealPath()) ? selectList.get(0).getPath() : selectList.get(0).getRealPath(), selectList);
         }
     }
 

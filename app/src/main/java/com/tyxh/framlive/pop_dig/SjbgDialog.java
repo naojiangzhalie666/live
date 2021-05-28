@@ -6,10 +6,19 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.ljy.devring.util.DensityUtil;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.DigsjbgAdapter;
-import com.ljy.devring.util.DensityUtil;
+import com.tyxh.framlive.bean.ContctBean;
+import com.tyxh.framlive.utils.httputil.HttpBackListener;
+import com.tyxh.framlive.utils.httputil.LiveHttp;
 
 import java.util.List;
 
@@ -24,22 +33,26 @@ public class SjbgDialog extends Dialog {
 
     @BindView(R.id.dig_service_recy)
     RecyclerView mDigServiceRecy;
+    @BindView(R.id.dig_service_smart)
+    SmartRefreshLayout mDigServiceSmart;
 
     private Context mContext;
-    private List<String> mStringList;
+    private List<ContctBean.RetDataBean.ListBean> mStringList;
     private DigsjbgAdapter mDigsjbgAdapter;
-    private OnTalkClickListener mOnTalkClickListener;
+    private String mToken, toUserid;
+    private int page = 1;
+    private int page_size = 10;
+    private SjbgedtDialog sjbgedtDialog;
 
 
-    public SjbgDialog(@NonNull Context context, List<String> mstrings) {
+    public SjbgDialog(@NonNull Context context, List<ContctBean.RetDataBean.ListBean> mstrings, String token, String toId) {
         super(context);
         mContext = context;
         mStringList = mstrings;
+        mToken = token;
+        toUserid = toId;
     }
 
-    public void setOnTalkClickListener(OnTalkClickListener onTalkClickListener) {
-        mOnTalkClickListener = onTalkClickListener;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +60,7 @@ public class SjbgDialog extends Dialog {
         setContentView(R.layout.dialog_service);
         ButterKnife.bind(this);
 
-        getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT,mStringList.size()>4? DensityUtil.dp2px(mContext,400): RelativeLayout.LayoutParams.WRAP_CONTENT);
+        getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, mStringList.size() > 4 ? DensityUtil.dp2px(mContext, 400) : RelativeLayout.LayoutParams.WRAP_CONTENT);
         getWindow().setBackgroundDrawableResource(R.color.transparent);
         getWindow().setGravity(Gravity.BOTTOM);
         mDigsjbgAdapter = new DigsjbgAdapter(mContext, mStringList);
@@ -58,11 +71,41 @@ public class SjbgDialog extends Dialog {
             @Override
             public void onItemClickListener(int pos) {
 //                SjbgDialog.this.dismiss();
-                if(mOnTalkClickListener!=null)
-                    mOnTalkClickListener.onTalkClickListener("咨询一下"+pos,pos);
+                ContctBean.RetDataBean.ListBean listBean = mStringList.get(pos);
+                toShowSjedt(listBean,pos);
+            }
+        });
+        mDigServiceSmart.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                getContHis();
+            }
+        });
+        mDigServiceSmart.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                ++page;
+                getContHis();
             }
         });
 
+
+    }
+
+    private void toShowSjedt(ContctBean.RetDataBean.ListBean listBean,int pos) {
+        sjbgedtDialog = new SjbgedtDialog(mContext, listBean.getId(),  listBean.getCreateDate(),listBean.getTitle(), listBean.getRemark(), mToken);
+        sjbgedtDialog.show();
+        sjbgedtDialog.setOnSureComtListener(new SjbgedtDialog.OnSureComtListener() {
+            @Override
+            public void onSuccListener( String title, String content) {
+                listBean.setTitle(title);
+                listBean.setRemark(content);
+                mDigsjbgAdapter.notifyItemChanged(pos);
+
+
+            }
+        });
 
     }
 
@@ -75,7 +118,36 @@ public class SjbgDialog extends Dialog {
         }
     }
 
-    public interface OnTalkClickListener{
-        void onTalkClickListener(String content,int pos);
+
+    /*获取数据*/
+    private void getContHis() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getContxtHis(mToken, page, page_size, toUserid), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                mDigServiceSmart.finishRefresh();
+                mDigServiceSmart.finishLoadMore();
+                ContctBean bean = new Gson().fromJson(result.toString(), ContctBean.class);
+                if (bean.getRetCode() == 0) {
+                    List<ContctBean.RetDataBean.ListBean> list = bean.getRetData().getList();
+                    if (page == 1) {
+                        mStringList.clear();
+                    }
+                    mStringList.addAll(list);
+                    getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, mStringList.size() > 4 ? DensityUtil.dp2px(mContext, 400) : RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    mDigsjbgAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(mContext, bean.getRetMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                mDigServiceSmart.finishRefresh();
+                mDigServiceSmart.finishLoadMore();
+            }
+        });
     }
+
 }

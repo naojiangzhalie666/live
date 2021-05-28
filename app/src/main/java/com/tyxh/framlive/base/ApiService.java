@@ -413,6 +413,50 @@ public interface ApiService {
     @POST("couMechanismController/updateMeCou")
     Observable<JSONObject> updateMecou(@Header("Authorization") String token,@Body RequestBody body);
 
+    /**
+     * 私聊页连线记录查询
+     * @param token
+     * @param page      当前页
+     * @param size      当前查询数量
+     * @param userId    要查询的目标id
+     * @return
+     */
+    @GET("servicePackageController/queryConnectHistory/{page}/{size}/{userId}")
+    Observable<JSONObject> getContxtHis(@Header("Authorization") String token,@Path("page")int page,@Path("size")int size,@Path("userId")String userId);
+
+    /**
+     * 添加连线备注
+     * @param token
+     * @param id        主键id
+     * @param remark    备注
+     * @param title     标题
+     * @return
+     */
+    @PUT("servicePackageController/addConnectRemark")
+    Observable<JSONObject> addContctRemark(@Header("Authorization") String token,@Query("id")int id,@Query("remark")String remark,@Query("title")String title);
+
+    /**
+     * 首页咨询师查询
+     * @param token
+     * @param pageNum       查询当前页码
+     * @param pageSize      查询数量
+     * @param interest      擅长方向
+     * @param anchorState   状态(1:离线;2:在线;3:正在连线中)--目前传“” 无法根据这个状态进行查询
+     * @return
+     */
+    @GET("couCounselorController/queryCounselorMechanism/{pageNum}/{pageSize}")
+    Observable<JSONObject> queryAllZxs(@Header("Authorization") String token,@Path("pageNum")int pageNum,@Path("pageSize")int pageSize,@Query("interest") String interest,@Query("anchorState")String anchorState);
+
+    /**
+     * 服务特色修改
+     * @param token
+     * @param id                    修改的服务id
+     * @param serviceFeature        特色1
+     * @param serviceFeature2       特色2
+     * @return
+     */
+    @PUT("servicePackageController/updateServiceFeature")
+    Observable<JSONObject> updateService(@Header("Authorization") String token,@Query("id")int id,@Query("serviceFeature")String serviceFeature,@Query("serviceFeature2")String serviceFeature2);
 
     /*测试接口--获取微信支付数据*/
     @GET("testController/appWxPay")

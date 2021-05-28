@@ -1,6 +1,7 @@
 package com.tyxh.framlive.ui;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -10,6 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.ShowGoodsAdapter;
 import com.tyxh.framlive.base.ApiService;
@@ -24,10 +29,6 @@ import com.tyxh.framlive.utils.GlideRoundTransUtils;
 import com.tyxh.framlive.utils.TitleUtils;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.google.gson.Gson;
-import com.ljy.devring.DevRing;
-import com.ljy.devring.http.support.observer.CommonObserver;
-import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -47,6 +48,13 @@ import butterknife.OnClick;
 
 import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 
+/********************************************************************
+ @version: 1.0.0
+ @description: 专属服务展示
+ @author: admin
+ @time: 2021/5/28 15:17
+ @变更历史:
+ ********************************************************************/
 public class ShowGoodsActivity extends LiveBaseActivity {
 
     @BindView(R.id.personal_head)
@@ -150,10 +158,10 @@ public class ShowGoodsActivity extends LiveBaseActivity {
                     if (pos == i) {
                         mList_goods.get(i).setSelect(true);
                         mPackageSpecListBean = mList_goods.get(pos);
-                        if(mPackageSpecListBean.getOriginalPrice()>Double.parseDouble(now_zuanshi)){
-                            mShowgoodsZuanshiCha.setText("(还差"+(mPackageSpecListBean.getOriginalPrice()-Double.parseDouble(now_zuanshi))+")");
+                        if (mPackageSpecListBean.getOriginalPrice() > Double.parseDouble(now_zuanshi)) {
+                            mShowgoodsZuanshiCha.setText("(还差" + (mPackageSpecListBean.getOriginalPrice() - Double.parseDouble(now_zuanshi)) + ")");
                             mShowgoodsBuy.setText("充值支付");
-                        }else{
+                        } else {
                             mShowgoodsBuy.setText("支付");
                         }
                     } else {
@@ -184,16 +192,13 @@ public class ShowGoodsActivity extends LiveBaseActivity {
                 mShowgoodsZhendui.setEnabled(true);
                 break;
             case R.id.showgoods_edtsure:
-                mShowgoodsEdtsure.setVisibility(View.GONE);
-                mShowgoodsEdt.setVisibility(View.VISIBLE);
-                mShowgoodsShanchang.setEnabled(false);
-                mShowgoodsZhendui.setEnabled(false);
+                toUpdateTs();
                 break;
             case R.id.showgoods_buy:
-                String buy_txt =mShowgoodsBuy.getText().toString();
-                if(buy_txt.equals("支付")) {
+                String buy_txt = mShowgoodsBuy.getText().toString();
+                if (buy_txt.equals("支付")) {
                     goBuyFw();
-                }else{
+                } else {
                     startActivity(new Intent(this, BuyzActivity.class));
                 }
                 break;
@@ -224,6 +229,37 @@ public class ShowGoodsActivity extends LiveBaseActivity {
         });
     }
 
+    private void toUpdateTs() {
+        String ts_one = mShowgoodsShanchang.getText().toString();
+        String ts_two = mShowgoodsZhendui.getText().toString();
+        if(TextUtils.isEmpty(ts_one)||TextUtils.isEmpty(ts_two)){
+            ToastShow("擅长/人群不能为空");
+            return;
+        }
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().updateService(token,mBean.getId(), ts_one, ts_two), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
+                if (baseBean.getRetCode() == 0) {
+                    mShowgoodsEdtsure.setVisibility(View.GONE);
+                    mShowgoodsEdt.setVisibility(View.VISIBLE);
+                    mShowgoodsShanchang.setEnabled(false);
+                    mShowgoodsZhendui.setEnabled(false);
+                }
+                ToastShow(baseBean.getRetMsg());
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+
+
+    }
+
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -239,10 +275,10 @@ public class ShowGoodsActivity extends LiveBaseActivity {
                     AssetBean.RetDataBean data = assetBean.getRetData();
                     now_zuanshi = data.getDiamond();
                     int originalPrice = mPackageSpecListBean.getOriginalPrice();
-                    if(originalPrice>Double.parseDouble(now_zuanshi)){
-                        mShowgoodsZuanshiCha.setText("(还差"+(originalPrice-Double.parseDouble(now_zuanshi))+")");
+                    if (originalPrice > Double.parseDouble(now_zuanshi)) {
+                        mShowgoodsZuanshiCha.setText("(还差" + (originalPrice - Double.parseDouble(now_zuanshi)) + ")");
                         mShowgoodsBuy.setText("充值支付");
-                    }else{
+                    } else {
                         mShowgoodsBuy.setText("支付");
                     }
                     mShowgoodsZuanshi.setText(now_zuanshi);

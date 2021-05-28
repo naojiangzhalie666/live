@@ -256,12 +256,14 @@ public class LoginActivity extends LiveBaseActivity {
                     }
                 } else {
                     ToastShow(userInfoBean.getRetMsg());
+                    hideLoad();
                 }
             }
 
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
             }
         });
     }
@@ -276,23 +278,26 @@ public class LoginActivity extends LiveBaseActivity {
                 if (signBean.getRetCode() == 0) {
                     LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERSIGN, signBean.getRetData());
                     gotLogin(user_id, bean, signBean.getRetData());
+                }else{
+                    hideLoad();
                 }
             }
 
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
             }
         });
     }
 
     /*登录直播的IM并配置聊天的IM*/
     private void gotLogin(String user_id, UserInfoBean.RetDataBean bean, String sign) {
-        hideLoad();
         mInstance = TCUserMgr.getInstance();
         mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
             @Override
             public void onLoginBackListener(String userid, String usersig, long sdk_id) {
+                hideLoad();
                 if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
                     UserModel self = new UserModel();
                     self.userId = userid;
@@ -301,14 +306,20 @@ public class LoginActivity extends LiveBaseActivity {
                     AVCallManager.getInstance().init(LoginActivity.this);
                 }
                 loginTUIKitLive(sdk_id, userid, usersig);
+                if (!isNeedUpmsg && !isNeedUpMobile) {
+                    statActivity(MainActivity.class);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onLoginFailedListener(int errCode, String errInfo) {
+                super.onLoginFailedListener(errCode, errInfo);
+                hideLoad();
+                ToastShow("登录失败");
             }
         });
-        Log.e(TAG, "onSuccessListener: " + user_id);
         mInstance.loginMLVB(user_id, bean.getNickname(), bean.getIco(), bean.getIco(), bean.getGender(), sign);
-        if (!isNeedUpmsg && !isNeedUpMobile) {
-            statActivity(MainActivity.class);
-            finish();
-        }
     }
 
     /**

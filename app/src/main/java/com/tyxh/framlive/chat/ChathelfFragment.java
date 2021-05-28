@@ -11,19 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tyxh.framlive.R;
-import com.tyxh.framlive.base.ApiService;
-import com.tyxh.framlive.base.Constant;
-import com.tyxh.framlive.bean.BaseBean;
-import com.tyxh.framlive.bean.EventMessage;
-import com.tyxh.framlive.bean.UserDetailBean;
-import com.tyxh.framlive.chat.helper.ChatLayoutHelper;
-import com.tyxh.framlive.pop_dig.BuyzActivity;
-import com.tyxh.framlive.pop_dig.ServiceDialog;
-import com.tyxh.framlive.pop_dig.SjbgDialog;
-import com.tyxh.framlive.utils.LiveShareUtil;
-import com.tyxh.framlive.utils.httputil.HttpBackListener;
-import com.tyxh.framlive.utils.httputil.LiveHttp;
 import com.google.gson.Gson;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
@@ -44,6 +31,21 @@ import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout;
 import com.tencent.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.tencent.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.tyxh.framlive.R;
+import com.tyxh.framlive.base.ApiService;
+import com.tyxh.framlive.base.Constant;
+import com.tyxh.framlive.bean.BaseBean;
+import com.tyxh.framlive.bean.ContctBean;
+import com.tyxh.framlive.bean.EventMessage;
+import com.tyxh.framlive.bean.UserDetailBean;
+import com.tyxh.framlive.bean.UserInfoBean;
+import com.tyxh.framlive.chat.helper.ChatLayoutHelper;
+import com.tyxh.framlive.pop_dig.BuyzActivity;
+import com.tyxh.framlive.pop_dig.ServiceDialog;
+import com.tyxh.framlive.pop_dig.SjbgDialog;
+import com.tyxh.framlive.utils.LiveShareUtil;
+import com.tyxh.framlive.utils.httputil.HttpBackListener;
+import com.tyxh.framlive.utils.httputil.LiveHttp;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -74,12 +76,13 @@ public class ChathelfFragment extends BaseFragment {
     private ServiceDialog mServiceDialog;
     private List<UserDetailBean.RetDataBean.ServicePackagesBean> mService_strs;
     private SjbgDialog mSjbgDialog;
-    private List<String> mSjbg_strs;
+    private List<ContctBean.RetDataBean.ListBean> mSjbg_strs;
 
 
     private String mToken;
     private int mPower;
     private boolean is_first = true;
+    private UserInfoBean mUserInfo;
 
 
     @Override
@@ -96,6 +99,7 @@ public class ChathelfFragment extends BaseFragment {
     }
 
     private void initMine() {
+        mUserInfo = LiveShareUtil.getInstance(getActivity()).getUserInfo();
         mToken = LiveShareUtil.getInstance(getActivity()).getToken();
         mStringList = new ArrayList<>();
         for (int i = 0; i < mStrings.length; i++) {
@@ -106,16 +110,9 @@ public class ChathelfFragment extends BaseFragment {
 
         mSjbg_strs = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            mSjbg_strs.add("");
+            mSjbg_strs.add(new ContctBean.RetDataBean.ListBean());
         }
-        mSjbgDialog = new SjbgDialog(getActivity(), mSjbg_strs);
-        mSjbgDialog.setOnTalkClickListener(new SjbgDialog.OnTalkClickListener() {
-            @Override
-            public void onTalkClickListener(String content,int pos) {
-//                MessageInfo info = MessageInfoUtil.buildTextMessage(content);
-//                mChatLayout.sendMessage(info,false);
-            }
-        });
+        mSjbgDialog = new SjbgDialog(getActivity(), mSjbg_strs,mToken,"2");
 //        getDetail(mChatInfo.getId());
 
     }
@@ -382,11 +379,9 @@ public class ChathelfFragment extends BaseFragment {
             mChatLayout.sendMessage(msg, false);
             return;
         }
-        String id = "";
-        if (mChatInfo.getId().contains(".")) {
-            id = mChatInfo.getId().substring(0, mChatInfo.getId().indexOf("."));
-        } else {
-            id = mChatInfo.getId();
+        String id = mUserInfo.getRetData().getId();
+        if (id.contains(".")) {
+            id = id.substring(0, mChatInfo.getId().indexOf("."));
         }
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().privateChat(mToken, id), new HttpBackListener() {
             @Override

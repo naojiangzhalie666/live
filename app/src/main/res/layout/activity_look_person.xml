@@ -45,6 +45,16 @@
             app:layout_constraintBottom_toBottomOf="@+id/personal_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/personal_ddd" />
+        <ImageView
+            android:id="@+id/personal_share"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/personal_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/personal_share" />
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline11"

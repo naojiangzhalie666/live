@@ -80,7 +80,7 @@ public class BindPhoneActivity extends LiveBaseActivity {
         Intent intent = getIntent();
         mNeedUp = intent.getBooleanExtra("needUp", false);
         mOther = intent.getIntExtra("other", 1);
-        if(mOther == 2){
+        if (mOther == 2) {
             mBindTitle.setText("其他手机号登录");
         }
 
@@ -109,9 +109,9 @@ public class BindPhoneActivity extends LiveBaseActivity {
                         ToastShow("验证码不能为空");
                         return;
                     }
-                    if(mOther ==2) {//其它手机号登录
+                    if (mOther == 2) {//其它手机号登录
                         toLogin(mBindphonePhonenum.getText().toString(), mBindphonePhoneCode.getText().toString(), "sms");
-                    }else{//绑定手机号
+                    } else {//绑定手机号
                         bindPhone(mBindphonePhonenum.getText().toString(), mBindphonePhoneCode.getText().toString());
                     }
                 }
@@ -147,22 +147,17 @@ public class BindPhoneActivity extends LiveBaseActivity {
     }
 
     /*绑定手机号*/
-    private void bindPhone(String phone,String code){
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().bindPhone(token,phone ,code ), new HttpBackListener() {
+    private void bindPhone(String phone, String code) {
+        showLoad();
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().bindPhone(token, phone, code), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                BaseBean baseBean =new  Gson().fromJson(result.toString(),BaseBean.class);
-                if(baseBean.getRetCode() ==0){
-                    if(mNeedUp){
-                        statActivity(MsgInputActivity.class);
-                        finish();
-                    }else{
-                        EventBus.getDefault().post(new EventMessage(LIVE_UPDATE_CODE));
-                        statActivity(MainActivity.class);
-                        finish();
-                    }
-                }else {
+                BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
+                if (baseBean.getRetCode() == 0) {
+                    getUserInfo();
+                } else {
+                    hideLoad();
                     ToastShow(baseBean.getRetMsg());
                 }
 
@@ -171,6 +166,7 @@ public class BindPhoneActivity extends LiveBaseActivity {
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
             }
         });
 
@@ -178,6 +174,7 @@ public class BindPhoneActivity extends LiveBaseActivity {
 
     /*登录*/
     private void toLogin(String name, String pwd, String type) {
+        showLoad();
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().login(name, pwd, type), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
@@ -188,12 +185,13 @@ public class BindPhoneActivity extends LiveBaseActivity {
                     getUserInfo();
                 } else {
                     ToastShow(loginBean.getRetMsg());
+                    hideLoad();
                 }
             }
 
             @Override
             public void onErrorLIstener(String error) {
-
+                hideLoad();
             }
         });
     }
@@ -212,17 +210,19 @@ public class BindPhoneActivity extends LiveBaseActivity {
                     LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERCOVER, userInfoBean.getRetData().getIco());
                     LiveShareUtil.getInstance(BindPhoneActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
                     LiveShareUtil.getInstance(BindPhoneActivity.this).putPower(userInfoBean.getRetData().getType());//用户类型
-                    thisLogin(userInfoBean.getRetData());
                     String interest = userInfoBean.getRetData().getInterest();
                     if (TextUtils.isEmpty(interest)) {
                         isNeedUpmsg = true;
                         statActivity(MsgInputActivity.class);
+                        hideLoad();
                     } else {
+                        thisLogin(userInfoBean.getRetData());
                         isNeedUpmsg = false;
                     }
 
                 } else {
                     ToastShow(userInfoBean.getRetMsg());
+                    hideLoad();
                 }
             }
 
@@ -243,12 +243,16 @@ public class BindPhoneActivity extends LiveBaseActivity {
                 if (signBean.getRetCode() == 0) {
                     LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERSIGN, signBean.getRetData());
                     gotLogin(bean, signBean.getRetData());
+                } else {
+                    ToastShow(signBean.getRetMsg());
+                    hideLoad();
                 }
             }
 
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
             }
         });
     }
@@ -267,14 +271,23 @@ public class BindPhoneActivity extends LiveBaseActivity {
                     AVCallManager.getInstance().init(BindPhoneActivity.this);
                 }
                 loginTUIKitLive(sdk_id, userid, usersig);
+                if (!isNeedUpmsg) {
+                    EventBus.getDefault().post(new EventMessage(LIVE_UPDATE_CODE));
+                    statActivity(MainActivity.class);
+                    finish();
+                }
+                hideLoad();
+            }
+
+            @Override
+            public void onLoginFailedListener(int errCode, String errInfo) {
+                super.onLoginFailedListener(errCode, errInfo);
+                ToastShow("登录失败");
+                hideLoad();
             }
         });
         mInstance.loginMLVB(bean.getId(), bean.getNickname(), bean.getIco(), bean.getIco(), bean.getGender(), sign);
-        if (!isNeedUpmsg) {
-            EventBus.getDefault().post(new EventMessage(LIVE_UPDATE_CODE));
-            statActivity(MainActivity.class);
-            finish();
-        }
+
     }
 
     private static void loginTUIKitLive(long sdkAppid, String userId, String userSig) {

@@ -3,14 +3,25 @@ package com.tyxh.framlive.pop_dig;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.base.ApiService;
+import com.tyxh.framlive.bean.EventMessage;
+import com.tyxh.framlive.bean.UserDetailBean;
 import com.tyxh.xzb.ui.TCChatEntity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Constraints;
@@ -18,7 +29,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
+
 public class GuanzDialog extends Dialog {
+    private static final String TAG = "GuanzDialog";
     @BindView(R.id.dig_gz_name)
     TextView mDigGzName;
     @BindView(R.id.dig_gz_sex)
@@ -38,11 +52,13 @@ public class GuanzDialog extends Dialog {
     private TCChatEntity mEntity;
     private OnDigClickListener mOnDigClickListener;
     private Context mContext;
+    private String mToken;
 
-    public GuanzDialog(@NonNull Context context, TCChatEntity tcChatEntity) {
+    public GuanzDialog(@NonNull Context context, TCChatEntity tcChatEntity,String token) {
         super(context);
         mContext = context;
         mEntity = tcChatEntity;
+        mToken =token;
     }
 
     @Override
@@ -55,15 +71,7 @@ public class GuanzDialog extends Dialog {
         getWindow().setBackgroundDrawableResource(R.color.transparent);
         setCanceledOnTouchOutside(true);
         mDigGzName.setText(mEntity.getSenderName());
-        mDigGzSex.setImageResource(R.drawable.chat_dig_man);
-        mDigGzId.setText("12345");
-        mDigGzOld.setText("90后");
-        mDigGzLxtime.setText("33小时");
-        mDigGzZctime.setText("322天");
-        mDigGzFavour.setText("恋爱技巧  情感挽回    恋爱技巧  ");
-        Glide.with(mContext).load(R.drawable.bg).circleCrop().into(mDigGzImgv);
-
-
+        getDetail();
     }
 
     public void setOnDigClickListener(OnDigClickListener onDigClickListener) {
@@ -89,6 +97,50 @@ public class GuanzDialog extends Dialog {
                 if(mOnDigClickListener!=null)
                     mOnDigClickListener.onRenmingClickListener();
                 break;
+        }
+    }
+
+    /*获取目标信息资料*/
+    private void getDetail() {
+        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getDetails(mToken, mEntity.getUserid()), new CommonObserver<UserDetailBean>() {
+            @Override
+            public void onResult(UserDetailBean result) {
+                Log.d(TAG, new Gson().toJson(result));
+                if (result.getRetCode() == 0) {
+                    UserDetailBean.RetDataBean retData = result.getRetData();
+                    if (retData != null) {
+                        setUserDatil(retData);
+                    }
+                } else {
+                    ToastUtil.showToast(mContext, result.getRetMsg());
+                }
+            }
+
+            @Override
+            public void onError(HttpThrowable throwable) {
+                if (throwable.errorType == HTTP_ERROR) {//重新登录
+                    EventBus.getDefault().post(new EventMessage(1005));
+                }
+                Log.e(TAG, "onError: " + throwable.toString());
+            }
+        }, TAG);
+
+    }
+
+    private void setUserDatil(UserDetailBean.RetDataBean data) {
+        UserDetailBean.RetDataBean.UserBean user = data.getUser();
+        if (user != null) {
+            Glide.with(mContext).load(user.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).circleCrop().into(mDigGzImgv);
+            mDigGzSex.setImageResource(user.getGender()==1?R.drawable.chat_dig_man:R.drawable.chat_dig_woman);
+            mDigGzId.setText(mEntity.getUserid());
+            mDigGzOld.setText(user.getAges());
+            mDigGzLxtime.setText("连线时长");
+            mDigGzZctime.setText("注册时长");
+            String interests = user.getInterests();
+            if(interests.contains(",")){
+                interests = interests.replaceAll(","," ");
+            }
+            mDigGzFavour.setText(interests);
         }
     }
 

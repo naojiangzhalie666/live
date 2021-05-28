@@ -83,6 +83,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 vh.mItemHomerecyName.setTextColor(mContext.getResources().getColor(R.color.black));
                 vh.mItemHomerecyLinear.setVisibility(View.GONE);
                 vh.mItemHomerecyTitle.setVisibility(View.GONE);
+                vh.mItemHomerecyBiao.setText("连线疏解中");
             }
 
            /* switch (position) {

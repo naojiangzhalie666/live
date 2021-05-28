@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.bean.ZxsallBean;
 
 import java.util.List;
 
@@ -22,11 +23,11 @@ import butterknife.ButterKnife;
 
 public class FIndAdapter extends RecyclerView.Adapter<FIndAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mLists;
+    private List<ZxsallBean.RetDataBean.ListBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
 
-    public FIndAdapter(Context context, List<String> stringList) {
+    public FIndAdapter(Context context, List<ZxsallBean.RetDataBean.ListBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -45,11 +46,11 @@ public class FIndAdapter extends RecyclerView.Adapter<FIndAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        String bean = mLists.get(position);
+        ZxsallBean.RetDataBean.ListBean bean = mLists.get(position);
         RoundedCorners roundedCorners = new RoundedCorners(15);
-        Glide.with(mContext).load(R.drawable.ruzhu_bg).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners )).into(vh.mItemFindrecyImgv);
-        vh.mItemFindrecyTitle.setText("情感老师--" + position + position);
-        vh.mItemFindrecyFaverite.setText("累计亏损高达了几个时刻监督管理局是德国" + position);
+        Glide.with(mContext).load(bean.getLogo()).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners )).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(vh.mItemFindrecyImgv);
+        vh.mItemFindrecyTitle.setText(bean.getName());
+        vh.mItemFindrecyFaverite.setText("擅长:"+bean.getInterests());
         vh.mItemFindrecyStatetop.setText("去留言");
       /*  vh.mItemFindrecyTvstate.setVisibility(View.VISIBLE);
         vh.mItemFindrecyLlnow.setVisibility(View.GONE);
@@ -77,6 +78,13 @@ public class FIndAdapter extends RecyclerView.Adapter<FIndAdapter.ViewHolder> {
                 vh.mItemFindrecyStatetop.setText("去私聊");
                 break;
         }*/
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnItemClickListener!=null)
+                    mOnItemClickListener.onItemClickListener(position);
+            }
+        });
 
     }
 

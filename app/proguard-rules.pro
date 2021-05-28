@@ -35,3 +35,7 @@
     *;
 }
 -dontwarn com.just.agentweb.**
+
+-keep class com.tyxh.framlive.thirdpush.XiaomiMsgReceiver {*;}
+-keep public class * extends android.app.Service
+-keep class com.heytap.msp.** { *;}

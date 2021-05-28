@@ -135,6 +135,12 @@ public class ManTwoFragment extends LiveBaseFragment {
         if (TextUtils.isEmpty(msg_lastId)) {
             ToastShow("请选择您的擅长方向");
             return;
+        }else{
+            String[] split = msg_lastId.split(",");
+            if(split.length>5){
+                ToastShow("擅长方向至多选择5个");
+                return;
+            }
         }
         if (mLists_Zizhi.size() == 0) {
             ToastShow("请上传您的资质");

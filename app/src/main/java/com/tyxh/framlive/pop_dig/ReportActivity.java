@@ -143,8 +143,6 @@ public class ReportActivity extends AppCompatActivity {
         map.put("reportContent", reason);
         map.put("reportReasonId", reason_id);
         map.put("userId", mUserInfo.getRetData().getId());
-        Log.e("ReportActivity+举证数据", "toSumJubao: " + new Gson().toJson(map));
-
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"),  new Gson().toJson(map));
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().toReprot(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(), requestBody), new HttpBackListener() {
             @Override

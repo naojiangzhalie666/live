@@ -3,6 +3,7 @@ package com.tyxh.framlive.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -236,10 +237,11 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
 
     private void init() {
         mUserInfo = LiveShareUtil.getInstance(getActivity()).getUserInfo();
-        if (mUserInfo != null) {
+        mAuditState = mUserInfo.getRetData().getAuditState();
+        /*if (mUserInfo != null) {
             UserInfoBean.RetDataBean retData = mUserInfo.getRetData();
             setData(retData);
-        }
+        }*/
         mLogoutDialog = new LogoutDialog(getActivity());
         mCodeDialog = new CodeDialog(getActivity());
         mFragments = new ArrayList<>();
@@ -307,12 +309,6 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
     }
 
     private void setData(UserInfoBean.RetDataBean data) {
-        mAuditState = mUserInfo.getRetData().getAuditState();
-        zuan = String.valueOf(data.getDiamond());
-        money = String.valueOf(data.getBalance());
-        mMineZuanshi.setText(zuan);
-        mMineMoneyTv.setText(money);
-        mMineDaojutv.setText("0");
         mMineTitle.setText(data.getNickname());
         mMineId.setText("ID " + data.getId());
         mMineLevel.setText("lv " + data.getLevel());
@@ -327,7 +323,14 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
             public void onResult(AssetBean assetBean) {
                 if (assetBean.getRetCode() == 0) {
                     AssetBean.RetDataBean data = assetBean.getRetData();
-                    zuan = data.getDiamond();
+                    String diamond = data.getDiamond();
+                    if(!TextUtils.isEmpty(diamond)){
+                        if(diamond.contains(".")) {
+                            zuan = diamond.substring(0, diamond.indexOf("."));
+                        }else {
+                            zuan = diamond;
+                        }
+                    }
                     money = data.getBalance();
                     mMineZuanshi.setText(zuan);
                     mMineMoneyTv.setText(money);
@@ -354,6 +357,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                 UserInfoBean userInfoBean = new Gson().fromJson(result.toString(), UserInfoBean.class);
                 if (userInfoBean.getRetCode() == 0) {
                     LiveShareUtil.getInstance(getActivity()).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                    setData(userInfoBean.getRetData());
                 }
             }
 
@@ -473,11 +477,11 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
     };
 
     public void toUpdateData() {
-        UserInfoBean userInfo = LiveShareUtil.getInstance(getActivity()).getUserInfo();
-        if (userInfo != null) {
-            UserInfoBean.RetDataBean retData = userInfo.getRetData();
-            setData(retData);
-        }
+//        UserInfoBean userInfo = LiveShareUtil.getInstance(getActivity()).getUserInfo();
+//        if (userInfo != null) {
+//            UserInfoBean.RetDataBean retData = userInfo.getRetData();
+//            setData(retData);
+//        }
     }
 
 }

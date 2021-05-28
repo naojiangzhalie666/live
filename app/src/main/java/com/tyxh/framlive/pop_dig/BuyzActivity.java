@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +71,8 @@ public class BuyzActivity extends AppCompatActivity {
     TextView mTvPaywechat;
     @BindView(R.id.buz_ll)
     LinearLayout mll;
+    @BindView(R.id.login_imgv)
+    ImageView mimgv_xy;
 
 
     private List<DiamondBean.RetDataBean.ListBean> mMapList;
@@ -168,10 +171,10 @@ public class BuyzActivity extends AppCompatActivity {
             @Override
             public void onLookMoreListener() {
                 select = "";
-                if(mMapList.size()>=6){
+                if (mMapList.size() >= 6) {
                     mll.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, DensityUtil.dp2px(BuyzActivity.this, 300)));
                     mDigBuyRecy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.dp2px(BuyzActivity.this, 300)));
-                }else{
+                } else {
                     mll.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
                     mDigBuyRecy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 }
@@ -195,19 +198,33 @@ public class BuyzActivity extends AppCompatActivity {
 //        mBuyAdapter.setLook_more(false);
     }
 
-    @OnClick({R.id.dig_buy_xieyi, R.id.dig_buy_zfb, R.id.dig_buy_wchat, R.id.dig_buy_cancel})
+    @OnClick({R.id.dig_buy_xieyi, R.id.dig_buy_zfb, R.id.dig_buy_wchat, R.id.dig_buy_cancel, R.id.login_cbxieyi, R.id.login_imgv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.dig_buy_xieyi:
-                WebVActivity.startMe(this,"用户充值协议");
+                WebVActivity.startMe(this, "用户充值协议");
                 break;
             case R.id.dig_buy_wchat:
-                getOrderSn("1");
-//                getWxMsg();
+                if (mimgv_xy.getVisibility() == View.VISIBLE) {
+                    getOrderSn("1");
+                } else {
+                    ToastUtil.showToast(this, "请阅读并同意用户充值协议");
+                }
                 break;
             case R.id.dig_buy_zfb:
-                getOrderSn("2");
-//                getZfb();
+                if (mimgv_xy.getVisibility() == View.VISIBLE) {
+                    getOrderSn("2");
+                } else {
+                    ToastUtil.showToast(this, "请阅读并同意用户充值协议");
+                }
+                break;
+            case R.id.login_cbxieyi:
+            case R.id.login_imgv:
+                if (mimgv_xy.getVisibility() == View.VISIBLE) {
+                    mimgv_xy.setVisibility(View.GONE);
+                } else {
+                    mimgv_xy.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.dig_buy_cancel:
                 finish();

@@ -132,5 +132,29 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView31"
         app:layout_constraintStart_toStartOf="@+id/imageView31"
         app:layout_constraintTop_toBottomOf="@+id/imageView31" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content">
+        <com.tyxh.framlive.views.CodeEditText
+            android:id="@+id/bindphone_codeedt"
+            android:layout_width="0dp"
+            app:strokeLength="3"
+            app:strokeBackground="@drawable/bg_stroke_setin_nocor"
+            app:strokeHeight="@dimen/dp_50"
+            app:strokeWidth="@dimen/dp_40"
+            app:strokePadding="@dimen/dp_15"
+            android:textSize="24sp"
+            android:inputType="number"
+            android:layout_height="wrap_content"
+
+            />
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

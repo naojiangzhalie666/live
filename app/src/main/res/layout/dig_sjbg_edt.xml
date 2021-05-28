@@ -8,7 +8,7 @@
     android:padding="@dimen/dp_12">
 
     <TextView
-        android:id="@+id/textView129"
+        android:id="@+id/sjbg_edt_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/textView132"
+        android:id="@+id/sjbg_edt_beizhu"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_130"
         android:layout_marginBottom="16dp"
@@ -32,9 +32,9 @@
         android:gravity="top"
         android:hint="为了方便持续诊断，可记录用户疏解的关键性信息，如疏解目的，目前状态，疏解办法等"
         android:padding="@dimen/dp_5"
-        android:textColor="@color/nineninenine"
+        android:textColor="@color/black_oneeight"
         android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView129"
+        app:layout_constraintBottom_toTopOf="@+id/sjbg_edt_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -45,11 +45,11 @@
         android:layout_marginBottom="10dp"
         android:text="疏解记录："
         android:textColor="@color/black_oneeight"
-        app:layout_constraintBottom_toTopOf="@+id/textView132"
+        app:layout_constraintBottom_toTopOf="@+id/sjbg_edt_beizhu"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/textView135"
+        android:id="@+id/sjbg_edt_title"
         android:layout_width="0dp"
         android:lines="1"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         android:background="@drawable/bg_corner_whitelit"
         android:hint="本次疏解关键词"
         android:padding="@dimen/dp_5"
-        android:textColor="@color/nineninenine"
+        android:textColor="@color/black_oneeight"
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@+id/textView134"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +70,7 @@
         android:layout_marginBottom="10dp"
         android:text="沟通记录标题："
         android:textColor="@color/black_oneeight"
-        app:layout_constraintBottom_toTopOf="@+id/textView135"
+        app:layout_constraintBottom_toTopOf="@+id/sjbg_edt_title"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -84,7 +84,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView17"
+        android:id="@+id/sjbg_edt_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dp_20"
@@ -94,10 +94,10 @@
         app:srcCompat="@drawable/sjbg_close" />
 
     <TextView
-        android:id="@+id/textView140"
+        android:id="@+id/sjbg_edt_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2021.03.25 "
+        tools:text="2021.03.25 "
         android:textColor="@color/black_oneeight"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView139"
         app:layout_constraintStart_toEndOf="@+id/textView139" />

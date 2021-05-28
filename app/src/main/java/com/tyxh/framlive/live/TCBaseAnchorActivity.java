@@ -287,7 +287,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int postion, long l) {
                 TCChatEntity tcChatEntity = mArrayListChatEntity.get(postion);
-                mGuanzDialog = new GuanzDialog(TCBaseAnchorActivity.this, tcChatEntity);
+                mGuanzDialog = new GuanzDialog(TCBaseAnchorActivity.this, tcChatEntity,mToken);
                 mGuanzDialog.setOnDigClickListener(new GuanzDialog.OnDigClickListener() {
                     @Override
                     public void onInviteClickListener() {
@@ -296,7 +296,10 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
                     @Override
                     public void onJubaoClickListener() {
-                        startActivity(new Intent(TCBaseAnchorActivity.this, ReportActivity.class));
+                        Intent int_report = new Intent(TCBaseAnchorActivity.this, ReportActivity.class);
+                        int_report.putExtra("per_id", tcChatEntity.getUserid());
+                        int_report.putExtra("per_type", tcChatEntity.getSenderName());
+                        startActivity(int_report);
                     }
 
                     @Override

@@ -38,6 +38,7 @@ import com.tyxh.framlive.adapter.TalkAdapter;
 import com.tyxh.framlive.base.ApiService;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.bean.BaseBean;
+import com.tyxh.framlive.bean.ContctBean;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.UserDetailBean;
 import com.tyxh.framlive.bean.UserInfoBean;
@@ -46,7 +47,6 @@ import com.tyxh.framlive.pop_dig.BuyzActivity;
 import com.tyxh.framlive.pop_dig.HeadDialog;
 import com.tyxh.framlive.pop_dig.ServiceDialog;
 import com.tyxh.framlive.pop_dig.SjbgDialog;
-import com.tyxh.framlive.pop_dig.SjbgedtDialog;
 import com.tyxh.framlive.ui.LookPersonActivity;
 import com.tyxh.framlive.ui.OranizeActivity;
 import com.tyxh.framlive.utils.FlowLayoutManager;
@@ -92,7 +92,7 @@ public class ChatFragment extends BaseFragment {
     private ServiceDialog mServiceDialog;
     private List<UserDetailBean.RetDataBean.ServicePackagesBean> mService_strs;
     private SjbgDialog mSjbgDialog;
-    private List<String> mSjbg_strs;
+    private List<ContctBean.RetDataBean.ListBean> mSjbg_strs;
 
     private HeadDialog mHeadDialog;
 
@@ -101,7 +101,7 @@ public class ChatFragment extends BaseFragment {
     private int mPower;
     private boolean is_first = true;
     private int mType = 1;//被聊天人的权限 1-普通用户；2-咨询师；3-主机构；4-子机构
-    private SjbgedtDialog sjbgedtDialog ;
+
 
 
     @Override
@@ -131,19 +131,6 @@ public class ChatFragment extends BaseFragment {
         mService_strs = new ArrayList<>();
 
         mSjbg_strs = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            mSjbg_strs.add("");
-        }
-        mSjbgDialog = new SjbgDialog(getActivity(), mSjbg_strs);
-        mSjbgDialog.setOnTalkClickListener(new SjbgDialog.OnTalkClickListener() {
-            @Override
-            public void onTalkClickListener(String content,int pos) {
-                sjbgedtDialog = new SjbgedtDialog(getActivity());
-                sjbgedtDialog.show();
-//                MessageInfo info = MessageInfoUtil.buildTextMessage(content);
-//                mChatLayout.sendMessage(info,false);
-            }
-        });
 
         mcon_tp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,6 +218,7 @@ public class ChatFragment extends BaseFragment {
             mChatLayout.getInputLayout().disableServiceAction(true);
             mChatLayout.getInputLayout().disableSjbgAction(false);
             mtv_content.setText("关注方向");
+           getContHis(mChatInfo.getId());
         }
         mChatLayout.getMessageLayout().setOnItemClickListener(new MessageLayout.OnItemClickListener() {
             @Override
@@ -290,6 +278,10 @@ public class ChatFragment extends BaseFragment {
 
             @Override
             public void onSjbgClickListener() {
+                if(mSjbgDialog==null){
+                    Toast.makeText(getActivity(), "暂无报告", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 mSjbgDialog.show();
             }
 
@@ -443,11 +435,9 @@ public class ChatFragment extends BaseFragment {
             mChatLayout.sendMessage(msg, false);
             return;
         }
-        String id = "";
-        if (mChatInfo.getId().contains(".")) {
-            id = mChatInfo.getId().substring(0, mChatInfo.getId().indexOf("."));
-        } else {
-            id = mChatInfo.getId();
+        String id = mUserInfo.getRetData().getId();
+        if (id.contains(".")) {
+            id = id.substring(0, mChatInfo.getId().indexOf("."));
         }
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().privateChat(mToken, id), new HttpBackListener() {
             @Override
@@ -468,7 +458,7 @@ public class ChatFragment extends BaseFragment {
         });
 
     }
-
+    /*获取目标信息资料*/
     private void getDetail(String to_userid) {
         DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getDetails(mToken, to_userid), new CommonObserver<UserDetailBean>() {
             @Override
@@ -557,6 +547,33 @@ public class ChatFragment extends BaseFragment {
                 super.onErrorLIstener(error);
             }
         });
+    }
+
+    private void getContHis(String toid){
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getContxtHis(mToken,1,10,toid), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                ContctBean bean =new Gson().fromJson(result.toString(),ContctBean.class);
+                if(bean.getRetCode() ==0){
+                    List<ContctBean.RetDataBean.ListBean> list = bean.getRetData().getList();
+                    if(list !=null&&list.size() !=0){
+                       setSjbgDig(toid,list);
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    private void setSjbgDig(String toUserid,List<ContctBean.RetDataBean.ListBean> listBeans){
+        mSjbg_strs.clear();
+        mSjbg_strs.addAll(listBeans);
+        mSjbgDialog = new SjbgDialog(getActivity(), mSjbg_strs,mToken,toUserid);
     }
 
 }

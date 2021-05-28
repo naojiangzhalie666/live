@@ -189,7 +189,17 @@ public class EdtmsgActivity extends LiveBaseActivity {
         } else {
             mEdtmsgllisWj.setVisibility(View.GONE);
         }
-//        ? "男" : "女";
+        if(TextUtils.isEmpty(inter_contentid)){
+            ToastShow("请选择您的兴趣爱好");
+            return;
+        }else{
+            String[] split = inter_contentid.split(",");
+            if(split.length>5){
+                ToastShow("爱好至多选择5个");
+                return;
+            }
+        }
+
         Map<String, Object> map = new HashMap<>();
         map.put("nickname", mEdtmsgName.getText().toString());
         map.put("age", old_pos);
