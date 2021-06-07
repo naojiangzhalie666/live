@@ -26,9 +26,9 @@ public interface IGiftPanelView {
     /**
      *
      * @param eve  当前经验值
-     * @param zuan  需要再送多少钻石可升级
+     * @param shengexp  距离升级的经验
      */
-    void setJingYAndNeedZunas(int eve, String zuan);
+    void setJingYAndNeedZunas(double eve, double shengexp);
 
     //更新背包数量
     void notiBbGift();

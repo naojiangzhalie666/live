@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tyxh.framlive.R;
 import com.superc.yyfflibrary.utils.ToastUtil;
@@ -58,9 +59,10 @@ public class DhDialog extends Dialog {
                     ToastUtil.showToast(mContext, "请输入兑换码");
                     return;
                 }
-                if (mOnDhClickListener != null)
+                Toast.makeText(mContext, "兑换失败,请输入正确的兑换码", Toast.LENGTH_SHORT).show();
+             /*   if (mOnDhClickListener != null)
                     mOnDhClickListener.onDhClickLictener(code);
-                DhDialog.this.dismiss();
+                DhDialog.this.dismiss();*/
                 break;
             case R.id.dig_close:
                 DhDialog.this.dismiss();

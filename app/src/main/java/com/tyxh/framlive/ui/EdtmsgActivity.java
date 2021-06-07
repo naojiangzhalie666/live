@@ -184,11 +184,15 @@ public class EdtmsgActivity extends LiveBaseActivity {
 
     /*提交*/
     private void toSubMit() {
-        if (true) {//如果名字违禁
+        if(TextUtils.isEmpty(mEdtmsgName.getText().toString())){
+            ToastShow("昵称不能为空");
+            return;
+        }
+     /*   if (true) {//如果名字违禁
             mEdtmsgllisWj.setVisibility(View.VISIBLE);
         } else {
             mEdtmsgllisWj.setVisibility(View.GONE);
-        }
+        }*/
         if(TextUtils.isEmpty(inter_contentid)){
             ToastShow("请选择您的兴趣爱好");
             return;
@@ -317,7 +321,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
         });
 
     }
-
+    /*年龄弹窗*/
     private void initAgeDig(){
         mBotListDialog = new BotListDialog(this, mMapList);
         mBotListDialog.setOnItemCLickListener(new BotListDialog.OnItemCLickListener() {
@@ -329,7 +333,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
         });
 
     }
-
+    /*兴趣弹窗*/
     private void initIntDig(){
         mInterestDialog = new InterestDialog(this, mListStrings);
         mInterestDialog.setOnItemCLickListener(new InterestDialog.OnItemCLickListener() {

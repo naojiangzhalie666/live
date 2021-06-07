@@ -7,23 +7,26 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.WalletAdapter;
 import com.tyxh.framlive.base.LiveBaseActivity;
+import com.tyxh.framlive.bean.IncomeBean;
+import com.tyxh.framlive.bean.MxdetailBean;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.pop_dig.BuyzActivity;
 import com.tyxh.framlive.pop_dig.ShimDialog;
 import com.tyxh.framlive.utils.datepicker.CustomDatePicker;
 import com.tyxh.framlive.utils.datepicker.DateFormatUtils;
-import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+import com.tyxh.framlive.utils.httputil.HttpBackListener;
+import com.tyxh.framlive.utils.httputil.LiveHttp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -78,7 +81,7 @@ public class AdviceActivity extends LiveBaseActivity {
     private int line_startDis = 0;
     private CustomDatePicker customDatePickerSt;
     private ShimDialog mShimDialog;
-    private List<Map<String, Object>> mStringList;
+    private List<MxdetailBean.ListBean> mStringList;
     private WalletAdapter mWalletAdapter;
 
     private int mIndex;
@@ -98,7 +101,6 @@ public class AdviceActivity extends LiveBaseActivity {
         ButterKnife.bind(this);
         mShimDialog = new ShimDialog(this);
         initTvTime();
-        setData();
         mShimDialog.setOnShimClickListener(new ShimDialog.OnShimClickListener() {
             @Override
             public void onShimClickListener() {
@@ -107,8 +109,8 @@ public class AdviceActivity extends LiveBaseActivity {
         });
         mStringList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("show", false);
+            MxdetailBean.ListBean map = new MxdetailBean.ListBean();
+           map.setShow(false);
             mStringList.add(map);
         }
         mWalletAdapter = new WalletAdapter(this, mStringList);
@@ -118,12 +120,12 @@ public class AdviceActivity extends LiveBaseActivity {
         mWalletAdapter.setOnItemClickListener(new WalletAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(int pos) {
-                Map<String, Object> map = mStringList.get(pos);
-                map.put("show", !(boolean) map.get("show"));
+                MxdetailBean.ListBean map = mStringList.get(pos);
+                map.setShow(!map.isShow());
                 mWalletAdapter.notifyItemChanged(pos);
             }
         });
-       /* Intent intent = getIntent();
+        Intent intent = getIntent();
         if (intent != null) {
             mIndex = intent.getIntExtra("index", 0);
             if (mIndex == 1) {
@@ -131,11 +133,12 @@ public class AdviceActivity extends LiveBaseActivity {
                 mAdviceChongzhi.setVisibility(View.INVISIBLE);
                 mAdviceConMoney.setVisibility(View.VISIBLE);
                 mAdviceContent.setText("累计收入（元）");
-                mAdviceNum.setText("2141.22");
                 mAdviceConBtmoney.setVisibility(View.VISIBLE);
                 mAdviceConBtzuanshi.setVisibility(View.GONE);
             }
-        }*/
+        }
+        setData();
+        getMyIncome();
     }
 
     @OnClick({R.id.back, R.id.advice_chongzhi, R.id.advice_eye, R.id.advice_zuans, R.id.advice_money, R.id.normal_sttm, R.id.normal_edtm, R.id.normal_shaixuan,
@@ -219,7 +222,8 @@ public class AdviceActivity extends LiveBaseActivity {
             case R.id.advice_bt_tixian:
             case R.id.advice_bt_txmoney:
 //                if(mAuthStatus==1){
-                    statActivity(WithdrawalActivity.class);
+//                    statActivity(WithdrawalActivity.class);
+                    statActivity(WithdrDetailActivity.class);
 //                }else{
 //                    mShimDialog.show();
 //                }
@@ -236,14 +240,40 @@ public class AdviceActivity extends LiveBaseActivity {
                 break;
         }
     }
+    /*我的收益--现金标签*/
+    private void getMyIncome(){
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyIncome(token), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                IncomeBean bean =new Gson().fromJson(result.toString(),IncomeBean.class);
+                if(bean.getRetCode() ==0){
+                    IncomeBean.RetDataBean retData = bean.getRetData();
+                    mAdviceDaymoney.setText(retData.getCur_amount()+"");
+                    mAdviceYesmoney.setText(retData.getYes_amount()+"");
+                    mAdvicemonthmoney.setText(retData.getMon_amount()+"");
+                }else{
+                    ToastShow(bean.getRetMsg());
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+
+    }
 
     private void setData() {
         UserInfoBean.RetDataBean retData = user_Info.getRetData();
         mAuthStatus = retData.getAuthStatus();
-        mAdviceNum.setText(retData.getDiamond() + "");
-        mAdviceDaymoney.setText(retData.getBalance());
-        mAdviceYesmoney.setText("12");
-        mAdvicemonthmoney.setText("213");
+        if (mIndex == 1) {
+            mAdviceNum.setText(retData.getBalance() + "");
+        }else{
+            mAdviceNum.setText(retData.getDiamond() + "");
+        }
         mNormalTxMoney.setText("￥"+retData.getBalance());
     }
 

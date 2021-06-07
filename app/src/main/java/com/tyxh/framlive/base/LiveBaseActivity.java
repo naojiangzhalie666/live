@@ -54,7 +54,7 @@ public abstract class LiveBaseActivity extends BaseActivity {
     }
 
     public void showLoad(){
-        if(mLoadDialog!=null)
+        if(mLoadDialog!=null&&!mLoadDialog.isShowing())
             mLoadDialog.show();
     }
      public void hideLoad(){

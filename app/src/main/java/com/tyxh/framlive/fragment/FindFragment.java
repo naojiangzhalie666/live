@@ -9,15 +9,9 @@ import android.view.ViewGroup;
 
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.FindgetAdapter;
-import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.bean.AttentionBean;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.ui.MailListActivity;
-import com.tyxh.framlive.utils.LiveShareUtil;
-import com.tyxh.framlive.utils.httputil.HttpBackListener;
-import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.google.gson.Gson;
-import com.superc.yyfflibrary.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -189,7 +183,7 @@ public class FindFragment extends Fragment {
     }
     /*获取我的关注*/
     private void getMyGz(){
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyAttention(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+        /*LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyAttention(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
@@ -206,7 +200,7 @@ public class FindFragment extends Fragment {
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
             }
-        });
+        });*/
 
     }
 

@@ -17,7 +17,7 @@
         android:layout_marginTop="@dimen/dp_3"
         android:paddingBottom="@dimen/dp_10"
         android:textColor="@color/black_oneeight"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="充值" />
@@ -27,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/textView62"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_wallet_ll">
@@ -37,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/nineninenine"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="订单号：124124124" />
@@ -48,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_4"
             android:textColor="@color/nineninenine"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@+id/item_wallet_conorder"
             app:layout_constraintTop_toBottomOf="@+id/item_wallet_conorder"
             tools:text="商品名：直播疏解" />
@@ -59,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_4"
             android:textColor="@color/nineninenine"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@+id/item_wallet_goods"
             app:layout_constraintTop_toBottomOf="@+id/item_wallet_goods"
             tools:text="备注：此处展示用户ID " />
@@ -72,7 +73,7 @@
             android:layout_marginBottom="@dimen/dp_4"
             android:paddingBottom="@dimen/dp_10"
             android:textColor="@color/nineninenine"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/item_wallet_bz"
             app:layout_constraintTop_toBottomOf="@+id/item_wallet_bz"
@@ -97,7 +98,7 @@
             android:layout_height="wrap_content"
             android:paddingRight="@dimen/dp_20"
             android:textColor="@color/nineninenine"
-            android:textSize="12sp"
+            android:textSize="11sp"
             tools:text="12:00  " />
 
         <TextView
@@ -106,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/nineninenine"
-            android:textSize="12sp"
+            android:textSize="11sp"
             tools:text="订单号：124124124" />
 
     </LinearLayout>

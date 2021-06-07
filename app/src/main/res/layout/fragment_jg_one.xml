@@ -70,15 +70,19 @@
 
             <EditText
                 android:id="@+id/jgone_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:ellipsize="end"
                 android:gravity="right"
                 android:hint="机构对外品牌名"
+                android:lines="1"
+                android:paddingLeft="@dimen/dp_10"
                 android:textColor="@color/black_oneeight"
                 android:textSize="11sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView45"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView45" />
 
             <View
                 android:id="@+id/textView43"
@@ -86,6 +90,7 @@
                 android:layout_height="@dimen/dp_1_5"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/line_dott"
+                android:layerType="software"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.727"
                 app:layout_constraintStart_toStartOf="parent"
@@ -114,16 +119,20 @@
 
             <EditText
                 android:id="@+id/jgone_phone"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:ellipsize="end"
                 android:gravity="right"
                 android:hint="请填写机构电话"
                 android:inputType="number"
+                android:lines="1"
+                android:paddingLeft="@dimen/dp_10"
                 android:textColor="@color/black_oneeight"
                 android:textSize="11sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textVi45"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textVi45" />
 
             <View
                 android:id="@+id/textVi43"
@@ -131,6 +140,7 @@
                 android:layout_height="@dimen/dp_1_5"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/line_dott"
+                android:layerType="software"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.727"
                 app:layout_constraintStart_toStartOf="parent"
@@ -159,15 +169,19 @@
 
             <EditText
                 android:id="@+id/jgone_position"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:ellipsize="end"
                 android:gravity="right"
                 android:hint="请填写机构地址"
+                android:lines="1"
+                android:paddingLeft="@dimen/dp_10"
                 android:textColor="@color/black_oneeight"
                 android:textSize="11sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textVie45"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textVie45" />
 
             <View
                 android:id="@+id/textVie43"
@@ -175,6 +189,7 @@
                 android:layout_height="@dimen/dp_1_5"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/line_dott"
+                android:layerType="software"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.727"
                 app:layout_constraintStart_toStartOf="parent"
@@ -240,6 +255,7 @@
                 android:layout_height="@dimen/dp_1_5"
                 android:layout_marginTop="@dimen/dp_15"
                 android:background="@drawable/line_dott"
+                android:layerType="software"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/jgone_tv" />
@@ -296,15 +312,15 @@
                 android:id="@+id/jgone_conback"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
-                tools:visibility="visible"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="@dimen/dp_16"
                 android:background="@drawable/bg_corner_ft"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/jgone_confrond"
-                app:layout_constraintTop_toBottomOf="@+id/textView49">
+                app:layout_constraintTop_toBottomOf="@+id/textView49"
+                tools:visibility="visible">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -319,10 +335,10 @@
                     android:id="@+id/jgone_back"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="w,3:2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:scaleType="centerCrop"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -330,8 +346,6 @@
 
             <TextView
                 android:id="@+id/textView51"
-                android:visibility="invisible"
-                tools:visibility="visible"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_5"
@@ -340,9 +354,11 @@
                 android:text="相关证件"
                 android:textColor="@color/nineninenine"
                 android:textSize="11sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/jgone_conback"
                 app:layout_constraintStart_toStartOf="@+id/jgone_conback"
-                app:layout_constraintTop_toBottomOf="@+id/jgone_conback" />
+                app:layout_constraintTop_toBottomOf="@+id/jgone_conback"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

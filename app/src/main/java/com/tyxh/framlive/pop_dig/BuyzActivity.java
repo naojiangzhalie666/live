@@ -318,7 +318,7 @@ public class BuyzActivity extends AppCompatActivity {
         }
         mTvPaywechat.setEnabled(true);
     }
-
+    /*支付宝返回--支付结果*/
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -361,7 +361,7 @@ public class BuyzActivity extends AppCompatActivity {
         Thread payThread = new Thread(payRunnable);
         payThread.start();
     }
-
+    /*微信返回--支付结果*/
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEventMsg(EventMessage message) {
         if (message.getMessage().equals("pay_finish")) {

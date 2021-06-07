@@ -190,6 +190,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/camera_diamond"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="2dp"
@@ -534,7 +535,7 @@
         android:background="#99000000"
         android:padding="10dp"
         android:visibility="visible"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <ImageView
             android:id="@+id/reback"

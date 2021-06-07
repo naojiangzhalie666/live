@@ -7,9 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.bean.WithDrawBean;
+import com.tyxh.framlive.utils.Common.util.DateUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -17,11 +20,11 @@ import butterknife.ButterKnife;
 
 public class WithdrAdapter extends RecyclerView.Adapter<WithdrAdapter.ViewHolder> {
     private Context mContext;
-    private List<Map<String, Object>> mLists;
+    private List<WithDrawBean.RetDataBean.ListBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
 
-    public WithdrAdapter(Context context, List<Map<String, Object>> stringList) {
+    public WithdrAdapter(Context context, List<WithDrawBean.RetDataBean.ListBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -40,13 +43,29 @@ public class WithdrAdapter extends RecyclerView.Adapter<WithdrAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        Map<String, Object> bean = mLists.get(position);
-        vh.mItemWalletState.setText("退款金额");
-        vh.mItemWalletType.setText("12-"+position);
-        vh.mItemWalletLltm.setText("12:00");
-        vh.mItemWalletLlorder.setText("订单号：124124124");
-        vh.mItemWalletMoney.setText("+4" + position);
-        vh.mItemWalletMoney.setTextColor(mContext.getResources().getColor(position % 2 == 0 ? R.color.qings : R.color.red));
+        WithDrawBean.RetDataBean.ListBean bean = mLists.get(position);
+        int auditState = bean.getAuditState();
+        String audit_str = "";
+        switch (auditState){
+            case 1:audit_str = "（待审核）";break;
+            case 2:audit_str = "（待打款）";break;
+            case 3:audit_str = "（驳回）";break;
+            case 4:audit_str = "（已打款）";break;
+        }
+
+        int channel = bean.getChannel();
+        vh.mItemWalletState.setText((channel==1?"支付宝提现":"微信提现")+audit_str);
+
+        vh.mItemWalletLlorder.setText("订单号："+bean.getOrderNum());
+
+        String createDate = bean.getCreateDate();
+        Date date = DateUtils.parseDate(createDate, "yyyy-MM-dd HH:mm:ss");
+        vh.mItemWalletType.setText(new SimpleDateFormat("MM-dd").format(date));
+        vh.mItemWalletLltm.setText(new SimpleDateFormat("HH:mm").format(date));
+
+
+        vh.mItemWalletMoney.setText((auditState ==3?"+":"-") + bean.getWithdrawalMoney());
+        vh.mItemWalletMoney.setTextColor(mContext.getResources().getColor(auditState ==3? R.color.qings : R.color.red));
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -12,9 +12,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.bean.OrderBean;
 
 import java.util.List;
-import java.util.Map;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -22,11 +22,11 @@ import butterknife.ButterKnife;
 
 public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
     private Context mContext;
-    private List<Map<String, Object>> mLists;
+    private List<OrderBean.RetDataBean.ListBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
 
-    public CzAdapter(Context context, List<Map<String, Object>> stringList) {
+    public CzAdapter(Context context, List<OrderBean.RetDataBean.ListBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -45,16 +45,85 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        Map<String, Object> bean = mLists.get(position);
-        vh.mItemCzTitle.setText("今年高考人数");
-        RoundedCorners roundedCorners = new RoundedCorners(15);
-        Glide.with(mContext).load(R.drawable.login_bg).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners)).into(vh.mItemCzHead);
+        OrderBean.RetDataBean.ListBean bean = mLists.get(position);
+        vh.mItemCzCreattime.setText("创建时间：" + bean.getCreateDate());
+        vh.mItemCzCode.setText("订单编号：" + bean.getOrderSn());
+        vh.mItemCzMoney.setText(bean.getAmount() + "");
+        int orderType = bean.getOrderType();
+        Object payType = bean.getPayType();
+        if(orderType==1){
+            if(null!=payType){
+                vh.mItemCzTitle.setText((Integer)payType==1?"微信充值":"支付宝充值");
+            }
+        }else{
+            vh.mItemCzTitle.setText("收益兑钻");
+        }
 
-        vh.mItemCzZsnum.setText("钻石数量：" + "40+" + position);
-        vh.mItemCzCreattime.setText("创建时间：" + "2010.02.02 12:22");
-        vh.mItemCzCode.setText("订单编号：" + "124煞了苦痛23" + position);
-        vh.mItemCzMoney.setText("1" + position);
-        if (position % 2 == 0) {
+
+        OrderBean.RetDataBean.ListBean.DiamondBagBean diamondBag = bean.getDiamondBag();
+        RoundedCorners roundedCorners = new RoundedCorners(15);
+        Glide.with(mContext).load(R.drawable.live_defaultimg).apply(new RequestOptions().transform(new CenterCrop(), roundedCorners)).into(vh.mItemCzHead);
+        vh.mItemCzZsnum.setText("钻石数量：" + diamondBag.getProNum());
+        int discountType = diamondBag.getDiscountType();
+        switch (discountType) {//1:加赠;2:折扣;3:特价)
+            case 1:
+                vh.mItemCzZsnum.setText("钻石数量：" + diamondBag.getProNum() + "+" + bean.getGiveNum());
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
+        int orderStatus = bean.getOrderStatus();
+        switch (orderStatus) {//(1:待支付;2:支付成功;3:关闭;4:退款;5:已评价)
+            case 1:
+                vh.mItemCzTopstate.setText("待支付");
+                vh.mItemCzTopstate.setTextColor(mContext.getResources().getColor(R.color.order_ef));
+                vh.mItemCzTopstate.setBackgroundResource(R.drawable.bg_solder_ef);
+                vh.mItemCzBtstate.setText("支付");
+                break;
+            case 2:
+                vh.mItemCzTopstate.setText("已完成");
+                vh.mItemCzTopstate.setTextColor(mContext.getResources().getColor(R.color.nineninenine));
+                vh.mItemCzTopstate.setBackgroundResource(R.drawable.bg_solder_nin);
+//                if (position == 2) {
+//                    vh.mItemCzBtstate.setText("更多充值");
+//                } else {
+                vh.mItemCzBtstate.setText("再次购买");
+//                }
+                break;
+            case 3:
+                vh.mItemCzTopstate.setText("关闭");
+                vh.mItemCzTopstate.setTextColor(mContext.getResources().getColor(R.color.nineninenine));
+                vh.mItemCzTopstate.setBackgroundResource(R.drawable.bg_solder_nin);
+//                if (position == 2) {
+//                    vh.mItemCzBtstate.setText("更多充值");
+//                } else {
+                vh.mItemCzBtstate.setText("再次购买");
+//                }
+                break;
+            case 4:
+                vh.mItemCzTopstate.setText("退款");
+                vh.mItemCzTopstate.setTextColor(mContext.getResources().getColor(R.color.nineninenine));
+                vh.mItemCzTopstate.setBackgroundResource(R.drawable.bg_solder_nin);
+//                if (position == 2) {
+//                    vh.mItemCzBtstate.setText("更多充值");
+//                } else {
+                vh.mItemCzBtstate.setText("再次购买");
+//                }
+                break;
+            case 5:
+                break;
+        }
+        vh.mItemCzBtstate.setText("更多充值");
+        vh.mItemCzBtstate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnItemClickListener!=null)
+                    mOnItemClickListener.onItemClickListener(position);
+            }
+        });
+       /* if (position % 2 == 0) {
             vh.mItemCzTopstate.setText("已完成");
             vh.mItemCzTopstate.setTextColor(mContext.getResources().getColor(R.color.nineninenine));
             vh.mItemCzTopstate.setBackgroundResource(R.drawable.bg_solder_nin);
@@ -70,7 +139,7 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
             vh.mItemCzBtstate.setText("支付");
         }
 
-
+*/
     }
 
     @Override

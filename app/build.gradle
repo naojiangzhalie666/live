@@ -14,7 +14,7 @@ android {
     }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.tyxh.framlive"
         minSdkVersion 19
@@ -106,5 +106,6 @@ dependencies {
     implementation 'com.tencent.tpns:oppo:1.2.1.2-release'
     implementation 'com.tencent.tpns:vivo:1.2.1.2-release'
     implementation 'com.tencent.tpns:meizu:1.2.1.2-release'
+    implementation files('libs\\TXOauthSDK_V.2.0.2.aar')
 
 }

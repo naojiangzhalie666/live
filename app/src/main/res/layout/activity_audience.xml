@@ -527,4 +527,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/live_gift_panel_height" />
+    <include
+        android:id="@+id/audience_include"
+        layout="@layout/dig_lm_note"
+        android:visibility="gone"
+        />
 </RelativeLayout>

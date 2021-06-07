@@ -916,6 +916,7 @@ drawable indicator_point_nomal
 drawable indicator_point_select
 drawable live_create_room_btn
 drawable live_ic_group_live
+drawable live_lm_tx
 drawable message_send_border
 drawable message_send_fail
 drawable mine_talk
@@ -998,6 +999,7 @@ id add_group_member
 id add_wording
 id alertTitle
 id async
+id audience_include
 id audio_content_ll
 id audio_play_iv
 id audio_time_tv
@@ -1067,6 +1069,8 @@ id dialog_content
 id dialog_editor
 id dialog_sure_btn
 id dialog_title
+id dig_lm_imgv
+id dig_lm_tm
 id edit_content_et
 id edit_query
 id edit_title_bar
@@ -1298,6 +1302,8 @@ id text2
 id textSpacerNoButtons
 id textSpacerNoTitle
 id textView
+id textView141
+id textView143
 id texture_view
 id time
 id title
@@ -1393,6 +1399,7 @@ layout contact_selecable_adapter_item
 layout conversation_adapter
 layout conversation_custom_adapter
 layout conversation_layout
+layout dig_lm_note
 layout exo_playback_control_view
 layout exo_simple_player_view
 layout face_group_icon

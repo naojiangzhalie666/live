@@ -22,8 +22,6 @@
             android:layout_weight="1"
             android:background="@drawable/bg_one"
             android:gravity="center"
-            android:paddingTop="@dimen/dp_6"
-            android:paddingBottom="@dimen/dp_6"
             android:text="新手任务"
             android:textColor="@color/black"
             android:textSize="10sp" />
@@ -48,6 +46,7 @@
             android:text="日收益任务"
             android:textColor="@color/black"
             android:textSize="10sp"
+            android:visibility="invisible"
             tools:background="@drawable/bg_center" />
 
         <TextView
@@ -59,6 +58,7 @@
             android:text="月收益任务"
             android:textColor="@color/black"
             android:textSize="10sp"
+            android:visibility="invisible"
             tools:background="@drawable/bg_end" />
 
 
@@ -79,14 +79,29 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/novice_recy"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/novice_smart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingLeft="@dimen/dp_14"
-        android:paddingTop="@dimen/dp_8"
-        android:paddingRight="@dimen/dp_14" />
+        android:layout_weight="1">
+
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/novice_recy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_14"
+            android:paddingTop="@dimen/dp_8"
+            android:paddingRight="@dimen/dp_14" />
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -95,13 +110,13 @@
 
         <ImageView
             android:id="@+id/novice_imgvnote"
-            android:visibility="gone"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_8"
             android:paddingTop="@dimen/dp_8"
             android:paddingBottom="@dimen/dp_8"
-            android:paddingLeft="@dimen/dp_8"
-            android:layout_height="wrap_content"
-            android:src="@drawable/notice_help" />
+            android:src="@drawable/notice_help"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/novice_note"

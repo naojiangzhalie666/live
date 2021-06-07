@@ -28,16 +28,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView18"
             android:layout_width="@dimen/dp_55"
             android:layout_height="@dimen/dp_55"
             android:layout_marginStart="@dimen/dp_14"
             android:layout_marginTop="@dimen/dp_14"
+            android:src="@drawable/live_defaultimg"
             app:layout_constraintBottom_toTopOf="@+id/ll"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/beauty_bailan" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/level_progress"
@@ -103,9 +103,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="@dimen/dp_10"
             android:text="如何升级？"
             android:textColor="@color/threethree"
-            android:paddingLeft="@dimen/dp_10"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/ll"
             app:layout_constraintStart_toStartOf="parent"

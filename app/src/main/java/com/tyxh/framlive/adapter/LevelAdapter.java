@@ -1,13 +1,16 @@
 package com.tyxh.framlive.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.bean.LevelBean;
 
 import java.util.List;
 
@@ -17,12 +20,12 @@ import butterknife.ButterKnife;
 
 public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mLists;
+    private List<LevelBean.RetDataBean.RankPrivilegeBeansBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private int level;
 
-    public LevelAdapter(Context context, List<String> stringList) {
+    public LevelAdapter(Context context, List<LevelBean.RetDataBean.RankPrivilegeBeansBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -45,20 +48,61 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        String bean = mLists.get(position);
+        LevelBean.RetDataBean.RankPrivilegeBeansBean bean = mLists.get(position);
         vh.mItemLevelImgvsecond.setVisibility(View.INVISIBLE);
         vh.mItemLevelImgvthird.setVisibility(View.INVISIBLE);
         vh.mItemLevelLockOne.setVisibility(View.GONE);
         vh.mItemLevelLockTwo.setVisibility(View.GONE);
         vh.mItemLevelLockThree.setVisibility(View.GONE);
         vh.mItemLevelZz.setVisibility(View.GONE);
-
         vh.mItemLevelTitle.setText((position + 1) + "级");
-        vh.mItemLevelImgvsecond.setVisibility(position % 2 == 0 ? View.INVISIBLE : View.VISIBLE);
-        if (vh.mItemLevelImgvsecond.getVisibility() == View.VISIBLE) {
-            vh.mItemLevelImgvthird.setVisibility(position % 3 == 0 ? View.INVISIBLE : View.VISIBLE);
+        String giftICO = bean.getGiftICO();//礼物标
+        String releaseICO = bean.getReleaseICO();//疏解卡标
+        String rewardDiaICO = bean.getRewardDiaICO();//钻石标
+        int giftId = bean.getGiftId();//礼物id
+        int releaseId = bean.getReleaseId();//疏解卡id
+        int rewardDiaNum = bean.getRewardDiaNum();//钻石id
+        String one_url = "";
+        String two_url = "";
+        String third_url = "";
+        if (rewardDiaNum<=0) {
+            if (giftId<=0) {
+                one_url = releaseICO;
+            } else {
+                one_url = giftICO;
+                if (releaseId>0) {
+                    two_url = releaseICO;
+                }
+            }
+        } else {
+            one_url = rewardDiaICO;
+            if (giftId<=0) {
+                if (releaseId>0) {
+                    two_url = releaseICO;
+                }
+            } else {
+                two_url = giftICO;
+                if (releaseId>0) {
+                    third_url = releaseICO;
+                }
+            }
         }
-        if(position>level){
+        Glide.with(mContext).load(one_url).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(vh.mItemLevelImgvone);
+        if (TextUtils.isEmpty(two_url)) {
+            vh.mItemLevelImgvsecond.setVisibility(View.INVISIBLE);
+            vh.mItemLevelImgvthird.setVisibility(View.INVISIBLE);
+        } else {
+            vh.mItemLevelImgvsecond.setVisibility(View.VISIBLE);
+            Glide.with(mContext).load(two_url).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(vh.mItemLevelImgvsecond);
+            if(TextUtils.isEmpty(third_url)){
+                vh.mItemLevelImgvthird.setVisibility(View.INVISIBLE);
+            }else{
+                vh.mItemLevelImgvthird.setVisibility(View.VISIBLE);
+                Glide.with(mContext).load(third_url).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(vh.mItemLevelImgvthird);
+            }
+        }
+
+        if (position > (level-1)) {
             vh.mItemLevelLockOne.setVisibility(View.VISIBLE);
             if (vh.mItemLevelImgvsecond.getVisibility() == View.VISIBLE) {
                 vh.mItemLevelLockTwo.setVisibility(View.VISIBLE);
@@ -67,7 +111,6 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
                 vh.mItemLevelLockThree.setVisibility(View.VISIBLE);
             }
             vh.mItemLevelZz.setVisibility(View.VISIBLE);
-
         }
 
     }

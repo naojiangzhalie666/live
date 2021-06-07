@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
+            android:paddingTop="@dimen/dp_8"
             android:text="专业疏解师·在线直播中"
             android:textColor="#F7D4B6"
             android:textSize="16sp" />
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvone"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_2"
             android:gravity="center"
             android:text="边框心理，用专业的方法解决烦恼"
             android:textColor="#F7D4B6"
@@ -109,7 +110,8 @@
                         android:background="@drawable/home_kuang_bt"
                         android:gravity="center"
                         android:paddingTop="@dimen/dp_6"
-                        android:paddingBottom="@dimen/dp_6"
+                        android:paddingBottom="@dimen/dp_5"
+                        android:textSize="13sp"
                         android:text="产品特色"
                         android:textColor="@color/home_txt"
                         app:layout_constraintEnd_toStartOf="@+id/home_tiyan"
@@ -126,7 +128,8 @@
                         android:background="@drawable/home_kuang_bt"
                         android:gravity="center"
                         android:paddingTop="@dimen/dp_6"
-                        android:paddingBottom="@dimen/dp_6"
+                        android:paddingBottom="@dimen/dp_5"
+                        android:textSize="13sp"
                         android:text="如何体验"
                         android:textColor="@color/home_txt"
                         app:layout_constraintBaseline_toBaselineOf="@+id/home_chanpin"
@@ -142,7 +145,8 @@
                         android:background="@drawable/home_kuang_bt"
                         android:gravity="center"
                         android:paddingTop="@dimen/dp_6"
-                        android:paddingBottom="@dimen/dp_6"
+                        android:paddingBottom="@dimen/dp_5"
+                        android:textSize="13sp"
                         android:text="新人福利"
                         android:textColor="@color/home_txt"
                         app:layout_constraintBaseline_toBaselineOf="@+id/home_tiyan"
@@ -189,20 +193,20 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="天津天宇新航公司版权所有健康和豆腐干"
+                            android:text="天津天宇新航科技有限公司|版权所有"
                             android:textSize="10sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/dp_3"
-                            android:text="水电费高科技苏东坡"
+                            android:text="2020-2030边框心理"
                             android:textSize="10sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="备案号：685465123321202135432"
+                            android:text="津ICP备2020007988号-2"
                             android:textSize="10sp" />
 
 

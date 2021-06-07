@@ -133,8 +133,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         mOnlineDialog = new OnlineDialog(this, mOnlin_entits, TCUserMgr.getInstance().getUserId());
         mOnlineDialog.setOnItemLxListener(new OnlineDialog.OnItemLxListener() {
             @Override
-            public void onItemLxLixtener(String userid) {
-                startLinkMic(userid);
+            public void onItemLxLixtener(String userid,String ico) {
+                startLinkMic(userid,ico);
             }
         });
 
@@ -226,11 +226,15 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     }
 
     /*邀请观众进行连麦*/
-    private void startLinkMic(String userid) {
+    private void startLinkMic(String userid,String ico) {
         mLiveRoom.requestJoinUserAnchor("连麦", userid, new RequestJoinAnchorCallback() {
             @Override
             public void onAccept() {
                 Log.i(TAG, "onAccept:观众接受已经接收连麦");
+                mLiveRoom.responseJoinAnchor(userid, true, "");
+                mPendingRequest = false;
+                Constantc.LX_HEAD =ico;
+                sendContactMsg(true, userid);
                 if(mOnlineDialog!=null&&mOnlineDialog.isShowing())
                     mOnlineDialog.dismiss();
             }
@@ -319,6 +323,13 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         if (pusherInfo == null || pusherInfo.userID == null) {
             return;
         }
+        /*连麦成功*/
+        mLiveRoom.responseJoinAnchor(pusherInfo.userID, true, "");
+        mPendingRequest = false;
+        Constantc.LX_HEAD =pusherInfo.userAvatar;
+        sendContactMsg(true, pusherInfo.userID);
+        if(mOnlineDialog!=null&&mOnlineDialog.isShowing())
+            mOnlineDialog.dismiss();
 
         mTCVideoView.userID = pusherInfo.userID;
         mTCVideoView.setUsed(true);
@@ -733,7 +744,9 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 @Override
                 public void run() {
                     mtv_ctcTm.setText(TCUtils.formattedTime(mSecond_con));
-                    mtv_ctcget.setText((mSecond_con / 60) + "");
+                    if(mSecond_con>=30) {
+                        mtv_ctcget.setText((30 * (mSecond_con-30) / 60) + "");
+                    }
                 }
             });
         }

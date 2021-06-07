@@ -48,29 +48,30 @@
         app:layout_constraintStart_toStartOf="@+id/order_cz"
         app:layout_constraintTop_toBottomOf="@+id/order_cz" />
 
+
     <include
         android:id="@+id/order_include"
         layout="@layout/layout_level"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dp_14"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_line" />
+        app:layout_constraintTop_toBottomOf="@+id/order_line"
+        tools:visibility="visible" />
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/smart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dp_14"
-        tools:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_line">
+        app:layout_constraintTop_toBottomOf="@+id/order_line"
+        tools:visibility="gone">
 
         <com.scwang.smart.refresh.header.ClassicsHeader
             android:layout_width="match_parent"
@@ -122,6 +123,7 @@
         app:layout_constraintEnd_toStartOf="@+id/order_tpj"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/order_cz" />
+
     <TextView
         android:id="@+id/order_tpj"
         android:layout_width="0dp"
@@ -148,20 +150,21 @@
 
     <TextView
         android:id="@+id/order_dpj_num"
-        android:background="@drawable/bg_circle_red"
-        android:textSize="10sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_circle_red"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingTop="@dimen/dp_1"
+        android:paddingRight="@dimen/dp_3"
+        android:paddingBottom="@dimen/dp_1"
+        android:text="22"
+        android:textColor="@color/white"
+        android:textSize="10sp"
         app:layout_constraintCircle="@+id/order_tpj"
         app:layout_constraintCircleAngle="62"
-        app:layout_constraintCircleRadius="@dimen/dp_22"
-        android:text="22"
-        android:paddingLeft="@dimen/dp_3"
-        android:paddingRight="@dimen/dp_3"
-        android:paddingTop="@dimen/dp_1"
-        android:paddingBottom="@dimen/dp_1"
-        android:textColor="@color/white"
-      />
-
-
+        app:layout_constraintCircleRadius="@dimen/dp_22" />
+    <include
+        android:id="@+id/nodata"
+        android:visibility="gone"
+        layout="@layout/a_nodata" />
 </androidx.constraintlayout.widget.ConstraintLayout>

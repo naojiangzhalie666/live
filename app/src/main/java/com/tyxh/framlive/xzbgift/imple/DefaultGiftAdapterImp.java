@@ -151,7 +151,7 @@ public class DefaultGiftAdapterImp extends GiftAdapter {
         List<GiftData> giftInfoList = new ArrayList<>();
         for (AllGiftBean.RetDataBean.ListBean bean : giftBeanList) {
             GiftData giftData = new GiftData();
-            giftData.giftId = bean.getId();
+            giftData.giftId = bean.getId()+"";
             giftData.title = bean.getProName();
             giftData.type = bean.getGiftType();
             giftData.price = bean.getGiftPrice();

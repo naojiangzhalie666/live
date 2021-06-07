@@ -27,16 +27,28 @@ public class DateFormatUtils {
         return long2Str(timestamp, getFormatPattern(isPreciseTime));
     }
 
-/**
+    /**
      * 时间戳转字符串
      *
      * @param timestamp     时间戳
      * @param isPreciseTime 是否包含时分
-     * @param isShowDay 是否包含天
+     * @param isShowDay     是否包含天
      * @return 格式化的日期字符串
      */
-    public static String long2StrDay(long timestamp, boolean isPreciseTime,boolean isShowDay) {
-        return long2Str(timestamp,isShowDay? "yyyy-MM-dd": "yyyy-MM");
+    public static String long2StrDay(long timestamp, boolean isPreciseTime, boolean isShowDay) {
+        return long2Str(timestamp, isShowDay ? "yyyy-MM-dd" : "yyyy-MM");
+    }
+
+ /**
+     * 时间戳转字符串
+     *
+     * @param timestamp     时间戳
+     * @param isPreciseTime 是否包含时分
+     * @param isShowDay     是否包含天
+     * @return 格式化的日期字符串
+     */
+    public static String long2WithStrDay(long timestamp, boolean isPreciseTime, boolean isShowDay) {
+        return long2Str(timestamp, isShowDay ? "yyyy年MM月dd日" : "yyyy年MM月");
     }
 
     private static String long2Str(long timestamp, String pattern) {

@@ -11,6 +11,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.liteav.login.ProfileManager;
+import com.tencent.liteav.login.UserModel;
+import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
+import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.HomeAdapter;
 import com.tyxh.framlive.base.Constant;
@@ -20,6 +31,8 @@ import com.tyxh.framlive.bean.MineTCVideoInfo;
 import com.tyxh.framlive.bean.RoomBean;
 import com.tyxh.framlive.bean.SignBean;
 import com.tyxh.framlive.bean.UserInfoBean;
+import com.tyxh.framlive.chat.ChatActivity;
+import com.tyxh.framlive.chat.tuikit.AVCallManager;
 import com.tyxh.framlive.live.TCAudienceActivity;
 import com.tyxh.framlive.live.TCCameraAnchorActivity;
 import com.tyxh.framlive.ui.FindActivity;
@@ -36,16 +49,6 @@ import com.tyxh.xzb.utils.login.TCUserMgr;
 import com.tyxh.xzb.utils.onlinelive.TCVideoInfo;
 import com.tyxh.xzb.utils.onlinelive.TCVideoListMgr;
 import com.tyxh.xzb.utils.roomutil.RoomInfo;
-import com.google.gson.Gson;
-import com.scwang.smart.refresh.layout.SmartRefreshLayout;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
-import com.tencent.liteav.AVCallManager;
-import com.tencent.liteav.login.ProfileManager;
-import com.tencent.liteav.login.UserModel;
-import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
-import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -138,8 +141,22 @@ public class HomeFragment extends Fragment {
 //                toast.setGravity(Gravity.CENTER, 0, 0);
 //                toast.show();
                 WebVActivity.startMe(getActivity(),"新人福利");
+//                startChatActivity("随和的金苞花","11115");
                 break;
         }
+    }
+
+    private void startChatActivity(String title,String userid) {
+        ChatInfo chatInfo = new ChatInfo();
+        chatInfo.setType(V2TIMConversation.V2TIM_C2C);
+//        chatInfo.setChatName(title);
+        chatInfo.setId(userid);
+        chatInfo.setChatName(title);
+//        Intent intent = new Intent(getActivity(), ChathelfActivity.class);
+        Intent intent = new Intent(getActivity(), ChatActivity.class);
+        intent.putExtra(Constant.CHAT_INFO, chatInfo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 
@@ -218,6 +235,12 @@ public class HomeFragment extends Fragment {
             loginMLVB();
         }
     }
+    /*用于主页调用刷新*/
+    public void toRefresh(){
+        if(mHomeSmart!=null)
+            mHomeSmart.autoRefresh();
+    }
+
     /*获取直播列表*/
     private void getLiveData() {
         if (Constantc.use_old) {

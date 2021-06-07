@@ -444,9 +444,10 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
     }
 
     @Override
-    public void setJingYAndNeedZunas(int eve, String zuan) {
-        mProgressBar_eve.setProgress(eve);
-        mNeedZsNum.setText(zuan);
+    public void setJingYAndNeedZunas(double eve, double shengexp) {
+        mProgressBar_eve.setMax(new Double( eve+shengexp).intValue());
+        mProgressBar_eve.setProgress(new Double(eve).intValue());
+        mNeedZsNum.setText(shengexp+"");
 
     }
 }

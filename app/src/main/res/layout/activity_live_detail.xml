@@ -18,18 +18,22 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+            <!-- android:minHeight="@dimen/dp_75"-->
+            <!--app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/dp_75"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                android:background="@drawable/live_grad"
+                android:paddingBottom="@dimen/dp_14"
+                app:layout_scrollFlags="noScroll"
+                >
 
                 <ImageView
                     android:id="@+id/imageView5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:scaleType="fitXY"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -58,8 +62,8 @@
                         android:id="@+id/back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/dp_43"
                         android:paddingLeft="@dimen/dp_16"
+                        android:paddingTop="@dimen/dp_43"
                         app:layout_constraintBottom_toBottomOf="@+id/textView11"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView11"
@@ -73,12 +77,11 @@
                     android:id="@+id/livedetail_day"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:paddingBottom="@dimen/dp_6"
                     android:text="日数据"
                     android:textColor="@color/login_txt"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     app:layout_constraintEnd_toStartOf="@+id/livedetail_month"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/live_ll" />
@@ -91,7 +94,7 @@
                     android:paddingBottom="@dimen/dp_6"
                     android:text="月数据"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/livedetail_day"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/livedetail_day" />
@@ -113,6 +116,7 @@
                     android:layout_marginEnd="@dimen/dp_16"
                     android:layout_marginBottom="@dimen/dp_24"
                     android:background="@drawable/bg_corner_tran"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -287,7 +291,7 @@
                 android:paddingBottom="@dimen/dp_2"
                 android:text="2019年5月"
                 android:textColor="@color/home_txt"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -315,7 +319,7 @@
                 android:paddingBottom="@dimen/dp_2"
                 android:text="2019年5月"
                 android:textColor="@color/home_txt"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/livedetail_sttm"
                 app:layout_constraintStart_toEndOf="@+id/textView31" />
 
@@ -324,11 +328,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:visibility="gone"
                 android:drawableRight="@drawable/mine_next"
                 android:drawablePadding="@dimen/dp_5"
                 android:text="筛选"
                 android:textColor="@color/black_oneeight"
+                android:visibility="gone"
                 app:layout_constraintBaseline_toBaselineOf="@+id/livedetail_sttm"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -429,12 +433,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/con" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <RelativeLayout
         android:id="@+id/live_lltp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_76"
-        android:visibility="gone"
         android:background="@color/ftwo"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView5">

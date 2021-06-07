@@ -11,16 +11,13 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Vibrator;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.Group;
 
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
@@ -44,6 +41,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Group;
 
 /**
  * 用于展示语音通话的主界面，通话的接听和拒绝就是在这个界面中完成的。
@@ -123,6 +124,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
 
         @Override
         public void onUserEnter(final String userId) {
+            Log.e(TAG, "onUserLeave: 语音对方-接通了");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -161,6 +163,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
 
         @Override
         public void onUserLeave(final String userId) {
+            Log.e(TAG, "onUserLeave: 语音对方-挂断了");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -177,6 +180,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
 
         @Override
         public void onReject(final String userId) {
+            Log.e(TAG, "onUserLeave: 语音对方-拒绝了");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -197,6 +201,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
 
         @Override
         public void onNoResp(final String userId) {
+            Log.e(TAG, "onUserLeave: 语音对方-无响应");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -287,6 +292,10 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         starter.putExtra(PARAM_USER, new IntentParams(models));
         starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(starter);
+    }
+    /*停止语音聊天*/
+    public static void stopAudioCall(){
+
     }
 
     /**
@@ -561,6 +570,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mITRTCAVCall.hangup();
                 finishActivity();
+                Log.e(TAG, "onClick: 语音未接通-主动挂断" );
             }
         });
         mDialingLl.setVisibility(View.GONE);
@@ -584,6 +594,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mITRTCAVCall.hangup();
                 finishActivity();
+                Log.e(TAG, "onClick: 语音接通后-主动挂断" );
             }
         });
         showTimeCount();

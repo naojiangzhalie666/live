@@ -8,16 +8,16 @@ public class Constant {
     public static final boolean PRINT_LOG = true;
     public static final boolean IS_JIAMI = false;
     public static final String BASE_URL = "http://172.16.66.225:9091/";
+    public static final String SOCKET_URL = "http://172.16.66.225:9091/socket/";
     public static String TOKEN = null;
     public static boolean has_navi = false;
 
-    /*临时使用*/
-    public static final boolean IS_ZIXUNSHI = false;//主播是否为咨询师
+    /*app使用*/
     public static boolean IS_SHENHEING = false;//入驻是否在审核中
 
     /*腾讯云直播*/
-    public static final String LICENCEURL = "http://license.vod2.myqcloud.com/license/v1/17a46e881d1eafbddf54d6a617619267/TXLiveSDK.licence"; // 获取到的 licence url
-    public static final String LICENCEKEY = "9fdb190cae9f7bb82780efdb05dd16c5"; // 获取到的 licence key
+    public static final String LICENCEURL = "http://license.vod2.myqcloud.com/license/v1/55d825c11182e8029e0c1ea1e5a6e878/TXLiveSDK.licence"; // 获取到的 licence url
+    public static final String LICENCEKEY = "8f99f78b0a0b7751158b4b4ba4a26863"; // 获取到的 licence key
 
     /*im聊天*/
     public static final String SECRETKEY = Constantc.SECRETKEY;//聊天key

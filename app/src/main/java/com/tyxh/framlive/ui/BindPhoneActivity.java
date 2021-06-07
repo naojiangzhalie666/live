@@ -9,6 +9,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+import com.tencent.liteav.login.ProfileManager;
+import com.tencent.liteav.login.UserModel;
+import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
+import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveApplication;
@@ -18,18 +24,12 @@ import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.LoginBean;
 import com.tyxh.framlive.bean.SignBean;
 import com.tyxh.framlive.bean.UserInfoBean;
+import com.tyxh.framlive.chat.tuikit.AVCallManager;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
 import com.tyxh.framlive.views.CodeEditText;
 import com.tyxh.xzb.utils.login.TCUserMgr;
-import com.google.gson.Gson;
-import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
-import com.tencent.liteav.AVCallManager;
-import com.tencent.liteav.login.ProfileManager;
-import com.tencent.liteav.login.UserModel;
-import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
-import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -215,6 +215,7 @@ public class BindPhoneActivity extends LiveBaseActivity {
                         isNeedUpmsg = true;
                         statActivity(MsgInputActivity.class);
                         hideLoad();
+                        finish();
                     } else {
                         thisLogin(userInfoBean.getRetData());
                         isNeedUpmsg = false;

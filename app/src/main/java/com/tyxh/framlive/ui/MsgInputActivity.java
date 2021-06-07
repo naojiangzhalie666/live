@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
-import com.tencent.liteav.AVCallManager;
+import com.tyxh.framlive.chat.tuikit.AVCallManager;
 import com.tencent.liteav.login.ProfileManager;
 import com.tencent.liteav.login.UserModel;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;

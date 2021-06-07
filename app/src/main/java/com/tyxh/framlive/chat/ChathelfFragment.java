@@ -227,6 +227,17 @@ public class ChathelfFragment extends BaseFragment {
                 mSjbgDialog.show();
             }
 
+            @Override
+            public void onAudioClickListener() {
+                super.onAudioClickListener();
+                ToastUtil.showToast(getActivity(),"观看/直播时无法使用改功能");
+            }
+
+            @Override
+            public void onVideoClickListener() {
+                super.onVideoClickListener();
+                ToastUtil.showToast(getActivity(),"观看/直播时无法使用改功能");
+            }
         });
         mChatLayout.setOnSendClickListener(new AbsChatLayout.OnSendClickListener() {
             @Override

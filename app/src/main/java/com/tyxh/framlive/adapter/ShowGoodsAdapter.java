@@ -52,7 +52,7 @@ public class ShowGoodsAdapter extends RecyclerView.Adapter<ShowGoodsAdapter.View
         vh.mItemGoodsName.setText(bean.getServiceTitle());
         vh.mItemGoodsNametwo.setText(bean.getDiscountType()+"");
         vh.mItemGoodsDay.setText(bean.getConDuration()+"");
-        vh.mItemGoodsNote.setText(bean.getDiscountPrice()+"");
+//        vh.mItemGoodsNote.setText(bean.getDiscountPrice()+"");
         int isDiscount = bean.getIsDiscount();
         vh.mItemGoodsNum.setText(isDiscount==1?bean.getDiscountPrice()+ "钻石":bean.getOriginalPrice()+ "钻石");
         vh.mItemGoodsImgv.setVisibility(show_se ? View.GONE : View.VISIBLE);

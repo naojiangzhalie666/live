@@ -64,6 +64,8 @@ public class ZixAdapter extends RecyclerView.Adapter<ZixAdapter.ViewHolder> {
         ZixBean bean = mLists.get(position);
         if(!TextUtils.isEmpty(bean.getXxpath())){
             Glide.with(mContext).load(bean.getXxpath()).into(vh.mItemZxXxpic);
+        }else{
+            vh.mItemZxXxpic.setImageResource(0);
         }
         vh.mItemZxSttm.setText(bean.getStTTm());
         vh.mItemZxEdtm.setText(bean.getEdTTm());
@@ -96,6 +98,8 @@ public class ZixAdapter extends RecyclerView.Adapter<ZixAdapter.ViewHolder> {
         vh.mItemZxName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mOnItemClickListener!=null)
+                    mOnItemClickListener.onEdtClickListener(position);
 
             }
 
@@ -179,6 +183,7 @@ public class ZixAdapter extends RecyclerView.Adapter<ZixAdapter.ViewHolder> {
        public void onStTmClickListener(int pos){};
        public void onEdTmClickListener(int pos){};
        public void onAddZzClickListener(int pos){};
+       public void onEdtClickListener(int pos){};
     }
 
     static class ViewHolder   extends RecyclerView.ViewHolder{

@@ -11,6 +11,7 @@
         android:id="@+id/login_phonenum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="@dimen/dp_85"
@@ -25,10 +26,11 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="11sp"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/dp_10"
         android:text="认证服务由中国移动提供"
         android:textColor="@color/login_txt"
+        android:textSize="11sp"
         app:layout_constraintStart_toStartOf="@+id/login_phonenum"
         app:layout_constraintTop_toBottomOf="@+id/login_phonenum" />
 
@@ -79,22 +81,20 @@
         <LinearLayout
             android:id="@+id/ll_wx"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_46"
             android:layout_marginTop="@dimen/dp_12"
             android:background="@drawable/login_cle_bgbt"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/dp_5"
-            android:paddingTop="@dimen/dp_5"
-            android:paddingRight="@dimen/dp_16"
-            android:paddingBottom="@dimen/dp_5"
             android:gravity="center"
-            app:layout_constraintEnd_toEndOf="@+id/login_loginother"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_5"
+            app:layout_constraintEnd_toStartOf="@+id/ll_zi"
             app:layout_constraintStart_toStartOf="@+id/login_loginother"
             app:layout_constraintTop_toBottomOf="@+id/login_loginother">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:src="@drawable/login_wchat" />
 
             <TextView
@@ -104,7 +104,45 @@
                 android:gravity="center"
                 android:text="微信一键登录"
                 android:textColor="#425C59"
-                android:textSize="16sp" />
+              />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_zi"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/login_cle_bgbt"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_5"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/login_loginother"
+            app:layout_constraintTop_toTopOf="@+id/ll_wx"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_wx"
+            app:layout_constraintStart_toEndOf="@+id/ll_wx"
+           >
+
+            <TextView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:gravity="center"
+                android:text="子"
+                android:textColor="@color/login_txt"
+               android:background="@drawable/bg_circle_slog" />
+
+            <TextView
+                android:id="@+id/login_loginzi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dp_4"
+                android:text="机构子账号登录"
+                android:textColor="#425C59"
+
+               />
 
         </LinearLayout>
 
@@ -132,9 +170,9 @@
                     android:id="@+id/login_imgv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:padding="@dimen/dp_3"
-                    android:src="@drawable/login_select"
-                     />
+                    android:src="@drawable/login_select" />
 
             </FrameLayout>
 
@@ -147,9 +185,9 @@
                 android:layout_marginBottom="@dimen/dp_24"
                 android:layout_toRightOf="@+id/login_cbxieyi"
                 android:paddingLeft="@dimen/dp_6"
-                tools:text="我已阅读并同意《中国移动认证服务条款》和《用户协议》、 《隐私政策》"
                 android:textColor="#425C59"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                tools:text="我已阅读并同意《中国移动认证服务条款》和《用户协议》、 《隐私政策》" />
 
         </RelativeLayout>
 

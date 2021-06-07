@@ -1,15 +1,15 @@
 package com.tyxh.framlive.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.bean.TaskBean;
 
 import java.util.List;
 
@@ -19,12 +19,12 @@ import butterknife.ButterKnife;
 
 public class NoviceAdapter extends RecyclerView.Adapter<NoviceAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mLists;
+    private List<TaskBean.RetDataBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private int type = 0;
 
-    public NoviceAdapter(Context context, List<String> stringList) {
+    public NoviceAdapter(Context context, List<TaskBean.RetDataBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -47,11 +47,27 @@ public class NoviceAdapter extends RecyclerView.Adapter<NoviceAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        String bean = mLists.get(position);
-        vh.mItemNoviceTitle.setText("任务" + (position + 1));
-        vh.mItemNoviceContent.setText("+就拿手机来的感觉");
-        vh.mItemNoviceImgv.setVisibility(View.GONE);
-        vh.mItemNoviceMuge.setVisibility(View.VISIBLE);
+        TaskBean.RetDataBean bean = mLists.get(position);
+        vh.mItemNoviceTitle.setText(bean.getTaskName());
+        StringBuilder strin_content =new StringBuilder();
+        if(bean.getAwardEXP()>0){//经验值
+            strin_content.append("+奖励"+bean.getAwardJewel()+"经验值");
+        }
+        if(bean.getAwardJewel()>0){//钻石
+            strin_content.append("+"+bean.getAwardJewel()+"钻石");
+        }
+        if(bean.getAwardPropNum()>0){//道具
+            strin_content.append("+"+bean.getPropName()+"*"+bean.getAwardPropNum());
+        }
+        if(bean.getRewardGiftNum()>0){//礼物
+            strin_content.append("+"+bean.getGiftName()+"*"+bean.getRewardGiftNum());
+        }
+        if(!TextUtils.isEmpty(bean.getTaskAwardMoney())){//金额
+            strin_content.append("+"+bean.getTaskAwardMoney());
+        }
+        vh.mItemNoviceContent.setText(strin_content.toString());
+        /*vh.mItemNoviceImgv.setVisibility(View.GONE);
+        vh.mItemNoviceMuge.setVisibility(View.GONE);
         vh.mItemNoviceState.setBackgroundResource(R.drawable.bg_circle_stoke_red);
         vh.mItemNoviceState.setText("前往");
         vh.mItemNoviceState.setTextColor(mContext.getResources().getColor(R.color.red));
@@ -68,24 +84,32 @@ public class NoviceAdapter extends RecyclerView.Adapter<NoviceAdapter.ViewHolder
             case 3://每月收益
                 vh.mItemNoviceMuge.setVisibility(View.GONE);
                 break;
-        }
-        switch (position) {
-            case 1:
-                vh.mItemNoviceState.setBackgroundResource(R.drawable.bg_circle_red);
+        }*/
+        int state = bean.getState();
+        switch (state) {
+            case 1://未完成
+                vh.mItemNoviceState.setBackgroundResource(R.drawable.bg_circle_stoke_red_task);
+                vh.mItemNoviceState.setText("前往");
+                vh.mItemNoviceState.setTextColor(mContext.getResources().getColor(R.color.task_color));
+                break;
+            case 2://待领取
+                vh.mItemNoviceState.setBackgroundResource(R.drawable.bg_circle_red_task);
                 vh.mItemNoviceState.setText("领取");
                 vh.mItemNoviceState.setTextColor(mContext.getResources().getColor(R.color.white));
                 break;
-            case 4:
-                vh.mItemNoviceState.setBackgroundResource(R.drawable.bg_circle_stoke_red);
-                vh.mItemNoviceState.setText("前往");
-                vh.mItemNoviceState.setTextColor(mContext.getResources().getColor(R.color.red));
-                break;
-            case 9:
+            case 3://已完成
                 vh.mItemNoviceState.setBackgroundResource(R.drawable.bg_circle_stoke_gray);
                 vh.mItemNoviceState.setText("已完成");
                 vh.mItemNoviceState.setTextColor(mContext.getResources().getColor(R.color.nineninenine));
                 break;
         }
+        vh.mItemNoviceState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnItemClickListener!=null)
+                    mOnItemClickListener.onItemClickListener(position);
+            }
+        });
 
 
 

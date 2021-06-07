@@ -100,7 +100,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mLists == null ? 0 : (look_more ? mLists.size() : 4);
+        return mLists == null ? 0 : (look_more ? mLists.size() : (mLists.size()>4?4:mLists.size()));
     }
 
     public interface OnItemClickListener {

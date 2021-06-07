@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="再送"
+                android:text="还需要"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 
@@ -56,7 +56,7 @@
                 android:id="@+id/need_zuansnum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50个钻石"
+                tools:text="50个钻石"
                 android:textColor="#F7D4B6"
                 android:textSize="12sp" />
 

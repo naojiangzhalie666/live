@@ -13,6 +13,7 @@ import com.huawei.hms.push.HmsMessaging;
 import com.ljy.devring.DevRing;
 import com.meizu.cloud.pushsdk.PushManager;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
+import com.rich.oauth.core.RichAuth;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
@@ -48,6 +49,7 @@ public class LiveApplication extends Application {
     private static final String TAG = "LiveApplication";
     public static volatile LiveApplication mInstance;
     public static IWXAPI api;
+    public static final String APP_ID ="1400527451";//腾讯云一键登录appid
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -64,6 +66,7 @@ public class LiveApplication extends Application {
         initWachat();
         initUmeng();
         initTuisong();
+        initTencentPhone();
 
     }
 
@@ -113,7 +116,7 @@ public class LiveApplication extends Application {
         // 微信设置
         PlatformConfig.setWeixin(Constant.APP_ID, Constant.APP_SECRECT);
         PlatformConfig.setWXFileProvider("com.tyxh.framlive.fileprovider");
-        // 新浪微博设置
+        // 新浪微博设置--目前没用到
         PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
         PlatformConfig.setSinaFileProvider("com.tyxh.framlive.fileprovider");
       /*  // QQ设置
@@ -124,6 +127,9 @@ public class LiveApplication extends Application {
         PlatformConfig.setWXWorkFileProvider("com.tencent.sample2.fileprovider");*/
 
 
+    }
+    private void initTencentPhone(){
+        RichAuth.getInstance().init(this, APP_ID);
     }
 
     /*各大平台推送初始化*/

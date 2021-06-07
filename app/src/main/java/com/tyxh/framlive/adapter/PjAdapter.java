@@ -1,6 +1,7 @@
 package com.tyxh.framlive.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.bean.SjBean;
+import com.tyxh.framlive.utils.Common.util.DateUtils;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -24,11 +27,11 @@ import butterknife.ButterKnife;
 
 public class PjAdapter extends RecyclerView.Adapter<PjAdapter.ViewHolder> {
     private Context mContext;
-    private List<Map<String, Object>> mLists;
+    private List<SjBean.RetDataBean.ListBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
 
-    public PjAdapter(Context context, List<Map<String, Object>> stringList) {
+    public PjAdapter(Context context, List<SjBean.RetDataBean.ListBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -47,27 +50,34 @@ public class PjAdapter extends RecyclerView.Adapter<PjAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        Map<String, Object> bean = mLists.get(position);
-        vh.mItemSjTitle.setText("是谁给当时的");
-        RoundedCorners roundedCorners = new RoundedCorners(16);
-        Glide.with(mContext).load(R.drawable.mine_bg).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners)).into(vh.mItemSjHead);
+        SjBean.RetDataBean.ListBean bean = mLists.get(position);
+        vh.mItemSjTitle.setText(bean.getTitle());
 
-        vh.mItemSjZsnum.setText("疏解时长：" + "40+" + position);
-        vh.mItemSjCreattime.setText("创建时间：" + "2010.02.02 12:22");
-        vh.mItemSjCode.setText("订单编号：" + "124煞了苦痛23" + position);
-        vh.mItemSjZuan.setText("-1" + position);
+        long l = DateUtils.calculateDifference( DateUtils.parseDate(bean.getStartDate()), TextUtils.isEmpty(bean.getEndDate())?new Date(): DateUtils.parseDate(bean.getEndDate()), DateUtils.Minute);
+        vh.mItemSjZsnum.setText("疏解时长：" +l+"分钟");
+        vh.mItemSjCreattime.setText("创建时间：" +bean.getCreateDate());
+        vh.mItemSjCode.setText("订单编号：" + bean.getUuId());
+        RoundedCorners roundedCorners = new RoundedCorners(16);
+        Glide.with(mContext).load(R.drawable.live_defaultimg).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners)).error(R.drawable.live_defaultimg)
+                .placeholder(R.drawable.live_defaultimg).into(vh.mItemSjHead);
+        if(bean.getProHistory()!=null) {
+            vh.mItemSjZuan.setText("-" + bean.getProHistory().getBusinessDiaNum());
+            vh.mItemSjZuan.setVisibility(View.VISIBLE);
+        }else{
+            vh.mItemSjZuan.setVisibility(View.GONE);
+        }
+
         vh.mItemSjState.setText("待评价");
         vh.mItemSjState.setTextColor(mContext.getResources().getColor(R.color.order_ye));
         vh.mItemSjState.setBackgroundResource(R.drawable.bg_solder_ye);
+        vh.mItemSjStart.setVisibility(View.GONE);
         if (position % 2 == 0) {
             vh.mItemSjBtll.setVisibility(View.VISIBLE);
             vh.mItemSjLeftm.setText("100分钟");
-            vh.mItemSjStart.setVisibility(View.GONE);
         } else {
             vh.mItemSjBtll.setVisibility(View.INVISIBLE);
-            vh.mItemSjStart.setVisibility(View.VISIBLE);
-            vh.mItemSjStart.setNumStars(position%3);
         }
+
         vh.mItemSjTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

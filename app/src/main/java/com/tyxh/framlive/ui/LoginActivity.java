@@ -17,7 +17,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.rich.oauth.callback.PreLoginCallback;
+import com.rich.oauth.callback.TokenCallback;
+import com.rich.oauth.core.RichAuth;
+import com.rich.oauth.core.UIConfigBuild;
+import com.rich.oauth.util.RichLogUtil;
+import com.superc.yyfflibrary.utils.ToastUtil;
+import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+import com.tyxh.framlive.chat.tuikit.AVCallManager;
+import com.tencent.liteav.login.ProfileManager;
+import com.tencent.liteav.login.UserModel;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
+import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveApplication;
@@ -32,15 +48,6 @@ import com.tyxh.framlive.utils.httputil.LiveHttp;
 import com.tyxh.xzb.Constantc;
 import com.tyxh.xzb.utils.TCConstants;
 import com.tyxh.xzb.utils.login.TCUserMgr;
-import com.google.gson.Gson;
-import com.superc.yyfflibrary.utils.ToastUtil;
-import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
-import com.tencent.liteav.AVCallManager;
-import com.tencent.liteav.login.ProfileManager;
-import com.tencent.liteav.login.UserModel;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
-import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -64,8 +71,8 @@ import static com.tyxh.framlive.base.LiveApplication.api;
 public class LoginActivity extends LiveBaseActivity {
 
 
-    @BindView(R.id.login_phonenum)
-    TextView mLoginPhonenum;
+//    @BindView(R.id.login_phonenum)
+//    TextView mLoginPhonenum;
     @BindView(R.id.login_tvxieyi)
     TextView mTvXieyi;
     @BindView(R.id.login_imgv)
@@ -92,22 +99,25 @@ public class LoginActivity extends LiveBaseActivity {
         setTextContent();
         mPermission = checkPublishPermission();
         EventBus.getDefault().register(this);
-        getPhoneNum();
+//        getPhoneNum();
+        if(user_Info!=null){
+            if (Constantc.use_old) {
+                showLoad();
+                LiveShareUtil.getInstance(LoginActivity.this).putPower(2);//用户类型
+                theOldLoginMlvb();
+                return;
+            }
+            getUserInfo();
+        }
     }
 
 
-    @OnClick({R.id.login_loginthis, R.id.login_loginother, R.id.ll_wx, R.id.login_rela})
+    @OnClick({R.id.login_loginthis, R.id.login_loginother, R.id.ll_wx, R.id.login_rela,R.id.ll_zi})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_loginthis://一键登录
-                if (Constantc.use_old) {
-                    LiveShareUtil.getInstance(LoginActivity.this).putPower(1);//用户类型
-                    theOldLoginMlvb();
-                    return;
-                }
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
-                    getUserInfo();//暂时使用缓存
-                    LiveShareUtil.getInstance(LoginActivity.this).putPower(1);//用户类型
+                    preLogin();
                 } else {
                     ToastShow("请阅读并勾选协议");
                 }
@@ -124,6 +134,19 @@ public class LoginActivity extends LiveBaseActivity {
             case R.id.ll_wx://微信登录
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
                     loginWx();
+                } else {
+                    ToastShow("请阅读并勾选协议");
+                }
+                break;
+            case R.id.ll_zi:
+                   if (Constantc.use_old) {
+                    LiveShareUtil.getInstance(LoginActivity.this).putPower(1);//用户类型
+                    theOldLoginMlvb();
+                    return;
+                }
+                if (mLoginImgv.getVisibility() == View.VISIBLE) {
+                    getUserInfo();//暂时使用缓存
+                    LiveShareUtil.getInstance(LoginActivity.this).putPower(1);//用户类型
                 } else {
                     ToastShow("请阅读并勾选协议");
                 }
@@ -205,12 +228,13 @@ public class LoginActivity extends LiveBaseActivity {
                     getUserInfo();
                 } else {
                     ToastShow(loginBean.getRetMsg());
+                    hideLoad();
                 }
             }
 
             @Override
             public void onErrorLIstener(String error) {
-
+                hideLoad();
             }
         });
     }
@@ -297,7 +321,6 @@ public class LoginActivity extends LiveBaseActivity {
         mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
             @Override
             public void onLoginBackListener(String userid, String usersig, long sdk_id) {
-                hideLoad();
                 if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
                     UserModel self = new UserModel();
                     self.userId = userid;
@@ -310,6 +333,7 @@ public class LoginActivity extends LiveBaseActivity {
                     statActivity(MainActivity.class);
                     finish();
                 }
+                hideLoad();
             }
 
             @Override
@@ -395,6 +419,129 @@ public class LoginActivity extends LiveBaseActivity {
         });*/
     }
 
+    /*一键登录*/
+    private void toYjLogin(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+                String telphone = tm.getLine1Number();//获取本机号码
+                if (!TextUtils.isEmpty(telphone)) {
+//                    mLoginPhonenum.setText(telphone);
+                } else {
+                    Log.e(TAG, "getPhoneNum:未获取到手机号 ");
+                }
+                return;
+            }else {
+                requestPermission();
+            }
+        }
+
+
+    }
+
+    private String mToken, mCarrier;
+
+    private void preLogin() {
+        RichAuth.getInstance().preLogin(LoginActivity.this, new PreLoginCallback() {
+            @Override
+            public void onPreLoginSuccess() {
+                // 预登录成功
+                RichLogUtil.e("预登录成功");
+                Toast.makeText(LoginActivity.this, "预登录成功", Toast.LENGTH_SHORT).show();
+                getToken();
+            }
+
+            @Override
+            public void onPreLoginFailure(String errorMsg) {
+                // 预登录失败，错误信息为errorMsg
+                // errorMsg为“用户未使用流量进行登录，不满足一键登录条件”
+                JSONObject jsonObject = JSONObject.parseObject(errorMsg);
+                Integer code = jsonObject.getInteger("code");
+                if(code ==81010){
+                    Toast.makeText(LoginActivity.this, "请开启移动网络", Toast.LENGTH_SHORT).show();
+                }
+                RichLogUtil.e("预登录失败:" + errorMsg);
+                hideLoad();
+            }
+        });
+    }
+
+    private void getToken() {
+        //一键登录
+        UIConfigBuild.Builder configBuild = new UIConfigBuild.Builder();
+        //应用图标
+        configBuild.setOauthLogo(R.drawable.ct_logo_image);
+        //授权页面背景
+        configBuild.setRootBg(R.drawable.rich_oauth_root_bg);
+        //顶部导航栏背景
+//                configBuild.setNavBgColor(0xff0085d0);
+        configBuild.setNavBgColor(0xffffffff);
+        //顶部导航栏标题
+        configBuild.setNavText("登录");
+        //顶部导航栏返回按钮资源
+        configBuild.setNavBack(R.drawable.umcsdk_return_nowbg);
+        //顶部导航栏标题颜色
+        configBuild.setNavTextColor(0xff000000);
+        //登陆按钮背景
+        configBuild.setLoginBtnBg(R.drawable.selector_button_cucc);
+        //登陆按钮文本
+        configBuild.setLoginBtnText("本机号码一键登录");
+        //登陆按钮宽度（dp为单位）
+        configBuild.setLoginBtnWidth(400);
+        //登陆按钮高度（dp为单位）
+        configBuild.setLoginBtnHight(30);
+        //登陆按钮文本颜色
+        configBuild.setLoginBtnTextColor(0xffffffff);
+        //其他登陆方式按钮文本
+        configBuild.setSwitchText("使用其他登录方式");
+        //其他登陆方式按钮文本颜色
+        configBuild.setSwitchTextColor(0xff000000);
+        //其他登陆方式按钮显示及隐藏
+        configBuild.setSwitchIsHide(true);
+        //新增协议，协议名称及协议点击地址
+        configBuild.setProtocol("统一认证协议", "https://www.baidu.com/");
+        // 协议字体颜色，第一个参数为协议颜色，第二个为协议其他字体颜色
+        configBuild.setPrivacyColor(0xff0085d0, 0xff666666);
+
+        UIConfigBuild uiConfig = configBuild.build();
+
+        RichAuth.getInstance().login(LoginActivity.this, new TokenCallback() {
+            @Override
+            public void onTokenSuccessResult(String token, String carrier) {
+                //成功获取token，运营商，可通过此token获取号码,
+                RichLogUtil.e("token:" + token);
+//                Toast.makeText(LoginActivity.this, "token获取成功:" + token, Toast.LENGTH_SHORT).show();
+                mToken = token;  // 百纳token两分钟有效。
+                mCarrier = carrier;
+                login(carrier,token,"phone");
+            }
+
+            @Override
+            public void onTokenFailureResult(String error) {
+                // 获取失败信息
+                RichLogUtil.e("onTokenFailureResult" + error);
+                Log.e(TAG, "onTokenFailureResult:token获取失败: " + error);
+                Toast.makeText(LoginActivity.this, "获取失败:" + error, Toast.LENGTH_SHORT).show();
+                hideLoad();
+            }
+
+            @Override
+            public void onOtherLoginWayResult() {
+                // 点击了其他方式登录
+                RichLogUtil.e("使用其他方式登录");
+                Toast.makeText(LoginActivity.this, "其他登录方式", Toast.LENGTH_SHORT).show();
+                hideLoad();
+            }
+        }, uiConfig);
+    }
+
+    public static final String[] MYPERMISSIONS = new String[]{Manifest.permission.READ_PHONE_STATE,};
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(this, MYPERMISSIONS, 1010);
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMsg(EventMessage msg) {
         if (msg.getMessage().equals("wx_login")) {
@@ -444,13 +591,13 @@ public class LoginActivity extends LiveBaseActivity {
         //获取手机号码
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-                TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-                String telphone = tm.getLine1Number();//获取本机号码
-                if (!TextUtils.isEmpty(telphone)) {
-                    mLoginPhonenum.setText(telphone);
-                } else {
-                    Log.e(TAG, "getPhoneNum:未获取到手机号 ");
-                }
+//                TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+//                String telphone = tm.getLine1Number();//获取本机号码
+//                if (!TextUtils.isEmpty(telphone)) {
+//                    mLoginPhonenum.setText(telphone);
+//                } else {
+//                    Log.e(TAG, "getPhoneNum:未获取到手机号 ");
+//                }
                 return;
             }
         }
@@ -473,6 +620,7 @@ public class LoginActivity extends LiveBaseActivity {
                 loginTUIKitLive(sdk_id, userid, usersig);
                 statActivity(MainActivity.class);
                 finish();
+                hideLoad();
             }
         });
         mInstance.loginMLVB(Constantc.test_USERID, Constantc.USER_NAME, Constantc.USER_UserAvatar, Constantc.USER_CoverPic, 1, Constantc.test_userSig);

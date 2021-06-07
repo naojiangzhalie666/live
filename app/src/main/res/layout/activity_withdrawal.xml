@@ -276,7 +276,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView72" />
 
                 <EditText
-                    android:id="@+id/textView79"
+                    android:id="@+id/witdraw_zhangh"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -285,10 +285,10 @@
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView72"
                     app:layout_constraintEnd_toEndOf="@+id/textView77"
-                    app:layout_constraintStart_toStartOf="@+id/textView80" />
+                    app:layout_constraintStart_toStartOf="@+id/witdraw_name" />
 
                 <EditText
-                    android:id="@+id/textView80"
+                    android:id="@+id/witdraw_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

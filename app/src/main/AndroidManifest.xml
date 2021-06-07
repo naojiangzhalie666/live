@@ -11,120 +11,143 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH" /> <!-- 一键登录权限添加 -->
+    <!-- 动态权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--小米权限申请-->
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- 特殊权限 -->
+    <!--
+GET_TASKS ：应用要使用该接口必须声明权限android.permission.REAL_GET_TASKS，
+    而这个权限是不对三方应用开放的（在Manifest里申请了也没有作用），只有系统应用（有系统签名）可以调用该权限。
+    -->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 小米权限申请 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-feature android:name="android.hardware.Camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <permission android:name="com.tyxh.framlive.permission.MIPUSH_RECEIVE"
+
+    <permission
+        android:name="com.tyxh.framlive.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="com.tyxh.framlive.permission.MIPUSH_RECEIVE" />
-    <!-- ********OPPO 推送 start******** -->
-    <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE"/>
-    <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE"/>
-    <!-- ********OPPO 推送 end******** -->
+
+    <uses-permission android:name="com.tyxh.framlive.permission.MIPUSH_RECEIVE" /> <!-- ********OPPO 推送 start******** -->
+    <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
+    <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE" /> <!-- ********OPPO 推送 end******** -->
     <!-- ********华为推送权限设置******** -->
     <permission
         android:name="com.tyxh.framlive.permission.PROCESS_PUSH_MSG"
         android:protectionLevel="signatureOrSystem" />
-    <uses-permission android:name = "com.huawei.android.launcher.permission.CHANGE_BADGE" />
 
-    <uses-permission android:name="com.tyxh.framlive.permission.PROCESS_PUSH_MSG" />
-    <!-- ********魅族推送权限设置******** -->
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+    <uses-permission android:name="com.tyxh.framlive.permission.PROCESS_PUSH_MSG" /> <!-- ********魅族推送权限设置******** -->
     <!-- 兼容flyme5.0以下版本，魅族内部集成pushSDK必填，不然无法收到消息 -->
     <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" />
 
     <application
-        android:name="com.tyxh.framlive.base.LiveApplication"
+        android:name=".base.LiveApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/live_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/live_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.tyxh.framlive.ui.WebVActivity"
-            android:screenOrientation="portrait"></activity>
+            android:name="com.tyxh.framlive.chat.tuikit.TRTCAudioCallActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="com.tyxh.framlive.ui.NoticeActivity"
+            android:name="com.tyxh.framlive.chat.tuikit.TRTCVideoCallActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".ui.ChildLoginActivity"></activity>
+        <activity
+            android:name=".ui.WebVActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.WithdrDetailActivity"
+            android:name=".ui.NoticeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.pop_dig.BuyzActivity"
+            android:name=".ui.WithdrDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pop_dig.BuyzActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog_pay" />
         <activity
-            android:name="com.tyxh.framlive.wxapi.WXPayEntryActivity"
+            android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog_pay" />
         <activity
-            android:name="com.tyxh.framlive.pop_dig.MeslistActivity"
+            android:name=".pop_dig.MeslistActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog_helf" />
-        <activity android:name="com.tyxh.framlive.ui.HelpabackActivity" />
+        <activity android:name=".ui.HelpabackActivity" />
         <activity
-            android:name="com.tyxh.framlive.pop_dig.ReportActivity"
+            android:name=".pop_dig.ReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog" />
         <activity
-            android:name="com.tyxh.framlive.ui.MybackpActivity"
+            android:name=".ui.MybackpActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.OffsupportActivity"
+            android:name=".ui.OffsupportActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.ConnectRecordActivity"
+            android:name=".ui.ConnectRecordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.LiveDetailActivity"
+            android:name=".ui.LiveDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.live.PrepareActivity"
+            android:name=".live.PrepareActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.live.LiveActivity"
+            android:name=".live.LiveActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.MailListActivity"
+            android:name=".ui.MailListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.IncomeDetailActivity"
+            android:name=".ui.IncomeDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.WithdrawalActivity"
+            android:name=".ui.WithdrawalActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.tyxh.framlive.ui.ShowGoodsActivity"
+            android:name=".ui.ShowGoodsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
-            android:name="com.tyxh.framlive.ui.OranizeActivity"
+            android:name=".ui.OranizeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.tyxh.framlive.ui.LookPersonActivity"
+            android:name=".ui.LookPersonActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.tyxh.framlive.pop_dig.ChathelfActivity"
+            android:name=".pop_dig.ChathelfActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog_chathelf"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name="com.tyxh.framlive.chat.ChatActivity"
+            android:name=".chat.ChatActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateHidden">
+
             <!-- 华为离线推送打开应用内页面 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <data
                     android:host="com.tencent.qcloud"
                     android:path="/detail"
@@ -134,84 +157,86 @@
             <!-- OPPO离线推送的intent action方式必须配置category且不能有data数据 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <!-- OPPO离线推送的scheme url方式必须配置action和category -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <data
-                    android:scheme="pushscheme"
-                    android:host="com.tencent.qcloud"/>
+                    android:host="com.tencent.qcloud"
+                    android:scheme="pushscheme" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.tyxh.framlive.ui.IdentyActivity"
+            android:name=".ui.IdentyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.BindWchatActivity"
+            android:name=".ui.BindWchatActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.ExchangeActivity"
+            android:name=".ui.ExchangeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.AdviceActivity"
+            android:name=".ui.AdviceActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.NormalActivity"
+            android:name=".ui.NormalActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.OrderListActivity"
+            android:name=".ui.OrderListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.FollowActivity"
+            android:name=".ui.FollowActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.EdtmsgActivity"
+            android:name=".ui.EdtmsgActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.SetActivity"
+            android:name=".ui.SetActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.SetInActivity"
+            android:name=".ui.SetInActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
-            android:name="com.tyxh.framlive.ui.FindActivity"
+            android:name=".ui.FindActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.MsgInputActivity"
+            android:name=".ui.MsgInputActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.BindPhoneActivity"
+            android:name=".ui.BindPhoneActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tyxh.framlive.ui.TestTwoActivity"
+            android:name=".ui.TestTwoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-        </activity>
-        <activity
-            android:name="com.tyxh.framlive.ui.TestActivity"
-            android:screenOrientation="portrait">
 
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".ui.TestActivity"
+            android:screenOrientation="portrait">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
 
         </activity>
         <activity
-            android:name="com.tyxh.framlive.ui.LoginActivity"
+            android:name=".ui.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/StartStyle">
@@ -222,7 +247,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.tyxh.framlive.ui.SplashActivity"
+            android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/StartStyle">
 
@@ -235,7 +260,7 @@
             -->
         </activity>
         <activity
-            android:name="com.tyxh.framlive.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
 
@@ -248,16 +273,16 @@
             -->
         </activity>
         <activity
-            android:name="com.tyxh.framlive.live.TCCameraAnchorActivity"
+            android:name=".live.TCCameraAnchorActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="com.tyxh.framlive.live.TCAudienceActivity"
+            android:name=".live.TCAudienceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/PlayerTheme"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="com.tyxh.framlive.wxapi.WXEntryActivity"
+            android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -274,27 +299,21 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths_um"
                 tools:replace="android:resource" />
-        </provider>
-        <!-- ********小米推送service和receiver设置start******** -->
+        </provider> <!-- ********小米推送service和receiver设置start******** -->
         <service
             android:name="com.xiaomi.push.service.XMPushService"
             android:enabled="true"
-            android:process=":pushservice" />
-
-        <!--注：此service必须在3.0.1版本以后（包括3.0.1版本）加入-->
+            android:process=":pushservice" /> <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
         <service
             android:name="com.xiaomi.push.service.XMJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:process=":pushservice" />
-
         <service
             android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
             android:enabled="true"
-            android:exported="true" />
-
-        <!--注：此service必须在2.2.5版本以后（包括2.2.5版本）加入-->
+            android:exported="true" /> <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
         <service
             android:name="com.xiaomi.mipush.sdk.MessageHandleService"
             android:enabled="true" />
@@ -304,10 +323,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name="com.xiaomi.push.service.receivers.PingReceiver"
             android:exported="false"
@@ -315,10 +334,9 @@
             <intent-filter>
                 <action android:name="com.xiaomi.push.PING_TIMER" />
             </intent-filter>
-        </receiver>
-        <!-- 自实现小米推送的接收广播 -->
+        </receiver> <!-- 自实现小米推送的接收广播 -->
         <receiver
-            android:name="com.tyxh.framlive.thirdpush.XiaomiMsgReceiver"
+            android:name=".thirdpush.XiaomiMsgReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
@@ -329,71 +347,67 @@
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.ERROR" />
             </intent-filter>
-        </receiver>
-        <!-- ********小米推送service和receiver设置end******** -->
+        </receiver> <!-- ********小米推送service和receiver设置end******** -->
         <!-- ********VIVO推送service和receiver设置start******** -->
         <service
             android:name="com.vivo.push.sdk.service.CommandClientService"
-            android:permission="com.push.permission.UPSTAGESERVICE"
-            android:exported="true"/>
+            android:exported="true"
+            android:permission="com.push.permission.UPSTAGESERVICE" />
+
         <activity
             android:name="com.vivo.push.sdk.LinkProxyClientActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <receiver android:name="com.tyxh.framlive.thirdpush.VIVOPushMessageReceiverImpl">
+
+        <receiver android:name=".thirdpush.VIVOPushMessageReceiverImpl">
             <intent-filter>
+
                 <!-- 接收push消息 -->
                 <action android:name="com.vivo.pushclient.action.RECEIVE" />
             </intent-filter>
         </receiver>
 
-        <meta-data tools:replace="android:value"
+        <meta-data
             android:name="com.vivo.push.api_key"
-            android:value="e9f5485ec060d772a6f63ca7ca9f8c97" />
-        <meta-data tools:replace="android:value"
+            android:value="e9f5485ec060d772a6f63ca7ca9f8c97"
+            tools:replace="android:value" />
+        <meta-data
             android:name="com.vivo.push.app_id"
-            android:value="105485777" />
-
-        <!-- ********VIVO推送service和receiver设置end******** -->
+            android:value="105485777"
+            tools:replace="android:value" /> <!-- ********VIVO推送service和receiver设置end******** -->
         <!-- ********OPPO 推送 start******** -->
         <service
             android:name="com.heytap.msp.push.service.CompatibleDataMessageCallbackService"
-
             android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
             <intent-filter>
-                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>
+                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
             </intent-filter>
-        </service> <!--兼容Q以下版本-->
-
+        </service> <!-- 兼容Q以下版本 -->
         <service
             android:name="com.heytap.msp.push.service.DataMessageCallbackService"
-
             android:permission="com.heytap.mcs.permission.SEND_PUSH_MESSAGE">
-
             <intent-filter>
-                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>
-
-                <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE"/>
+                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE" />
+                <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE" />
             </intent-filter>
-        </service> <!--兼容Q版本-->
+        </service> <!-- 兼容Q版本 -->
         <!-- ********OPPO 推送 end******** -->
         <!-- ********华为推送设置start******** -->
         <service
-            android:name="com.tyxh.framlive.thirdpush.HUAWEIHmsMessageService"
+            android:name=".thirdpush.HUAWEIHmsMessageService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <meta-data tools:replace="android:value"
+        <meta-data
             android:name="com.huawei.hms.client.appid"
-            android:value="104365717" />
-        <!-- ********华为推送设置end******** -->
-
+            android:value="104365717"
+            tools:replace="android:value" /> <!-- ********华为推送设置end******** -->
         <!-- ********魅族推送设置start******** -->
-        <receiver android:name="com.tyxh.framlive.thirdpush.MEIZUPushReceiver">
+        <receiver android:name=".thirdpush.MEIZUPushReceiver">
             <intent-filter>
 
                 <!-- 接收push消息 -->
@@ -409,10 +423,6 @@
                 <category android:name="com.tyxh.framlive.thirdpush" />
             </intent-filter>
         </receiver>
-        <!-- ********魅族推送设置end******** -->
-
-
-
     </application>
 
 </manifest>

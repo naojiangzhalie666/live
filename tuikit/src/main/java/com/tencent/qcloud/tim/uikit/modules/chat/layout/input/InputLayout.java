@@ -20,10 +20,7 @@ import android.widget.TextView;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.liteav.SelectContactActivity;
-import com.tencent.liteav.login.UserModel;
 import com.tencent.liteav.model.ITRTCAVCall;
-import com.tencent.liteav.trtcaudiocalldemo.ui.TRTCAudioCallActivity;
-import com.tencent.liteav.trtcvideocalldemo.ui.TRTCVideoCallActivity;
 import com.tencent.qcloud.tim.uikit.R;
 import com.tencent.qcloud.tim.uikit.TUIKit;
 import com.tencent.qcloud.tim.uikit.base.IUIKitCallBack;
@@ -33,7 +30,6 @@ import com.tencent.qcloud.tim.uikit.component.face.FaceFragment;
 import com.tencent.qcloud.tim.uikit.component.face.FaceManager;
 import com.tencent.qcloud.tim.uikit.component.video.CameraActivity;
 import com.tencent.qcloud.tim.uikit.component.video.JCameraView;
-import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.BaseInputFragment;
 import com.tencent.qcloud.tim.uikit.modules.chat.interfaces.IChatLayout;
 import com.tencent.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreFragment;
@@ -438,36 +434,53 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             return;
         }
         if (mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_C2C) {
-            List<UserModel> contactList = new ArrayList<>();
+          /*  List<UserModel> contactList = new ArrayList<>();
             UserModel model = new UserModel();
             model.userId = mChatLayout.getChatInfo().getId();
             model.userName = mChatLayout.getChatInfo().getChatName();
             model.userSig = TUIKitConfigs.getConfigs().getGeneralConfig().getUserSig();
             contactList.add(model);
-            TRTCAudioCallActivity.startCallSomeone(mActivity.getApplicationContext(), contactList);
+            TRTCAudioCallActivity.startCallSomeone(mActivity.getApplicationContext(), contactList);*/
+          if(mOnNewAddClickListener!=null){
+              mOnNewAddClickListener.onAudioClickListener();
+          }
         } else {
             SelectContactActivity.start(mActivity.getApplicationContext(), mChatLayout.getChatInfo().getId(), ITRTCAVCall.TYPE_AUDIO_CALL);
         }
     }
 
     @Override
-    protected void startVideoCall() {
+    protected void stopAudioCall() {
+
+    }
+
+    @Override
+    public void startVideoCall() {
         if (!(PermissionUtils.checkPermission(mActivity, Manifest.permission.CAMERA)
                 && PermissionUtils.checkPermission(mActivity, Manifest.permission.RECORD_AUDIO))) {
             TUIKitLog.i(TAG, "startVideoCall checkPermission failed");
             return;
         }
         if (mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_C2C) {
-            List<UserModel> contactList = new ArrayList<>();
+          /*  List<UserModel> contactList = new ArrayList<>();
             UserModel model = new UserModel();
             model.userId = mChatLayout.getChatInfo().getId();
             model.userName = mChatLayout.getChatInfo().getChatName();
             model.userSig = TUIKitConfigs.getConfigs().getGeneralConfig().getUserSig();
             contactList.add(model);
-            TRTCVideoCallActivity.startCallSomeone(mActivity.getApplicationContext(), contactList);
+            TRTCVideoCallActivity.startCallSomeone(mActivity.getApplicationContext(), contactList);*/
+            if(mOnNewAddClickListener!=null){
+                mOnNewAddClickListener.onVideoClickListener();
+            }
+
         } else {
             SelectContactActivity.start(mActivity.getApplicationContext(), mChatLayout.getChatInfo().getId(), ITRTCAVCall.TYPE_VIDEO_CALL);
         }
+    }
+
+    @Override
+    protected void stopVideoCall() {
+
     }
 
     @Override
@@ -854,12 +867,12 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         boolean handleStartGroupLiveActivity();
     }
 
-    public interface onNewAddClickListener{
-        void onDiamondClickListener();
-
-        void onSerViceCLickListener();
-
-        void onSjbgClickListener();
+    public abstract static class onNewAddClickListener{
+      public  void onDiamondClickListener(){}
+      public  void onSerViceCLickListener(){}
+      public  void onSjbgClickListener(){}
+      public  void onAudioClickListener(){}
+      public  void onVideoClickListener(){}
 
 
     }

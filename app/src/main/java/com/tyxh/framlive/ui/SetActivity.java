@@ -137,7 +137,7 @@ public class SetActivity extends LiveBaseActivity {
     }
 
     private void toDh(String code) {
-        ToastShow("兑换: " + code);
+        ToastShow("兑换失败,请输入正确的兑换码");
 
 
     }

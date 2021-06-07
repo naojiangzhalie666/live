@@ -89,7 +89,7 @@ public class LiveDetailActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         ButterKnife.bind(this);
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+       /* mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (verticalOffset < dp2px(LiveDetailActivity.this,-130)) {
@@ -100,7 +100,7 @@ public class LiveDetailActivity extends LiveBaseActivity {
                     TitleUtils.setStatusTextColor(false,  LiveDetailActivity.this);
                 }
             }
-        });
+        });*/
 
         mlive_strs = new ArrayList<>();
         mLivedeAdapter = new LivedeAdapter(this, mlive_strs);

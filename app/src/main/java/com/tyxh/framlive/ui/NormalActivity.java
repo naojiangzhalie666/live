@@ -6,21 +6,21 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.WalletAdapter;
 import com.tyxh.framlive.base.LiveBaseActivity;
+import com.tyxh.framlive.bean.MxdetailBean;
+import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.pop_dig.BuyzActivity;
 import com.tyxh.framlive.utils.datepicker.CustomDatePicker;
 import com.tyxh.framlive.utils.datepicker.DateFormatUtils;
-import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +48,7 @@ public class NormalActivity extends LiveBaseActivity {
     @BindView(R.id.advice_eye)
     ImageView mNormalImgvEye;
     private CustomDatePicker customDatePickerSt;
-    private List<Map<String,Object>> mStringList;
+    private List<MxdetailBean.ListBean> mStringList;
     private WalletAdapter mWalletAdapter;
     private boolean show_money = true;
 
@@ -63,11 +63,11 @@ public class NormalActivity extends LiveBaseActivity {
         TitleUtils.setStatusTextColor(false, this);
         ButterKnife.bind(this);
         initTvTime();
-        mNormalZuannum.setText("1241");
+        setData();
         mStringList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Map<String,Object> map = new HashMap<>();
-            map.put("show",false);
+            MxdetailBean.ListBean map = new MxdetailBean.ListBean();
+            map.setShow(false);
             mStringList.add(map);
         }
         mWalletAdapter = new WalletAdapter(this, mStringList);
@@ -77,15 +77,26 @@ public class NormalActivity extends LiveBaseActivity {
         mWalletAdapter.setOnItemClickListener(new WalletAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(int pos) {
-                Map<String, Object> map = mStringList.get(pos);
-                map.put("show",!(boolean)map.get("show"));
+                MxdetailBean.ListBean map = mStringList.get(pos);
+                map.setShow(!map.isShow());
                 mWalletAdapter.notifyItemChanged(pos);
             }
         });
 
     }
 
-    @OnClick({R.id.back, R.id.advice_chongzhi, R.id.normal_sttm, R.id.normal_edtm, R.id.normal_shaixuan,R.id.advice_eye})
+    private void setData() {
+        UserInfoBean.RetDataBean retData = user_Info.getRetData();
+        mNormalZuannum.setText(retData.getDiamond() + "");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mNormalZuannum.setText(user_Info.getRetData().getDiamond() + "");
+    }
+
+    @OnClick({R.id.back, R.id.advice_chongzhi, R.id.normal_sttm, R.id.normal_edtm, R.id.normal_shaixuan, R.id.advice_eye})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -104,14 +115,14 @@ public class NormalActivity extends LiveBaseActivity {
             case R.id.normal_shaixuan:
                 break;
             case R.id.advice_eye:
-                if(show_money){
+                if (show_money) {
                     mNormalImgvEye.setImageResource(R.drawable.blue_close_eye);
                     mNormalZuannum.setText("*****");
-                }else{
+                } else {
                     mNormalImgvEye.setImageResource(R.drawable.blue_open_eye);
                     mNormalZuannum.setText("1241");
                 }
-                show_money=!show_money;
+                show_money = !show_money;
                 break;
         }
     }

@@ -3208,19 +3208,19 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 TXCLog.d(TAG, "推流成功");
                 callbackOnThread(mCallback, "onSuccess");
             } else if (event == TXLiveConstants.PUSH_ERR_OPEN_CAMERA_FAIL) {
-                String msg = "[LivePusher] 推流失败[打开摄像头失败]";
+                String msg = "推流失败[打开摄像头失败]";
                 TXCLog.e(TAG, msg);
                 callbackOnThread(mCallback, "onError", event, msg);
             } else if (event == TXLiveConstants.PUSH_ERR_OPEN_MIC_FAIL) {
-                String msg = "[LivePusher] 推流失败[打开麦克风失败]";
+                String msg = "推流失败[打开麦克风失败]";
                 TXCLog.e(TAG, msg);
                 callbackOnThread(mCallback, "onError", event, msg);
             } else if (event == TXLiveConstants.PUSH_ERR_NET_DISCONNECT || event == TXLiveConstants.PUSH_ERR_INVALID_ADDRESS) {
-                String msg = "[LivePusher] 推流失败[网络断开]";
+                String msg = "推流失败[网络断开]";
                 TXCLog.e(TAG,msg);
                 callbackOnThread(mCallback, "onError", event, msg);
             } else if (event == TXLiveConstants.PUSH_ERR_SCREEN_CAPTURE_START_FAILED) {
-                String msg = "[LivePusher] 推流失败[录屏启动失败]";
+                String msg = "推流失败[录屏启动失败]";
                 TXCLog.e(TAG,msg);
                 callbackOnThread(mCallback, "onError", event, msg);
             }

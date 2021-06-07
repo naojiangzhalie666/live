@@ -9,9 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.bean.MxdetailBean;
 
 import java.util.List;
-import java.util.Map;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,11 +20,11 @@ import butterknife.ButterKnife;
 
 public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder> {
     private Context mContext;
-    private List<Map<String, Object>> mLists;
+    private List<MxdetailBean.ListBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
 
-    public WalletAdapter(Context context, List<Map<String, Object>> stringList) {
+    public WalletAdapter(Context context, List<MxdetailBean.ListBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -43,17 +43,40 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        Map<String, Object> bean = mLists.get(position);
-        vh.mItemWalletType.setText("充值");
+        MxdetailBean.ListBean bean = mLists.get(position);
+        int moneyType = bean.getMoneyType();//1:进账  2：支出
+        int proType = bean.getProType();
+        //类型【moneyType=1:1-礼物;2-连线;3-私聊;4-任务；moneyType=2:1-收益兑钻】
+        String title = "";
+        if (moneyType == 1) {
+            switch (proType) {
+                case 1:
+                    title = "礼物";
+                    break;
+                case 2:
+                    title = "连线";
+                    break;
+                case 3:
+                    title = "私聊";
+                    break;
+                case 4:
+                    title = "任务";
+                    break;
+            }
+        } else {
+            title = "收益兑钻";
+        }
+        vh.mItemWalletType.setText(title);
         vh.mItemWalletLltm.setText("12:00");
-        vh.mItemWalletLlorder.setText("订单号：124124124");
-        vh.mItemWalletConorder.setText("订单号：12312312312");
         vh.mItemWalletGoods.setText("商品名：gdsjl");
-        vh.mItemWalletBz.setText("备注：赶紧啥贷款");
-        vh.mItemWalletContm.setText("2019.01.22");
-        vh.mItemWalletMoney.setText("+4" + position);
-        vh.mItemWalletMoney.setTextColor(mContext.getResources().getColor(position % 2 == 0 ? R.color.qings : R.color.red));
-        boolean show = (boolean) bean.get("show");
+        vh.mItemWalletLlorder.setText("订单号：" + bean.getOrderNum());
+        vh.mItemWalletConorder.setText("订单号：" + bean.getOrderNum());
+        vh.mItemWalletBz.setText("备注：" + bean.getRemark());
+        vh.mItemWalletContm.setText(bean.getCreateDate());
+
+        vh.mItemWalletMoney.setText(moneyType == 1 ? "+" : "1" + (bean.getAmount() + ""));
+        vh.mItemWalletMoney.setTextColor(mContext.getResources().getColor(moneyType == 1 ? R.color.qings : R.color.red));
+        boolean show = bean.isShow();
         if (show) {
             vh.mItemWalletCon.setVisibility(View.VISIBLE);
             vh.mItemWalletLl.setVisibility(View.GONE);

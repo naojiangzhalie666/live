@@ -41,8 +41,8 @@ public class XfFragment extends Fragment {
     }
 
     private void init() {
-        mXfPjnum.setVisibility(View.VISIBLE);
-        mXfPjnum.setText("22");
+//        mXfPjnum.setVisibility(View.VISIBLE);
+//        mXfPjnum.setText("22");
     }
 
     @OnClick({R.id.xf_cz, R.id.xf_sj, R.id.xf_pingjia, R.id.xf_level})

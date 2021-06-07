@@ -93,12 +93,44 @@
                 android:text="昵称"
                 android:textColor="@color/black" />
 
+
+            <EditText
+                android:id="@+id/edtmsg_name"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:paddingRight="@dimen/dp_10"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@null"
+                android:ellipsize="end"
+                android:gravity="right"
+                android:textSize="13sp"
+                android:hint="昵称"
+                android:lines="1"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10"
+                android:textColor="@color/nineninenine"
+                />
+            <TextView
+                android:id="@+id/edtmsg_namechange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_circle_stokelittle_red"
+                android:drawableLeft="@drawable/edtmsg_change"
+                android:drawablePadding="@dimen/dp_3"
+                android:paddingLeft="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_5"
+                android:text="换一个"
+                android:textColor="#FE3930"
+                android:textSize="10sp" />
+
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_weight="1">
 
-                <EditText
+               <!-- <EditText
                     android:id="@+id/edtmsg_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -112,7 +144,7 @@
                     android:paddingTop="@dimen/dp_10"
                     android:paddingBottom="@dimen/dp_10"
                     android:textColor="@color/nineninenine"
-                 />
+                 />-->
 
                 <LinearLayout
                     android:id="@+id/edtmsg_ll_iswj"
@@ -141,7 +173,7 @@
                         android:textColor="@color/blue"
                         android:textSize="12sp" />
 
-                    <TextView
+                 <!--   <TextView
                         android:id="@+id/edtmsg_namechange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -152,7 +184,7 @@
                         android:paddingRight="@dimen/dp_5"
                         android:text="换一个"
                         android:textColor="#FE3930"
-                        android:textSize="10sp" />
+                        android:textSize="10sp" />-->
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

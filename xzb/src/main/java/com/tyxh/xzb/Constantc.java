@@ -3,7 +3,7 @@ package com.tyxh.xzb;
 public class Constantc {
 
     /*直播跟im聊天用相同的SDKAPPID  签名使用同一个*/
-    public static final boolean use_old = false;     //是否用原来可连麦的数据
+    public static final boolean use_old = true;     //是否用原来可连麦的数据
     //有连麦功能的 1400188366
     //现在用的 1400515936
     public static final int SDKAPPID = use_old?1400188366:1400515936;//原  测试
@@ -15,25 +15,25 @@ public class Constantc {
 
 
     /*vivo plus9*/
-    public static  String USER_NAME = "vivo_plus9";
-    public static  String test_USERID = "123";
-    public static  String test_userSig = "eJxtjMtSwjAAAP8l1zqaRw2tN0VGA0LGoaJyyZQ8aFptMyHaFsd-F7DevO7O7hfIHpbnuXNWiTwI4hW4AiiGECUJoRSc-Xopm486iNA7ffCEJhQPyipdB2us9scQkwHvVCVO1-92wb4fN4hihNGIUjhw3TnrtchNON3wZYoh-JM7uz2w*eR1zB7H2-Y2flvJ0k443SvYRGvSrzymijebOb*JssiVfPn8WZmWFddsdDGTC9nPyuqJ*Y4VazMt6tiG*w2a8rTVaWxeuuzOLSj4-gGPmVHX";
+    /*public static  String USER_NAME = "vivo_plus9_new";
+    public static  String test_USERID = "9";
+    public static  String test_userSig = "eJxtzEFPgzAYgOH-0rPRry2rYOLBleFGRuIEYvTSNLSQBgdNVzaH8b*LE29e3zd5PlGxza*ltUYJ6QV1Ct0hHADgMKSMoavfX1X90Hnhz1ZPn7KQkXkZpTtvaqPdNKI5HlQrLuZ-mDf7HwQzQhgEgBdz1x-WOC1k7S8WWUQEAP5E00wtW5V8s*Mm5TV3A9wWVobt7rVMzodTmyT*6Tiu5LAselgH2XOKbbNp3vjIXrDaEzi*jyMZ*tLl3UO8zmK-JLSPoyZPbx4ZPW2re-T1DSUFUPw_";
     public static  String USER_UserAvatar= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2F50%2Fv2-e73ebe5fb7fbae39d69ed94dcc82f145_hd.jpg&refer=http%3A%2F%2Fpic1.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620871698&t=d27011329fbd6b0ca7bc7aaf01f94f54";
-    public static  String USER_CoverPic= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fc%2F55bf0900d0a2e.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620871753&t=c6d2d2c02ecc25d3e0627178af755008";
+    public static  String USER_CoverPic= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fc%2F55bf0900d0a2e.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620871753&t=c6d2d2c02ecc25d3e0627178af755008";*/
 
     /*vivo x23*/
    /* public static  String USER_NAME = "vivo_x23";
-    public static  String test_USERID = "124";//
-    public static  String test_userSig = "eJxtzEFvgjAYxvHv0ivL7PsipSzZgRAYmClrGGq8NAyqNE5AVreRZd996vTm9fnn*f2Q1*fsvug6XcnCSLuvyAOBMaXAuc0YufvvZdkeGiPN0KljtxlneEm6Uo3Ra6360xHHl-mj2sqzeoszendigCEguC5ed-Xd6V7JYm3OGjoeUkqvot4ct2mYB0kQzUPeDBmdxSUETuvWpfjCdhCfeXpY1bEzcSZQWPNEGV*HvhXVozR3lxaMhABvuZoF75m330WYUfGSgg7jtyefLxLjP5LfPyF4Tus_";
+    public static  String test_USERID = "7";//
+    public static  String test_userSig = "eJxtzEFPwjAYgOH-0isGvrbzY5hwWGDCcOKiQIRLM2iBrmEdoxoW4n93wLx5fd-kuZBZ-NFOi0JLkTrBS0meCPUAqO9zRPJw-5uN-cqdcFWh6s-RR9YsLVXu9Farsh7dJp6kETfzP8zpwxWhyBgCR482XZ0LXSqRbt3NYo89BgB-ot7V7TWcD6LBMJosVxgkGcLL-LjCcae1yEbHc5JZb2RMvl8zFyiZLPeBDoPvz*fFjoa2Or1XU9OFTk*-lbM45raVm-U0Alel2cRLhqHtk59f42JQnQ__";
     public static  String USER_UserAvatar= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fdiy.qqjay.com%2Fu%2Ffiles%2F2012%2F0812%2F07b81c63c37880a882b32b5e4ec5c028.jpg&refer=http%3A%2F%2Fdiy.qqjay.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622345766&t=67defb8b061bf0bfdc035dc72190e03e";
     public static  String USER_CoverPic= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg1001.pocoimg.cn%2Fimage%2Fpoco%2Fworks%2F79%2F2012%2F0322%2F20%2F62853829201203222023101923154827283_004_62853829.jpg&refer=http%3A%2F%2Fimg1001.pocoimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622345814&t=cf97ed5f962610d54eb0e4d8b7a011b5";*/
 
     /*红米*/
-   /* public static  String USER_NAME = "hongmi";
-    public static  String test_USERID = "125";
-    public static  String test_userSig = "eJxtzM2OgjAYheF76dpo*yG1Y*LCYWDEMAgq0XHTEFpJoyIDZRSN9*4f7tyeN*c5o7k3a8d5rgSPNTcKgfqIdDEmjBmUotazJ8m*yjTXdS5v3aCMQpOUkJlWayWL*xHMZi7Fhj-Ud5xWuztDKBBi9ChhzS6PuSokj9f6oYH5ARjjl6jS2-ZjR5YbWnJiwmIsPFGx2v*2Vssk7Nh*MgnSrIL9*A*G3iqYMTn6PLhpuMmqKZjBMP3CrnD*Q5tsD5Hj7mz-2KnnATt1l86pLKPyd4AuV2DaUTE_";
+    public static  String USER_NAME = "别致的熊猫";
+    public static  String test_USERID = "11114";
+    public static  String test_userSig = "eJxtzEFPgzAYxvHv0usWLS22xWSHhZCBUUkDmuClwbaQyoSuVicu**6yyW6*x*ef93cA5X1xVVtrlKi9wE6BWxCEEAaMYULA8q9LOXz2XvjR6qljwgiak1G696Yx2p0epwvn8KE6cXb-A715P0EBQYjRKMJ43vW3NU6LuvFnD91ECEJ4EU07bQ-JU5zxGHXPefl6N1JHK6XT4We0nMtIbjIVvi0q07oy33y9pE3cZm3FFv0uJHhbNJbjzCWP3Z4zHJPEFTSn11s8yJTu9o6vV*D4Cw3pUY0_";
     public static  String USER_UserAvatar= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01a9d85ecf6bdba80120662104b791.jpg%402o.jpg&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622345766&t=4df91a816a2c89c918c956b34a392052";
-    public static  String USER_CoverPic= "https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/0824ab18972bd40797d8db1179899e510fb3093a.jpg";*/
+    public static  String USER_CoverPic= "https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/0824ab18972bd40797d8db1179899e510fb3093a.jpg";
 
     /*小米*/
    /* public static  String USER_NAME = "xiaomi";

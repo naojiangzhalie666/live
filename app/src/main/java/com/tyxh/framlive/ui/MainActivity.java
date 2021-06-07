@@ -149,6 +149,9 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
         }
         switch (position) {
             case 0:
+                if(mHomeFragment!=null){
+                    mHomeFragment.toRefresh();
+                }
                 TitleUtils.setStatusTextColor(false, this);
                 break;
             case 1:
@@ -160,6 +163,9 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
                 TitleUtils.setStatusTextColor(false, this);
                 break;
             case 3:
+                if(mMineFragment!=null){
+                    mMineFragment.onResume();
+                }
                 TitleUtils.setStatusTextColor(false, this);
                 break;
         }
@@ -172,8 +178,11 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEventMsgt(EventMessage msg) {
-        if (msg.getMessage().equals("ever") || (msg.getMessage().equals("pipei")))
+        if (msg.getMessage().equals("ever") || (msg.getMessage().equals("pipei"))) {
             mPager.setCurrentItem(1);
+        }else if(msg.getMessage().equals("main")){
+            mPager.setCurrentItem(0);
+        }
     }
 
     long stT = 0;

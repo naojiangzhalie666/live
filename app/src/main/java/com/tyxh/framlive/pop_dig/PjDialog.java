@@ -81,15 +81,14 @@ public class PjDialog extends Dialog {
                 dismiss();
                 break;
             case R.id.dialog_pj_sub:
-                dismiss();
                 if (mOnSubClickListener != null)
-                    mOnSubClickListener.onSbCLickListner(mDialogPjStar.getRating() + "");
+                    mOnSubClickListener.onSbCLickListner(mDialogPjStar.getRating());
                 break;
         }
     }
 
     public interface OnSubClickListener {
-        void onSbCLickListner(String content);
+        void onSbCLickListner(float content);
     }
 
 }

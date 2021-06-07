@@ -22,9 +22,11 @@ import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
+import com.tencent.liteav.login.UserModel;
 import com.tencent.qcloud.tim.uikit.base.BaseFragment;
 import com.tencent.qcloud.tim.uikit.component.AudioPlayer;
 import com.tencent.qcloud.tim.uikit.component.TitleBarLayout;
+import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.qcloud.tim.uikit.modules.chat.ChatLayout;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.AbsChatLayout;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
@@ -40,13 +42,17 @@ import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.bean.BaseBean;
 import com.tyxh.framlive.bean.ContctBean;
 import com.tyxh.framlive.bean.EventMessage;
+import com.tyxh.framlive.bean.LiveCotctBean;
 import com.tyxh.framlive.bean.UserDetailBean;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.chat.helper.ChatLayoutHelper;
+import com.tyxh.framlive.chat.tuikit.TRTCAudioCallActivity;
+import com.tyxh.framlive.chat.tuikit.TRTCVideoCallActivity;
 import com.tyxh.framlive.pop_dig.BuyzActivity;
 import com.tyxh.framlive.pop_dig.HeadDialog;
 import com.tyxh.framlive.pop_dig.ServiceDialog;
 import com.tyxh.framlive.pop_dig.SjbgDialog;
+import com.tyxh.framlive.pop_dig.UseWhatDialog;
 import com.tyxh.framlive.ui.LookPersonActivity;
 import com.tyxh.framlive.ui.OranizeActivity;
 import com.tyxh.framlive.utils.FlowLayoutManager;
@@ -101,7 +107,7 @@ public class ChatFragment extends BaseFragment {
     private int mPower;
     private boolean is_first = true;
     private int mType = 1;//被聊天人的权限 1-普通用户；2-咨询师；3-主机构；4-子机构
-
+    private InputLayout mInputLayout;
 
 
     @Override
@@ -218,7 +224,7 @@ public class ChatFragment extends BaseFragment {
             mChatLayout.getInputLayout().disableServiceAction(true);
             mChatLayout.getInputLayout().disableSjbgAction(false);
             mtv_content.setText("关注方向");
-           getContHis(mChatInfo.getId());
+            getContHis(mChatInfo.getId());
         }
         mChatLayout.getMessageLayout().setOnItemClickListener(new MessageLayout.OnItemClickListener() {
             @Override
@@ -278,13 +284,36 @@ public class ChatFragment extends BaseFragment {
 
             @Override
             public void onSjbgClickListener() {
-                if(mSjbgDialog==null){
+                if (mSjbgDialog == null) {
                     Toast.makeText(getActivity(), "暂无报告", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mSjbgDialog.show();
             }
 
+            @Override
+            public void onAudioClickListener() {
+                super.onAudioClickListener();
+                if(mPower == Constant.POWER_NORMAL) {//我是用户  肯定弹
+                    getUseData(true);
+                }else if(mType>1){//我是咨询师  对方也是or机构   我也会弹
+                    getUseData(true);
+                }else {//我是咨询师   对方是用户  那就不弹  对方弹
+                    toCallAudio(new LiveCotctBean.RetDataBean(),false);
+                }
+            }
+
+            @Override
+            public void onVideoClickListener() {
+                super.onVideoClickListener();
+                if(mPower == Constant.POWER_NORMAL) {//我是用户  肯定弹
+                    getUseData(false);
+                }else if(mType>1){//我是咨询师  对方也是or机构   我也会弹
+                    getUseData(false);
+                }else {//我是咨询师   对方是用户  那就不弹  对方弹
+                    toCallVideo(new LiveCotctBean.RetDataBean(),false);
+                }
+            }
         });
         mChatLayout.setOnSendClickListener(new AbsChatLayout.OnSendClickListener() {
             @Override
@@ -302,6 +331,100 @@ public class ChatFragment extends BaseFragment {
             getDetail(mChatInfo.getId());
             is_first = false;
         }
+     /*   mInputLayout = mChatLayout.getInputLayout();
+        mInputLayout.startAudioCall();//发出语音连线邀请
+        //开始计时
+        mInputLayout.stopAudioCall(); //停止语音连线
+        mInputLayout.startVideoCall();//发出视频连线邀请
+        //开始计时
+        mInputLayout.stopVideoCall();//停止视频连线*/
+
+
+    }
+
+    private UseWhatDialog mUseWhatDialog;
+
+    /*获取可用于连麦的列表--卡、包、钻*/
+    private void getUseData(boolean is_audio) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getContTime(mToken, mChatInfo.getId(), mUserInfo.getRetData().getId()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                LiveCotctBean bean = new Gson().fromJson(result.toString(), LiveCotctBean.class);
+                if (bean.getRetCode() == 0) {
+                    mUseWhatDialog = new UseWhatDialog(getActivity(), getActivity(), bean.getRetData());
+                    mUseWhatDialog.show();
+                    mUseWhatDialog.setOnSureClickListener(new UseWhatDialog.OnSureClickListener() {
+                        @Override
+                        public void onSureClickListener(LiveCotctBean.RetDataBean bean) {
+                            mUseWhatDialog.dismiss();
+                            if(is_audio){
+                                toCallAudio(bean,true);
+                            }else{
+                                toCallVideo(bean,true);
+                            }
+                        }
+                    });
+                }else{
+                    ToastUtil.showToast(getActivity(),bean.getRetMsg());
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    /**
+     * 语音连接
+     * @param bean
+     * @param need_sock     是否需要进行Socket连接  false
+     */
+    private void toCallAudio(LiveCotctBean.RetDataBean bean,boolean need_sock){
+        if(bean ==null){
+            ToastUtil.showToast(getActivity(),"请先进行选择");
+            return;
+        }
+        List<UserModel> contactList = new ArrayList<>();
+        UserModel model = new UserModel();
+        model.userId = mChatLayout.getChatInfo().getId();
+        model.userName = mChatLayout.getChatInfo().getChatName();
+        model.userSig = TUIKitConfigs.getConfigs().getGeneralConfig().getUserSig();
+        contactList.add(model);
+        Bundle bundle =new Bundle();
+        bundle.putSerializable("data",bean);
+        bundle.putBoolean("need_sock",need_sock);
+        // TODO: 2021/6/1 先进行消耗品选择  然后进入下方界面  进入倒计时等 操作
+        TRTCAudioCallActivity.startCallSomeone(getActivity().getApplicationContext(), contactList);
+
+    }
+
+    /**
+     * 视频链接
+     * @param bean
+     * @param need_sock    是否需要进行Socket连接  false
+     */
+    private void toCallVideo(LiveCotctBean.RetDataBean bean,boolean need_sock){
+        if(bean ==null){
+            ToastUtil.showToast(getActivity(),"请先进行选择");
+            return;
+        }
+        List<UserModel> contactList = new ArrayList<>();
+        UserModel model = new UserModel();
+        model.userId = mChatLayout.getChatInfo().getId();
+        model.userName = mChatLayout.getChatInfo().getChatName();
+        model.userSig = TUIKitConfigs.getConfigs().getGeneralConfig().getUserSig();
+        contactList.add(model);
+        Bundle bundle =new Bundle();
+        bundle.putSerializable("data",bean);
+        bundle.putBoolean("need_sock",need_sock);
+        // TODO: 2021/6/1 先进行消耗品选择  然后进入下方界面  进入倒计时等 操作
+        TRTCVideoCallActivity.startCallSomeone(getActivity().getApplicationContext(), contactList,bundle);
+
+
     }
 
     private void updateAtInfoLayout() {
@@ -458,6 +581,7 @@ public class ChatFragment extends BaseFragment {
         });
 
     }
+
     /*获取目标信息资料*/
     private void getDetail(String to_userid) {
         DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getDetails(mToken, to_userid), new CommonObserver<UserDetailBean>() {
@@ -490,12 +614,12 @@ public class ChatFragment extends BaseFragment {
         if (user != null) {
             mType = user.getType();
             Glide.with(getActivity()).load(user.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mimgv_head);
-            String interest ="";
+            String interest = "";
             if (mPower == Constant.POWER_NORMAL) {//擅长方向---机构没有添加擅长方向的位置
                 List<UserDetailBean.RetDataBean.CounselorBeansBean> counselorBeans = data.getCounselorBeans();
-                if(counselorBeans!=null&&counselorBeans.size()>0){
+                if (counselorBeans != null && counselorBeans.size() > 0) {
                     UserDetailBean.RetDataBean.CounselorBeansBean counselorBeansBean = counselorBeans.get(0);
-                    interest =   counselorBeansBean.getInterests();
+                    interest = counselorBeansBean.getInterests();
                 }
             } else {//关注方向
                 interest = user.getInterests();
@@ -512,10 +636,22 @@ public class ChatFragment extends BaseFragment {
             }
 
 
-            mHeadDialog = new HeadDialog(getActivity(), user);
+            mHeadDialog = new HeadDialog(getActivity(),data);
 //            mtv_state.setVisibility(VISIBLE);//是否在直播中
             if (mType > 1) {
                 toAttentionThis(user.getId());
+            }
+            if(mType ==2){//咨询师
+                List<UserDetailBean.RetDataBean.CounselorBeansBean> counselorBeans = data.getCounselorBeans();
+                if (counselorBeans != null && counselorBeans.size() > 0) {
+                    UserDetailBean.RetDataBean.CounselorBeansBean bb = counselorBeans.get(0);
+                    Glide.with(getActivity()).load(bb.getCouHeadImg()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mimgv_head);
+                }
+            }else if(mType>2){//咨询机构、子机构
+                UserDetailBean.RetDataBean.CouMechanismBean couMechanism = data.getCouMechanism();
+                if(couMechanism!=null){
+                    Glide.with(getActivity()).load(couMechanism.getMeLogo()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mimgv_head);
+                }
             }
         }
         List<UserDetailBean.RetDataBean.ServicePackagesBean> servicePackages = data.getServicePackages();
@@ -549,16 +685,16 @@ public class ChatFragment extends BaseFragment {
         });
     }
 
-    private void getContHis(String toid){
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getContxtHis(mToken,1,10,toid), new HttpBackListener() {
+    private void getContHis(String toid) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getContxtHis(mToken, 1, 10, toid), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                ContctBean bean =new Gson().fromJson(result.toString(),ContctBean.class);
-                if(bean.getRetCode() ==0){
+                ContctBean bean = new Gson().fromJson(result.toString(), ContctBean.class);
+                if (bean.getRetCode() == 0) {
                     List<ContctBean.RetDataBean.ListBean> list = bean.getRetData().getList();
-                    if(list !=null&&list.size() !=0){
-                       setSjbgDig(toid,list);
+                    if (list != null && list.size() != 0) {
+                        setSjbgDig(toid, list);
                     }
                 }
             }
@@ -570,10 +706,10 @@ public class ChatFragment extends BaseFragment {
         });
     }
 
-    private void setSjbgDig(String toUserid,List<ContctBean.RetDataBean.ListBean> listBeans){
+    private void setSjbgDig(String toUserid, List<ContctBean.RetDataBean.ListBean> listBeans) {
         mSjbg_strs.clear();
         mSjbg_strs.addAll(listBeans);
-        mSjbgDialog = new SjbgDialog(getActivity(), mSjbg_strs,mToken,toUserid);
+        mSjbgDialog = new SjbgDialog(getActivity(), mSjbg_strs, mToken, toUserid);
     }
 
 }

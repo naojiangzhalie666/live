@@ -16,6 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
+import com.ljy.devring.util.DensityUtil;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.VpAdapter;
 import com.tyxh.framlive.base.ApiService;
@@ -28,6 +33,7 @@ import com.tyxh.framlive.pop_dig.CodeDialog;
 import com.tyxh.framlive.pop_dig.LogoutDialog;
 import com.tyxh.framlive.pop_dig.ShareDialog;
 import com.tyxh.framlive.ui.AdviceActivity;
+import com.tyxh.framlive.ui.LoginActivity;
 import com.tyxh.framlive.ui.LookPersonActivity;
 import com.tyxh.framlive.ui.MailListActivity;
 import com.tyxh.framlive.ui.MybackpActivity;
@@ -36,15 +42,9 @@ import com.tyxh.framlive.ui.OranizeActivity;
 import com.tyxh.framlive.ui.SetActivity;
 import com.tyxh.framlive.ui.SetInActivity;
 import com.tyxh.framlive.ui.WebVActivity;
-import com.tyxh.framlive.ui.WithdrDetailActivity;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.google.gson.Gson;
-import com.ljy.devring.DevRing;
-import com.ljy.devring.http.support.observer.CommonObserver;
-import com.ljy.devring.http.support.throwable.HttpThrowable;
-import com.ljy.devring.util.DensityUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -142,8 +142,8 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
     }
 
     @OnClick({R.id.mine_set, R.id.mine_cons_eyezuanshi, R.id.mine_cons_eyemoney, R.id.mine_guanzhu, R.id.mine_guanzhugzongh, R.id.mine_help,
-            R.id.mine_edt, R.id.mine_ruzhu, R.id.mine_logout, R.id.mine_money_tv, R.id.textView16, R.id.mine_zuanshi, R.id.textView14,
-            R.id.mine_daojutv, R.id.textView17})
+            R.id.mine_edt, R.id.mine_ruzhu, R.id.mine_logout, R.id.mine_money_tv,R.id.mine_cons_money, R.id.textView16, R.id.mine_zuanshi,R.id.mine_cons_zuanshi, R.id.textView14,
+            R.id.mine_daojutv, R.id.textView17, R.id.mine_cons_daoju})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mine_set:
@@ -151,6 +151,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                 break;
             case R.id.mine_daojutv:
             case R.id.textView17:
+            case R.id.mine_cons_daoju:
                 startActivity(new Intent(getActivity(), MybackpActivity.class));
                 break;
             case R.id.mine_cons_eyezuanshi:
@@ -182,19 +183,19 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                 break;
             case R.id.mine_help:
 //                startActivity(new Intent(getActivity(), HelpabackActivity.class));
-                WebVActivity.startMe(getActivity(),"帮助与反馈C");
+                WebVActivity.startMe(getActivity(), "帮助与反馈C");
                 break;
             case R.id.mine_edt:
                 Intent intent = null;
                 if (mPower == Constant.POWER_ZIXUNSHI) {//咨询师
                     intent = new Intent(getActivity(), LookPersonActivity.class);
-                    intent.putExtra("query_id",mUserInfo.getRetData().getId());
+                    intent.putExtra("query_id", mUserInfo.getRetData().getId());
                     intent.putExtra("is_user", false);
                     startActivity(intent);
                 } else {//咨询机构--子咨询师
                     intent = new Intent(getActivity(), OranizeActivity.class);
                     intent.putExtra("is_user", mPower == Constant.POWER_ZIXUNJIGOU ? false : true);
-                    intent.putExtra("query_id",mUserInfo.getRetData().getId());
+                    intent.putExtra("query_id", mUserInfo.getRetData().getId());
                     startActivity(intent);
                 }
                 break;
@@ -210,6 +211,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                 break;
             case R.id.mine_zuanshi:
             case R.id.textView14:
+            case R.id.mine_cons_zuanshi:
 //                if (mPower == Constant.POWER_NORMAL) {//普通
 //                    startActivity(new Intent(getActivity(), NormalActivity.class));
 //                } else {//咨询师/机构
@@ -227,10 +229,11 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                 break;
             case R.id.mine_money_tv:
             case R.id.textView16:
-           /*     Intent intent_ad = new Intent(getActivity(), AdviceActivity.class);
+            case R.id.mine_cons_money:
+                Intent intent_ad = new Intent(getActivity(), AdviceActivity.class);
                 intent_ad.putExtra("index", 1);
-                startActivity(intent_ad);*/
-                startActivity(new Intent(getActivity(), WithdrDetailActivity.class));
+                startActivity(intent_ad);
+//                startActivity(new Intent(getActivity(), WithdrDetailActivity.class));
                 break;
         }
     }
@@ -301,6 +304,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
             @Override
             public void onLogoutClickListener() {
                 LiveShareUtil.getInstance(getActivity()).clear();
+                getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();
             }
         });
@@ -316,6 +320,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
 
 
     }
+
     /*我的资产*/
     private void getMineAsset() {
         DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getAsset(LiveShareUtil.getInstance(getActivity()).getToken(), mUserInfo.getRetData().getId()), new CommonObserver<AssetBean>() {
@@ -324,15 +329,17 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                 if (assetBean.getRetCode() == 0) {
                     AssetBean.RetDataBean data = assetBean.getRetData();
                     String diamond = data.getDiamond();
-                    if(!TextUtils.isEmpty(diamond)){
-                        if(diamond.contains(".")) {
+                    if (!TextUtils.isEmpty(diamond)) {
+                        if (diamond.contains(".")) {
                             zuan = diamond.substring(0, diamond.indexOf("."));
-                        }else {
+                        } else {
                             zuan = diamond;
                         }
                     }
                     money = data.getBalance();
+                    if(show_zuanshi)
                     mMineZuanshi.setText(zuan);
+                    if(show_money)
                     mMineMoneyTv.setText(money);
                     mMineDaojutv.setText(String.valueOf(data.getPropCount()));
                 }
@@ -347,6 +354,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
             }
         }, TAG);
     }
+
     /*获取用户信息*/
     private void getUserInfo() {
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {

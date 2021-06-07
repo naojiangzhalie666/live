@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class ZixBean {
     private String name;
-    private String xxpath;
-    private String xxUrl;
+    private String xxpath="";
+    private String xxUrl="";
     private String stTm;
     private String edTm;
     private String stTTm;//用于展示的时间  --开始时间

@@ -253,7 +253,7 @@ public class DiamondBean {
             private String proName;
             private String platform;
             private int proNum;
-            private int originalPrice;
+            private String originalPrice;
             private int discountType;
             private int giveNum;
             private Object discount;
@@ -314,11 +314,11 @@ public class DiamondBean {
                 this.proNum = proNum;
             }
 
-            public int getOriginalPrice() {
+            public String getOriginalPrice() {
                 return originalPrice;
             }
 
-            public void setOriginalPrice(int originalPrice) {
+            public void setOriginalPrice(String originalPrice) {
                 this.originalPrice = originalPrice;
             }
 

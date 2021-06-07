@@ -57,7 +57,7 @@ public class OrderSnBean {
         private String orderSn;
         private int userId;
         private int diamondId;
-        private int amount;
+        private String amount;
         private int orderType;
         private int orderStatus;
         private Object tradeNo;
@@ -100,11 +100,11 @@ public class OrderSnBean {
             this.diamondId = diamondId;
         }
 
-        public int getAmount() {
+        public String getAmount() {
             return amount;
         }
 
-        public void setAmount(int amount) {
+        public void setAmount(String amount) {
             this.amount = amount;
         }
 

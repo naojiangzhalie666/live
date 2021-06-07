@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:background="@drawable/home_more"
-        app:layout_constraintDimensionRatio="h,17:25"
+        app:layout_constraintDimensionRatio="h,66:100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -71,16 +71,16 @@
         android:id="@+id/item_home_rez"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
+        android:src="@drawable/personal_renz"
+        android:layout_marginRight="@dimen/dp_3"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/item_homerecy_name"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/personal_renz" />
+        app:layout_constraintStart_toStartOf="@+id/item_homerecy_title" />
 
     <ImageView
         android:id="@+id/item_home_sun"
         android:layout_width="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/item_home_rez"
-        android:layout_marginLeft="@dimen/dp_3"
         app:layout_constraintBottom_toBottomOf="@+id/item_homerecy_name"
         android:layout_height="wrap_content"
         android:src="@drawable/personal_sun" />

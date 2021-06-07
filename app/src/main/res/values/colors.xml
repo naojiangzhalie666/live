@@ -14,7 +14,7 @@
     <color name="sixsixsix">#666666</color>
     <color name="nineninenine">#999999</color>
     <color name="bfivebfive">#B5B5B5</color>
-    <color name="ftwo">#F2F2F2</color>
+    <color name="ftwo">#F2F2F2</color>#425C59
     <color name="find_green">#048B00</color>
     <color name="setin_se">#417F77</color>
     <color name="app_color_f6">#f6f6f6</color>
@@ -28,6 +28,7 @@
     <color name="fninfnie">#F9F9F9</color>
     <color name="dig_red">#FE3930</color>
     <color name="navpage">#FFE1E8EB</color>
+    <color name="usewhat_tv">#71AAA5</color>
 
     <!--dataPick-->
     <color name="date_picker_bg">#FFFFFF</color>
@@ -36,6 +37,7 @@
     <color name="date_picker_text_dark">#999999</color>
     <color name="c_d8d3cf">#f2f2f2</color>
     <color name="c_b9afa9">#b9afa9</color>
+    <color name="task_color">#FE3930</color>
 
 
     <color name="white_alpha">#66FFFFFF</color>

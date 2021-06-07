@@ -188,6 +188,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.98084813" />
-
+    <include
+        android:id="@+id/audience_include"
+        layout="@layout/dig_lm_note"
+        android:visibility="gone"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

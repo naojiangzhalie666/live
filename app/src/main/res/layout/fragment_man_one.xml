@@ -2,17 +2,17 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:scrollbars="none"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/dp_15"
+    android:scrollbars="none"
     tools:context=".fragment.setin.ManOneFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dp_20"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_20">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -104,11 +104,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/manone_head"
-                android:scaleType="centerCrop"
                 android:layout_width="@dimen/dp_23"
                 android:layout_height="@dimen/dp_23"
                 android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/bg_circle_dc"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="@+id/tvtv"
                 app:layout_constraintEnd_toStartOf="@+id/tvone"
                 app:layout_constraintTop_toTopOf="@+id/tvtv" />
@@ -140,6 +140,7 @@
                 android:layout_height="@dimen/dp_1_5"
                 android:layout_marginTop="@dimen/dp_15"
                 android:background="@drawable/line_dott"
+                android:layerType="software"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/manone_tv" />
@@ -150,6 +151,7 @@
                 android:layout_height="@dimen/dp_1_5"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/line_dott"
+                android:layerType="software"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.727"
                 app:layout_constraintStart_toStartOf="parent"
@@ -314,7 +316,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/textView41"
                 app:layout_constraintStart_toStartOf="@+id/textView41"
                 app:layout_constraintTop_toTopOf="@+id/textView41" />
-                <ImageView
+
+            <ImageView
                 android:id="@+id/manone_xxpic"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -378,11 +381,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/bg_corner_ft"
-                android:minHeight="@dimen/dp_80"
                 android:gravity="left|top"
-                android:textSize="11sp"
-                android:padding="@dimen/dp_8"
                 android:hint="这是一段自我介绍，建议50-100字："
+                android:minHeight="@dimen/dp_80"
+                android:padding="@dimen/dp_8"
+                android:textSize="11sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/manone_" />
@@ -395,8 +398,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginRight="@dimen/dp_10"
             android:background="@drawable/bg_circle_solder_setin"
             android:text="下一页"
             android:textColor="@color/white"

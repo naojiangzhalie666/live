@@ -65,9 +65,6 @@ public class NoticeActivity extends LiveBaseActivity {
                 getData();
             }
         });
-        mNoticeSmart.setEnableLoadMore(false);
-        mNoticeSmart.setEnableRefresh(false);
-
         getData();
     }
 

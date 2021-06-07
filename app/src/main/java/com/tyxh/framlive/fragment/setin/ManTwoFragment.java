@@ -123,7 +123,8 @@ public class ManTwoFragment extends LiveBaseFragment {
                 break;
             case R.id.mantwo_edtm:
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                showDateDialog(mMantwoEdtm, "2000-01-01 00:00:00", simpleDateFormat.format(new Date()), false);
+//                showDateDialog(mMantwoEdtm, "2000-01-01 00:00:00", simpleDateFormat.format(new Date()), false);
+                showDateDialog(mMantwoEdtm, "2000-01-01 00:00:00", "2100-01-01 00:00:00", false);
                 break;
             case R.id.setin_next:
                 toJudgeGo();

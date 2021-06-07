@@ -16,13 +16,51 @@
         android:layout_marginTop="32dp"
         android:background="@color/bluee"
         android:gravity="center"
-        android:padding="@dimen/dp_15"
+        android:padding="@dimen/dp_10"
         android:text="测试1"
         android:textColor="@color/white"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView129"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/home_txt"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:text="连麦"
+        android:textColor="@color/login_txt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+    <include
+        android:id="@+id/testtwo_include"
+        layout="@layout/dig_lm_note"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/dig_tmone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/dig_tmtwo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView129" />
+
+    <TextView
+        android:id="@+id/dig_tmtwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dig_tmone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/dig_tmone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

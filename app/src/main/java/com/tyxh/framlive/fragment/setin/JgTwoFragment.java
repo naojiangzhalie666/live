@@ -23,6 +23,7 @@ import com.tyxh.framlive.ui.SetInActivity;
 import com.tyxh.framlive.utils.FullyGridLayoutManager;
 import com.tyxh.framlive.utils.GlideEngine;
 import com.tyxh.framlive.utils.LiveShareUtil;
+import com.tyxh.framlive.utils.SoftKeyBoardHelper;
 import com.tyxh.framlive.utils.datepicker.CustomDatePicker;
 import com.tyxh.framlive.utils.datepicker.DateFormatUtils;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
@@ -94,6 +95,7 @@ public class JgTwoFragment extends LiveBaseFragment {
     private CustomDatePicker customDatePickerSt;
     private boolean is_other = false;
     private List<String> mLists_others;
+    private View mChildAt;
 
 
     @Override
@@ -108,6 +110,19 @@ public class JgTwoFragment extends LiveBaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mActivity = (SetInActivity) getActivity();
+        SoftKeyBoardHelper.setListener(getActivity(), new SoftKeyBoardHelper.OnSoftKeyboardChangeListener() {
+            @Override
+            public void keyBoardShow() {
+                Log.i(TAG, "keyBoardShow: 键盘展示");
+            }
+
+            @Override
+            public void keyBoardHide() {
+                Log.i(TAG, "keyBoardHide: 键盘隐藏");
+//                if (mChildAt != null)
+//                    mChildAt.requestFocus();
+            }
+        });
         init();
     }
 
@@ -118,7 +133,7 @@ public class JgTwoFragment extends LiveBaseFragment {
             case R.id.jgtwo_add:
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 SimpleDateFormat dateFormat_show = new SimpleDateFormat("yyyy年MM月dd日");
-                mZixBeans.add(new ZixBean(new ArrayList<>(), new ArrayList<>(), dateFormat.format(new Date())+" 00:00:00", dateFormat.format(new Date())+" 00:00:00", dateFormat_show.format(new Date()), dateFormat_show.format(new Date())));
+                mZixBeans.add(new ZixBean(new ArrayList<>(), new ArrayList<>(), dateFormat.format(new Date()) + " 00:00:00", dateFormat.format(new Date()) + " 00:00:00", dateFormat_show.format(new Date()), dateFormat_show.format(new Date())));
                 mZixAdapter.notifyDataSetChanged();
                 break;
             case R.id.setin_next:
@@ -140,46 +155,46 @@ public class JgTwoFragment extends LiveBaseFragment {
         return;*/
         /*-----------测试用 end--------------------*/
 
-        if(mZixBeans.size()<0){
+        if (mZixBeans.size() < 0) {
             ToastShow("请至少上传一位咨询师信息");
             return;
         }
-        List<ZxjgBean.DataBean> mZxjgbeans =new ArrayList<>();
+        List<ZxjgBean.DataBean> mZxjgbeans = new ArrayList<>();
         for (int i = 0; i < mZixBeans.size(); i++) {
             ZixBean zixBean = mZixBeans.get(i);
             ZxjgBean.DataBean bean = new ZxjgBean.DataBean();
             Log.e(TAG, "onClick: " + zixBean.toString());
-            if(TextUtils.isEmpty(zixBean.getName())){
-               ToastShow("请输咨询师名称");
-               return;
+            if (TextUtils.isEmpty(zixBean.getName())) {
+                ToastShow("请输咨询师名称");
+                return;
             }
-            if(TextUtils.isEmpty(zixBean.getXxUrl())){
+            if (TextUtils.isEmpty(zixBean.getXxUrl())) {
                 ToastShow("请上传咨询师形象照");
                 return;
             }
-            bean.couName =zixBean.getName();
+            bean.couName = zixBean.getName();
             List<String> xx_lists = new ArrayList<>();
             xx_lists.add(zixBean.getXxUrl());
             bean.imageList = xx_lists;
-            if(zixBean.getMapList().size()==0){
+            if (zixBean.getMapList().size() == 0) {
                 ToastShow("请上传您咨询师资质");
                 return;
             }
             List<ZxjgBean.DataBean.quaBeList> quaBeLists = new ArrayList<>();
             for (int j = 0; j < zixBean.getMapList().size(); j++) {
                 Map<String, Object> map = zixBean.getMapList().get(j);
-                ZxjgBean.DataBean.quaBeList quaBe =new ZxjgBean.DataBean.quaBeList();
+                ZxjgBean.DataBean.quaBeList quaBe = new ZxjgBean.DataBean.quaBeList();
                 quaBe.setEndDate((String) map.get("edtm"));
                 quaBe.setStartDate((String) map.get("sttm"));
                 quaBe.setImgUrl((String) map.get("url"));
                 quaBeLists.add(quaBe);
-                Log.e(TAG, "onClick:url= "+map.get("url")+"  path= " + map.get("path") + "  st= " + map.get("sttm") + " edtm= " + map.get("edtm"));
+                Log.e(TAG, "onClick:url= " + map.get("url") + "  path= " + map.get("path") + "  st= " + map.get("sttm") + " edtm= " + map.get("edtm"));
             }
-            bean.quaBeList =quaBeLists;
+            bean.quaBeList = quaBeLists;
             Log.e(TAG, "----------------------------------------------------");
             mZxjgbeans.add(bean);
         }
-        mActivity.mZxjgBean.couBasicBeList  =mZxjgbeans;
+        mActivity.mZxjgBean.couBasicBeList = mZxjgbeans;
         String other_content = "";
         if (!TextUtils.isEmpty(mMantwoOtherEdt.getText().toString())) {
             other_content += mMantwoOtherEdt.getText().toString() + ",";
@@ -200,6 +215,9 @@ public class JgTwoFragment extends LiveBaseFragment {
             @Override
             public void onAddZzClickListener(int pos) {//资质图片
                 super.onAddZzClickListener(pos);
+                mChildAt = mJgtwoTprecy.getChildAt(pos);
+                if (mChildAt != null)
+                    mChildAt.requestFocus();
                 mZixBean = mZixBeans.get(pos);
                 position = pos;
                 is_other = false;
@@ -208,8 +226,19 @@ public class JgTwoFragment extends LiveBaseFragment {
             }
 
             @Override
+            public void onEdtClickListener(int pos) {
+                super.onEdtClickListener(pos);
+                mChildAt = mJgtwoTprecy.getChildAt(pos);
+//                if (mChildAt != null)
+//                    mChildAt.requestFocus();
+            }
+
+            @Override
             public void onStTmClickListener(int pos) {//开始时间
                 super.onStTmClickListener(pos);
+                mChildAt = mJgtwoTprecy.getChildAt(pos);
+                if (mChildAt != null)
+                    mChildAt.requestFocus();
                 mZixBean = mZixBeans.get(pos);
                 position = pos;
                 showDateDialog(true, mZixBean.getStTm(), "2000-01-01 00:00:00", mZixBean.getEdTm() + " 23:59:59");
@@ -219,15 +248,22 @@ public class JgTwoFragment extends LiveBaseFragment {
             @Override
             public void onEdTmClickListener(int pos) {//结束时间
                 super.onEdTmClickListener(pos);
+                mChildAt = mJgtwoTprecy.getChildAt(pos);
+                if (mChildAt != null)
+                    mChildAt.requestFocus();
                 mZixBean = mZixBeans.get(pos);
                 position = pos;
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                showDateDialog(false, mZixBean.getEdTm(), "2000-01-01 00:00:00", simpleDateFormat.format(new Date()));
+//                showDateDialog(false, mZixBean.getEdTm(), "2000-01-01 00:00:00", simpleDateFormat.format(new Date()));
+                showDateDialog(false, mZixBean.getEdTm(), "2000-01-01 00:00:00", "2100-01-01 00:00:00");
             }
 
             @Override
             public void onAddXXpiClistener(int pos) {//形象照
                 super.onAddXXpiClistener(pos);
+                mChildAt = mJgtwoTprecy.getChildAt(pos);
+                if (mChildAt != null)
+                    mChildAt.requestFocus();
                 mZixBean = mZixBeans.get(pos);
                 position = pos;
                 toSelectHead();
@@ -240,8 +276,8 @@ public class JgTwoFragment extends LiveBaseFragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat dateFormat_show = new SimpleDateFormat("yyyy年MM月dd日");
         mZixBeans = new ArrayList<>();
-        mZixBean = new ZixBean(new ArrayList<>(), new ArrayList<>(), dateFormat.format(new Date())+" 00:00:00",
-                dateFormat.format(new Date())+" 00:00:00", dateFormat_show.format(new Date()), dateFormat_show.format(new Date()));
+        mZixBean = new ZixBean(new ArrayList<>(), new ArrayList<>(), dateFormat.format(new Date()) + " 00:00:00",
+                dateFormat.format(new Date()) + " 00:00:00", dateFormat_show.format(new Date()), dateFormat_show.format(new Date()));
         mZixBeans.add(mZixBean);
         mZixAdapter = new ZixAdapter(getActivity(), mZixBeans);
         mZixAdapter.setActivity(getActivity());
@@ -421,7 +457,7 @@ public class JgTwoFragment extends LiveBaseFragment {
                     break;
                 case SELECT_ZZ:
                     toUpFile(TextUtils.isEmpty(selectList.get(0).getRealPath()) ? selectList.get(0).getPath() : selectList.get(0).getRealPath(), 2, selectList);
-                    /*List<LocalMedia> localMedia = mZixBean.getLocalMedia();
+                 /*   List<LocalMedia> localMedia = mZixBean.getLocalMedia();
                     localMedia.addAll(selectList);
                     mZixAdapter.notifyItemChanged(position);
                     int count = mZixBean.getCount();
@@ -541,8 +577,8 @@ public class JgTwoFragment extends LiveBaseFragment {
                 }
                 int count = mZixBean.getCount();
                 if (count >= 1) {
-                    mZixBean.getMapList().get(count - 1).put("sttm", mZixBean.getStTm()+" 00:00:00");
-                    mZixBean.getMapList().get(count - 1).put("edtm", mZixBean.getEdTm()+" 00:00:00");
+                    mZixBean.getMapList().get(count - 1).put("sttm", mZixBean.getStTm() + " 00:00:00");
+                    mZixBean.getMapList().get(count - 1).put("edtm", mZixBean.getEdTm() + " 00:00:00");
                 }
                 mZixAdapter.notifyItemChanged(position);
             }

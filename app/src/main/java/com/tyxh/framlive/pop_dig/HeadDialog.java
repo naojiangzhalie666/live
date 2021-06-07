@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.bean.UserDetailBean;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
@@ -42,11 +44,13 @@ public class HeadDialog extends Dialog {
     ConstraintLayout mCon;
     private Context mContext;
     private  UserDetailBean.RetDataBean.UserBean mUserBean;
+    private UserDetailBean.RetDataBean user_data ;
 
-    public HeadDialog(@NonNull Context context, UserDetailBean.RetDataBean.UserBean user) {
+    public HeadDialog(@NonNull Context context,UserDetailBean.RetDataBean data) {
         super(context);
         mContext = context;
-        mUserBean = user;
+        user_data =data;
+        mUserBean = data.getUser();
 
     }
 
@@ -65,6 +69,20 @@ public class HeadDialog extends Dialog {
         mDigTalkOld.setText(mUserBean.getAges());
         mDigTalkTime.setText("连线时长。");
         mDigTalkDay.setText("注册时间。");
+        int type = mUserBean.getType();
+        if(type==2){
+            List<UserDetailBean.RetDataBean.CounselorBeansBean> counselorBeans = user_data.getCounselorBeans();
+            if (counselorBeans != null && counselorBeans.size() > 0) {
+                UserDetailBean.RetDataBean.CounselorBeansBean bb = counselorBeans.get(0);
+                Glide.with(mContext).load(bb.getCouHeadImg()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mDigTalkHead);
+            }
+        }else if(type>2){
+            UserDetailBean.RetDataBean.CouMechanismBean couMechanism = user_data.getCouMechanism();
+            if(couMechanism!=null){
+                Glide.with(mContext).load(couMechanism.getMeLogo()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mDigTalkHead);
+            }
+        }
+
         String interest = mUserBean.getInterests();
         if(interest.endsWith(",")){
             interest =interest.substring(0,interest.length()-1);

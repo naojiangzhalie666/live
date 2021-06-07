@@ -64,13 +64,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             vh.mItemHomerecyName.setVisibility(View.VISIBLE);
             vh.mItemHomerecyTitle.setVisibility(View.VISIBLE);
             vh.mItemHomerecyLinear.setVisibility(View.VISIBLE);
-            vh.mItemHomeImgRenz.setVisibility(View.VISIBLE);
+
             vh.mItemHomeImgSun.setVisibility(View.VISIBLE);
             MineTCVideoInfo data = mLists.get(position);
             vh.mItemHomerecyBiao.setText(data.lable);
             vh.mItemHomerecyRenqi.setText("" + data.viewerCount); //直播观看人数
             vh.mItemHomerecyName.setText(TextUtils.isEmpty(data.nickname) ? TCUtils.getLimitString(data.userId, 10) : TCUtils.getLimitString(data.nickname, 10));   //主播昵称
             vh.mItemHomerecyTitle.setText(TCUtils.getLimitString(data.title.trim(), 10));//直播标题
+            int type = data.type;
+            if(type>2){
+                vh.mItemHomeImgRenz.setVisibility(View.VISIBLE);
+            }else{
+                vh.mItemHomeImgRenz.setVisibility(View.GONE);
+            }
             //直播封面
             String cover = data.frontCover;
             RoundedCorners roundedCorners = new RoundedCorners(15);

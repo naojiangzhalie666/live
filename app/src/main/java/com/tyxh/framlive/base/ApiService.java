@@ -33,11 +33,12 @@ public interface ApiService {
 
     /**
      * 绑定手机号
+     *
      * @param token
      * @return
      */
     @POST("userController/bindPhone")
-    Observable<JSONObject> bindPhone(@Header("Authorization") String token,@Query("phone")String phone,@Query("code")String code);
+    Observable<JSONObject> bindPhone(@Header("Authorization") String token, @Query("phone") String phone, @Query("code") String code);
 
     /**
      * 获取简介信息
@@ -306,14 +307,16 @@ public interface ApiService {
 
     /**
      * 修改个人信息--咨询师、机构  修改个人信息
+     *
      * @param token
      * @return
      */
     @PUT("couCounselorController/patchCou")
-    Observable<JSONObject> patchCou(@Header("Authorization") String token,@Query("id")String id,@Query("userType")String userType,@Query("name")String name,@Query("perIntroduce")String perIntroduce,@Query("meAddress")String meAddress);
+    Observable<JSONObject> patchCou(@Header("Authorization") String token, @Query("id") String id, @Query("userType") String userType, @Query("name") String name, @Query("perIntroduce") String perIntroduce, @Query("meAddress") String meAddress);
 
     /**
      * 修改个人形象--咨询师--机构修改时图片
+     *
      * @param token
      * @param body
      * @return
@@ -323,26 +326,29 @@ public interface ApiService {
 
     /**
      * 收益兑钻时候的钻石列表
+     *
      * @param token
-     * @param page      页码
-     * @param size      数量  穿大点就得--不分页
-     * @param platform  1 ios  2 android
+     * @param page     页码
+     * @param size     数量  穿大点就得--不分页
+     * @param platform 1 ios  2 android
      * @return
      */
     @GET("diamondBagController/getDiamondFe/{page}/{size}/{platform}")
-    Observable<JSONObject> getDiamaond(@Header("Authorization") String token,@Path("page")String page,@Path("size")String size,@Path("platform")String platform);
+    Observable<JSONObject> getDiamaond(@Header("Authorization") String token, @Path("page") String page, @Path("size") String size, @Path("platform") String platform);
 
     /**
      * 收益兑钻
+     *
      * @param token
      * @param body
      * @return
      */
     @POST("sysOrderController/incomeToDia")
-    Observable<JSONObject> incomeDiamond(@Header("Authorization") String token,@Body RequestBody body);
+    Observable<JSONObject> incomeDiamond(@Header("Authorization") String token, @Body RequestBody body);
 
     /**
      * 咨询师列表--首字母版
+     *
      * @param token
      * @return
      */
@@ -351,16 +357,18 @@ public interface ApiService {
 
     /**
      * 身份认证
+     *
      * @param token
      * @param idFace
      * @param nationalEmblem
      * @return
      */
     @POST("IdentityVRecordController/addIdentityVRecord")
-    Observable<JSONObject> addSfrz(@Header("Authorization") String token,@Query("idFace")String idFace,@Query("nationalEmblem")String nationalEmblem);
+    Observable<JSONObject> addSfrz(@Header("Authorization") String token, @Query("idFace") String idFace, @Query("nationalEmblem") String nationalEmblem);
 
     /**
      * 获取不重复昵称
+     *
      * @param token
      * @return
      */
@@ -369,102 +377,217 @@ public interface ApiService {
 
     /**
      * 获取支付订单
+     *
      * @param token
      * @param body  diamondId-钻石包id  remark--备注。。。
      * @return
      */
     @POST("sysOrderController/add")
-    Observable<JSONObject> getAddOrderdetail(@Header("Authorization") String token,@Body RequestBody body);
+    Observable<JSONObject> getAddOrderdetail(@Header("Authorization") String token, @Body RequestBody body);
 
     /**
-     *
      * @param token
-     * @param orderSn   支付订单--获取的订单号
-     * @param payType   支付类型--1微信  2支付宝
+     * @param orderSn 支付订单--获取的订单号
+     * @param payType 支付类型--1微信  2支付宝
      * @return
      */
     @POST("payController/pay")
-    Observable<JSONObject> goPay(@Header("Authorization") String token,@Query("orderSn")String orderSn,@Query("payType")String payType);
+    Observable<JSONObject> goPay(@Header("Authorization") String token, @Query("orderSn") String orderSn, @Query("payType") String payType);
 
     /**
      * 购买专属服务包
+     *
      * @param specsId
      * @param roomId
      * @return
      */
     @POST("servicePackageController/purchaseServiceBag")
-    Observable<JSONObject> buyServ(@Header("Authorization") String token,@Query("specsId")String specsId,@Query("roomId")String roomId);
+    Observable<JSONObject> buyServ(@Header("Authorization") String token, @Query("specsId") String specsId, @Query("roomId") String roomId);
 
     /**
      * 查询是否进行了关注  --[true:已关注,false:未关注]
+     *
      * @param token
      * @param attId
      * @return
      */
     @POST("attentionController/isAttention")
-    Observable<JSONObject> isAttention(@Header("Authorization") String token,@Query("attId")String attId);
+    Observable<JSONObject> isAttention(@Header("Authorization") String token, @Query("attId") String attId);
 
     /**
      * 修改机构咨询师
+     *
      * @param token
-     * @param body      couName:咨询师名称  imgUrl:咨询师形象  meId:咨询师里面的meId
+     * @param body  couName:咨询师名称  imgUrl:咨询师形象  meId:咨询师里面的meId
      * @return
      */
     @POST("couMechanismController/updateMeCou")
-    Observable<JSONObject> updateMecou(@Header("Authorization") String token,@Body RequestBody body);
+    Observable<JSONObject> updateMecou(@Header("Authorization") String token, @Body RequestBody body);
 
     /**
      * 私聊页连线记录查询
+     *
      * @param token
-     * @param page      当前页
-     * @param size      当前查询数量
-     * @param userId    要查询的目标id
+     * @param page   当前页
+     * @param size   当前查询数量
+     * @param userId 要查询的目标id
      * @return
      */
     @GET("servicePackageController/queryConnectHistory/{page}/{size}/{userId}")
-    Observable<JSONObject> getContxtHis(@Header("Authorization") String token,@Path("page")int page,@Path("size")int size,@Path("userId")String userId);
+    Observable<JSONObject> getContxtHis(@Header("Authorization") String token, @Path("page") int page, @Path("size") int size, @Path("userId") String userId);
 
     /**
      * 添加连线备注
+     *
      * @param token
-     * @param id        主键id
-     * @param remark    备注
-     * @param title     标题
+     * @param id     主键id
+     * @param remark 备注
+     * @param title  标题
      * @return
      */
     @PUT("servicePackageController/addConnectRemark")
-    Observable<JSONObject> addContctRemark(@Header("Authorization") String token,@Query("id")int id,@Query("remark")String remark,@Query("title")String title);
+    Observable<JSONObject> addContctRemark(@Header("Authorization") String token, @Query("id") int id, @Query("remark") String remark, @Query("title") String title);
 
     /**
      * 首页咨询师查询
+     *
      * @param token
-     * @param pageNum       查询当前页码
-     * @param pageSize      查询数量
-     * @param interest      擅长方向
-     * @param anchorState   状态(1:离线;2:在线;3:正在连线中)--目前传“” 无法根据这个状态进行查询
+     * @param pageNum     查询当前页码
+     * @param pageSize    查询数量
+     * @param interest    擅长方向
+     * @param anchorState 状态(1:离线;2:在线;3:正在连线中)--目前传“” 无法根据这个状态进行查询
      * @return
      */
     @GET("couCounselorController/queryCounselorMechanism/{pageNum}/{pageSize}")
-    Observable<JSONObject> queryAllZxs(@Header("Authorization") String token,@Path("pageNum")int pageNum,@Path("pageSize")int pageSize,@Query("interest") String interest,@Query("anchorState")String anchorState);
+    Observable<JSONObject> queryAllZxs(@Header("Authorization") String token, @Path("pageNum") int pageNum, @Path("pageSize") int pageSize, @Query("interest") String interest, @Query("anchorState") String anchorState);
 
     /**
      * 服务特色修改
+     *
      * @param token
-     * @param id                    修改的服务id
-     * @param serviceFeature        特色1
-     * @param serviceFeature2       特色2
+     * @param id              修改的服务id
+     * @param serviceFeature  特色1
+     * @param serviceFeature2 特色2
      * @return
      */
     @PUT("servicePackageController/updateServiceFeature")
-    Observable<JSONObject> updateService(@Header("Authorization") String token,@Query("id")int id,@Query("serviceFeature")String serviceFeature,@Query("serviceFeature2")String serviceFeature2);
+    Observable<JSONObject> updateService(@Header("Authorization") String token, @Query("id") int id, @Query("serviceFeature") String serviceFeature, @Query("serviceFeature2") String serviceFeature2);
 
-    /*测试接口--获取微信支付数据*/
-    @GET("testController/appWxPay")
-    Observable<JSONObject> getWxPayinfo();
+    /**
+     * 腾讯云一键登录获取手机号
+     *
+     * @param sdkappid
+     * @param random
+     * @return
+     */
+    @POST("https://yun.tim.qq.com/v5/rapidauth/validate")
+    Observable<JSONObject> getvalidata(@Query("sdkappid") String sdkappid, @Query("random") String random, @Body RequestBody body);
 
-    /*测试接口--获取支付宝支付数据*/
-    @GET("testController/appALiPay")
-    Observable<JSONObject> getZFBPayinfo();
+    /**
+     * 获取可用来进行连线的数据列表
+     * @param token
+     * @param roomId 房间id--主播id
+     * @param userId 用户id
+     * @return
+     */
+    @GET("servicePackageController/getConnectionTime")
+    Observable<JSONObject> getContTime(@Header("Authorization") String token, @Query("roomId") String roomId, @Query("userId") String userId);
+
+    /**
+     * 我的任务列表
+     * @param token
+     * @param taskTypeId    1 新手    2 每日   3 日收益   4 月收益
+     * @return
+     */
+    @POST("taskTableController/selectUserTask")
+    Observable<JSONObject> getUserTask(@Header("Authorization") String token,@Query("taskTypeId")int taskTypeId);
+
+    /**
+     * 领取任务奖励
+     * @param token
+     * @param taskId
+     * @return
+     */
+    @POST("taskTableController/receiveReward")
+    Observable<JSONObject> receiveReward(@Header("Authorization") String token,@Query("taskId")int taskId);
+
+    /**
+     * 我的订单--充值订单
+     * @param token
+     * @param page
+     * @param size
+     * @return
+     */
+    @GET("sysOrderController/myOrder/{page}/{size}")
+    Observable<JSONObject> myOrder(@Header("Authorization") String token,@Path("page")int page,@Path("size")int size);
+
+    /**
+     * 疏解记录查询
+     * @param token
+     * @param isEvaluation      空：全部  1：未评价
+     * @param page
+     * @param size
+     * @return
+     */
+    @GET("sysOrderController/myConnectHistory/{page}/{size}")
+    Observable<JSONObject> getMyContctHis(@Header("Authorization") String token,@Path("page")int page,@Path("size")int size,@Query("isEvaluation")String isEvaluation);
+
+    /**
+     * 评价
+     * @param token
+     * @param id
+     * @param star
+     * @return
+     */
+    @POST("connectHistoryController/evaluationConnectHistory")
+    Observable<JSONObject> toEvealContctHis(@Header("Authorization") String token,@Query("id")int id,@Query("star")int star);
+
+    /**
+     * 通知关注直播间的人开始直播了
+     * @param token
+     * @return
+     */
+    @POST("attentionController/noticeUserShow")
+    Observable<JSONObject> noticeUsershow(@Header("Authorization") String token);
+
+    /**
+     * 等级与特权
+     * @param token
+     * @return
+     */
+    @GET("sysOrderController/myLevel")
+    Observable<JSONObject> getMyLevel(@Header("Authorization") String token);
+
+    /**
+     * 获取下一等级相关信息
+     * @param token
+     * @return
+     */
+    @GET("userController/queryNextExp")
+    Observable<JSONObject> getMyNextLevel(@Header("Authorization") String token);
+
+    /**
+     * 查询我的收益（金额）
+     * @return
+     */
+    @GET("incomeExpensesController/queryMyIncome")
+    Observable<JSONObject> getMyIncome(@Header("Authorization") String token);
+
+    /**
+     * 提现申请
+     * @return
+     */
+    @POST("withdrawalController/addWithdrawal")
+    Observable<JSONObject> getAddwith(@Header("Authorization") String token,@Body RequestBody body);
+
+    /**
+     * 提现记录
+     * @return
+     */
+    @POST("withdrawalController/myWithdrawal")
+    Observable<JSONObject> getMyWithDraw(@Header("Authorization") String token,@Body RequestBody body);
+
+    /*-------------------------------------------如下为微信登录时获取数据---------------------------------------------------*/
 
     /**
      * 微信获取accrss_token

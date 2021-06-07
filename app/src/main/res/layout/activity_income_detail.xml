@@ -65,7 +65,7 @@
             android:paddingBottom="@dimen/dp_6"
             android:textColor="@color/black_oneeight"
             android:textColorHint="@color/nineninenine"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/search"
@@ -75,11 +75,12 @@
             android:background="@drawable/bg_circle_solder_setin"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:paddingLeft="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_14"
             android:paddingTop="@dimen/dp_4"
-            android:paddingRight="10dp"
+            android:paddingRight="@dimen/dp_14"
             android:paddingBottom="@dimen/dp_4"
             android:text="搜索"
+            android:textSize="13sp"
             android:textColor="@color/white" />
 
     </LinearLayout>
@@ -109,7 +110,7 @@
             android:paddingBottom="@dimen/dp_2"
             android:text="2019年5月"
             android:textColor="@color/home_txt"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -137,7 +138,7 @@
             android:paddingBottom="@dimen/dp_2"
             android:text="2019年5月"
             android:textColor="@color/home_txt"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/normal_sttm"
             app:layout_constraintStart_toEndOf="@+id/textView31" />
 
@@ -164,5 +165,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/normal_sttm" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/nodata"
+        layout="@layout/a_nodata"
+        android:visibility="gone"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

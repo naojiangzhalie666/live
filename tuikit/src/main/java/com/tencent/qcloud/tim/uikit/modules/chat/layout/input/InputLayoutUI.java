@@ -282,7 +282,11 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
     protected abstract void startAudioCall();
 
+    protected abstract void stopAudioCall();
+
     protected abstract void startVideoCall();
+
+    protected abstract void stopVideoCall();
 
     protected abstract void startGroupLive();
 

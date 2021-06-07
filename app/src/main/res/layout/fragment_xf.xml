@@ -88,9 +88,10 @@
     <TextView
         android:id="@+id/xf_pjnum"
         android:layout_width="wrap_content"
-        android:background="@drawable/bg_circle_red"
+        android:background="@drawable/bg_circle_red_task"
         android:textColor="@color/white"
         android:visibility="gone"
+        tools:visibility="visible"
         android:paddingLeft="@dimen/dp_3"
         android:paddingRight="@dimen/dp_3"
         app:layout_constraintCircle="@+id/xf_pingjia"
@@ -101,7 +102,6 @@
         android:textSize="10sp"
         android:layout_height="wrap_content"
         tools:text="12"
-        tools:layout_editor_absoluteX="226dp"
-        tools:layout_editor_absoluteY="26dp" />
+ />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
