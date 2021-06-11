@@ -590,7 +590,7 @@ public class ChatFragment extends BaseFragment {
         if (id.contains(".")) {
             id = id.substring(0, mChatInfo.getId().indexOf("."));
         }
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().privateChat(mToken, id), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().privateChat(mToken, mChatInfo.getId()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);

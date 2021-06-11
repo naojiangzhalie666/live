@@ -462,11 +462,11 @@ public class HomeFragment extends Fragment {
         }
 
         if (intent != null) {
-            intent.putExtra(TCConstants.ROOM_TITLE, TCUserMgr.getInstance().getNickname());
+            intent.putExtra(TCConstants.ROOM_TITLE,mUserInfo.getRetData().getNickname());
             intent.putExtra(TCConstants.USER_ID, TCUserMgr.getInstance().getUserId());
-            intent.putExtra(TCConstants.USER_NICK, TCUserMgr.getInstance().getNickname());
-            intent.putExtra(TCConstants.USER_HEADPIC, TCUserMgr.getInstance().getAvatar());
-            intent.putExtra(TCConstants.COVER_PIC, TCUserMgr.getInstance().getCoverPic());
+            intent.putExtra(TCConstants.USER_NICK,mUserInfo.getRetData().getNickname());
+            intent.putExtra(TCConstants.USER_HEADPIC,mUserInfo.getRetData().getIco());
+            intent.putExtra(TCConstants.COVER_PIC,mUserInfo.getRetData().getIco());
             intent.putExtra(TCConstants.JIGOU_NAME, "");
             intent.putExtra(TCConstants.USER_LOC, "天津");
             startActivity(intent);

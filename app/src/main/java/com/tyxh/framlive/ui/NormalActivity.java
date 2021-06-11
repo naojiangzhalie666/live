@@ -66,6 +66,7 @@ public class NormalActivity extends LiveBaseActivity {
     private boolean show_money = true;
     private int page = 1;
     private int page_size = 10;
+    private long dia_num = 0;
 
 
     @Override
@@ -111,13 +112,15 @@ public class NormalActivity extends LiveBaseActivity {
 
     private void setData() {
         UserInfoBean.RetDataBean retData = user_Info.getRetData();
-        mNormalZuannum.setText(retData.getDiamond() + "");
+        dia_num =retData.getDiamond();
+        mNormalZuannum.setText(dia_num + "");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        mNormalZuannum.setText(user_Info.getRetData().getDiamond() + "");
+        dia_num =user_Info.getRetData().getDiamond();
+        mNormalZuannum.setText(dia_num + "");
     }
 
     @OnClick({R.id.back, R.id.advice_chongzhi, R.id.normal_sttm, R.id.normal_edtm, R.id.normal_shaixuan, R.id.advice_eye})
@@ -144,7 +147,7 @@ public class NormalActivity extends LiveBaseActivity {
                     mNormalZuannum.setText("*****");
                 } else {
                     mNormalImgvEye.setImageResource(R.drawable.blue_open_eye);
-                    mNormalZuannum.setText("1241");
+                    mNormalZuannum.setText(dia_num+"");
                 }
                 show_money = !show_money;
                 break;

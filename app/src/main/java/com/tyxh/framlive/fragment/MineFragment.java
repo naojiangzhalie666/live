@@ -33,6 +33,7 @@ import com.tyxh.framlive.pop_dig.CodeDialog;
 import com.tyxh.framlive.pop_dig.LogoutDialog;
 import com.tyxh.framlive.pop_dig.ShareDialog;
 import com.tyxh.framlive.ui.AdviceActivity;
+import com.tyxh.framlive.ui.EdtmsgActivity;
 import com.tyxh.framlive.ui.LoginActivity;
 import com.tyxh.framlive.ui.LookPersonActivity;
 import com.tyxh.framlive.ui.MailListActivity;
@@ -141,9 +142,12 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
 
     @OnClick({R.id.mine_set, R.id.mine_cons_eyezuanshi, R.id.mine_cons_eyemoney, R.id.mine_guanzhu, R.id.mine_guanzhugzongh, R.id.mine_help,
             R.id.mine_edt, R.id.mine_ruzhu, R.id.mine_logout, R.id.mine_money_tv,R.id.mine_cons_money, R.id.textView16, R.id.mine_zuanshi,R.id.mine_cons_zuanshi, R.id.textView14,
-            R.id.mine_daojutv, R.id.textView17, R.id.mine_cons_daoju})
+            R.id.mine_daojutv, R.id.textView17, R.id.mine_cons_daoju,R.id.mine_head})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.mine_head:
+                startActivity(new Intent(getActivity(), EdtmsgActivity.class));
+                break;
             case R.id.mine_set:
                 startActivity(new Intent(getActivity(), SetActivity.class));
                 break;

@@ -569,16 +569,16 @@ public class JgTwoFragment extends LiveBaseFragment {
             @Override
             public void onTimeSelected(long timestamp) {
                 if (is_start) {
-                    mZixBean.setStTm(DateFormatUtils.long2Str(timestamp, false));
+                    mZixBean.setStTm(DateFormatUtils.long2Str(timestamp, false) + " 00:00:00");
                     mZixBean.setStTTm(DateUtil.getTimeStr(String.valueOf(timestamp / 1000), "yyyy年MM月dd日"));
                 } else {
-                    mZixBean.setEdTm(DateFormatUtils.long2Str(timestamp, false));
+                    mZixBean.setEdTm(DateFormatUtils.long2Str(timestamp, false) + " 00:00:00");
                     mZixBean.setEdTTm(DateUtil.getTimeStr(String.valueOf(timestamp / 1000), "yyyy年MM月dd日"));
                 }
                 int count = mZixBean.getCount();
                 if (count >= 1) {
-                    mZixBean.getMapList().get(count - 1).put("sttm", mZixBean.getStTm() + " 00:00:00");
-                    mZixBean.getMapList().get(count - 1).put("edtm", mZixBean.getEdTm() + " 00:00:00");
+                    mZixBean.getMapList().get(count - 1).put("sttm", mZixBean.getStTm());
+                    mZixBean.getMapList().get(count - 1).put("edtm", mZixBean.getEdTm());
                 }
                 mZixAdapter.notifyItemChanged(position);
             }

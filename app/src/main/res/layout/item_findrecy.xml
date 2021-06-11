@@ -9,11 +9,11 @@
 
     <ImageView
         android:id="@+id/item_findrecy_imgv"
-        android:layout_width="@dimen/dp_77"
-        android:layout_height="@dimen/dp_77"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="@dimen/dp_67"
+        android:layout_height="@dimen/dp_67"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
         android:src="@drawable/live_defaultimg"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,7 +25,7 @@
         android:id="@+id/item_findrecy_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_14"
+        android:layout_marginStart="@dimen/dp_16"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:lines="1"
@@ -36,6 +36,7 @@
         app:layout_constraintStart_toEndOf="@+id/item_findrecy_imgv"
         app:layout_constraintTop_toTopOf="@+id/item_findrecy_imgv" />
 
+    <!--   app:layout_constraintBottom_toTopOf="@+id/linearLayout"-->
     <TextView
         android:id="@+id/item_findrecy_faverite"
         android:layout_width="0dp"
@@ -45,7 +46,7 @@
         android:maxLines="2"
         android:textColor="@color/threethree"
         android:textSize="11sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:paddingTop="@dimen/dp_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/item_findrecy_title"
         app:layout_constraintTop_toBottomOf="@+id/item_findrecy_title"
@@ -72,6 +73,7 @@
         android:layout_marginStart="@dimen/dp_14"
         android:layout_marginEnd="@dimen/dp_12"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/item_findrecy_imgv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_findrecy_imgv">

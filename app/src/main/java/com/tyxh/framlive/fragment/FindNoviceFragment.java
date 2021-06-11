@@ -276,10 +276,14 @@ public class FindNoviceFragment extends Fragment {
             case 4:
             case 5:
             case 7:
+            case 12:
+            case 14:
                 EventBus.getDefault().post(new EventMessage("main"));
                 break;
             case 3://咨询师列表页
             case 6:
+            case 11:
+            case 13:
                 Intent intent = new Intent(getActivity(), MailListActivity.class);
                 intent.putExtra("index", "end");
                 startActivity(intent);

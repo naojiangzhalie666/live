@@ -1539,6 +1539,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                         .withMedia(web)
                         .setCallback(shareListener)//回调监听器
                         .share();
+                toGoTask(7, "1");
             }
 
             @Override
@@ -1548,6 +1549,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                         .withMedia(web)
                         .setCallback(shareListener)//回调监听器
                         .share();
+                toGoTask(7, "1");
             }
 
             @Override
@@ -1734,15 +1736,15 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 @Override
                 public void onMoreClickListener() {
                     if (user_type > 2) {
-                        Intent int_person = new Intent(TCAudienceActivity.this, LookPersonActivity.class);
-                        int_person.putExtra("is_user", true);
-                        int_person.putExtra("query_id", mPusherId);
-                        startActivity(int_person);//咨询师页面
-                    } else {
                         Intent int_orgi = new Intent(TCAudienceActivity.this, OranizeActivity.class);
                         int_orgi.putExtra("is_user", true);
                         int_orgi.putExtra("query_id", mPusherId);
                         startActivity(int_orgi);//咨询机构页面
+                    } else {
+                        Intent int_person = new Intent(TCAudienceActivity.this, LookPersonActivity.class);
+                        int_person.putExtra("is_user", true);
+                        int_person.putExtra("query_id", mPusherId);
+                        startActivity(int_person);//咨询师页面
                     }
                 }
             });

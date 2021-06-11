@@ -48,9 +48,9 @@ GET_TASKS ：应用要使用该接口必须声明权限android.permission.REAL_G
     <application
         android:name=".base.LiveApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/live_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/live_logo"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity

@@ -223,10 +223,11 @@
         android:layout_height="@dimen/dp_102"
         app:layout_constraintBottom_toTopOf="@+id/imageView24"
         app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
         app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/level_big_mg" />
+        android:src="@drawable/level_dig_zuan" />
 
     <ImageView
         android:id="@+id/imageView24"
