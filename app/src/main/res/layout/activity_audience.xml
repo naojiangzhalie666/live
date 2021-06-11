@@ -24,8 +24,8 @@
     <!--连麦：第一个播放小窗口-->
     <FrameLayout
         android:id="@+id/frameLayout1"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
+        android:layout_width="@dimen/dp_111"
+        android:layout_height="@dimen/dp_161"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="50dp"
@@ -34,23 +34,33 @@
         <com.tencent.rtmp.ui.TXCloudVideoView
             android:id="@+id/video_player1"
             android:layout_width="match_parent"
+            tools:visibility="visible"
+            android:padding="@dimen/dp_1"
+            android:background="@drawable/bg_stroke_white"
             android:layout_height="match_parent"
-            android:visibility="gone" />
+            android:visibility="gone"
+           />
         <ImageView
             android:id="@+id/video_imgv"
             android:layout_width="match_parent"
             android:scaleType="centerCrop"
             tools:src="@drawable/bg"
+            tools:visibility="visible"
+            android:layout_margin="@dimen/dp_1"
             android:visibility="gone"
             android:layout_height="match_parent"/>
 
         <LinearLayout
             android:id="@+id/video_ll_contactline"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_109"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:paddingLeft="@dimen/dp_5"
+            android:layout_margin="@dimen/dp_1"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingBottom="@dimen/dp_2"
             android:orientation="vertical"
+            android:background="#33000000"
+            tools:visibility="visible"
             android:visibility="gone">
 
             <TextView
@@ -179,8 +189,7 @@
             android:id="@+id/audience_fram_contac"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cam_title"
-            android:layout_marginTop="10dp"
+            android:layout_alignTop="@+id/cam_title"
             android:visibility="gone"
             tools:visibility="visible">
 

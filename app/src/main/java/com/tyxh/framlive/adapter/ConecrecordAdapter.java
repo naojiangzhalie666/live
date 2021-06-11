@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.bean.ConLivetctBean;
 
 import java.util.List;
-import java.util.Map;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +18,11 @@ import butterknife.ButterKnife;
 
 public class ConecrecordAdapter extends RecyclerView.Adapter<ConecrecordAdapter.ViewHolder> {
     private Context mContext;
-    private List<Map<String, Object>> mLists;
+    private List<ConLivetctBean.RetDataBean.ListBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
 
-    public ConecrecordAdapter(Context context, List<Map<String, Object>> stringList) {
+    public ConecrecordAdapter(Context context, List<ConLivetctBean.RetDataBean.ListBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -41,12 +41,12 @@ public class ConecrecordAdapter extends RecyclerView.Adapter<ConecrecordAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        Map<String, Object> bean = mLists.get(position);
-        vh.mItemWalletType.setText("连线ID：32956461"+position);
-        vh.mItemWalletConorder.setText("昵称：12312312312");
-        vh.mItemWalletGoods.setText("连线时间：2021-01-01 12:20-14:30");
-        vh.mItemWalletBz.setText("备注：可手动记录连线事宜");
-        vh.mItemWalletContm.setText("订单编号：6456812684512");
+        ConLivetctBean.RetDataBean.ListBean bean = mLists.get(position);
+        vh.mItemWalletType.setText("连线ID："+bean.getUserId());
+        vh.mItemWalletConorder.setText("昵称："+bean.getNickname());
+        vh.mItemWalletGoods.setText("连线时间："+bean.getCreateDate());
+        vh.mItemWalletBz.setText("备注："+bean.getRemark());
+        vh.mItemWalletContm.setText("订单编号："+bean.getUuId());
         vh.mItemWalletMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

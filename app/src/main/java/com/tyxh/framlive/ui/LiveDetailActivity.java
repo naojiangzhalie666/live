@@ -7,13 +7,23 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.gson.Gson;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.superc.yyfflibrary.utils.DateUtil;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.LivedeAdapter;
 import com.tyxh.framlive.base.LiveBaseActivity;
+import com.tyxh.framlive.bean.LiveMonBean;
+import com.tyxh.framlive.utils.LiveDateUtil;
 import com.tyxh.framlive.utils.TitleUtils;
 import com.tyxh.framlive.utils.datepicker.CustomDatePicker;
 import com.tyxh.framlive.utils.datepicker.DateFormatUtils;
-import com.google.android.material.appbar.AppBarLayout;
+import com.tyxh.framlive.utils.httputil.HttpBackListener;
+import com.tyxh.framlive.utils.httputil.LiveHttp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,13 +83,18 @@ public class LiveDetailActivity extends LiveBaseActivity {
     TextView mLivedetailShaixuan;
     @BindView(R.id.livedetail_bttv)
     TextView mLivedetailBttv;
+    @BindView(R.id.smart)
+    SmartRefreshLayout mLivedetailSmart;
     @BindView(R.id.livedetail_recy)
     RecyclerView mLivedetailRecy;
     private CustomDatePicker customDatePickerSt;
     private int line_startDis = 0;
-    private List<String> mlive_strs;
+    private List<LiveMonBean.RetDataBean.ListBean> mlive_strs;
     private LivedeAdapter mLivedeAdapter;
     private boolean is_day = true;
+    private int page = 1;
+    private int page_size = 10;
+    private View view_nodata;
 
     @Override
     public int getContentLayoutId() {
@@ -89,6 +105,7 @@ public class LiveDetailActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         ButterKnife.bind(this);
+        view_nodata = findViewById(R.id.nodata);
        /* mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -109,6 +126,19 @@ public class LiveDetailActivity extends LiveBaseActivity {
         mLivedetailRecy.setAdapter(mLivedeAdapter);
         initTvTime();
         getDayData();
+        mLivedetailSmart.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                toGetdata();
+            }
+        });
+        mLivedetailSmart.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                toGetdata();
+            }
+        });
 
     }
 
@@ -121,7 +151,10 @@ public class LiveDetailActivity extends LiveBaseActivity {
                 break;
             case R.id.livedetail_day:
                 is_day = true;
+                page = 1;
                 toGoAnima(mLivedetailDay);
+                mlive_strs.clear();
+                mLivedeAdapter.notifyDataSetChanged();
                 mLivedetailMonth.setTextColor(getResources().getColor(R.color.white));
                 mLivedetailOnetv.setVisibility(View.VISIBLE);
                 mLivedetailTvone.setVisibility(View.VISIBLE);
@@ -131,11 +164,15 @@ public class LiveDetailActivity extends LiveBaseActivity {
                 mLivedetailTvfour.setText("观看次数(次)");
                 SimpleDateFormat dateFormatd = new SimpleDateFormat("yyyy-MM-dd");
                 mLivedetailDate.setText(dateFormatd.format(new Date()));
-                getDayData();
+
+                toGetdata();
                 break;
             case R.id.livedetail_month:
                 is_day = false;
+                page = 1;
                 toGoAnima(mLivedetailMonth);
+                mlive_strs.clear();
+                mLivedeAdapter.notifyDataSetChanged();
                 mLivedetailDay.setTextColor(getResources().getColor(R.color.white));
                 mLivedetailOnetv.setVisibility(View.GONE);
                 mLivedetailTvone.setVisibility(View.GONE);
@@ -145,82 +182,160 @@ public class LiveDetailActivity extends LiveBaseActivity {
                 mLivedetailTvfour.setText("直播时长(H)");
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
                 mLivedetailDate.setText(dateFormat.format(new Date()));
-                getMonthData();
+                toGetdata();
                 break;
             case R.id.livedetail_date:
                 SimpleDateFormat simpleD = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                showDateDialog(mLivedetailDate, "2000-01-01 00:00:00",simpleD.format(new Date()),is_day);
+                showDateDialog(mLivedetailDate, "2000-01-01 00:00:00", simpleD.format(new Date()));
                 break;
             case R.id.livedetail_sttm:
-                showDateDialog(mLivedetailSttm, "2000-01-01 00:00:00", mLivedetailEdtm.getText().toString() + "-01 23:59:59",false);
+                showDateDialog(mLivedetailSttm, "2000-01-01 00:00:00", mLivedetailEdtm.getText().toString().substring(0, mLivedetailEdtm.getText().toString().length() - 1).replace("年", "-") + "-01" + " 23:59:59");
                 break;
             case R.id.livedetail_edtm:
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                showDateDialog(mLivedetailEdtm, "2000-01-01 00:00:00", simpleDateFormat.format(new Date()),false);
+                showDateDialog(mLivedetailEdtm, "2000-01-01 00:00:00", simpleDateFormat.format(new Date()));
                 break;
         }
     }
 
+    private void toGetdata() {
+        if (page == 1) {
+            view_nodata.setVisibility(View.GONE);
+        }
+        if (is_day) {
+            mLivedeAdapter.setIs_day(true);
+            getDayData();
+        } else {
+            mLivedeAdapter.setIs_day(false);
+            getMonthData();
+        }
+    }
+
+    /*日数据*/
     private void getDayData() {
-        mLivedetailOnetv.setText("111");
+        String st_tm = mLivedetailSttm.getText().toString();
+        String ed_tm = mLivedetailEdtm.getText().toString();
+        if (LiveDateUtil.getTimeCompareSize(st_tm, ed_tm, "yyyy年MM月") == 1) {
+            ToastShow("开始时间不能大于结束时间");
+            return;
+        }
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().queryLiveDayRt(token, page, page_size, DateUtil.getTimeStr(DateUtil.getTimeLong(st_tm, "yyyy年MM月"), "yyyy-MM") + "-01", DateUtil.getTimeStr(DateUtil.getTimeLong(ed_tm, "yyyy年MM月"), "yyyy-MM") + "-01"), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                mLivedetailSmart.finishRefresh();
+                mLivedetailSmart.finishLoadMore();
+                LiveMonBean bean = new Gson().fromJson(result.toString(), LiveMonBean.class);
+                if (bean.getRetCode() == 0) {
+                    if (page == 1) {
+                        mlive_strs.clear();
+                    }
+                    mlive_strs.addAll(bean.getRetData().getList());
+                    if(mlive_strs.size() ==0){
+                        view_nodata.setVisibility(View.VISIBLE);
+                    }
+                    mLivedeAdapter.notifyDataSetChanged();
+                    ++page;
+                } else {
+                    ToastShow(bean.getRetMsg());
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                mLivedetailSmart.finishRefresh();
+                mLivedetailSmart.finishLoadMore();
+            }
+        });
+
+      /*  mLivedetailOnetv.setText("111");
         mLivedetailTwotv.setText("222");
         mLivedetailThreetv.setText("333");
         mLivedetailFourtv.setText("444");
-        mLivedetailFivetv.setText("555");
-        mlive_strs.clear();
-        for (int i = 0; i < 5; i++) {
-            mlive_strs.add("");
-        }
-        mLivedeAdapter.setIs_day(true);
+        mLivedetailFivetv.setText("555");*/
 
     }
 
+    /*月数据*/
     private void getMonthData() {
+        String st_tm = mLivedetailSttm.getText().toString();
+        String ed_tm = mLivedetailEdtm.getText().toString();
+        if (LiveDateUtil.getTimeCompareSize(st_tm, ed_tm, "yyyy年MM月") == 1) {
+            ToastShow("开始时间不能大于结束时间");
+            return;
+        }
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().queryLiveMonRt(token, page, page_size, DateUtil.getTimeStr(DateUtil.getTimeLong(st_tm, "yyyy年MM月"), "yyyy-MM") + "-01", DateUtil.getTimeStr(DateUtil.getTimeLong(ed_tm, "yyyy年MM月"), "yyyy-MM") + "-01"), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                mLivedetailSmart.finishRefresh();
+                mLivedetailSmart.finishLoadMore();
+                LiveMonBean bean = new Gson().fromJson(result.toString(), LiveMonBean.class);
+                if (bean.getRetCode() == 0) {
+                    if (page == 1) {
+                        mlive_strs.clear();
+                    }
+                    mlive_strs.addAll(bean.getRetData().getList());
+                    if(mlive_strs.size() ==0){
+                        view_nodata.setVisibility(View.VISIBLE);
+                    }
+                    mLivedeAdapter.notifyDataSetChanged();
+                    ++page;
+                } else {
+                    ToastShow(bean.getRetMsg());
+                }
 
-        mLivedetailOnetv.setText("111");
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                mLivedetailSmart.finishRefresh();
+                mLivedetailSmart.finishLoadMore();
+            }
+        });
+        /*mLivedetailOnetv.setText("111");
         mLivedetailTwotv.setText("222");
         mLivedetailThreetv.setText("333");
         mLivedetailFourtv.setText("444");
-        mLivedetailFivetv.setText("555");
-        mlive_strs.clear();
-        for (int i = 0; i < 75; i++) {
-            mlive_strs.add("");
-        }
-        mLivedeAdapter.setIs_day(false);
+        mLivedetailFivetv.setText("555");*/
     }
 
 
     private void initTvTime() {
-        SimpleDateFormat dateFormat_st = new SimpleDateFormat("yyyy-MM");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat_st = new SimpleDateFormat("yyyy年MM月");
         mLivedetailEdtm.setText(dateFormat_st.format(new Date()));
         mLivedetailSttm.setText(dateFormat_st.format(new Date()));
-        mLivedetailDate.setText(dateFormat.format(new Date()));
+        mLivedetailDate.setText(dateFormat_st.format(new Date()));
     }
 
 
     /*
      * 日期选择
-     *
      * @param mtv      需要进行日期设置的TextView
      * @param begin_tm 日期选择的开始日期
      * @param ed_tm    日期选择的结束日期
      */
-    private void showDateDialog(final TextView mtv, String begin_tm, String ed_tm,boolean showDay) {
+    private void showDateDialog(final TextView mtv, String begin_tm, String ed_tm) {
         SimpleDateFormat sdf_no = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
         String now_date = sdf_no.format(new Date());
         customDatePickerSt = new CustomDatePicker(this, new CustomDatePicker.Callback() {
             @Override
             public void onTimeSelected(long timestamp) {
-                mtv.setText(DateFormatUtils.long2StrDay(timestamp, false,showDay));
+                mtv.setText(DateFormatUtils.long2WithStrDay(timestamp, false, false));
+                page = 1;
+                toGetdata();
             }
         }, begin_tm, ed_tm);
-        customDatePickerSt.setCanShowPreciseTime(false); // 是否显示时和分
-        customDatePickerSt.setCanShowPreciseDay(showDay); // 是否显示天
-        customDatePickerSt.setScrollLoop(true); // 允许循环滚动
+        customDatePickerSt.setCanShowPreciseTime(false);  // 是否显示时和分
+        customDatePickerSt.setCanShowPreciseDay(false); // 是否显示天
+        customDatePickerSt.setScrollLoop(true);     // 允许循环滚动
         customDatePickerSt.setCanShowAnim(true);//开启滚动动画
-        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : (showDay?mtv.getText().toString():mtv.getText().toString()+"-01"));
+        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : mtv.getText().toString().substring(0, mtv.getText().toString().length() - 1).replace("年", "-") + "-01");
     }
+
 
     private void toGoAnima(TextView textView) {
         textView.setTextColor(getResources().getColor(R.color.login_txt));

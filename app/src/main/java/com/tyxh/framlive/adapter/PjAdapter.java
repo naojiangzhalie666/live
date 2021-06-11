@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.bean.SjBean;
 import com.tyxh.framlive.utils.Common.util.DateUtils;
+import com.tyxh.framlive.utils.LiveDateUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -51,31 +52,45 @@ public class PjAdapter extends RecyclerView.Adapter<PjAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
         SjBean.RetDataBean.ListBean bean = mLists.get(position);
-        vh.mItemSjTitle.setText(bean.getTitle());
+//        vh.mItemSjTitle.setText(bean.getTitle());
+        int type = bean.getType();//连线类型[1:视频；2:语音]
+//        vh.mItemSjTitle.setText(bean.getTitle());
+        vh.mItemSjTitle.setText(type==1?"视频连线":"语音连线");
+        String time = LiveDateUtil.formatSeconds(DateUtils.calculateDifference
+                ( DateUtils.parseDate(bean.getStartDate()), TextUtils.isEmpty(bean.getEndDate())?new Date():DateUtils.parseDate(bean.getEndDate()), DateUtils.Second));
+        vh.mItemSjZsnum.setText("咨询时长：" +time);
 
-        long l = DateUtils.calculateDifference( DateUtils.parseDate(bean.getStartDate()), TextUtils.isEmpty(bean.getEndDate())?new Date(): DateUtils.parseDate(bean.getEndDate()), DateUtils.Minute);
-        vh.mItemSjZsnum.setText("疏解时长：" +l+"分钟");
         vh.mItemSjCreattime.setText("创建时间：" +bean.getCreateDate());
         vh.mItemSjCode.setText("订单编号：" + bean.getUuId());
         RoundedCorners roundedCorners = new RoundedCorners(16);
         Glide.with(mContext).load(R.drawable.live_defaultimg).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners)).error(R.drawable.live_defaultimg)
                 .placeholder(R.drawable.live_defaultimg).into(vh.mItemSjHead);
-        if(bean.getProHistory()!=null) {
-            vh.mItemSjZuan.setText("-" + bean.getProHistory().getBusinessDiaNum());
-            vh.mItemSjZuan.setVisibility(View.VISIBLE);
-        }else{
-            vh.mItemSjZuan.setVisibility(View.GONE);
-        }
 
         vh.mItemSjState.setText("待评价");
         vh.mItemSjState.setTextColor(mContext.getResources().getColor(R.color.order_ye));
         vh.mItemSjState.setBackgroundResource(R.drawable.bg_solder_ye);
         vh.mItemSjStart.setVisibility(View.GONE);
-        if (position % 2 == 0) {
-            vh.mItemSjBtll.setVisibility(View.VISIBLE);
-            vh.mItemSjLeftm.setText("100分钟");
-        } else {
-            vh.mItemSjBtll.setVisibility(View.INVISIBLE);
+
+        vh.mItemSjBtll.setVisibility(View.GONE);
+        vh.mItemSjZuan.setVisibility(View.INVISIBLE);
+        vh.mItemSjLefKa.setVisibility(View.INVISIBLE);
+        if (bean.getProHistory() != null) {
+            SjBean.RetDataBean.ListBean.ProHistoryBean proHistory = bean.getProHistory();
+            int proType = proHistory.getProType();
+            switch (proType) {
+                case 2://卡
+                    vh.mItemSjLefKa.setVisibility(View.VISIBLE);
+                    vh.mItemSjLefKa.setText("-"+proHistory.getProName());
+                    break;
+                case 3://服务包
+                    vh.mItemSjBtll.setVisibility(View.VISIBLE);
+                    vh.mItemSjLeftm.setText(proHistory.getDurationConsume()+"");
+                    break;
+                case 4://钻石
+                    vh.mItemSjZuan.setText("-" + bean.getProHistory().getDiaNum()+"钻石");
+                    vh.mItemSjZuan.setVisibility(View.VISIBLE);
+                    break;
+            }
         }
 
         vh.mItemSjTitle.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +165,8 @@ public class PjAdapter extends RecyclerView.Adapter<PjAdapter.ViewHolder> {
         RatingBar mItemSjStart;
         @BindView(R.id.item_sj_leftm)
         TextView mItemSjLeftm;
+        @BindView(R.id.item_sj_ka)
+        TextView mItemSjLefKa;
         @BindView(R.id.item_sj_btll)
         LinearLayout mItemSjBtll;
 

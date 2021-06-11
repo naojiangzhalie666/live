@@ -11,12 +11,26 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.animators.AnimationType;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.listener.OnResultCallbackListener;
+import com.luck.picture.lib.tools.SdkVersionUtils;
+import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.GridImageAdapter;
+import com.tyxh.framlive.base.ApiService;
 import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.bean.AgeBean;
 import com.tyxh.framlive.bean.BaseBean;
+import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.InterestBean;
 import com.tyxh.framlive.bean.NickBean;
 import com.tyxh.framlive.bean.UploadBean;
@@ -29,15 +43,8 @@ import com.tyxh.framlive.utils.WheelPicker.picker.OptionPicker;
 import com.tyxh.framlive.utils.WheelPicker.widget.WheelView;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.google.gson.Gson;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.animators.AnimationType;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.listener.OnResultCallbackListener;
-import com.luck.picture.lib.tools.SdkVersionUtils;
-import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -57,6 +64,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+
+import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 
 public class EdtmsgActivity extends LiveBaseActivity {
 
@@ -237,7 +246,28 @@ public class EdtmsgActivity extends LiveBaseActivity {
 
     /*获取用户信息*/
     private void getUserInfo() {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+          DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getUserInfo(token), new CommonObserver<UserInfoBean>() {
+            @Override
+            public void onResult(UserInfoBean userInfoBean) {
+                if (userInfoBean.getRetCode() == 0) {
+                    LiveShareUtil.getInstance(EdtmsgActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                } else {
+                    ToastShow(userInfoBean.getRetMsg());
+                }
+            }
+
+            @Override
+            public void onError(HttpThrowable throwable) {
+                hideLoad();
+                if (throwable.errorType == HTTP_ERROR) {//重新登录
+                    EventBus.getDefault().post(new EventMessage(1005));
+                }
+                Log.e(TAG, "onError: " + throwable.toString());
+            }
+        }, TAG);
+
+
+       /* LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
@@ -253,7 +283,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
             }
-        });
+        });*/
     }
 
     /*接口访问换名字*/

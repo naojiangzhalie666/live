@@ -8,15 +8,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.superc.yyfflibrary.utils.DateUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tyxh.framlive.R;
-import com.tyxh.framlive.adapter.WalletAdapter;
+import com.tyxh.framlive.adapter.WalletDiamondAdapter;
 import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.bean.IncomeBean;
-import com.tyxh.framlive.bean.MxdetailBean;
 import com.tyxh.framlive.bean.UserInfoBean;
+import com.tyxh.framlive.bean.WalletDiaBean;
 import com.tyxh.framlive.pop_dig.BuyzActivity;
 import com.tyxh.framlive.pop_dig.ShimDialog;
+import com.tyxh.framlive.utils.LiveDateUtil;
 import com.tyxh.framlive.utils.datepicker.CustomDatePicker;
 import com.tyxh.framlive.utils.datepicker.DateFormatUtils;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
@@ -28,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -76,18 +83,23 @@ public class AdviceActivity extends LiveBaseActivity {
     TextView mNormalTxMoney;
     @BindView(R.id.advice_con_btzuanshi)
     ConstraintLayout mAdviceConBtzuanshi;
+    @BindView(R.id.smart)
+    SmartRefreshLayout mNormalSmart;
     @BindView(R.id.normal_recy)
     RecyclerView mNormalRecy;
+    private View view_nodata;
     private int line_startDis = 0;
     private CustomDatePicker customDatePickerSt;
     private ShimDialog mShimDialog;
-    private List<MxdetailBean.ListBean> mStringList;
-    private WalletAdapter mWalletAdapter;
+    private List<WalletDiaBean.RetDataBean.ListBean> mStringList;
+    private WalletDiamondAdapter mWalletAdapter;
 
     private int mIndex;
     private boolean is_firstin = true;
     private boolean show_zuanshi = true, show_money = true;
     private int mAuthStatus;
+    private int page = 1;
+    private int page_size = 10;
 
 
     @Override
@@ -99,6 +111,7 @@ public class AdviceActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         ButterKnife.bind(this);
+        view_nodata = findViewById(R.id.nodata);
         mShimDialog = new ShimDialog(this);
         initTvTime();
         mShimDialog.setOnShimClickListener(new ShimDialog.OnShimClickListener() {
@@ -108,19 +121,14 @@ public class AdviceActivity extends LiveBaseActivity {
             }
         });
         mStringList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            MxdetailBean.ListBean map = new MxdetailBean.ListBean();
-           map.setShow(false);
-            mStringList.add(map);
-        }
-        mWalletAdapter = new WalletAdapter(this, mStringList);
+        mWalletAdapter = new WalletDiamondAdapter(this, mStringList);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mNormalRecy.setLayoutManager(manager);
         mNormalRecy.setAdapter(mWalletAdapter);
-        mWalletAdapter.setOnItemClickListener(new WalletAdapter.OnItemClickListener() {
+        mWalletAdapter.setOnItemClickListener(new WalletDiamondAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(int pos) {
-                MxdetailBean.ListBean map = mStringList.get(pos);
+                WalletDiaBean.RetDataBean.ListBean map = mStringList.get(pos);
                 map.setShow(!map.isShow());
                 mWalletAdapter.notifyItemChanged(pos);
             }
@@ -139,6 +147,20 @@ public class AdviceActivity extends LiveBaseActivity {
         }
         setData();
         getMyIncome();
+        getMineDia();
+        mNormalSmart.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page=1;
+                getMineDia();
+            }
+        });
+        mNormalSmart.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                getMineDia();
+            }
+        });
     }
 
     @OnClick({R.id.back, R.id.advice_chongzhi, R.id.advice_eye, R.id.advice_zuans, R.id.advice_money, R.id.normal_sttm, R.id.normal_edtm, R.id.normal_shaixuan,
@@ -152,7 +174,7 @@ public class AdviceActivity extends LiveBaseActivity {
                 startActivity(new Intent(this, BuyzActivity.class));
                 break;
             case R.id.normal_sttm:
-                showDateDialog(mNormalSttm, "2000-01-01 00:00:00", mNormalEdtm.getText().toString() + " 23:59:59");
+                showDateDialog(mNormalSttm, "2000-01-01 00:00:00", mNormalEdtm.getText().toString().substring(0, mNormalEdtm.getText().toString().length() - 1).replace("年", "-") + "-01" + " 23:59:59");
                 break;
             case R.id.normal_edtm:
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -177,7 +199,7 @@ public class AdviceActivity extends LiveBaseActivity {
                         mAdviceNum.setText("*****");
                     } else {
                         mAdviceEye.setImageResource(R.drawable.blue_open_eye);
-                        mAdviceNum.setText(user_Info.getRetData().getBalance());
+                        mAdviceNum.setText(user_Info.getRetData().getCumulativeIncome());
                     }
                     show_money = !show_money;
                 }
@@ -208,7 +230,7 @@ public class AdviceActivity extends LiveBaseActivity {
                 mAdviceContent.setText("累计收入（元）");
                 if (show_money) {
                     mAdviceEye.setImageResource(R.drawable.blue_open_eye);
-                    mAdviceNum.setText(user_Info.getRetData().getBalance());
+                    mAdviceNum.setText(user_Info.getRetData().getCumulativeIncome());
                 } else {
                     mAdviceEye.setImageResource(R.drawable.blue_close_eye);
                     mAdviceNum.setText("*****");
@@ -223,7 +245,7 @@ public class AdviceActivity extends LiveBaseActivity {
             case R.id.advice_bt_txmoney:
 //                if(mAuthStatus==1){
 //                    statActivity(WithdrawalActivity.class);
-                    statActivity(WithdrDetailActivity.class);
+                statActivity(WithdrDetailActivity.class);
 //                }else{
 //                    mShimDialog.show();
 //                }
@@ -232,27 +254,28 @@ public class AdviceActivity extends LiveBaseActivity {
                 statActivity(ExchangeActivity.class);
                 break;
             case R.id.advice_bt_shiming:
-                if(mAuthStatus==1){
+                if (mAuthStatus == 1) {
                     ToastShow("已认证成功");
-                }else{
+                } else {
                     mShimDialog.show();
                 }
                 break;
         }
     }
+
     /*我的收益--现金标签*/
-    private void getMyIncome(){
+    private void getMyIncome() {
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyIncome(token), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                IncomeBean bean =new Gson().fromJson(result.toString(),IncomeBean.class);
-                if(bean.getRetCode() ==0){
+                IncomeBean bean = new Gson().fromJson(result.toString(), IncomeBean.class);
+                if (bean.getRetCode() == 0) {
                     IncomeBean.RetDataBean retData = bean.getRetData();
-                    mAdviceDaymoney.setText(retData.getCur_amount()+"");
-                    mAdviceYesmoney.setText(retData.getYes_amount()+"");
-                    mAdvicemonthmoney.setText(retData.getMon_amount()+"");
-                }else{
+                    mAdviceDaymoney.setText(retData.getCur_amount() + "");
+                    mAdviceYesmoney.setText(retData.getYes_amount() + "");
+                    mAdvicemonthmoney.setText(retData.getMon_amount() + "");
+                } else {
                     ToastShow(bean.getRetMsg());
                 }
 
@@ -266,15 +289,59 @@ public class AdviceActivity extends LiveBaseActivity {
 
     }
 
+    /*我的钻石--下方列表*/
+    private void getMineDia() {
+        String st_tm = mNormalSttm.getText().toString();
+        String ed_tm = mNormalEdtm.getText().toString();
+        if (LiveDateUtil.getTimeCompareSize(st_tm, ed_tm, "yyyy年MM月") == 1) {
+            ToastShow("开始时间不能大于结束时间");
+            return;
+        }
+        if (page == 1) {
+            view_nodata.setVisibility(View.GONE);
+        }
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyPurse(token,page,10, DateUtil.getTimeStr(DateUtil.getTimeLong(st_tm, "yyyy年MM月"), "yyyy-MM") + "-01", DateUtil.getTimeStr(DateUtil.getTimeLong(ed_tm, "yyyy年MM月"), "yyyy-MM") + "-01"), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                mNormalSmart.finishLoadMore();
+                mNormalSmart.finishRefresh();
+                WalletDiaBean bean = new Gson().fromJson(result.toString(), WalletDiaBean.class);
+                if (bean.getRetCode() == 0) {
+                    if (page == 1) {
+                        mStringList.clear();
+                    }
+                    mStringList.addAll(bean.getRetData().getList());
+                } else {
+                    ToastShow(bean.getRetMsg());
+                }
+                mWalletAdapter.notifyDataSetChanged();
+                if (mStringList.size() == 0) {
+                    view_nodata.setVisibility(View.VISIBLE);
+                }
+                ++page;
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                mNormalSmart.finishLoadMore();
+                mNormalSmart.finishRefresh();
+            }
+        });
+
+
+    }
+
     private void setData() {
         UserInfoBean.RetDataBean retData = user_Info.getRetData();
         mAuthStatus = retData.getAuthStatus();
         if (mIndex == 1) {
-            mAdviceNum.setText(retData.getBalance() + "");
-        }else{
+            mAdviceNum.setText(retData.getCumulativeIncome() + "");
+        } else {
             mAdviceNum.setText(retData.getDiamond() + "");
         }
-        mNormalTxMoney.setText("￥"+retData.getBalance());
+        mNormalTxMoney.setText("￥" + retData.getBalance());
     }
 
     @Override
@@ -283,10 +350,10 @@ public class AdviceActivity extends LiveBaseActivity {
         if (mIndex == 0 && show_zuanshi) {
             mAdviceNum.setText(user_Info.getRetData().getDiamond() + "");
         } else if (show_money) {
-            mAdviceNum.setText(user_Info.getRetData().getBalance());
+            mAdviceNum.setText(user_Info.getRetData().getCumulativeIncome());
         }
         mAuthStatus = user_Info.getRetData().getAuthStatus();
-        mNormalTxMoney.setText("￥"+user_Info.getRetData().getBalance());
+        mNormalTxMoney.setText("￥" + user_Info.getRetData().getBalance());
     }
 
     private void toGoAnima(TextView textView) {
@@ -301,15 +368,13 @@ public class AdviceActivity extends LiveBaseActivity {
     }
 
     private void initTvTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月");
         mNormalEdtm.setText(dateFormat.format(new Date()));
-        SimpleDateFormat dateFormat_st = new SimpleDateFormat("yyyy-MM");
-        mNormalSttm.setText(dateFormat_st.format(new Date()) + "-01");
+        mNormalSttm.setText(dateFormat.format(new Date()));
     }
 
     /*
      * 日期选择
-     *
      * @param mtv      需要进行日期设置的TextView
      * @param begin_tm 日期选择的开始日期
      * @param ed_tm    日期选择的结束日期
@@ -320,13 +385,16 @@ public class AdviceActivity extends LiveBaseActivity {
         customDatePickerSt = new CustomDatePicker(this, new CustomDatePicker.Callback() {
             @Override
             public void onTimeSelected(long timestamp) {
-                mtv.setText(DateFormatUtils.long2Str(timestamp, false));
+                mtv.setText(DateFormatUtils.long2WithStrDay(timestamp, false, false));
+                page = 1;
+                getMineDia();
             }
         }, begin_tm, ed_tm);
-        customDatePickerSt.setCanShowPreciseTime(false); // 是否显示时和分
-        customDatePickerSt.setScrollLoop(true); // 允许循环滚动
+        customDatePickerSt.setCanShowPreciseTime(false);  // 是否显示时和分
+        customDatePickerSt.setCanShowPreciseDay(false); // 是否显示天
+        customDatePickerSt.setScrollLoop(true);     // 允许循环滚动
         customDatePickerSt.setCanShowAnim(true);//开启滚动动画
-        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : mtv.getText().toString());
+        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : mtv.getText().toString().substring(0, mtv.getText().toString().length() - 1).replace("年", "-") + "-01");
     }
 
     @Override

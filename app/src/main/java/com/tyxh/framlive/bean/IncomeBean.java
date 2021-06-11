@@ -42,32 +42,32 @@ public class IncomeBean {
          * mon_amount : 0
          */
 
-        private int cur_amount;
-        private int yes_amount;
-        private int mon_amount;
+        private double curAmount;
+        private double yesAmount;
+        private double monAmount;
 
-        public int getCur_amount() {
-            return cur_amount;
+        public double getCur_amount() {
+            return curAmount;
         }
 
-        public void setCur_amount(int cur_amount) {
-            this.cur_amount = cur_amount;
+        public void setCur_amount(double cur_amount) {
+            this.curAmount = cur_amount;
         }
 
-        public int getYes_amount() {
-            return yes_amount;
+        public double getYes_amount() {
+            return yesAmount;
         }
 
-        public void setYes_amount(int yes_amount) {
-            this.yes_amount = yes_amount;
+        public void setYes_amount(double yes_amount) {
+            this.yesAmount = yes_amount;
         }
 
-        public int getMon_amount() {
-            return mon_amount;
+        public double getMon_amount() {
+            return monAmount;
         }
 
-        public void setMon_amount(int mon_amount) {
-            this.mon_amount = mon_amount;
+        public void setMon_amount(double mon_amount) {
+            this.monAmount = mon_amount;
         }
     }
 }

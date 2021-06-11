@@ -35,13 +35,13 @@
         <ImageView
             android:id="@+id/msg_tongxunlv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="@+id/iii"
             app:layout_constraintBottom_toBottomOf="@+id/iii"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_alignParentRight="true"
             android:paddingLeft="@dimen/dp_8"
-            android:paddingRight="@dimen/dp_12"
+            android:paddingRight="@dimen/dp_20"
             android:src="@drawable/back_ye" />
 
 

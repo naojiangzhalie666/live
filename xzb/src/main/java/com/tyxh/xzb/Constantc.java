@@ -3,11 +3,11 @@ package com.tyxh.xzb;
 public class Constantc {
 
     /*直播跟im聊天用相同的SDKAPPID  签名使用同一个*/
-    public static final boolean use_old = true;     //是否用原来可连麦的数据
+    public static final boolean use_old = false;     //是否用原来可连麦的数据
     //有连麦功能的 1400188366
     //现在用的 1400515936
-    public static final int SDKAPPID = use_old?1400188366:1400515936;//原  测试
-    public static final String SECRETKEY = "218c0d7f016d2b946d3cf64128e76a23f85a7b00129bbd623d4deab2ff0ed292";
+    public static final int SDKAPPID = use_old?1400188366:1400522274;//原  测试
+    public static final String SECRETKEY = "5f0edf244ede892ff43f701c0cfab05085ced7c5eef4265c54e3ed07558a87d8";
     public static final long test_sdkAppID = SDKAPPID;
 
     public static  String LX_HEAD = "";             //连线时观众的头像
@@ -19,8 +19,8 @@ public class Constantc {
     public static  String test_USERID = "9";
     public static  String test_userSig = "eJxtzEFPgzAYgOH-0rPRry2rYOLBleFGRuIEYvTSNLSQBgdNVzaH8b*LE29e3zd5PlGxza*ltUYJ6QV1Ct0hHADgMKSMoavfX1X90Hnhz1ZPn7KQkXkZpTtvaqPdNKI5HlQrLuZ-mDf7HwQzQhgEgBdz1x-WOC1k7S8WWUQEAP5E00wtW5V8s*Mm5TV3A9wWVobt7rVMzodTmyT*6Tiu5LAselgH2XOKbbNp3vjIXrDaEzi*jyMZ*tLl3UO8zmK-JLSPoyZPbx4ZPW2re-T1DSUFUPw_";
     public static  String USER_UserAvatar= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.zhimg.com%2F50%2Fv2-e73ebe5fb7fbae39d69ed94dcc82f145_hd.jpg&refer=http%3A%2F%2Fpic1.zhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620871698&t=d27011329fbd6b0ca7bc7aaf01f94f54";
-    public static  String USER_CoverPic= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fc%2F55bf0900d0a2e.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620871753&t=c6d2d2c02ecc25d3e0627178af755008";*/
-
+    public static  String USER_CoverPic= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fc%2F55bf0900d0a2e.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620871753&t=c6d2d2c02ecc25d3e0627178af755008";
+*/
     /*vivo x23*/
    /* public static  String USER_NAME = "vivo_x23";
     public static  String test_USERID = "7";//

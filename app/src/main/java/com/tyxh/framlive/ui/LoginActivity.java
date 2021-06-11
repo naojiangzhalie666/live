@@ -21,6 +21,9 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.rich.oauth.callback.PreLoginCallback;
 import com.rich.oauth.callback.TokenCallback;
 import com.rich.oauth.core.RichAuth;
@@ -28,13 +31,13 @@ import com.rich.oauth.core.UIConfigBuild;
 import com.rich.oauth.util.RichLogUtil;
 import com.superc.yyfflibrary.utils.ToastUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
-import com.tyxh.framlive.chat.tuikit.AVCallManager;
 import com.tencent.liteav.login.ProfileManager;
 import com.tencent.liteav.login.UserModel;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.base.ApiService;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.base.LiveBaseActivity;
@@ -42,6 +45,7 @@ import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.LoginBean;
 import com.tyxh.framlive.bean.SignBean;
 import com.tyxh.framlive.bean.UserInfoBean;
+import com.tyxh.framlive.chat.tuikit.AVCallManager;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
@@ -65,6 +69,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 import static com.tyxh.framlive.base.Constant.LIVE_UPDATE_CODE;
 import static com.tyxh.framlive.base.LiveApplication.api;
 
@@ -107,7 +112,8 @@ public class LoginActivity extends LiveBaseActivity {
                 theOldLoginMlvb();
                 return;
             }
-            getUserInfo();
+            mLoginImgv.setVisibility(View.VISIBLE);
+            getUserInfo(token);
         }
     }
 
@@ -139,17 +145,11 @@ public class LoginActivity extends LiveBaseActivity {
                 }
                 break;
             case R.id.ll_zi:
-                   if (Constantc.use_old) {
-                    LiveShareUtil.getInstance(LoginActivity.this).putPower(1);//用户类型
-                    theOldLoginMlvb();
-                    return;
-                }
-                if (mLoginImgv.getVisibility() == View.VISIBLE) {
-                    getUserInfo();//暂时使用缓存
-                    LiveShareUtil.getInstance(LoginActivity.this).putPower(1);//用户类型
-                } else {
-                    ToastShow("请阅读并勾选协议");
-                }
+//                if (mLoginImgv.getVisibility() == View.VISIBLE) {
+                    startActivity(new Intent(this,ChildLoginActivity.class));
+//                } else {
+//                    ToastShow("请阅读并勾选协议");
+//                }
                 break;
             case R.id.login_rela://协议
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
@@ -225,7 +225,7 @@ public class LoginActivity extends LiveBaseActivity {
                 if (loginBean.getRetCode() == 0) {
                     Constant.TOKEN = "bearer " + loginBean.getRetData().getToken();
                     LiveShareUtil.getInstance(LoginActivity.this).putToken("bearer " + loginBean.getRetData().getToken());
-                    getUserInfo();
+                    getUserInfo("bearer " + loginBean.getRetData().getToken());
                 } else {
                     ToastShow(loginBean.getRetMsg());
                     hideLoad();
@@ -240,9 +240,64 @@ public class LoginActivity extends LiveBaseActivity {
     }
 
     /*获取用户信息*/
-    private void getUserInfo() {
+    private void getUserInfo(String tk) {
         showLoad();
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+
+        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getUserInfo(tk), new CommonObserver<UserInfoBean>() {
+            @Override
+            public void onResult(UserInfoBean userInfoBean) {
+                if (userInfoBean.getRetCode() == 0) {
+                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERID, userInfoBean.getRetData().getId());
+                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERNAME, userInfoBean.getRetData().getNickname());
+                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERHEAD, userInfoBean.getRetData().getIco());
+                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERCOVER, userInfoBean.getRetData().getIco());
+                    LiveShareUtil.getInstance(LoginActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                    LiveShareUtil.getInstance(LoginActivity.this).putPower(userInfoBean.getRetData().getType());//用户类型
+//                    LiveShareUtil.getInstance(LoginActivity.this).putPower(1);//用户类型
+                    Log.e(TAG, "onSuccessListener: " + userInfoBean.getRetData().getId());
+                    String interest = userInfoBean.getRetData().getInterest();
+                    String mobile = userInfoBean.getRetData().getMobile();
+                    if (TextUtils.isEmpty(interest)) {
+                        isNeedUpmsg = true;
+                    } else {
+                        isNeedUpmsg = false;
+                    }
+                    int type = userInfoBean.getRetData().getType();
+                    if (TextUtils.isEmpty(mobile)) {
+                        if(type!=4){
+                            isNeedUpMobile = true;
+                        }
+                    } else {
+                        isNeedUpMobile = false;
+                    }
+                    if (isNeedUpMobile) {
+                        Intent intent = new Intent(LoginActivity.this, BindPhoneActivity.class);
+                        intent.putExtra("other", 1);
+                        intent.putExtra("needUp", isNeedUpmsg);
+                        startActivity(intent);
+                    } else if (isNeedUpmsg) {
+                        statActivity(MsgInputActivity.class);
+                    }
+                    thisLogin(userInfoBean.getRetData().getId(), userInfoBean.getRetData());
+                } else {
+                    ToastShow(userInfoBean.getRetMsg());
+                    hideLoad();
+                }
+            }
+
+            @Override
+            public void onError(HttpThrowable throwable) {
+                hideLoad();
+                if (throwable.errorType == HTTP_ERROR) {//重新登录
+                    EventBus.getDefault().post(new EventMessage(1005));
+                }
+                Log.e(TAG, "onError: " + throwable.toString());
+            }
+        }, TAG);
+
+
+
+        /*LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
@@ -289,7 +344,7 @@ public class LoginActivity extends LiveBaseActivity {
                 super.onErrorLIstener(error);
                 hideLoad();
             }
-        });
+        });*/
     }
 
     /*获取直播的sign*/
@@ -581,10 +636,16 @@ public class LoginActivity extends LiveBaseActivity {
     }
 
     private void loginWx() {
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "live_login_request_please";
-        api.sendReq(req);
+        //先判断用户手机是否安装了微信客户端
+        if (!api.isWXAppInstalled()) {
+            Toast.makeText(LoginActivity.this, "您的设备未安装微信客户端", Toast.LENGTH_SHORT).show();
+        } else {
+            SendAuth.Req req = new SendAuth.Req();
+            req.scope = "snsapi_userinfo";
+            req.state = "live_login_request_please";
+            api.sendReq(req);
+        }
+
     }
 
     private void getPhoneNum() {

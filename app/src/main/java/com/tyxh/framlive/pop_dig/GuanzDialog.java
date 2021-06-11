@@ -42,7 +42,8 @@ public class GuanzDialog extends Dialog {
     @BindView(R.id.dig_gz_lxtime)
     TextView mDigGzLxtime;
     @BindView(R.id.dig_gz_old)
-    TextView mDigGzOld;
+    TextView mDigGzOld; @BindView(R.id.dig_gz_jy)
+    TextView mDigGzJinYan;
     @BindView(R.id.dig_gz_zctime)
     TextView mDigGzZctime;
     @BindView(R.id.dig_gz_favour)
@@ -53,12 +54,20 @@ public class GuanzDialog extends Dialog {
     private OnDigClickListener mOnDigClickListener;
     private Context mContext;
     private String mToken;
+    private boolean mIs_jy;
 
-    public GuanzDialog(@NonNull Context context, TCChatEntity tcChatEntity,String token) {
+    public GuanzDialog(@NonNull Context context, TCChatEntity tcChatEntity,String token,boolean is_jy) {
         super(context);
         mContext = context;
         mEntity = tcChatEntity;
         mToken =token;
+        mIs_jy = is_jy;
+    }
+
+    public void setIs_jy(boolean is_jy) {
+        mIs_jy = is_jy;
+        if(mDigGzJinYan!=null)
+        mDigGzJinYan.setText(mIs_jy?"取消禁言":"禁言");
     }
 
     @Override
@@ -71,6 +80,7 @@ public class GuanzDialog extends Dialog {
         getWindow().setBackgroundDrawableResource(R.color.transparent);
         setCanceledOnTouchOutside(true);
         mDigGzName.setText(mEntity.getSenderName());
+        mDigGzJinYan.setText(mIs_jy?"取消禁言":"禁言");
         getDetail();
     }
 
@@ -134,8 +144,8 @@ public class GuanzDialog extends Dialog {
             mDigGzSex.setImageResource(user.getGender()==1?R.drawable.chat_dig_man:R.drawable.chat_dig_woman);
             mDigGzId.setText(mEntity.getUserid());
             mDigGzOld.setText(user.getAges());
-            mDigGzLxtime.setText("连线时长");
-            mDigGzZctime.setText("注册时长");
+            mDigGzLxtime.setText(user.getConnectionIncomeValue());
+            mDigGzZctime.setText(user.getRegDays());
             String interests = user.getInterests();
             if(interests.contains(",")){
                 interests = interests.replaceAll(","," ");

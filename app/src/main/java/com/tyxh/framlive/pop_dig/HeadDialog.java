@@ -67,19 +67,21 @@ public class HeadDialog extends Dialog {
         mDigTalkBezhu.setText("");//备注
         mDigTalkId.setText(String.valueOf(mUserBean.getId()));
         mDigTalkOld.setText(mUserBean.getAges());
-        mDigTalkTime.setText("连线时长。");
-        mDigTalkDay.setText("注册时间。");
+        mDigTalkTime.setText(mUserBean.getConnectionIncomeValue());
+        mDigTalkDay.setText(mUserBean.getRegDays());
         int type = mUserBean.getType();
         if(type==2){
             List<UserDetailBean.RetDataBean.CounselorBeansBean> counselorBeans = user_data.getCounselorBeans();
             if (counselorBeans != null && counselorBeans.size() > 0) {
                 UserDetailBean.RetDataBean.CounselorBeansBean bb = counselorBeans.get(0);
                 Glide.with(mContext).load(bb.getCouHeadImg()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mDigTalkHead);
+                mDigTalkName.setText(bb.getCouName());
             }
         }else if(type>2){
             UserDetailBean.RetDataBean.CouMechanismBean couMechanism = user_data.getCouMechanism();
             if(couMechanism!=null){
                 Glide.with(mContext).load(couMechanism.getMeLogo()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mDigTalkHead);
+                mDigTalkName.setText(couMechanism.getMeName());
             }
         }
 

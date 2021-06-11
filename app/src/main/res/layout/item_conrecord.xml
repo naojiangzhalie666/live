@@ -49,7 +49,7 @@
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/item_wallet_conorder"
             app:layout_constraintTop_toBottomOf="@+id/item_wallet_conorder"
-            tools:text="商品名：直播疏解" />
+            tools:text="商品名：直播咨询" />
 
         <TextView
             android:id="@+id/item_wallet_bz"

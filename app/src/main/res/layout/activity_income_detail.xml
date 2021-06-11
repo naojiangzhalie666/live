@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingTop="@dimen/title_top"
         android:paddingBottom="@dimen/dp_5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/title"
             android:layout_alignBottom="@+id/title"
+            android:paddingTop="@dimen/title_top"
+            android:paddingRight="@dimen/dp_20"
             android:paddingLeft="@dimen/dp_12"
             app:srcCompat="@drawable/back" />
 
@@ -35,6 +36,7 @@
             android:layout_centerHorizontal="true"
             android:text="收入明细"
             android:textColor="@color/black"
+            android:paddingTop="@dimen/title_top"
             android:textSize="@dimen/titile_size" />
     </RelativeLayout>
 
@@ -58,7 +60,7 @@
             android:background="@drawable/bg_circle_gray"
             android:drawableLeft="@drawable/detail_search"
             android:drawablePadding="@dimen/dp_5"
-            android:hint="搜索订单编号/下单人/用户ID"
+            android:hint="搜索订单编号"
             android:paddingLeft="@dimen/dp_10"
             android:paddingTop="@dimen/dp_6"
             android:paddingRight="@dimen/dp_4"
@@ -80,8 +82,8 @@
             android:paddingRight="@dimen/dp_14"
             android:paddingBottom="@dimen/dp_4"
             android:text="搜索"
-            android:textSize="13sp"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="13sp" />
 
     </LinearLayout>
 
@@ -151,11 +153,12 @@
             android:drawablePadding="@dimen/dp_5"
             android:text="筛选"
             android:textColor="@color/black_oneeight"
+            android:visibility="gone"
             app:layout_constraintBaseline_toBaselineOf="@+id/normal_sttm"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/normal_recy"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/income_detail_smart"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
@@ -163,13 +166,28 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/normal_sttm" />
+            app:layout_constraintTop_toBottomOf="@+id/normal_sttm">
+
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/normal_recy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.scwang.smart.refresh.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/nodata"
         layout="@layout/a_nodata"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

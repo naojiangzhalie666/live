@@ -151,7 +151,7 @@ public class ChathelfFragment extends BaseFragment {
         mPower = LiveShareUtil.getInstance(getActivity()).getPower();
         if (mPower == Constant.POWER_NORMAL) {//普通
             mChatLayout.getInputLayout().disableServiceAction(false);//展示服务项目
-            mChatLayout.getInputLayout().disableSjbgAction(true);//隐藏疏解报告
+            mChatLayout.getInputLayout().disableSjbgAction(true);//隐藏咨询报告
             // 普通用户的话进行提醒
             MessageInfo msg = buildTextMessage("私聊1钻石/每条");
             mChatLayout.getChatManager().getCurrentProvider().getDataSource().add(msg);

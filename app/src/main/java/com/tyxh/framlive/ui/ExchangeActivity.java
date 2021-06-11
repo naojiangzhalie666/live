@@ -5,10 +5,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
+import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.ExchangeAdapter;
 import com.tyxh.framlive.base.ApiService;
-import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.bean.AssetBean;
 import com.tyxh.framlive.bean.BaseBean;
@@ -19,11 +23,6 @@ import com.tyxh.framlive.pop_dig.RemindDialog;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.google.gson.Gson;
-import com.ljy.devring.DevRing;
-import com.ljy.devring.http.support.observer.CommonObserver;
-import com.ljy.devring.http.support.throwable.HttpThrowable;
-import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -196,7 +195,24 @@ public class ExchangeActivity extends LiveBaseActivity {
     }
     /*获取用户信息*/
     private void getUserInfo() {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getUserInfo(token), new CommonObserver<UserInfoBean>() {
+            @Override
+            public void onResult(UserInfoBean userInfoBean) {
+                if (userInfoBean.getRetCode() == 0) {
+                    LiveShareUtil.getInstance(ExchangeActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                }
+            }
+
+            @Override
+            public void onError(HttpThrowable throwable) {
+                hideLoad();
+                if (throwable.errorType == HTTP_ERROR) {//重新登录
+                    EventBus.getDefault().post(new EventMessage(1005));
+                }
+                Log.e(TAG, "onError: " + throwable.toString());
+            }
+        }, TAG);
+      /*  LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
@@ -211,7 +227,7 @@ public class ExchangeActivity extends LiveBaseActivity {
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
             }
-        });
+        });*/
     }
 
 }

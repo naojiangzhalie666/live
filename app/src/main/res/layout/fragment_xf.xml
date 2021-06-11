@@ -44,7 +44,7 @@
         android:drawableTop="@drawable/mine_shujie"
         android:drawablePadding="@dimen/dp_4"
         android:gravity="center"
-        android:text="疏解记录"
+        android:text="咨询记录"
         android:textColor="@color/sixsixsix"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/xf_cz"

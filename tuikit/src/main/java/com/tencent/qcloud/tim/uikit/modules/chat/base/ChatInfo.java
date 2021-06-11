@@ -15,6 +15,8 @@ public class ChatInfo implements Serializable {
     private int type = V2TIMConversation.V2TIM_C2C;
     private String id;
     private boolean isTopChat;
+    private boolean isLm;
+    private int lm_type;
 
     private static List<V2TIMGroupAtInfo> atInfoList;
 
@@ -100,5 +102,21 @@ public class ChatInfo implements Serializable {
 
     public void setAtInfoList(List<V2TIMGroupAtInfo> atInfoList) {
         this.atInfoList = atInfoList;
+    }
+
+    public boolean isLm() {
+        return isLm;
+    }
+
+    public void setLm(boolean lm) {
+        isLm = lm;
+    }
+
+    public int getLm_type() {
+        return lm_type;
+    }
+
+    public void setLm_type(int lm_type) {
+        this.lm_type = lm_type;
     }
 }

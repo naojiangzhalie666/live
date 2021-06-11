@@ -39,6 +39,9 @@
             android:id="@+id/chat_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dp_20"
+            android:paddingBottom="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_20"
             android:paddingLeft="@dimen/dp_10"
             app:layout_constraintBottom_toBottomOf="@+id/chat_name"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,12 +88,12 @@
                 android:id="@+id/chat_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="@dimen/dp_12"
                 tools:text="ID:32364"
                 android:drawableRight="@drawable/talk_homenext"
                 android:drawablePadding="@dimen/dp_5"
                 android:textColor="@color/home_txt"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/chat_head"
                 app:layout_constraintTop_toTopOf="@+id/chat_head" />
 
@@ -108,13 +111,15 @@
                 android:id="@+id/chat_recy"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/chat_head"
-                app:layout_constraintTop_toBottomOf="@+id/chat_tvcontent" />
+                app:layout_constraintTop_toBottomOf="@+id/chat_tvcontent"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_talk" />
 
             <TextView
                 android:id="@+id/chat_state"

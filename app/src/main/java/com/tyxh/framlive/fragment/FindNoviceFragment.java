@@ -185,12 +185,16 @@ public class FindNoviceFragment extends Fragment {
                 mFragNoviceDayrenwu.setBackgroundResource(R.drawable.bg_center);
                 mFragNoviceDayrenwu.setTextSize(12);
                 mFragNoviceNote.setVisibility(View.VISIBLE);
+                mFragNoviceNote.setText("每日凌晨00：00重置");
+                mFragNoviceNote.setTextColor(getResources().getColor(R.color.nineninenine));
                 state = 1;
                 break;
             case R.id.frag_novice_dayshouyi:
                 mFragNoviceDayshouyi.setBackgroundResource(R.drawable.bg_center);
                 mFragNoviceDayshouyi.setTextSize(12);
                 mFragNoviceNote.setVisibility(View.VISIBLE);
+                mFragNoviceNote.setText("每日凌晨00：00重置");
+                mFragNoviceNote.setTextColor(getResources().getColor(R.color.nineninenine));
                 state = 2;
                 break;
             case R.id.frag_novice_monthshouyi:
@@ -199,6 +203,7 @@ public class FindNoviceFragment extends Fragment {
                 mFragNoviceNote.setVisibility(View.VISIBLE);
                 mFragNoviceImgvNote.setVisibility(View.VISIBLE);
                 mFragNoviceNote.setText("每自然月1日00:00自动更新");
+                mFragNoviceNote.setTextColor(getResources().getColor(R.color.home_txt));
                 state = 3;
                 break;
         }

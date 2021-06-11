@@ -11,12 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_70"
         android:background="@drawable/msg_tpbg"
-        android:paddingTop="@dimen/title_top">
+>
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/title_top"
             android:layout_centerHorizontal="true"
             android:text="通知"
             android:textColor="@color/login_txt"
@@ -26,11 +27,12 @@
             android:id="@+id/notic_back"
             android:layout_width="wrap_content"
             android:layout_alignTop="@+id/title"
+            android:paddingTop="@dimen/title_top"
+            android:paddingRight="@dimen/dp_20"
             android:layout_alignBottom="@+id/title"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="false"
             android:paddingLeft="@dimen/dp_12"
-            android:paddingRight="@dimen/dp_8"
             android:src="@drawable/back_ye" />
 
 

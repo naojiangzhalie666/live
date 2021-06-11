@@ -18,6 +18,7 @@ import com.tyxh.framlive.bean.MineTCVideoInfo;
 import com.tyxh.xzb.utils.TCUtils;
 
 import java.util.List;
+import java.util.Random;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -64,32 +65,37 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             vh.mItemHomerecyName.setVisibility(View.VISIBLE);
             vh.mItemHomerecyTitle.setVisibility(View.VISIBLE);
             vh.mItemHomerecyLinear.setVisibility(View.VISIBLE);
-
+            vh.mItemHomerecyImgvState.setVisibility(View.GONE);
             vh.mItemHomeImgSun.setVisibility(View.VISIBLE);
             MineTCVideoInfo data = mLists.get(position);
             vh.mItemHomerecyBiao.setText(data.lable);
-            vh.mItemHomerecyRenqi.setText("" + data.viewerCount); //直播观看人数
+//            vh.mItemHomerecyRenqi.setText( data.viewerCount+"人气"); //直播观看人数
+            vh.mItemHomerecyRenqi.setText( new Random().nextInt(51) +"人气"); //直播观看人数
             vh.mItemHomerecyName.setText(TextUtils.isEmpty(data.nickname) ? TCUtils.getLimitString(data.userId, 10) : TCUtils.getLimitString(data.nickname, 10));   //主播昵称
-            vh.mItemHomerecyTitle.setText(TCUtils.getLimitString(data.title.trim(), 10));//直播标题
+            vh.mItemHomerecyName.setTextColor(mContext.getResources().getColor(R.color.login_txt));
+            vh.mItemHomerecyTitle.setTextColor(mContext.getResources().getColor(R.color.white));
+//            vh.mItemHomerecyTitle.setText(TCUtils.getLimitString(data.title.trim(), 10));//直播标题
+            vh.mItemHomerecyTitle.setText(data.title.trim());//直播标题
             int type = data.type;
+            vh.mItemHomeImgRenz.setVisibility(View.GONE);
             if(type>2){
                 vh.mItemHomeImgRenz.setVisibility(View.VISIBLE);
-            }else{
-                vh.mItemHomeImgRenz.setVisibility(View.GONE);
             }
-            //直播封面
-            String cover = data.frontCover;
-            RoundedCorners roundedCorners = new RoundedCorners(15);
-            Glide.with(mContext).load(cover).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners )).placeholder(R.drawable.home_grad).error(R.drawable.home_grad).into(vh.mItemHomerecyImgv);
+
             int push_size = data.push_size;
             if(push_size>1){
-                vh.mItemHomerecyImgv.setBackgroundResource(R.drawable.home_white);
+                Glide.with(mContext).load(R.drawable.home_white_grad).placeholder(R.drawable.home_white_grad).error(R.drawable.home_white_grad).into(vh.mItemHomerecyImgv);
                 vh.mItemHomerecyImgvState.setVisibility(View.VISIBLE);
                 vh.mItemHomerecyImgvState.setImageResource(R.drawable.home_media);
-                vh.mItemHomerecyName.setTextColor(mContext.getResources().getColor(R.color.black));
+                vh.mItemHomerecyName.setTextColor(mContext.getResources().getColor(R.color.home_txt));
+                vh.mItemHomerecyTitle.setTextColor(mContext.getResources().getColor(R.color.home_txt));
                 vh.mItemHomerecyLinear.setVisibility(View.GONE);
-                vh.mItemHomerecyTitle.setVisibility(View.GONE);
-                vh.mItemHomerecyBiao.setText("连线疏解中");
+                vh.mItemHomerecyBiao.setText("连线咨询中");
+            }else{
+                //直播封面
+                String cover = data.frontCover;
+                RoundedCorners roundedCorners = new RoundedCorners(15);
+                Glide.with(mContext).load(cover).apply(new RequestOptions().transform(new CenterCrop(),roundedCorners )).placeholder(R.drawable.home_grad).error(R.drawable.home_grad).into(vh.mItemHomerecyImgv);
             }
 
            /* switch (position) {
@@ -137,6 +143,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             vh.mItemHomerecyImgv.setBackground(null);
             vh.mItemHomeImgSun.setVisibility(View.GONE);
             vh.mItemHomeImgRenz.setVisibility(View.GONE);
+            vh.mItemHomerecyImgvState.setVisibility(View.GONE);
             vh.mItemHomerecyImgv.setImageResource(R.drawable.home_more);
             vh.mItemHomerecyBiao.setVisibility(View.GONE);
             vh.mItemHomerecyRenqi.setVisibility(View.GONE);

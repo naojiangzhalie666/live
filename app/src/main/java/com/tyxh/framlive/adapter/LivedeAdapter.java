@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.bean.LiveMonBean;
 
 import java.util.List;
 
@@ -16,12 +17,12 @@ import butterknife.ButterKnife;
 
 public class LivedeAdapter extends RecyclerView.Adapter<LivedeAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mLists;
+    private List<LiveMonBean.RetDataBean.ListBean> mLists;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
-    private boolean is_day;
+    private boolean is_day = true;
 
-    public LivedeAdapter(Context context, List<String> stringList) {
+    public LivedeAdapter(Context context, List<LiveMonBean.RetDataBean.ListBean> stringList) {
         mContext = context;
         mLists = stringList;
         mInflater = LayoutInflater.from(mContext);
@@ -45,13 +46,13 @@ public class LivedeAdapter extends RecyclerView.Adapter<LivedeAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
-        String bean = mLists.get(position);
+        LiveMonBean.RetDataBean.ListBean bean = mLists.get(position);
         vh.mItemLiveDays.setVisibility(is_day ? View.GONE : View.VISIBLE);
-        vh.mItemLiveDate.setText("2021.03");
-        vh.mItemLiveTime.setText("1"+position);
-        vh.mItemLiveGet.setText("10"+position);
-        vh.mItemLivePeople.setText("12"+position);
-        vh.mItemLiveDays.setText(""+position);
+        vh.mItemLiveDate.setText(bean.getCreateDate());
+        vh.mItemLiveTime.setText(bean.getLiveTime()+"");
+        vh.mItemLiveGet.setText(bean.getAmount()+"");
+        vh.mItemLivePeople.setText(bean.getCount()+"");
+        vh.mItemLiveDays.setText(bean.getDays()+"");
         vh.itemView.setBackgroundColor(mContext.getResources().getColor(position%2==0?R.color.white:R.color.fninfnie));
 
 

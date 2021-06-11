@@ -1,5 +1,10 @@
 package com.tyxh.framlive.bean;
 
+import android.text.TextUtils;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
 public class UserInfoBean {
 
     /**
@@ -115,10 +120,23 @@ public class UserInfoBean {
         private Object exp;
         private String initials;
         private String balance;
+        private String cumulativeIncome;//累计收入
         private Object parentAccount;
         private Object iosid;
         private String unionId;
         private int auditState;     //审核状态(0:未申请1:待审核;2:通过;3:驳回)--咨询师/咨询机构认证
+
+        public String getCumulativeIncome() {
+            if(!TextUtils.isEmpty(cumulativeIncome)){
+                DecimalFormat d_for =new DecimalFormat("0.###");
+                cumulativeIncome = d_for.format(new BigDecimal(cumulativeIncome));
+            }
+            return cumulativeIncome;
+        }
+
+        public void setCumulativeIncome(String cumulativeIncome) {
+            this.cumulativeIncome = cumulativeIncome;
+        }
 
         public String getAges() {
             return ages;

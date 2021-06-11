@@ -5,6 +5,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.superc.yyfflibrary.utils.DateUtil;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.WalletAdapter;
 import com.tyxh.framlive.base.LiveBaseActivity;
@@ -15,6 +21,8 @@ import com.tyxh.framlive.utils.WheelPicker.picker.OptionPicker;
 import com.tyxh.framlive.utils.WheelPicker.widget.WheelView;
 import com.tyxh.framlive.utils.datepicker.CustomDatePicker;
 import com.tyxh.framlive.utils.datepicker.DateFormatUtils;
+import com.tyxh.framlive.utils.httputil.HttpBackListener;
+import com.tyxh.framlive.utils.httputil.LiveHttp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -38,15 +47,18 @@ public class IncomeDetailActivity extends LiveBaseActivity {
     TextView mNormalEdtm;
     @BindView(R.id.search)
     TextView mNormalSearch;
+    @BindView(R.id.income_detail_smart)
+    SmartRefreshLayout mNormalSmart;
     @BindView(R.id.normal_recy)
     RecyclerView mNormalRecy;
     private View view_nodata;
     private CustomDatePicker customDatePickerSt;
-    private List<MxdetailBean.ListBean> mStringList;
+    private List<MxdetailBean.RetDataBean.ListBean> mStringList;
     private WalletAdapter mWalletAdapter;
     private OptionPicker mPicker;
     private int page = 1;
-    private int select_pos =1;
+    private int page_size = 10;
+    private int select_pos = 1;
 
 
     @Override
@@ -58,16 +70,11 @@ public class IncomeDetailActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
-        view_nodata =findViewById(R.id.nodata);
+        view_nodata = findViewById(R.id.nodata);
         mNormalSearch.requestFocus();
         initTvTime();
         initData();
         mStringList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            MxdetailBean.ListBean map = new MxdetailBean.ListBean();
-            map.setShow(false);
-            mStringList.add(map);
-        }
         mWalletAdapter = new WalletAdapter(this, mStringList);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mNormalRecy.setLayoutManager(manager);
@@ -75,11 +82,27 @@ public class IncomeDetailActivity extends LiveBaseActivity {
         mWalletAdapter.setOnItemClickListener(new WalletAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(int pos) {
-                MxdetailBean.ListBean map = mStringList.get(pos);
+                MxdetailBean.RetDataBean.ListBean map = mStringList.get(pos);
                 map.setShow(!map.isShow());
                 mWalletAdapter.notifyItemChanged(pos);
             }
         });
+        getData();
+        mNormalSmart.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page =1;
+                getData();
+            }
+        });
+        mNormalSmart.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                ++page;
+                getData();
+            }
+        });
+
 
     }
 
@@ -90,9 +113,16 @@ public class IncomeDetailActivity extends LiveBaseActivity {
                 finish();
                 break;
             case R.id.search:
+             /*   String search_content =mEditText.getText().toString();
+                if(TextUtils.isEmpty(search_content)){
+                    ToastShow("请输入搜索内容");
+                    return;
+                }*/
+                page =1;
+                getData();
                 break;
             case R.id.normal_sttm:
-                showDateDialog(mNormalSttm, "2000-01-01 00:00:00",mNormalEdtm.getText().toString().substring(0,mNormalEdtm.getText().toString().length()-1).replace("年","-")+"-01" + " 23:59:59");
+                showDateDialog(mNormalSttm, "2000-01-01 00:00:00", mNormalEdtm.getText().toString().substring(0, mNormalEdtm.getText().toString().length() - 1).replace("年", "-") + "-01" + " 23:59:59");
                 break;
             case R.id.normal_edtm:
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -105,7 +135,7 @@ public class IncomeDetailActivity extends LiveBaseActivity {
     }
 
     private void initData() {
-        mPicker = new OptionPicker(this, new String[]{"收入", "支出", "直播疏解","直播礼物","语音连线"});
+        mPicker = new OptionPicker(this, new String[]{"收入", "支出", "直播咨询", "直播礼物", "语音连线"});
         mPicker.setCanceledOnTouchOutside(false);
         mPicker.setDividerRatio(WheelView.DividerConfig.FILL);
 //        picker.setShadowColor(Color.RED, 40);
@@ -120,32 +150,50 @@ public class IncomeDetailActivity extends LiveBaseActivity {
             public void onOptionPicked(int index, String item) {
                 select_pos = index;
                 view_nodata.setVisibility(View.GONE);
-                page =1;
+                page = 1;
                 getData();
             }
         });
     }
 
-    private void getData(){
-        if(page ==1){
-            view_nodata.setVisibility(View.GONE);
-        }
+    private void getData() {
         String st_tm = mNormalSttm.getText().toString();
         String ed_tm = mNormalEdtm.getText().toString();
-        if(LiveDateUtil.getTimeCompareSize(st_tm,ed_tm,"yyyy年MM月")==1){
+        if (LiveDateUtil.getTimeCompareSize(st_tm, ed_tm, "yyyy年MM月") == 1) {
             ToastShow("开始时间不能大于结束时间");
             return;
         }
-      /*  Map<String,Object> map =new HashMap<>();
-        map.put("pageNum",page);
-        map.put("pageSize",page_size);
-        map.put("withStartDate",st_tm.substring(0,st_tm.length()-1).replace("年","-"));
-        map.put("withEndDate",ed_tm.substring(0,ed_tm.length()-1).replace("年","-"));
-        map.put("withStartDate","");
-        map.put("withEndDate","");
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), new Gson().toJson(map));
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyWithDraw(token, requestBody), new HttpBackListener() {*/
+        if (page == 1) {
+            view_nodata.setVisibility(View.GONE);
+        }
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getIncomePenses(token, page, page_size, DateUtil.getTimeStr(DateUtil.getTimeLong(st_tm, "yyyy年MM月"), "yyyy-MM") + "-01", DateUtil.getTimeStr(DateUtil.getTimeLong(ed_tm, "yyyy年MM月"), "yyyy-MM") + "-01", mEditText.getText().toString()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                mNormalSmart.finishRefresh();
+                mNormalSmart.finishLoadMore();
+                MxdetailBean bean = new Gson().fromJson(result.toString(), MxdetailBean.class);
+                if (bean.getRetCode() == 0) {
+                    if (page == 1) {
+                        mStringList.clear();
+                    }
+                    mStringList.addAll(bean.getRetData().getList());
+                } else {
+                    ToastShow(bean.getRetMsg());
+                }
+                mWalletAdapter.notifyDataSetChanged();
+                if (mStringList.size() == 0) {
+                    view_nodata.setVisibility(View.VISIBLE);
+                }
+            }
 
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                mNormalSmart.finishRefresh();
+                mNormalSmart.finishLoadMore();
+            }
+        });
     }
 
 
@@ -155,13 +203,6 @@ public class IncomeDetailActivity extends LiveBaseActivity {
         mNormalSttm.setText(dateFormat.format(new Date()));
     }
 
-    /*
-     * 日期选择
-     *
-     * @param mtv      需要进行日期设置的TextView
-     * @param begin_tm 日期选择的开始日期
-     * @param ed_tm    日期选择的结束日期
-     */
     /*
      * 日期选择
      * @param mtv      需要进行日期设置的TextView
@@ -174,8 +215,8 @@ public class IncomeDetailActivity extends LiveBaseActivity {
         customDatePickerSt = new CustomDatePicker(this, new CustomDatePicker.Callback() {
             @Override
             public void onTimeSelected(long timestamp) {
-                mtv.setText(DateFormatUtils.long2WithStrDay(timestamp, false,false));
-                page=1;
+                mtv.setText(DateFormatUtils.long2WithStrDay(timestamp, false, false));
+                page = 1;
                 getData();
             }
         }, begin_tm, ed_tm);
@@ -183,6 +224,6 @@ public class IncomeDetailActivity extends LiveBaseActivity {
         customDatePickerSt.setCanShowPreciseDay(false); // 是否显示天
         customDatePickerSt.setScrollLoop(true);     // 允许循环滚动
         customDatePickerSt.setCanShowAnim(true);//开启滚动动画
-        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : mtv.getText().toString().substring(0,mtv.getText().toString().length()-1).replace("年","-")+"-01");
+        customDatePickerSt.show(TextUtils.isEmpty(mtv.getText().toString()) ? now_date : mtv.getText().toString().substring(0, mtv.getText().toString().length() - 1).replace("年", "-") + "-01");
     }
 }

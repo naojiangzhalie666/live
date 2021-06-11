@@ -6,19 +6,23 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
-import com.tyxh.framlive.chat.tuikit.AVCallManager;
 import com.tencent.liteav.login.ProfileManager;
 import com.tencent.liteav.login.UserModel;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.base.ApiService;
 import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.bean.BaseBean;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.SignBean;
 import com.tyxh.framlive.bean.UserInfoBean;
+import com.tyxh.framlive.chat.tuikit.AVCallManager;
 import com.tyxh.framlive.fragment.NewFirstFragment;
 import com.tyxh.framlive.fragment.NewLastFragment;
 import com.tyxh.framlive.fragment.NewSecondFragment;
@@ -41,6 +45,7 @@ import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 import static com.tyxh.framlive.base.Constant.LIVE_UPDATE_CODE;
 
 public class MsgInputActivity extends LiveBaseActivity {
@@ -157,7 +162,31 @@ public class MsgInputActivity extends LiveBaseActivity {
     /*获取用户信息*/
     private void getUserInfo() {
         EventBus.getDefault().post(new EventMessage(LIVE_UPDATE_CODE));
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new CommonObserver<UserInfoBean>() {
+            @Override
+            public void onResult(UserInfoBean userInfoBean) {
+                if (userInfoBean.getRetCode() == 0) {
+                    LiveShareUtil.getInstance(MsgInputActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                }else{
+                    hideLoad();
+                    ToastShow(userInfoBean.getRetMsg());
+                }
+                thisLogin(userInfoBean.getRetData());
+            }
+
+            @Override
+            public void onError(HttpThrowable throwable) {
+                hideLoad();
+                if (throwable.errorType == HTTP_ERROR) {//重新登录
+                    EventBus.getDefault().post(new EventMessage(1005));
+                }
+                Log.e(TAG, "onError: " + throwable.toString());
+            }
+        }, TAG);
+
+
+
+       /* LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
@@ -176,7 +205,7 @@ public class MsgInputActivity extends LiveBaseActivity {
                 super.onErrorLIstener(error);
                 hideLoad();
             }
-        });
+        });*/
     }
 
     /*获取直播的sign*/

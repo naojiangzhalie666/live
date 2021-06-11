@@ -23,7 +23,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:paddingTop="@dimen/dp_8"
-            android:text="专业疏解师·在线直播中"
+            android:text="专业咨询师·在线直播中"
             android:textColor="#F7D4B6"
             android:textSize="16sp" />
 

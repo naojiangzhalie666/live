@@ -56,7 +56,8 @@ public class OnlineAdapter extends RecyclerView.Adapter<OnlineAdapter.ViewHolder
 //        Glide.with(mContext).load(bean.avatar).error(R.drawable.man_se).placeholder(R.drawable.man_se).into(vh.mItemOnlineHead);
         TCUtils.showPicWithUrl(mContext, vh.mItemOnlineHead, mUserAvatarList.get(position).avatar, com.tyxh.xzb.R.drawable.face);
         vh.mItemOnlineName.setText(bean.nickname);
-        vh.mItemOnlineState.setText(position % 2 == 0 ? "连线过" : "未连线");
+//        vh.mItemOnlineState.setText(position % 2 == 0 ? "连线过" : "未连线");
+        vh.mItemOnlineState.setText("未连线");
         vh.itemView.setBackgroundResource(R.color.white);
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_70"
         android:background="@drawable/msg_tpbg"
-        android:paddingTop="@dimen/title_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,6 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/title"
             android:layout_alignBottom="@+id/title"
+            android:paddingTop="@dimen/title_top"
+            android:paddingRight="@dimen/dp_20"
             android:paddingLeft="@dimen/dp_15"
             app:srcCompat="@drawable/back_ye" />
 
@@ -32,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/title_top"
             android:text="通讯录"
             android:textColor="@color/login_txt"
             android:textSize="@dimen/titile_size" />

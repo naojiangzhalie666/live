@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingTop="@dimen/dp_45"
         android:paddingBottom="@dimen/dp_5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/title"
+            android:paddingTop="@dimen/title_top"
+            android:paddingRight="@dimen/dp_20"
             android:layout_alignBottom="@+id/title"
             android:paddingLeft="@dimen/dp_12"
             app:srcCompat="@drawable/back" />
@@ -31,6 +32,7 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
+            android:paddingTop="@dimen/title_top"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="提现"

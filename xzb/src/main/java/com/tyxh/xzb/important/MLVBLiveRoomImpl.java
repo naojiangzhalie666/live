@@ -504,9 +504,9 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (view != null) {
-                            view.setVisibility(View.VISIBLE);
-                        }
+//                        if (view != null) {
+//                            view.setVisibility(View.VISIBLE);
+//                        }
                         String mixedPlayUrl = getMixedPlayUrlByRoomID(roomID);
                         if (mixedPlayUrl != null && mixedPlayUrl.length() > 0) {
                             int playType = getPlayType(mixedPlayUrl);

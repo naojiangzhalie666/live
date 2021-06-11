@@ -150,7 +150,7 @@ public class LevelBean {
             private Object emergencyContact;
             private Object fansNum;
             private Object inviteNum;
-            private double exp;
+            private String exp;
             private String initials;
             private int auditState;
             private Object bankCard;
@@ -435,11 +435,11 @@ public class LevelBean {
                 this.inviteNum = inviteNum;
             }
 
-            public double getExp() {
+            public String getExp() {
                 return exp;
             }
 
-            public void setExp(double exp) {
+            public void setExp(String exp) {
                 this.exp = exp;
             }
 
@@ -487,14 +487,14 @@ public class LevelBean {
              * releaseICO : http://172.16.66.225/files/mall/20210518/a977f42efdb34057b16102319df2de03.jpg
              * giftICO : null
              * rewardDiaICO : http://diamond.ico
-             * releaseName : 5分钟疏解卡
+             * releaseName : 5分钟咨询卡
              * giftName : 大拇哥
              * rewardDiaName : 钻石
              */
 
             private int id;
             private int level;
-            private double exp;
+            private String exp;
             private int rewardDiaNum;
             private int releaseId;
             private int rewardReleaseNum;
@@ -528,11 +528,11 @@ public class LevelBean {
                 this.level = level;
             }
 
-            public double getExp() {
+            public String getExp() {
                 return exp;
             }
 
-            public void setExp(double exp) {
+            public void setExp(String exp) {
                 this.exp = exp;
             }
 

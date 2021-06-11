@@ -214,7 +214,7 @@ public class ChatFragment extends BaseFragment {
         mPower = LiveShareUtil.getInstance(getActivity()).getPower();
         if (mPower == Constant.POWER_NORMAL) {//普通
             mChatLayout.getInputLayout().disableServiceAction(false);//展示服务项目
-            mChatLayout.getInputLayout().disableSjbgAction(true);//隐藏疏解报告
+            mChatLayout.getInputLayout().disableSjbgAction(true);//隐藏咨询报告
             // 普通用户的话进行提醒
             MessageInfo msg = buildTextMessage("私聊1钻石/每条");
             mChatLayout.getChatManager().getCurrentProvider().getDataSource().add(msg);
@@ -327,8 +327,36 @@ public class ChatFragment extends BaseFragment {
                 getActivity().finish();
             }
         });
+        String h_t = mtv_title.getText().toString();
+        if(TextUtils.isEmpty(h_t)){
+            getDetail(mChatInfo.getId());
+        }
         if (is_first) {
             getDetail(mChatInfo.getId());
+            boolean lm = mChatInfo.isLm();
+            if(lm){       //连线类型[1:视频；2:语音]
+                int lm_type = mChatInfo.getLm_type();
+                if(lm_type ==1){
+                    if(mPower == Constant.POWER_NORMAL) {//我是用户  肯定弹
+                        getUseData(false);
+                    }else if(mType>1){//我是咨询师  对方也是or机构   我也会弹
+                        getUseData(false);
+                    }else {//我是咨询师   对方是用户  那就不弹  对方弹
+                        toCallVideo(new LiveCotctBean.RetDataBean(),false);
+                    }
+                }else if(lm_type ==2){
+                    if(mPower == Constant.POWER_NORMAL) {//我是用户  肯定弹
+                        getUseData(true);
+                    }else if(mType>1){//我是咨询师  对方也是or机构   我也会弹
+                        getUseData(true);
+                    }else {//我是咨询师   对方是用户  那就不弹  对方弹
+                        toCallAudio(new LiveCotctBean.RetDataBean(),false);
+                    }
+                }
+
+
+            }
+
             is_first = false;
         }
      /*   mInputLayout = mChatLayout.getInputLayout();
@@ -398,7 +426,7 @@ public class ChatFragment extends BaseFragment {
         bundle.putSerializable("data",bean);
         bundle.putBoolean("need_sock",need_sock);
         // TODO: 2021/6/1 先进行消耗品选择  然后进入下方界面  进入倒计时等 操作
-        TRTCAudioCallActivity.startCallSomeone(getActivity().getApplicationContext(), contactList);
+        TRTCAudioCallActivity.startCallSomeone(getActivity().getApplicationContext(), contactList,bundle);
 
     }
 
@@ -613,6 +641,7 @@ public class ChatFragment extends BaseFragment {
         UserDetailBean.RetDataBean.UserBean user = data.getUser();
         if (user != null) {
             mType = user.getType();
+            mtv_title.setText(user.getNickname());
             Glide.with(getActivity()).load(user.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mimgv_head);
             String interest = "";
             if (mPower == Constant.POWER_NORMAL) {//擅长方向---机构没有添加擅长方向的位置
@@ -620,10 +649,12 @@ public class ChatFragment extends BaseFragment {
                 if (counselorBeans != null && counselorBeans.size() > 0) {
                     UserDetailBean.RetDataBean.CounselorBeansBean counselorBeansBean = counselorBeans.get(0);
                     interest = counselorBeansBean.getInterests();
+                    mtv_title.setText(counselorBeansBean.getCouName());
                 }
             } else {//关注方向
                 interest = user.getInterests();
             }
+            mStringList.clear();
             if (!TextUtils.isEmpty(interest)) {
                 if (interest.endsWith(",")) {
                     interest = interest.substring(0, interest.length() - 1);
@@ -646,11 +677,13 @@ public class ChatFragment extends BaseFragment {
                 if (counselorBeans != null && counselorBeans.size() > 0) {
                     UserDetailBean.RetDataBean.CounselorBeansBean bb = counselorBeans.get(0);
                     Glide.with(getActivity()).load(bb.getCouHeadImg()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mimgv_head);
+                    mtv_title.setText(bb.getCouName());
                 }
             }else if(mType>2){//咨询机构、子机构
                 UserDetailBean.RetDataBean.CouMechanismBean couMechanism = data.getCouMechanism();
                 if(couMechanism!=null){
                     Glide.with(getActivity()).load(couMechanism.getMeLogo()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mimgv_head);
+                    mtv_title.setText(couMechanism.getMeName());
                 }
             }
         }

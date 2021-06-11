@@ -12,11 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dp_16"
-        android:paddingTop="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_43"
+        android:paddingRight="@dimen/dp_20"
         android:paddingBottom="@dimen/dp_8"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView11"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back_ye" />
 
     <TextView

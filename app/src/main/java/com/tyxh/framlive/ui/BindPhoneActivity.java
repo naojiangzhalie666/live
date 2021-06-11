@@ -2,6 +2,7 @@ package com.tyxh.framlive.ui;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,12 +11,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tencent.liteav.login.ProfileManager;
 import com.tencent.liteav.login.UserModel;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.base.ApiService;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.base.LiveBaseActivity;
@@ -41,6 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 import static com.tyxh.framlive.base.Constant.LIVE_UPDATE_CODE;
 
 public class BindPhoneActivity extends LiveBaseActivity {
@@ -198,7 +204,45 @@ public class BindPhoneActivity extends LiveBaseActivity {
 
     /*获取用户信息*/
     private void getUserInfo() {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getUserInfo(token), new CommonObserver<UserInfoBean>() {
+            @Override
+            public void onResult(UserInfoBean userInfoBean) {
+                if (userInfoBean.getRetCode() == 0) {
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERID, userInfoBean.getRetData().getId());
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERNAME, userInfoBean.getRetData().getNickname());
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERHEAD, userInfoBean.getRetData().getIco());
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put(LiveShareUtil.APP_USERCOVER, userInfoBean.getRetData().getIco());
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                    LiveShareUtil.getInstance(BindPhoneActivity.this).putPower(userInfoBean.getRetData().getType());//用户类型
+                    String interest = userInfoBean.getRetData().getInterest();
+                    if (TextUtils.isEmpty(interest)) {
+                        isNeedUpmsg = true;
+                        statActivity(MsgInputActivity.class);
+                        hideLoad();
+                        finish();
+                    } else {
+                        thisLogin(userInfoBean.getRetData());
+                        isNeedUpmsg = false;
+                    }
+
+                } else {
+                    ToastShow(userInfoBean.getRetMsg());
+                    hideLoad();
+                }
+            }
+
+            @Override
+            public void onError(HttpThrowable throwable) {
+                hideLoad();
+                if (throwable.errorType == HTTP_ERROR) {//重新登录
+                    EventBus.getDefault().post(new EventMessage(1005));
+                }
+                Log.e(TAG, "onError: " + throwable.toString());
+            }
+        }, TAG);
+
+
+       /* LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
@@ -231,7 +275,7 @@ public class BindPhoneActivity extends LiveBaseActivity {
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
             }
-        });
+        });*/
     }
 
     /*获取直播的sign*/

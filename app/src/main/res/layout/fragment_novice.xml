@@ -113,9 +113,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp_8"
-            android:paddingTop="@dimen/dp_8"
-            android:paddingBottom="@dimen/dp_8"
+            android:layout_gravity="center"
             android:src="@drawable/notice_help"
+            android:paddingTop="@dimen/dp_2"
+            tools:visibility="visible"
             android:visibility="gone" />
 
         <TextView
@@ -124,9 +125,9 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="每日凌晨00：00重置"
-
             android:textColor="@color/threethree"
             android:textSize="12sp"
+            tools:visibility="visible"
             android:visibility="gone" />
 
     </LinearLayout>

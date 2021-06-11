@@ -34,11 +34,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_43"
+        android:paddingRight="@dimen/dp_20"
         android:paddingBottom="@dimen/dp_8"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView11"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back_ye" />
 
     <TextView
@@ -154,9 +155,8 @@
         android:textColor="@color/black_oneeight"
         app:layout_constraintBaseline_toBaselineOf="@+id/normal_sttm"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/normal_recy"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/smart"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
@@ -164,5 +164,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/normal_sttm" />
+        app:layout_constraintTop_toBottomOf="@+id/normal_sttm">
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/normal_recy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    <include
+        android:id="@+id/nodata"
+        layout="@layout/a_nodata"
+        android:visibility="gone"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

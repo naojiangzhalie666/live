@@ -128,7 +128,7 @@ public class ShowGoodsActivity extends LiveBaseActivity {
         }
         mShowgoodsNametv.setText(mName);
         mShowgoodsName.setText("");
-        mShowgoodsTitle.setText("专属时长疏解包");
+        mShowgoodsTitle.setText("专属时长咨询包");
         mShowgoodsShanchang.setText(mBean.getServiceFeature());
         mShowgoodsZhendui.setText(mBean.getServiceFeature2());
         mShowgoodsService.setText(mBean.getServiceIntroduce());

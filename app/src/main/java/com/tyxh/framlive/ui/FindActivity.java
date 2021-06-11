@@ -209,7 +209,7 @@ public class FindActivity extends LiveBaseActivity {
 
     private void initData() {
         getInterest();
-        mPicker = new OptionPicker(this, new String[]{"连线疏解中", "直播中", "在线","离线"});
+        mPicker = new OptionPicker(this, new String[]{"连线咨询中", "直播中", "在线","离线"});
         mPicker.setCanceledOnTouchOutside(false);
         mPicker.setDividerRatio(WheelView.DividerConfig.FILL);
 //        picker.setShadowColor(Color.RED, 40);

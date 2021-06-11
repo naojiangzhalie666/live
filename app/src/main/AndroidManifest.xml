@@ -64,6 +64,8 @@ GET_TASKS ：应用要使用该接口必须声明权限android.permission.REAL_G
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".ui.ChildLoginActivity"></activity>
+        <activity android:name=".ui.ChildForgetActivity"></activity>
+        <activity android:name=".ui.ChildForgetEndActivity"></activity>
         <activity
             android:name=".ui.WebVActivity"
             android:screenOrientation="portrait" />
@@ -423,6 +425,10 @@ GET_TASKS ：应用要使用该接口必须声明权限android.permission.REAL_G
                 <category android:name="com.tyxh.framlive.thirdpush" />
             </intent-filter>
         </receiver>
-    </application>
 
+    </application>
+    <!--微信适配Android11-->
+    <queries>
+        <package android:name="com.tencent.mm" />
+    </queries>
 </manifest>

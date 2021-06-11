@@ -22,24 +22,24 @@
         android:id="@+id/item_homerecy_biao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_3"
-        android:layout_marginTop="@dimen/dp_3"
-        android:background="@drawable/home_jiao"
+        android:layout_marginStart="@dimen/dp_4"
+        android:layout_marginTop="@dimen/dp_5"
+        android:background="@drawable/home_ada_grad"
         android:paddingLeft="@dimen/dp_5"
         android:paddingTop="@dimen/dp_2"
-        android:paddingRight="@dimen/dp_5"
+        android:paddingRight="@dimen/dp_8"
         android:paddingBottom="@dimen/dp_2"
         android:textColor="@color/login_txt"
-        android:textSize="12sp"
+        android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@+id/item_homerecy_imgv"
         app:layout_constraintTop_toTopOf="@+id/item_homerecy_imgv"
-        tools:text="人格心理" />
+        tools:text="人格人格" />
 
     <LinearLayout
         android:id="@+id/item_homelinear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/dp_6"
+        android:layout_marginRight="@dimen/dp_7"
         android:background="@drawable/home_renqi"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/dp_4"
@@ -53,7 +53,7 @@
             android:layout_width="@dimen/dp_3"
             android:layout_height="@dimen/dp_3"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_2"
             android:layout_marginRight="@dimen/dp_5"
             android:background="@drawable/bg_circle_white" />
 
@@ -62,7 +62,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="12sp"
+            android:textSize="10sp"
+            android:paddingRight="@dimen/dp_2"
             tools:text="653人气" />
 
     </LinearLayout>
@@ -92,7 +93,7 @@
         android:layout_marginStart="3dp"
         android:drawablePadding="@dimen/dp_3"
         android:textColor="@color/login_txt"
-        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_3"
         app:layout_constraintStart_toEndOf="@+id/item_home_sun"
         android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/item_homerecy_title"
@@ -102,10 +103,12 @@
         android:id="@+id/item_homerecy_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginStart="@dimen/dp_8"
         android:layout_marginEnd="@dimen/dp_12"
         android:layout_marginBottom="@dimen/dp_4"
         android:textColor="@color/white"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/item_homerecy_imgv"
         app:layout_constraintEnd_toEndOf="parent"

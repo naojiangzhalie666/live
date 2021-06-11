@@ -88,7 +88,7 @@ public class SetInActivity extends LiveBaseActivity {
 
     }
 
-    @OnClick({R.id.setin_back, R.id.setin_man, R.id.setin_jigou})
+    @OnClick({R.id.setin_back, R.id.setin_man, R.id.setin_jigou,R.id.setin_con_end})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setin_back:
@@ -112,6 +112,9 @@ public class SetInActivity extends LiveBaseActivity {
                 is_man = false;
                 getSupportFragmentManager().beginTransaction().replace(R.id.setin_fram, mJgOneFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(mJgOneFragment);
+                break;
+            case R.id.setin_con_end:
+//                Log.e(TAG, "onClick: 点击了遮罩" );
                 break;
         }
     }

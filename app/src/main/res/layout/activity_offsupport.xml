@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingTop="@dimen/title_top"
         android:paddingBottom="@dimen/dp_5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/title"
             android:layout_alignBottom="@+id/title"
+            android:paddingTop="@dimen/title_top"
+            android:paddingRight="@dimen/dp_20"
             android:paddingLeft="@dimen/dp_12"
             app:srcCompat="@drawable/back" />
 
@@ -33,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/title_top"
             android:text="官方扶持"
             android:textColor="@color/black"
             android:textSize="@dimen/titile_size" />

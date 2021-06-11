@@ -3,6 +3,7 @@ package com.tyxh.framlive.ui;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -10,6 +11,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -22,6 +26,7 @@ import com.tyxh.framlive.adapter.CzAdapter;
 import com.tyxh.framlive.adapter.LevelAdapter;
 import com.tyxh.framlive.adapter.PjAdapter;
 import com.tyxh.framlive.adapter.SjAdapter;
+import com.tyxh.framlive.base.ApiService;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.bean.BaseBean;
@@ -37,6 +42,8 @@ import com.tyxh.framlive.utils.httputil.LiveHttp;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +53,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 
 public class OrderListActivity extends LiveBaseActivity {
 
@@ -128,22 +137,11 @@ public class OrderListActivity extends LiveBaseActivity {
         ButterKnife.bind(this);
         minclude_view = findViewById(R.id.order_include);
         v_nodata = findViewById(R.id.nodata);
-        mPjDialog = new PjDialog(this);
         mOrderCz.setTextColor(getResources().getColor(R.color.black));
         mOrderTsj.setTextColor(getResources().getColor(R.color.black));
         mOrderTpj.setTextColor(getResources().getColor(R.color.black));
         mOrderFdj.setTextColor(getResources().getColor(R.color.black));
-        mPjDialog.setOnSubClickListener(new PjDialog.OnSubClickListener() {
-            @Override
-            public void onSbCLickListner(float content) {
-                if (content <= 0) {
-                    ToastShow("请选择星级");
-                    return;
-                }
-                mPjDialog.dismiss();
-                toPj(content);
-            }
-        });
+
         initAdapter();
 //        mLevelDpjNum.setText("66");
         mLevelDpjNum.setVisibility(View.GONE);
@@ -152,7 +150,7 @@ public class OrderListActivity extends LiveBaseActivity {
 
     /*评价*/
     private void toPj(float star) {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().toEvealContctHis(token, pj_id, (int)star), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().toEvealContctHis(token, pj_id, (int) star), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
@@ -234,6 +232,18 @@ public class OrderListActivity extends LiveBaseActivity {
             public void onItemPjClickListener(int pos) {
                 SjBean.RetDataBean.ListBean listBean = mSjLists.get(pos);
                 pj_id = listBean.getId();
+                mPjDialog = new PjDialog(OrderListActivity.this);
+                mPjDialog.setOnSubClickListener(new PjDialog.OnSubClickListener() {
+                    @Override
+                    public void onSbCLickListner(float content) {
+                        if (content <= 0) {
+                            ToastShow("请选择星级");
+                            return;
+                        }
+                        mPjDialog.dismiss();
+                        toPj(content);
+                    }
+                });
                 mPjDialog.show();
             }
 
@@ -241,12 +251,17 @@ public class OrderListActivity extends LiveBaseActivity {
             public void onItemSxClickListener(int pos) {
                 // TODO: 2021/6/4 聊天人的名字？
                 SjBean.RetDataBean.ListBean listBean = mSjLists.get(pos);
-                startChatActivity("", listBean.getUserId() + "");
+                startChatActivity("", listBean.getRoomId() + "", false, 0);
             }
 
             @Override
             public void onItemAgainClickListener(int pos) {
-                EventBus.getDefault().post(new EventMessage("main"));
+                SjBean.RetDataBean.ListBean listBean = mSjLists.get(pos);
+                //连线类型[1:视频；2:语音]
+                startChatActivity("", listBean.getRoomId() + "", true, listBean.getType());
+
+//                EventBus.getDefault().post(new EventMessage("main"));
+//                finish();
             }
         });
         mPjAdapter.setOnItemClickListener(new PjAdapter.OnItemClickListener() {
@@ -259,6 +274,18 @@ public class OrderListActivity extends LiveBaseActivity {
             public void onItemPjClickListener(int pos) {
                 SjBean.RetDataBean.ListBean listBean = mSjLists.get(pos);
                 pj_id = listBean.getId();
+                mPjDialog = new PjDialog(OrderListActivity.this);
+                mPjDialog.setOnSubClickListener(new PjDialog.OnSubClickListener() {
+                    @Override
+                    public void onSbCLickListner(float content) {
+                        if (content <= 0) {
+                            ToastShow("请选择星级");
+                            return;
+                        }
+                        mPjDialog.dismiss();
+                        toPj(content);
+                    }
+                });
                 mPjDialog.show();
             }
 
@@ -266,12 +293,17 @@ public class OrderListActivity extends LiveBaseActivity {
             public void onItemSxClickListener(int pos) {
                 // TODO: 2021/6/4 聊天人的名字？
                 SjBean.RetDataBean.ListBean listBean = mSjLists.get(pos);
-                startChatActivity("", listBean.getRoomId() + "");
+                startChatActivity("", listBean.getRoomId() + "", false, 0);
             }
 
             @Override
             public void onItemAgainClickListener(int pos) {
-                EventBus.getDefault().post(new EventMessage("main"));
+                SjBean.RetDataBean.ListBean listBean = mSjLists.get(pos);
+                //连线类型[1:视频；2:语音]
+                startChatActivity("", listBean.getRoomId() + "", true, listBean.getType());
+//
+//                EventBus.getDefault().post(new EventMessage("main"));
+//                finish();
             }
         });
 
@@ -297,12 +329,14 @@ public class OrderListActivity extends LiveBaseActivity {
 
     }
 
-    private void startChatActivity(String title, String userid) {
+    private void startChatActivity(String title, String userid, boolean lm, int type) {
         ChatInfo chatInfo = new ChatInfo();
         chatInfo.setType(V2TIMConversation.V2TIM_C2C);
 //        chatInfo.setChatName(title);
         chatInfo.setId(userid);
         chatInfo.setChatName(title);
+        chatInfo.setLm(lm);
+        chatInfo.setLm_type(type);
 //        Intent intent = new Intent(getActivity(), ChathelfActivity.class);
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra(Constant.CHAT_INFO, chatInfo);
@@ -369,6 +403,7 @@ public class OrderListActivity extends LiveBaseActivity {
     }
 
     private void getData() {
+        showLoad();
         switch (mType) {
             case "0":
                 toGetCz();
@@ -389,6 +424,7 @@ public class OrderListActivity extends LiveBaseActivity {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
+                hideLoad();
                 mSmart.finishRefresh();
                 mSmart.finishLoadMore();
                 OrderBean bean = new Gson().fromJson(result.toString(), OrderBean.class);
@@ -415,6 +451,7 @@ public class OrderListActivity extends LiveBaseActivity {
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
                 mSmart.finishRefresh();
                 mSmart.finishLoadMore();
             }
@@ -423,12 +460,13 @@ public class OrderListActivity extends LiveBaseActivity {
 
     }
 
-    /*疏解数据*/
+    /*咨询数据*/
     private void toGetTsj() {
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyContctHis(token, page, pageSize, ""), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
+                hideLoad();
                 mSmart.finishRefresh();
                 mSmart.finishLoadMore();
                 SjBean bean = new Gson().fromJson(result.toString(), SjBean.class);
@@ -454,6 +492,7 @@ public class OrderListActivity extends LiveBaseActivity {
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
                 mSmart.finishRefresh();
                 mSmart.finishLoadMore();
             }
@@ -468,6 +507,7 @@ public class OrderListActivity extends LiveBaseActivity {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
+                hideLoad();
                 mSmart.finishRefresh();
                 mSmart.finishLoadMore();
                 SjBean bean = new Gson().fromJson(result.toString(), SjBean.class);
@@ -493,6 +533,7 @@ public class OrderListActivity extends LiveBaseActivity {
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
                 mSmart.finishRefresh();
                 mSmart.finishLoadMore();
             }
@@ -502,11 +543,11 @@ public class OrderListActivity extends LiveBaseActivity {
 
     /*等级与特权数据*/
     private void toGetFdj() {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyLevel(token), new HttpBackListener() {
+        v_nodata.setVisibility(View.GONE);
+        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getMyLevel(token), new CommonObserver<LevelBean>() {
             @Override
-            public void onSuccessListener(Object result) {
-                super.onSuccessListener(result);
-                LevelBean bean = new Gson().fromJson(result.toString(), LevelBean.class);
+            public void onResult(LevelBean bean) {
+                hideLoad();
                 if (bean.getRetCode() == 0) {
                     setLevelData(bean.getRetData());
                 } else {
@@ -515,48 +556,57 @@ public class OrderListActivity extends LiveBaseActivity {
             }
 
             @Override
-            public void onErrorLIstener(String error) {
-                super.onErrorLIstener(error);
+            public void onError(HttpThrowable throwable) {
+                hideLoad();
+                if (throwable.errorType == HTTP_ERROR) {//重新登录
+                    EventBus.getDefault().post(new EventMessage(1005));
+                }
+                Log.e(TAG, "onError: " + throwable.toString());
             }
-        });
+        }, TAG);
     }
 
     private void setLevelData(LevelBean.RetDataBean retDataBean) {
         LevelBean.RetDataBean.UserBean user = retDataBean.getUser();
         LevelBean.RetDataBean.NextLevelBean nextLevel = retDataBean.getNextLevel();
         mLevelName.setText(user.getNickname());
-        double userExp = user.getExp();
-        double nextLevelExp = nextLevel.getExp();
-        double all_exp = userExp + nextLevelExp;
-        mLevelProgress.setMax(new Double(all_exp).intValue());
-        mLevelProgress.setProgress(new Double(userExp).intValue());
+        String userExp = user.getExp();
+        if (nextLevel != null) {
+            DecimalFormat d_for = new DecimalFormat("0.###");
+            String nextLevelExp = nextLevel.getExp();
+            BigDecimal now_exp = new BigDecimal(userExp);
+            BigDecimal tall_exp = new BigDecimal(nextLevelExp);
+            BigDecimal last_exp = tall_exp.subtract(now_exp);
+            mLevelProgress.setMax(tall_exp.intValue());
+            mLevelProgress.setProgress(now_exp.intValue());
 
-        mLevelLevel.setText("LV." + user.getLevel());
-        mLevelDengj.setText(userExp + "/" + all_exp);
-        mLevelWhat.setText("还需要" + nextLevelExp + "经验即可升级");
+            mLevelLevel.setText("LV." + user.getLevel());
+            mLevelDengj.setText(d_for.format(now_exp) + "/" + d_for.format(tall_exp));
+            mLevelWhat.setText("还需要" + d_for.format(last_exp) + "经验即可升级");
 
 
-        int giftId = nextLevel.getGiftId();//礼物id
-        int releaseId = nextLevel.getReleaseId();//疏解卡id
-        int rewardDiaNum = nextLevel.getRewardDiaNum();//钻石id
-        String img_Url = "";
-        String img_name = "";
-        if (rewardDiaNum >= 0) {
-            img_Url = nextLevel.getRewardDiaICO();
-            img_name = nextLevel.getRewardDiaName();
-        } else if (giftId >= 0) {
-            img_Url = nextLevel.getGiftICO();
-            img_name = nextLevel.getGiftName();
-        } else {
-            img_Url = nextLevel.getReleaseICO();
-            img_name = nextLevel.getReleaseName();
+            int giftId = nextLevel.getGiftId();//礼物id
+            int releaseId = nextLevel.getReleaseId();//咨询卡id
+            int rewardDiaNum = nextLevel.getRewardDiaNum();//钻石id
+            String img_Url = "";
+            String img_name = "";
+            if (rewardDiaNum >= 0) {
+                img_Url = nextLevel.getRewardDiaICO();
+                img_name = nextLevel.getRewardDiaName();
+            } else if (giftId >= 0) {
+                img_Url = nextLevel.getGiftICO();
+                img_name = nextLevel.getGiftName();
+            } else {
+                img_Url = nextLevel.getReleaseICO();
+                img_name = nextLevel.getReleaseName();
+            }
+            mLevelTvOne.setText(img_name);
+            Glide.with(this).load(img_Url).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mLevelCenter);
+
+
+            mLevelTvTwo.setText("暂无描述");
+            mLevelTvThree.setText("等级到" + nextLevel.getLevel() + "级自动发放");
         }
-        mLevelTvOne.setText(img_name);
-        Glide.with(this).load(img_Url).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mLevelCenter);
-
-
-        mLevelTvTwo.setText("暂无描述");
-        mLevelTvThree.setText("等级到" + nextLevel.getLevel() + "级自动发放");
         Glide.with(this).load(user.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mLevelHead);
 
         mLevelAdapter.setLevel(user.getLevel());
@@ -573,7 +623,7 @@ public class OrderListActivity extends LiveBaseActivity {
         int left_tvview = textView.getLeft() + textView.getWidth() / 2;
         int go_distance = left_tvview - left_line;
         ObjectAnimator anim = ObjectAnimator.ofFloat(mOrderLine, "translationX", line_startDis, go_distance);
-        anim.setDuration(265);
+        anim.setDuration(20);
         anim.start();
         line_startDis = go_distance;
     }

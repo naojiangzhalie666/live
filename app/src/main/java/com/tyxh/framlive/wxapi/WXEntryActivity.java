@@ -6,18 +6,22 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
+import com.tencent.mm.opensdk.modelbase.BaseReq;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMusicVideoObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.tencent.mm.opensdk.constants.ConstantsAPI;
-import com.tencent.mm.opensdk.modelbase.BaseReq;
-import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -63,7 +67,17 @@ public class WXEntryActivity extends WXCallbackActivity implements IWXAPIEventHa
         }
         finish();
     }
+    private void goToShowMsg(ShowMessageFromWX.Req showReq) {
+        WXMediaMessage wxMsg = showReq.message;
+        Log.e(TAG, "goToShowMsg: "+new Gson().toJson(wxMsg));
+        if (wxMsg.mediaObject instanceof WXMusicVideoObject) {
+            WXMusicVideoObject musicVideoObject = (WXMusicVideoObject) wxMsg.mediaObject;
+            String identification = musicVideoObject.identification;	// 分享到微信时的音乐标识符字段
+            String messageExt = wxMsg.messageExt;	//分享到微信时传的额外信息字段
+            // 应用根据identification与messageExt自行处理
 
+        }
+    }
     @Override
     public void onResp(BaseResp resp) {
         if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {

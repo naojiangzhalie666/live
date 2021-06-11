@@ -1,7 +1,6 @@
 package com.tyxh.framlive.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,52 +56,44 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.ViewHolder> 
         vh.mItemLevelZz.setVisibility(View.GONE);
         vh.mItemLevelTitle.setText((position + 1) + "级");
         String giftICO = bean.getGiftICO();//礼物标
-        String releaseICO = bean.getReleaseICO();//疏解卡标
+        String releaseICO = bean.getReleaseICO();//咨询卡标
         String rewardDiaICO = bean.getRewardDiaICO();//钻石标
         int giftId = bean.getGiftId();//礼物id
-        int releaseId = bean.getReleaseId();//疏解卡id
+        int releaseId = bean.getReleaseId();//咨询卡id
         int rewardDiaNum = bean.getRewardDiaNum();//钻石id
         String one_url = "";
         String two_url = "";
         String third_url = "";
-        if (rewardDiaNum<=0) {
-            if (giftId<=0) {
+        if (rewardDiaNum <= 0) {
+            if (giftId <= 0) {
                 one_url = releaseICO;
             } else {
                 one_url = giftICO;
-                if (releaseId>0) {
+                if (releaseId > 0) {
                     two_url = releaseICO;
+                    vh.mItemLevelImgvsecond.setVisibility(View.VISIBLE);
                 }
             }
         } else {
             one_url = rewardDiaICO;
-            if (giftId<=0) {
-                if (releaseId>0) {
+            if (giftId <= 0) {
+                if (releaseId > 0) {
                     two_url = releaseICO;
+                    vh.mItemLevelImgvsecond.setVisibility(View.VISIBLE);
                 }
             } else {
                 two_url = giftICO;
-                if (releaseId>0) {
+                vh.mItemLevelImgvsecond.setVisibility(View.VISIBLE);
+                if (releaseId > 0) {
                     third_url = releaseICO;
+                    vh.mItemLevelImgvthird.setVisibility(View.VISIBLE);
                 }
             }
         }
         Glide.with(mContext).load(one_url).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(vh.mItemLevelImgvone);
-        if (TextUtils.isEmpty(two_url)) {
-            vh.mItemLevelImgvsecond.setVisibility(View.INVISIBLE);
-            vh.mItemLevelImgvthird.setVisibility(View.INVISIBLE);
-        } else {
-            vh.mItemLevelImgvsecond.setVisibility(View.VISIBLE);
-            Glide.with(mContext).load(two_url).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(vh.mItemLevelImgvsecond);
-            if(TextUtils.isEmpty(third_url)){
-                vh.mItemLevelImgvthird.setVisibility(View.INVISIBLE);
-            }else{
-                vh.mItemLevelImgvthird.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(third_url).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(vh.mItemLevelImgvthird);
-            }
-        }
-
-        if (position > (level-1)) {
+        Glide.with(mContext).load(two_url).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(vh.mItemLevelImgvsecond);
+        Glide.with(mContext).load(third_url).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(vh.mItemLevelImgvthird);
+        if (position > (level - 1)) {
             vh.mItemLevelLockOne.setVisibility(View.VISIBLE);
             if (vh.mItemLevelImgvsecond.getVisibility() == View.VISIBLE) {
                 vh.mItemLevelLockTwo.setVisibility(View.VISIBLE);

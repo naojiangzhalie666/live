@@ -62,7 +62,7 @@
         android:paddingStart="@dimen/dp_38"
         android:paddingTop="@dimen/dp_22"
         android:paddingBottom="@dimen/dp_22"
-        android:text="使用疏解卡"
+        android:text="使用咨询卡"
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/dig_usewhat_imgvthree"
         app:layout_constraintStart_toStartOf="@+id/dig_usewhat_diamond"

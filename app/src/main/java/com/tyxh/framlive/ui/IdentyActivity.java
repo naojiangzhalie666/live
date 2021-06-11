@@ -6,10 +6,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
+import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tyxh.framlive.R;
-import com.tyxh.framlive.base.LiveApplication;
+import com.tyxh.framlive.base.ApiService;
 import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.bean.BaseBean;
+import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.fragment.identy.IdentyOneFragment;
 import com.tyxh.framlive.fragment.identy.IdentyThreeFragment;
@@ -17,12 +23,14 @@ import com.tyxh.framlive.fragment.identy.IdentyTworagment;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.google.gson.Gson;
-import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 
 public class IdentyActivity extends LiveBaseActivity {
 
@@ -146,7 +154,26 @@ public class IdentyActivity extends LiveBaseActivity {
 
     /*获取用户信息*/
     private void getUserInfo() {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
+        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getUserInfo(token), new CommonObserver<UserInfoBean>() {
+            @Override
+            public void onResult(UserInfoBean userInfoBean) {
+                if (userInfoBean.getRetCode() == 0) {
+                    LiveShareUtil.getInstance(IdentyActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
+                } else {
+                    ToastShow(userInfoBean.getRetMsg());
+                }
+            }
+
+            @Override
+            public void onError(HttpThrowable throwable) {
+                hideLoad();
+                if (throwable.errorType == HTTP_ERROR) {//重新登录
+                    EventBus.getDefault().post(new EventMessage(1005));
+                }
+                Log.e(TAG, "onError: " + throwable.toString());
+            }
+        }, TAG);
+      /*  LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
@@ -163,7 +190,7 @@ public class IdentyActivity extends LiveBaseActivity {
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
             }
-        });
+        });*/
         finish();
     }
 

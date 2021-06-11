@@ -31,8 +31,9 @@
                 android:id="@+id/personal_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_55"
+                android:paddingTop="@dimen/dp_55"
                 android:paddingLeft="@dimen/dp_13"
+                android:paddingRight="@dimen/dp_20"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/personal_back" />
@@ -268,7 +269,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tt"
-                        tools:text="-经验丰富的咨询师聆听您的烦恼和困扰，以专业的方式对您进行指导， 帮您疏解情绪，疗愈心灵；\n -全程深度分析，对您进行一对一跟踪服务，并建立个人“疏解反馈”档案；\n -咨询师制定专业咨询计划，并定期回访进度 -您可以无所顾忌说出自己的困扰，咨询师将严格对您的咨询内容保密；" />
+                        tools:text="-经验丰富的咨询师聆听您的烦恼和困扰，以专业的方式对您进行指导， 帮您咨询情绪，疗愈心灵；\n -全程深度分析，对您进行一对一跟踪服务，并建立个人“咨询反馈”档案；\n -咨询师制定专业咨询计划，并定期回访进度 -您可以无所顾忌说出自己的困扰，咨询师将严格对您的咨询内容保密；" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -311,7 +312,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/ttt"
-                        tools:text="-该专属疏解时长包可以重复购买，专属连线时长可叠加；\n
+                        tools:text="-该专属咨询时长包可以重复购买，专属连线时长可叠加；\n
 -服务形式为视频或语音咨询，专属连线时长按分钟计算消耗；\n
 -该专属服务仅适用于当前咨询师，购买后立即生效，不限制使用期限，\n
 未消耗服务时长概不退换；" />
@@ -396,7 +397,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/showgoods_nametv"
                     app:layout_constraintTop_toBottomOf="@+id/showgoods_nametv"
-                    tools:text="专属时长疏解包" />
+                    tools:text="专属时长咨询包" />
 
                 <TextView
                     android:id="@+id/textView67"

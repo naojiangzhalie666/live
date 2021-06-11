@@ -11,7 +11,6 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/title_top"
         android:paddingBottom="@dimen/dp_5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +21,8 @@
             android:id="@+id/imgv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/title_top"
+            android:paddingRight="@dimen/dp_20"
             android:layout_alignTop="@+id/title"
             android:layout_alignBottom="@+id/title"
             android:paddingLeft="@dimen/dp_12"
@@ -34,6 +35,7 @@
             android:layout_centerHorizontal="true"
             android:text="手机号"
             android:textColor="@color/black"
+            android:visibility="gone"
             android:textSize="@dimen/titile_size" />
     </RelativeLayout>
 
@@ -76,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView151" />
 
     <EditText
-        android:id="@+id/textView144"
+        android:id="@+id/child_login_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
@@ -96,7 +98,7 @@
         android:layout_height="@dimen/dp_1"
         android:layout_marginTop="@dimen/dp_14"
         android:background="@color/ftwo"
-        app:layout_constraintEnd_toEndOf="@+id/textView144"
+        app:layout_constraintEnd_toEndOf="@+id/child_login_name"
         app:layout_constraintStart_toStartOf="@+id/textView135"
         app:layout_constraintTop_toBottomOf="@+id/textView135" />
 
@@ -112,7 +114,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView145" />
 
     <EditText
-        android:id="@+id/textView147"
+        android:id="@+id/child_login_pwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@null"
@@ -120,8 +122,9 @@
         android:lines="1"
         android:padding="@dimen/dp_10"
         android:textSize="12sp"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="@+id/textView146"
-        app:layout_constraintEnd_toStartOf="@+id/textView149"
+        app:layout_constraintEnd_toStartOf="@+id/child_login_forget"
         app:layout_constraintStart_toEndOf="@+id/textView146"
         app:layout_constraintTop_toTopOf="@+id/textView146" />
 
@@ -131,45 +134,81 @@
         android:layout_height="@dimen/dp_1"
         android:layout_marginTop="@dimen/dp_14"
         android:background="@color/ftwo"
-        app:layout_constraintEnd_toEndOf="@+id/textView144"
+        app:layout_constraintEnd_toEndOf="@+id/child_login_name"
         app:layout_constraintStart_toStartOf="@+id/textView146"
         app:layout_constraintTop_toBottomOf="@+id/textView146" />
 
     <TextView
-        android:id="@+id/textView149"
+        android:id="@+id/child_login_forget"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:gravity="center"
         android:text="忘记密码？"
         android:textColor="#0DACF6"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView147"
-        app:layout_constraintEnd_toEndOf="@+id/textView144"
-        app:layout_constraintTop_toTopOf="@+id/textView147" />
+        app:layout_constraintBottom_toBottomOf="@+id/child_login_pwd"
+        app:layout_constraintEnd_toEndOf="@+id/child_login_name"
+        app:layout_constraintTop_toTopOf="@+id/child_login_pwd" />
 
     <TextView
-        android:id="@+id/textView150"
+        android:id="@+id/child_login_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:background="@drawable/bg_circle_slog"
+        android:background="@drawable/bg_circle_slog_child"
         android:gravity="center"
         android:padding="@dimen/dp_15"
         android:text="登录"
         android:textColor="@color/white"
         android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView144"
+        app:layout_constraintEnd_toEndOf="@+id/child_login_name"
         app:layout_constraintStart_toStartOf="@+id/textView135"
         app:layout_constraintTop_toBottomOf="@+id/textView148" />
 
-    <TextView
-        android:id="@+id/textView152"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <RelativeLayout
+        android:id="@+id/login_rela"
+        android:layout_width="0dp"
         android:layout_marginStart="@dimen/dp_18"
-        android:layout_marginTop="@dimen/dp_16"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/textView150"
-        app:layout_constraintTop_toBottomOf="@+id/textView150" />
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/child_login_login"
+        app:layout_constraintTop_toBottomOf="@+id/child_login_login">
+
+        <FrameLayout
+            android:id="@+id/login_cbxieyi"
+            android:layout_width="@dimen/dp_13"
+            android:layout_height="@dimen/dp_13"
+            android:layout_alignTop="@+id/login_tvxieyi"
+            android:background="@drawable/login_circle"
+            android:button="@null"
+            android:clickable="false">
+
+            <ImageView
+                android:id="@+id/login_imgv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:padding="@dimen/dp_3"
+                android:src="@drawable/login_select" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/login_tvxieyi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_12"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="@dimen/dp_24"
+            android:layout_toRightOf="@+id/login_cbxieyi"
+            android:paddingLeft="@dimen/dp_6"
+            android:textColor="#425C59"
+            android:textSize="10sp"
+            tools:text="我已阅读并同意《用户协议》和《隐私政策》" />
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

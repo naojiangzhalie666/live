@@ -2,7 +2,10 @@ package com.tyxh.framlive.base;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tyxh.framlive.bean.AssetBean;
+import com.tyxh.framlive.bean.LevelBean;
+import com.tyxh.framlive.bean.NextLevel;
 import com.tyxh.framlive.bean.UserDetailBean;
+import com.tyxh.framlive.bean.UserInfoBean;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -25,11 +28,17 @@ public interface ApiService {
     @POST("sysLoginController/login")
     Observable<JSONObject> login(@Query("username") String name, @Query("password") String pwd, @Query("authType") String authType);
 
+    /* 登录
+     * authType :  帐号密码登录：空  、手机短信验证码登录：sms(验证码)、微信登录：wx ?
+     * */
+    @POST("sysLoginController/login")
+    Observable<JSONObject> login(@Query("username") String name, @Query("password") String pwd);
+
     /*
      * 获取用户信息
      * */
     @GET("sysLoginController/info")
-    Observable<JSONObject> getUserInfo(@Header("Authorization") String token);
+    Observable<UserInfoBean> getUserInfo(@Header("Authorization") String token);
 
     /**
      * 绑定手机号
@@ -90,10 +99,6 @@ public interface ApiService {
 
     /**
      * @param mtoken 自己的TOKEN
-     * @param index  当前页数
-     * @param cnt    请求数量
-     * @param userID
-     * @param token  MLVB的token
      * @return
      */
     @Headers({"Content-Type: application/json"})
@@ -126,6 +131,16 @@ public interface ApiService {
      */
     @POST("attentionController/addAttention")
     Observable<JSONObject> addAttention(@Header("Authorization") String mtoken, @Query("attId") String attId, @Query("flag") String flag);
+
+    /**
+     * 直播中添加、取消关注
+     *
+     * @param mtoken
+     * @param attId  关注的用户id
+     * @return
+     */
+    @POST("attentionController/liveAddAttention")
+    Observable<JSONObject> addLiveAtten(@Header("Authorization") String mtoken, @Query("attId") String attId);
 
     /**
      * 单文件上传
@@ -485,6 +500,7 @@ public interface ApiService {
 
     /**
      * 获取可用来进行连线的数据列表
+     *
      * @param token
      * @param roomId 房间id--主播id
      * @param userId 用户id
@@ -495,55 +511,61 @@ public interface ApiService {
 
     /**
      * 我的任务列表
+     *
      * @param token
-     * @param taskTypeId    1 新手    2 每日   3 日收益   4 月收益
+     * @param taskTypeId 1 新手    2 每日   3 日收益   4 月收益
      * @return
      */
     @POST("taskTableController/selectUserTask")
-    Observable<JSONObject> getUserTask(@Header("Authorization") String token,@Query("taskTypeId")int taskTypeId);
+    Observable<JSONObject> getUserTask(@Header("Authorization") String token, @Query("taskTypeId") int taskTypeId);
 
     /**
      * 领取任务奖励
+     *
      * @param token
      * @param taskId
      * @return
      */
     @POST("taskTableController/receiveReward")
-    Observable<JSONObject> receiveReward(@Header("Authorization") String token,@Query("taskId")int taskId);
+    Observable<JSONObject> receiveReward(@Header("Authorization") String token, @Query("taskId") int taskId);
 
     /**
      * 我的订单--充值订单
+     *
      * @param token
      * @param page
      * @param size
      * @return
      */
     @GET("sysOrderController/myOrder/{page}/{size}")
-    Observable<JSONObject> myOrder(@Header("Authorization") String token,@Path("page")int page,@Path("size")int size);
+    Observable<JSONObject> myOrder(@Header("Authorization") String token, @Path("page") int page, @Path("size") int size);
 
     /**
-     * 疏解记录查询
+     * 咨询记录查询
+     *
      * @param token
-     * @param isEvaluation      空：全部  1：未评价
+     * @param isEvaluation 空：全部  1：未评价
      * @param page
      * @param size
      * @return
      */
     @GET("sysOrderController/myConnectHistory/{page}/{size}")
-    Observable<JSONObject> getMyContctHis(@Header("Authorization") String token,@Path("page")int page,@Path("size")int size,@Query("isEvaluation")String isEvaluation);
+    Observable<JSONObject> getMyContctHis(@Header("Authorization") String token, @Path("page") int page, @Path("size") int size, @Query("isEvaluation") String isEvaluation);
 
     /**
      * 评价
+     *
      * @param token
      * @param id
      * @param star
      * @return
      */
     @POST("connectHistoryController/evaluationConnectHistory")
-    Observable<JSONObject> toEvealContctHis(@Header("Authorization") String token,@Query("id")int id,@Query("star")int star);
+    Observable<JSONObject> toEvealContctHis(@Header("Authorization") String token, @Query("id") int id, @Query("star") int star);
 
     /**
      * 通知关注直播间的人开始直播了
+     *
      * @param token
      * @return
      */
@@ -551,23 +573,36 @@ public interface ApiService {
     Observable<JSONObject> noticeUsershow(@Header("Authorization") String token);
 
     /**
+     * 开播时传标题给后台
+     *
+     * @param token
+     * @param title
+     * @return
+     */
+    @POST("liveController/pushTitle")
+    Observable<JSONObject> pushTitle(@Header("Authorization") String token, @Query("title") String title);
+
+    /**
      * 等级与特权
+     *
      * @param token
      * @return
      */
     @GET("sysOrderController/myLevel")
-    Observable<JSONObject> getMyLevel(@Header("Authorization") String token);
+    Observable<LevelBean> getMyLevel(@Header("Authorization") String token);
 
     /**
      * 获取下一等级相关信息
+     *
      * @param token
      * @return
      */
     @GET("userController/queryNextExp")
-    Observable<JSONObject> getMyNextLevel(@Header("Authorization") String token);
+    Observable<NextLevel> getMyNextLevel(@Header("Authorization") String token);
 
     /**
      * 查询我的收益（金额）
+     *
      * @return
      */
     @GET("incomeExpensesController/queryMyIncome")
@@ -575,17 +610,110 @@ public interface ApiService {
 
     /**
      * 提现申请
+     *
      * @return
      */
     @POST("withdrawalController/addWithdrawal")
-    Observable<JSONObject> getAddwith(@Header("Authorization") String token,@Body RequestBody body);
+    Observable<JSONObject> getAddwith(@Header("Authorization") String token, @Body RequestBody body);
 
     /**
      * 提现记录
+     *
      * @return
      */
     @POST("withdrawalController/myWithdrawal")
-    Observable<JSONObject> getMyWithDraw(@Header("Authorization") String token,@Body RequestBody body);
+    Observable<JSONObject> getMyWithDraw(@Header("Authorization") String token, @Body RequestBody body);
+
+    /**
+     * 做任务
+     *
+     * @param triggerType  触发类型【2:观看直播;5:发弹幕;7:分享直播;8:直播时长】
+     * @param conditionNum 触发条件数目
+     * @return
+     */
+    @POST("taskTableController/whileTask")
+    Observable<JSONObject> toWhildTask(@Header("Authorization") String token, @Query("triggerType") int triggerType, @Query("conditionNum") String conditionNum);
+
+    /**
+     * 我的钱包(钻石列表)
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @GET("userController/myPurseDiamondsWater/{page}/{size}")
+    Observable<JSONObject> getMyPurse(@Header("Authorization") String token, @Path("page") int page, @Path("size") int size, @Query("startDate") String startDate, @Query("endDate") String endDate);
+
+    /**
+     * 我的收益（记录）
+     *
+     * @param startDate 开始时间
+     * @param endDate   结束时间
+     * @param words     搜索条件
+     * @return
+     */
+    @GET("incomeExpensesController/queryIncomeExpenses/{pageNum}/{pageSize}")
+    Observable<JSONObject> getIncomePenses(@Header("Authorization") String token, @Path("pageNum") int pageNum, @Path("pageSize") int pageSize, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("words") String words);
+
+    /**
+     * 子账号-发送验证码
+     * @param username
+     * @return
+     */
+    @POST("userController/sendSMS")
+    Observable<JSONObject> sendSMS(@Query("username") String username);
+
+    /**
+     * 子账号  --验证码验证
+     * @param username
+     * @param code
+     * @return
+     */
+    @POST("userController/smsVerify")
+    Observable<JSONObject> smsVerify(@Query("username")String username,@Query("code")String code);
+
+    /**
+     * 子账号--修改账号密码
+     * @param uuid
+     * @param password
+     * @return
+     */
+    @POST("userController/updateUserPassword")
+    Observable<JSONObject> updateZiPwd(@Query("uuid")String uuid,@Query("password")String password);
+
+    /**
+     *直播日数据
+     * @param token
+     * @param page
+     * @param size
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @GET("userController/queryLiveDayReport/{page}/{size}")
+    Observable<JSONObject> queryLiveDayRt(@Header("Authorization") String token, @Path("page") int page, @Path("size") int size, @Query("startDate") String startDate, @Query("endDate") String endDate);
+
+    /**
+     * 直播月数据
+     * @param token
+     * @param page
+     * @param size
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @GET("userController/queryLiveMonReport/{page}/{size}")
+    Observable<JSONObject> queryLiveMonRt(@Header("Authorization") String token, @Path("page") int page, @Path("size") int size, @Query("startDate") String startDate, @Query("endDate") String endDate);
+
+    /**
+     * 连线记录
+     * @param token
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @GET("connectHistoryController/queryCounselorConnectHistory/{page}/{size}")
+    Observable<JSONObject> queryCotctHis(@Header("Authorization") String token, @Path("page") int page, @Path("size") int size, @Query("startDate") String startDate, @Query("endDate") String endDate,@Query("words")String words);
 
     /*-------------------------------------------如下为微信登录时获取数据---------------------------------------------------*/
 

@@ -994,7 +994,10 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                             map.put("userId", mSelfModel.userId);
                             map.put("roomId", mSponsorUserModel.userId);
                             map.put("tipsType", "1");//1开始计时  2心跳开始
+                            map.put("conType", "1");//1:视频 2:语音
+                            map.put("platform", "1");//1：安卓2：ios
                             map.put("proType", select_bean.getProType());
+                            map.put("proId", select_bean.getProId());
                             if (mWebSocketClient != null && mWebSocketClient.isOpen())
                                 mWebSocketClient.send(new Gson().toJson(map));
                             proType = select_bean.getProType();
@@ -1007,7 +1010,10 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                         map.put("userId", mSelfModel.userId);
                         map.put("roomId", mSponsorUserModel.userId);
                         map.put("tipsType", "1");//1开始计时  2心跳开始
+                        map.put("conType", "1");//1:视频 2:语音
+                        map.put("platform", "1");//1：安卓2：ios
                         map.put("proType", select_bean.getProType());
+                        map.put("proId", select_bean.getProId());
                         if (mWebSocketClient != null && mWebSocketClient.isOpen())
                             mWebSocketClient.send(new Gson().toJson(map));
                         proType = select_bean.getProType();

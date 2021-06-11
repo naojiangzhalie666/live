@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:animateLayoutChanges="true"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/ftwo"
     tools:context=".ui.NormalActivity">
 
@@ -35,11 +35,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dp_16"
-        android:paddingTop="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_43"
+        android:paddingRight="@dimen/dp_20"
         android:paddingBottom="@dimen/dp_8"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView11"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back_ye" />
 
     <TextView
@@ -72,8 +73,8 @@
         android:id="@+id/advice_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
         android:layout_marginBottom="16dp"
+        android:animateLayoutChanges="true"
         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -82,10 +83,10 @@
             android:id="@+id/advice_con_money"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_marginRight="@dimen/dp_16"
-            android:background="@drawable/bg_corner_white_al">
+            android:background="@drawable/bg_corner_white_al"
+            android:visibility="invisible">
 
 
             <TextView
@@ -262,10 +263,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"
-        android:paddingLeft="@dimen/dp_16"
-        android:visibility="gone"
-        android:paddingRight="@dimen/dp_16"
         android:background="@color/white"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView5">
@@ -319,6 +320,7 @@
             android:drawableRight="@drawable/mine_next"
             android:drawablePadding="@dimen/dp_5"
             android:gravity="center"
+            android:textSize="12sp"
             android:text="￥0.0"
             android:textColor="@color/nineninenine"
             app:layout_constraintBottom_toTopOf="@+id/lineone2"
@@ -333,9 +335,9 @@
             android:paddingTop="@dimen/dp_16"
             android:paddingBottom="@dimen/dp_16"
             android:text="实名信息"
-            android:visibility="gone"
             android:textColor="@color/black_oneeight"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -437,14 +439,14 @@
             android:layout_marginEnd="10dp"
             android:drawableRight="@drawable/mine_next"
             android:drawablePadding="@dimen/dp_5"
-            android:visibility="gone"
             android:text="筛选"
             android:textColor="@color/black_oneeight"
+            android:visibility="gone"
             app:layout_constraintBaseline_toBaselineOf="@+id/normal_sttm"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/normal_recy"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/smart"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
@@ -452,7 +454,26 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/normal_sttm" />
+            app:layout_constraintTop_toBottomOf="@+id/normal_sttm">
+
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/normal_recy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.scwang.smart.refresh.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        <include
+            android:id="@+id/nodata"
+            layout="@layout/a_nodata"
+            android:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

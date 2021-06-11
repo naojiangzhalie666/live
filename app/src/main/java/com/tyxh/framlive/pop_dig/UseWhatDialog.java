@@ -158,7 +158,7 @@ public class UseWhatDialog extends Dialog {
                 switch (proType) {
                     case 2://道具
                         bean_card =retDataBean;
-                        mDigUsewhatCard.setText("使用疏解卡（剩余时长：" + retDataBean.getDuration() + "）");
+                        mDigUsewhatCard.setText("使用咨询卡（剩余时长：" + retDataBean.getDuration() + "）");
                         break;
                     case 3://服务包
                         bean_back =retDataBean;

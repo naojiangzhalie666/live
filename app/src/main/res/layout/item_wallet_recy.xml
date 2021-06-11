@@ -11,14 +11,26 @@
     android:paddingRight="@dimen/dp_12">
 
     <TextView
+        android:id="@+id/item_wallet_tptm"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:minWidth="@dimen/dp_45"
+        android:textColor="@color/black_oneeight"
+        app:layout_constraintTop_toTopOf="@+id/item_wallet_type"
+        app:layout_constraintBottom_toBottomOf="@+id/item_wallet_type"
+        android:textSize="11sp"
+        tools:text="12:00" />
+
+    <TextView
         android:id="@+id/item_wallet_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_3"
-        android:paddingBottom="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_6"
         android:textColor="@color/black_oneeight"
         android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_wallet_tptm"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="充值" />
 
@@ -52,7 +64,7 @@
             android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@+id/item_wallet_conorder"
             app:layout_constraintTop_toBottomOf="@+id/item_wallet_conorder"
-            tools:text="商品名：直播疏解" />
+            tools:text="商品名：直播咨询" />
 
         <TextView
             android:id="@+id/item_wallet_bz"
@@ -96,10 +108,10 @@
             android:id="@+id/item_wallet_lltm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="@dimen/dp_20"
+            android:minWidth="@dimen/dp_45"
             android:textColor="@color/nineninenine"
             android:textSize="11sp"
-            tools:text="12:00  " />
+            tools:text="12:00" />
 
         <TextView
             android:id="@+id/item_wallet_llorder"

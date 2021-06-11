@@ -122,7 +122,7 @@ public class ChatHelfDialog extends Dialog {
          * *//*
         if(is_user){
             mChatLayout.getInputLayout().disableServiceAction(false);//展示服务项目
-            mChatLayout.getInputLayout().disableSjbgAction(true);//隐藏疏解报告
+            mChatLayout.getInputLayout().disableSjbgAction(true);//隐藏咨询报告
         }else{
             mChatLayout.getInputLayout().disableServiceAction(true);
             mChatLayout.getInputLayout().disableSjbgAction(false);

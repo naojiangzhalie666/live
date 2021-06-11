@@ -50,7 +50,7 @@
         android:paddingRight="@dimen/dp_2"
         android:paddingTop="@dimen/dp_4"
         android:paddingBottom="@dimen/dp_4"
-        android:text="1分数疏解"
+        android:text="1分数咨询"
         android:textColor="@color/login_txt"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"

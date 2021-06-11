@@ -142,6 +142,7 @@ public class HomeFragment extends Fragment {
 //                toast.show();
                 WebVActivity.startMe(getActivity(),"新人福利");
 //                startChatActivity("随和的金苞花","11115");
+//                startActivity(new Intent(getActivity(), SetInActivity.class));
                 break;
         }
     }
@@ -350,7 +351,12 @@ public class HomeFragment extends Fragment {
             info.livePlay = true;
             info.type =value.getUserInfo().getType();
             if(value.getUserInfo().getType()>2){//机构--子机构
-                info.meName =value.getCouData().getMeName();
+                try {
+                    info.meName =value.getCouData().getMeName();
+                } catch (Exception e) {
+                    info.meName ="天宇新航心理咨询机构";
+                    Log.e("HomeFragment", "toZhData: "+e.toString());
+                }
             }
             info.mUserInfoBean =value.getUserInfo();
             if (pushers != null && !pushers.isEmpty()) {

@@ -6,7 +6,7 @@ public class TaskBean {
     /**
      * retCode : 0
      * retMsg : 操作成功!
-     * retData : [{"taskId":1,"taskName":"触发条件","taskCondition":"1","taskNum":"1","awardJewel":10,"awardEXP":60,"propName":"5分钟疏解卡","awardPropNum":1,"userId":null,"state":1}]
+     * retData : [{"taskId":1,"taskName":"触发条件","taskCondition":"1","taskNum":"1","awardJewel":10,"awardEXP":60,"propName":"5分钟咨询卡","awardPropNum":1,"userId":null,"state":1}]
      */
 
     private int retCode;
@@ -45,7 +45,7 @@ public class TaskBean {
          * taskNum : 1
          * awardJewel : 10
          * awardEXP : 60
-         * propName : 5分钟疏解卡
+         * propName : 5分钟咨询卡
          * awardPropNum : 1
          * userId : null
          * state : 1

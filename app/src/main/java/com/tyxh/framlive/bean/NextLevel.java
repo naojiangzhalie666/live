@@ -4,7 +4,7 @@ public class NextLevel {
     /**
      * retCode : 0
      * retMsg : 操作成功!
-     * retData : {"id":1,"level":1,"exp":25,"rewardDiaNum":5,"releaseId":2,"rewardReleaseNum":1,"specialEffects":"","specialEffectsType":null,"giftId":1,"rewardGiftNum":1,"createDate":"2021-06-01 10:38:25","modifyDate":"2021-06-01 10:38:25","flag":2,"releaseICO":"http://172.16.66.225/files/mall/20210518/a977f42efdb34057b16102319df2de03.jpg","giftICO":null,"rewardDiaICO":"http://diamond.ico","releaseName":"5分钟疏解卡","giftName":"大拇哥","rewardDiaName":"钻石","curExp":5}
+     * retData : {"id":1,"level":1,"exp":25,"rewardDiaNum":5,"releaseId":2,"rewardReleaseNum":1,"specialEffects":"","specialEffectsType":null,"giftId":1,"rewardGiftNum":1,"createDate":"2021-06-01 10:38:25","modifyDate":"2021-06-01 10:38:25","flag":2,"releaseICO":"http://172.16.66.225/files/mall/20210518/a977f42efdb34057b16102319df2de03.jpg","giftICO":null,"rewardDiaICO":"http://diamond.ico","releaseName":"5分钟咨询卡","giftName":"大拇哥","rewardDiaName":"钻石","curExp":5}
      */
 
     private int retCode;
@@ -53,7 +53,7 @@ public class NextLevel {
          * releaseICO : http://172.16.66.225/files/mall/20210518/a977f42efdb34057b16102319df2de03.jpg
          * giftICO : null
          * rewardDiaICO : http://diamond.ico
-         * releaseName : 5分钟疏解卡
+         * releaseName : 5分钟咨询卡
          * giftName : 大拇哥
          * rewardDiaName : 钻石
          * curExp : 5

@@ -32,6 +32,10 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.superc.yyfflibrary.utils.ToastUtil;
+import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMSendCallback;
 import com.tencent.rtmp.TXLog;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.QianAdapter;
@@ -162,11 +166,11 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     private RelativeLayout mControllLayer;
 
     /*---------------布局新增数据---------------------------*/
-    private TextView mtv_name, mtv_gg, mtv_id, mtv_date, mtv_jg, mtv_title,mtv_zuan;
+    private TextView mtv_name, mtv_gg, mtv_id, mtv_date, mtv_jg, mtv_title, mtv_zuan;
     private List<InterestBean.RetDataBean> mqianStrs;
     private QianAdapter mQianAdapter;
     private TextView mtv_one;
-    private ImageView mtv_back,imgv_refresh;
+    private ImageView mtv_back, imgv_refresh;
     private RecyclerView mRec_qian;
     private EditText medt_title;
     private LiveCloseDialog mLiveCloseDialog;
@@ -180,6 +184,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     private List<UserDetailBean.RetDataBean.ServicePackagesBean> mCar_strs;
     private CarDialog mCarDialog;//购物车弹窗
     private int user_type;             //用户类型：1-普通用户；2-咨询师；3-主机构；4-子机构
+    private String groupId = "";
+    private boolean is_jiyanNow =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,8 +252,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
                     InterestBean.RetDataBean map = mqianStrs.get(i);
                     if (i == pos) {
                         map.setSelect(true);
-                        select_id=map.getId();
-                        live_qian=map.getLabelName();
+                        select_id = map.getId();
+                        live_qian = map.getLabelName();
                         toChangeTitle(select_id);
                     } else {
                         map.setSelect(false);
@@ -292,11 +298,40 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int postion, long l) {
                 TCChatEntity tcChatEntity = mArrayListChatEntity.get(postion);
-                mGuanzDialog = new GuanzDialog(TCBaseAnchorActivity.this, tcChatEntity,mToken);
+                List<String> list_userids = new ArrayList<>();
+                list_userids.add(tcChatEntity.userid);
+                V2TIMManager.getGroupManager().getGroupMembersInfo(groupId, list_userids, new V2TIMSendCallback<List<V2TIMGroupMemberFullInfo>>() {
+                    @Override
+                    public void onProgress(int progress) {
+
+                    }
+
+                    @Override
+                    public void onError(int code, String desc) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<V2TIMGroupMemberFullInfo> v2TIMGroupMemberFullInfos) {
+                        Log.e(TAG, "onSuccess: " + new Gson().toJson(v2TIMGroupMemberFullInfos));
+                        if (v2TIMGroupMemberFullInfos != null && v2TIMGroupMemberFullInfos.size() > 0) {
+                            long muteUntil = v2TIMGroupMemberFullInfos.get(0).getMuteUntil();
+                            long long_now = System.currentTimeMillis();
+                            if(muteUntil>long_now){
+                                is_jiyanNow =true;
+                            }else{
+                                is_jiyanNow =false;
+                            }
+                        }
+
+                    }
+                });
+                Log.e(TAG, "onItemClick: 是否已经禁言:="+(is_jiyanNow?"禁言":"没有禁言") );
+                mGuanzDialog = new GuanzDialog(TCBaseAnchorActivity.this, tcChatEntity, mToken,is_jiyanNow);
                 mGuanzDialog.setOnDigClickListener(new GuanzDialog.OnDigClickListener() {
                     @Override
                     public void onInviteClickListener() {
-                        startLinkMic(tcChatEntity.getUserid(),tcChatEntity.getHead());
+                        startLinkMic(tcChatEntity.getUserid(), tcChatEntity.getHead());
                     }
 
                     @Override
@@ -309,7 +344,21 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
                     @Override
                     public void onJinyanClickListener() {
-                        ToastUtil.showToast(TCBaseAnchorActivity.this, "禁言" + tcChatEntity.getSenderName());
+
+
+                        V2TIMManager.getGroupManager().muteGroupMember(groupId, tcChatEntity.userid, is_jiyanNow?0:60 * 60, new V2TIMCallback() {
+                            @Override
+                            public void onError(int code, String desc) {
+                                Toast.makeText(TCBaseAnchorActivity.this, "禁言失败", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(TCBaseAnchorActivity.this, is_jiyanNow?"已取消禁言":"禁言成功", Toast.LENGTH_SHORT).show();
+                                is_jiyanNow=!is_jiyanNow;
+                                mGuanzDialog.setIs_jy(is_jiyanNow);
+                            }
+                        });
                     }
 
                     @Override
@@ -348,7 +397,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     }
 
     /*邀请观众进行连麦*/
-    private void startLinkMic(String userid,String ico) {
+    private void startLinkMic(String userid, String ico) {
         mLiveRoom.requestJoinUserAnchor("连麦", userid, new RequestJoinAnchorCallback() {
             @Override
             public void onAccept() {
@@ -376,6 +425,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             }
         });
     }
+
     /**
      * 主播连麦成功后发送该自定义消息
      *
@@ -412,7 +462,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         mtv_title = findViewById(R.id.cam_title);
         mtv_zuan = findViewById(R.id.camera_sszuan);
         mtv_gg.setVisibility(View.GONE);
-        mtv_jg.setVisibility(TextUtils.isEmpty(mJigouName)?View.GONE:View.VISIBLE);
+        mtv_jg.setVisibility(TextUtils.isEmpty(mJigouName) ? View.GONE : View.VISIBLE);
         mtv_jg.setText(mJigouName);
         mtv_name.setText(mNickName);
         mtv_id.setText("边框ID：" + mUserId);
@@ -430,14 +480,14 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         } else if (id == R.id.btn_message_input) {
             showInputMsgDialog();
         } else if (id == R.id.camera_car) {
-            if(mCarDialog==null){
-                ToastUtil.showToast(this,"未获取到服务信息");
+            if (mCarDialog == null) {
+                ToastUtil.showToast(this, "未获取到服务信息");
                 return;
             }
             mCarDialog.show();
 //            startActivity(new Intent(this, LookPersonActivity.class));//咨询师页面
-        } else if(id == R.id.refresh_title){
-            Animation animation = AnimationUtils.loadAnimation(this,R.anim.live_refresh);
+        } else if (id == R.id.refresh_title) {
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.live_refresh);
             imgv_refresh.startAnimation(animation);
             toChangeTitle(select_id);
         }
@@ -509,7 +559,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
                     .put("title", mTitle)
                     .put("frontcover", mCoverPicUrl)
                     .put("location", mLocation)
-                    .put("label",live_qian)
+                    .put("label", live_qian)
                     .toString();
         } catch (JSONException e) {
             roomInfo = mTitle;
@@ -519,6 +569,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             @Override
             public void onSuccess(String roomId) {
                 Log.w(TAG, String.format("创建直播间%s成功", roomId));
+                groupId = roomId;
                 onCreateRoomSuccess();
             }
 
@@ -535,6 +586,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
      */
     protected void onCreateRoomSuccess() {
         toNotice();
+        toPushTitle();
         startTimer();
         // 填写了后台服务器地址
         if (!TextUtils.isEmpty(TCGlobalConfig.APP_SVR_URL)) {
@@ -578,7 +630,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         Log.i(TAG, "onAccept:观众接受已经接收连麦");
         /*连麦成功*/
         mLiveRoom.responseJoinAnchor(pusherInfo.userID, true, "");
-        Constantc.LX_HEAD =pusherInfo.userAvatar;
+        Constantc.LX_HEAD = pusherInfo.userAvatar;
         sendContactMsg(true, pusherInfo.userID);
         if (mGuanzDialog != null && mGuanzDialog.isShowing())
             mGuanzDialog.dismiss();
@@ -792,7 +844,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             entity.setIs_gift(true);
             entity.setHead(userInfo.avatar);
             entity.setUserid(userInfo.userid);
-            BigDecimal bigDecimal =new BigDecimal(mtv_zuan.getText().toString());
+            BigDecimal bigDecimal = new BigDecimal(mtv_zuan.getText().toString());
             BigDecimal bigDec_add = new BigDecimal(giftInfo.price);
             mtv_zuan.setText(bigDecimal.add(bigDec_add).toString());
             notifyMsg(entity);
@@ -1041,10 +1093,32 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
     private void stopTimer() {
         //直播时间
+        toGoTask(8, mSecond + "");
         if (null != mBroadcastTimer) {
             mBroadcastTimerTask.cancel();
         }
     }
+
+    /*任务完成
+     * 触发类型【2:观看直播;5:发弹幕;7:分享直播;8:直播时长】
+     * */
+    private void toGoTask(int type, String duration) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().toWhildTask(mToken, type, duration), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+
+
+    }
+
     /*-----------接口调用---------------*/
     private void getDetail() {
         DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getDetails(mToken, mUserId), new CommonObserver<UserDetailBean>() {
@@ -1072,7 +1146,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
     private void setUserDatil(UserDetailBean.RetDataBean data) {
         List<UserDetailBean.RetDataBean.ServicePackagesBean> servicePackages = data.getServicePackages();
-        if(servicePackages!=null){
+        if (servicePackages != null) {
             mCar_strs.clear();
             mCar_strs.addAll(servicePackages);
             mCarDialog = new CarDialog(this, mCar_strs);
@@ -1082,7 +1156,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
                     UserDetailBean.RetDataBean.ServicePackagesBean servicePackagesBean = mCar_strs.get(pos);
                     Intent intt = new Intent(TCBaseAnchorActivity.this, ShowGoodsActivity.class);
                     intt.putExtra("data", servicePackagesBean);
-                    intt.putExtra("name",   (user_type > 2?"咨询机构-":"咨询师-") + mNickName);
+                    intt.putExtra("name", (user_type > 2 ? "咨询机构-" : "咨询师-") + mNickName);
                     intt.putExtra("query_id", mUserId);
                     intt.putExtra("is_user", false);
                     startActivity(intt);//商品套餐页面
@@ -1094,7 +1168,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
                     UserDetailBean.RetDataBean.ServicePackagesBean servicePackagesBean = mCar_strs.get(pos);
                     Intent intt = new Intent(TCBaseAnchorActivity.this, ShowGoodsActivity.class);
                     intt.putExtra("data", servicePackagesBean);
-                    intt.putExtra("name",   (user_type > 2?"咨询机构-":"咨询师-") + mNickName);
+                    intt.putExtra("name", (user_type > 2 ? "咨询机构-" : "咨询师-") + mNickName);
                     intt.putExtra("query_id", mUserId);
                     intt.putExtra("is_user", false);
                     startActivity(intt);//商品套餐页面
@@ -1103,15 +1177,15 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
                 @Override
                 public void onMoreClickListener() {
-                    if(user_type>2){
-                        Intent int_person =new Intent(TCBaseAnchorActivity.this, LookPersonActivity.class);
-                        int_person.putExtra("is_user",true);
-                        int_person.putExtra("query_id",mUserId);
+                    if (user_type > 2) {
+                        Intent int_person = new Intent(TCBaseAnchorActivity.this, LookPersonActivity.class);
+                        int_person.putExtra("is_user", true);
+                        int_person.putExtra("query_id", mUserId);
                         startActivity(int_person);//咨询师页面
-                    }else{
+                    } else {
                         Intent int_orgi = new Intent(TCBaseAnchorActivity.this, OranizeActivity.class);
-                        int_orgi.putExtra("is_user",true);
-                        int_orgi.putExtra("query_id",mUserId);
+                        int_orgi.putExtra("is_user", true);
+                        int_orgi.putExtra("query_id", mUserId);
                         startActivity(int_orgi);//咨询机构页面
                     }
                 }
@@ -1122,6 +1196,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
 
     private int select_id;
+
     /*获取兴趣爱好列表展示*/
     private void getInterest() {
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getCouLabel(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
@@ -1131,10 +1206,10 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
                 InterestBean interestBean = new Gson().fromJson(result.toString(), InterestBean.class);
                 if (interestBean.getRetCode() == 0) {
                     List<InterestBean.RetDataBean> retData = interestBean.getRetData();
-                    if(retData!=null&&retData.size()>0){
+                    if (retData != null && retData.size() > 0) {
                         retData.get(0).setSelect(true);
-                        select_id=retData.get(0).getId();
-                        live_qian=retData.get(0).getLabelName();
+                        select_id = retData.get(0).getId();
+                        live_qian = retData.get(0).getLabelName();
                         toChangeTitle(select_id);
                     }
                     mqianStrs.addAll(interestBean.getRetData());
@@ -1151,20 +1226,22 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             }
         });
     }
-    private String live_qian="";
+
+    private String live_qian = "";
+
     private void toChangeTitle(int id) {
-        Integer[] strings=new Integer[]{id};
+        Integer[] strings = new Integer[]{id};
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), new Gson().toJson(strings));
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getLiveTitle(mToken,requestBody ), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getLiveTitle(mToken, requestBody), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                TitleLabelBean bean =new Gson().fromJson(result.toString(),TitleLabelBean.class);
-                if(bean.getRetCode() ==0&&bean.getRetData()!=null){
+                TitleLabelBean bean = new Gson().fromJson(result.toString(), TitleLabelBean.class);
+                if (bean.getRetCode() == 0 && bean.getRetData() != null) {
                     medt_title.setText(bean.getRetData().getTitle());
                     medt_title.setSelection(bean.getRetData().getTitle().length());
                 }
-                Log.e(TAG, "onSuccessListener: "+result.toString());
+                Log.e(TAG, "onSuccessListener: " + result.toString());
 
             }
 
@@ -1174,8 +1251,9 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             }
         });
     }
+
     /*通知关注直播间的人开始直播了*/
-    private void toNotice(){
+    private void toNotice() {
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().noticeUsershow(mToken), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
@@ -1190,11 +1268,27 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         });
 
     }
+    /*开播时传标题给后台*/
+    private void toPushTitle(){
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().pushTitle(mToken, mTitle), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+
+
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEventMsg(EventMessage message) {
-        if (message.getCode()==PAY_SUCCESS) {
-            if(mCarDialog!=null)
+        if (message.getCode() == PAY_SUCCESS) {
+            if (mCarDialog != null)
                 mCarDialog.getMineAsset();
         } else if (message.getCode() == 1005) {
             ToastUtil.showToast(this, "登录过期，请重新登录!");

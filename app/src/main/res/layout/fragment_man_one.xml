@@ -277,7 +277,7 @@
                 android:layout_marginLeft="@dimen/dp_15"
                 android:layout_marginTop="15dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/login_bg"
+                android:src="@drawable/person_sample"
                 app:layout_constraintEnd_toStartOf="@+id/textView41"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"

@@ -14,7 +14,7 @@
         android:padding="@dimen/dp_16"
         android:textColor="@color/black_oneeight"
         android:textSize="12sp"
-        tools:text="一分钟后疏解中断，请立即续费" />
+        tools:text="一分钟后咨询中断，请立即续费" />
 
     <View
         android:layout_width="match_parent"

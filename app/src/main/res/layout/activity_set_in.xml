@@ -83,8 +83,10 @@
         android:id="@+id/setin_con_end"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/ruzhuend_bg"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:visibility="gone"
+        android:background="@drawable/ruzhuend_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -135,9 +137,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dp_16"
+        android:paddingTop="@dimen/title_top"
+        android:paddingRight="@dimen/dp_20"
         app:layout_constraintBottom_toBottomOf="@+id/textView8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView8"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back_ye" />
 
     <TextView

@@ -767,6 +767,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         }
         mBroadcastTimer_con = null;
         mtv_ctcTm.setText("0");
+        mtv_ctcget.setText("0");
     }
 
 

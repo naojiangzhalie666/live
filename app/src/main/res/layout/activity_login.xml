@@ -118,7 +118,6 @@
             android:orientation="horizontal"
             android:paddingTop="@dimen/dp_5"
             android:paddingBottom="@dimen/dp_5"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/login_loginother"
             app:layout_constraintTop_toTopOf="@+id/ll_wx"
             app:layout_constraintBottom_toBottomOf="@+id/ll_wx"
@@ -161,7 +160,6 @@
                 android:layout_width="@dimen/dp_13"
                 android:layout_height="@dimen/dp_13"
                 android:layout_alignTop="@+id/login_tvxieyi"
-                android:layout_marginTop="4dp"
                 android:background="@drawable/login_circle"
                 android:button="@null"
                 android:clickable="false">

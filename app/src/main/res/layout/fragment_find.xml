@@ -196,7 +196,7 @@
                 android:paddingLeft="@dimen/dp_5"
                 android:paddingTop="@dimen/dp_55"
                 android:textSize="12sp"
-                android:text="匹配疏解"
+                android:text="匹配咨询"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/tv_one"
                 app:layout_constraintStart_toStartOf="@+id/tv_one" />

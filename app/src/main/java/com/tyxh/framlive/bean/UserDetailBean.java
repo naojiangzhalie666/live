@@ -130,6 +130,8 @@ public class UserDetailBean {
             private int type;
             private String username;
             private String ico;
+            private String regDays;
+            private String connectionIncomeValue;
             private String nickname;
             private Object countryCode;
             private Object mobile;
@@ -166,6 +168,22 @@ public class UserDetailBean {
             private Object exp;
             private String initials;
             private int auditState;
+
+            public String getRegDays() {
+                return regDays;
+            }
+
+            public void setRegDays(String regDays) {
+                this.regDays = regDays;
+            }
+
+            public String getConnectionIncomeValue() {
+                return connectionIncomeValue;
+            }
+
+            public void setConnectionIncomeValue(String connectionIncomeValue) {
+                this.connectionIncomeValue = connectionIncomeValue;
+            }
 
             public String getAges() {
                 return ages;

@@ -553,12 +553,9 @@ public class LookPersonActivity extends LiveBaseActivity {
                 mLocalMedias_strs.add(couPicBean.getImgUrl());
             }
             mPersonImageAdapter.notifyDataSetChanged();
-        }
-        if (retData.getUser() != null) {
-            UserDetailBean.RetDataBean.UserBean user = retData.getUser();
-            mNickname = user.getNickname();
-            mStr_listones.clear();
-            String interest = retData.getUser().getInterest();
+
+            String interest = beansBean.getInterests();
+            if(!TextUtils.isEmpty(interest)){
             if (interest.endsWith(",")) {
                 interest = interest.substring(0, interest.length() - 1);
                 String[] split = interest.split(",");
@@ -567,6 +564,13 @@ public class LookPersonActivity extends LiveBaseActivity {
                 }
                 mPersonOneAdapter.notifyDataSetChanged();
             }
+            }
+
+        }
+        if (retData.getUser() != null) {
+            UserDetailBean.RetDataBean.UserBean user = retData.getUser();
+            mNickname = user.getNickname();
+            mStr_listones.clear();
             Glide.with(this).load(retData.getUser().getIco()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).centerCrop().into(mPersonalHead);
 //            RoundedCorners roundedCorners = new RoundedCorners(15);
 //            Glide.with(this).load(retData.getUser().getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg)
