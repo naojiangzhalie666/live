@@ -254,7 +254,6 @@ public class BuyzActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(BuyzActivity.this, bean.getRetMsg(), Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
@@ -264,7 +263,6 @@ public class BuyzActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     /*支付--type  1微信 2支付宝*/
@@ -318,31 +316,6 @@ public class BuyzActivity extends AppCompatActivity {
         }
         mTvPaywechat.setEnabled(true);
     }
-    /*支付宝返回--支付结果*/
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case SDK_PAY_FLAG: {
-                    @SuppressWarnings("unchecked")
-                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
-                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
-                    String resultStatus = payResult.getResultStatus();
-                    // 判断resultStatus 为9000则代表支付成功
-                    if (TextUtils.equals(resultStatus, "9000")) {
-                        ToastUtil.showToast(BuyzActivity.this, "支付成功");
-                        EventBus.getDefault().post(new EventMessage(PAY_SUCCESS));
-                    } else if (TextUtils.equals(resultStatus, "6001")) {
-                        ToastUtil.showToast(BuyzActivity.this, "取消支付");
-                    } else {
-                        ToastUtil.showToast(BuyzActivity.this, "支付失败");
-                    }
-                    break;
-                }
-            }
-        }
-
-        ;
-    };
 
     /*支付宝支付*/
     private void payByZfb(String info) {
@@ -361,20 +334,45 @@ public class BuyzActivity extends AppCompatActivity {
         Thread payThread = new Thread(payRunnable);
         payThread.start();
     }
+
+    /*支付宝返回--支付结果*/
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SDK_PAY_FLAG: {
+                    @SuppressWarnings("unchecked")
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {//成功
+                        toHandlePay(0);
+                    } else if (TextUtils.equals(resultStatus, "6001")) {//取消
+                        toHandlePay(2);
+                    } else {//失败
+                        toHandlePay(1);
+                    }
+                    break;
+                }
+            }
+        }
+
+        ;
+    };
+
     /*微信返回--支付结果*/
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEventMsg(EventMessage message) {
         if (message.getMessage().equals("pay_finish")) {
             switch (message.getCode()) {
                 case 0:
-                    ToastUtil.showToast(this, "支付成功");
-                    EventBus.getDefault().post(new EventMessage(PAY_SUCCESS));
+                    toHandlePay(0);
                     break;
                 case -1:
-                    ToastUtil.showToast(this, "支付失败");
+                    toHandlePay(1);
                     break;
                 case -2:
-                    ToastUtil.showToast(this, "取消支付");
+                    toHandlePay(2);
                     break;
             }
         } else if (message.getCode() == 1005) {
@@ -383,6 +381,29 @@ public class BuyzActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
     }
+
+    /**
+     * 支付结果统一处理
+     *
+     * @param type 0：成功  1：失败  2：取消
+     */
+    private void toHandlePay(int type) {
+        switch (type) {
+            case 0:
+                ToastUtil.showToast(this, "支付成功");
+                EventBus.getDefault().post(new EventMessage(PAY_SUCCESS));
+                getMineAsset();
+                break;
+            case 1:
+                ToastUtil.showToast(this, "支付失败");
+                break;
+            case 2:
+                ToastUtil.showToast(this, "取消支付");
+//                EventBus.getDefault().post(new EventMessage(PAY_SUCCESS));
+                break;
+        }
+    }
+
 
     @Override
     protected void onDestroy() {

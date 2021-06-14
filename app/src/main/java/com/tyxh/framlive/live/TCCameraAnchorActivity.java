@@ -227,6 +227,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
 
     /*邀请观众进行连麦*/
     private void startLinkMic(String userid,String ico) {
+        Toast.makeText(this, "连麦请求中...", Toast.LENGTH_LONG).show();
         mLiveRoom.requestJoinUserAnchor("连麦", userid, new RequestJoinAnchorCallback() {
             @Override
             public void onAccept() {
@@ -330,6 +331,10 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         sendContactMsg(true, pusherInfo.userID);
         if(mOnlineDialog!=null&&mOnlineDialog.isShowing())
             mOnlineDialog.dismiss();
+        if (mGuanzDialog != null && mGuanzDialog.isShowing())
+            mGuanzDialog.dismiss();
+
+
 
         mTCVideoView.userID = pusherInfo.userID;
         mTCVideoView.setUsed(true);

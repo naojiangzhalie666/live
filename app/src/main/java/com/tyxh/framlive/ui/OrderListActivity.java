@@ -18,6 +18,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
@@ -41,6 +42,8 @@ import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -55,6 +58,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
+import static com.tyxh.framlive.bean.EventMessage.PAY_SUCCESS;
 
 public class OrderListActivity extends LiveBaseActivity {
 
@@ -135,6 +139,7 @@ public class OrderListActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         minclude_view = findViewById(R.id.order_include);
         v_nodata = findViewById(R.id.nodata);
         mOrderCz.setTextColor(getResources().getColor(R.color.black));
@@ -648,5 +653,23 @@ public class OrderListActivity extends LiveBaseActivity {
             }
         }
         is_first = false;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventMsg(EventMessage message) {
+        if (message.getCode() == PAY_SUCCESS) {
+            if(mSmart!=null)
+            mSmart.autoRefresh();
+        } else if (message.getCode() == 1005) {
+            ToastUtil.showToast(this, "登录过期，请重新登录!");
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

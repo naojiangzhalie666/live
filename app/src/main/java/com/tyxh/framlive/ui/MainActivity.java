@@ -1,5 +1,6 @@
 package com.tyxh.framlive.ui;
 
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -173,6 +174,19 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
+    }
+
+    public void toGoWhat(int type){
+        switch (type){
+            case 1:
+                Bundle bundle =new Bundle();
+                bundle.putString("msg","act");
+                if(mFindFragment!=null)
+                    mFindFragment.setArguments(bundle);
+                mPager.setCurrentItem(1);
+                break;
+        }
 
     }
 

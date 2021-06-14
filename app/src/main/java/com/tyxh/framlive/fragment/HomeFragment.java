@@ -36,6 +36,7 @@ import com.tyxh.framlive.chat.tuikit.AVCallManager;
 import com.tyxh.framlive.live.TCAudienceActivity;
 import com.tyxh.framlive.live.TCCameraAnchorActivity;
 import com.tyxh.framlive.ui.FindActivity;
+import com.tyxh.framlive.ui.MainActivity;
 import com.tyxh.framlive.ui.WebVActivity;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
@@ -99,6 +100,7 @@ public class HomeFragment extends Fragment {
     private UserInfoBean mUserInfo;
     private String mUserId;
     private int page = 0;
+    private MainActivity mMainActivity;
 
 
     @Override
@@ -112,10 +114,11 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
+        mMainActivity = (MainActivity) getActivity();
         init();
     }
 
-    @OnClick({R.id.home_camera, R.id.home_chanpin, R.id.home_tiyan, R.id.home_newman})
+    @OnClick({R.id.home_camera, R.id.home_chanpin, R.id.home_tiyan, R.id.home_newman,R.id.home_guajian})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.home_camera:
@@ -143,6 +146,10 @@ public class HomeFragment extends Fragment {
                 WebVActivity.startMe(getActivity(),"新人福利");
 //                startChatActivity("随和的金苞花","11115");
 //                startActivity(new Intent(getActivity(), SetInActivity.class));
+                break;
+            case R.id.home_guajian:
+//                Toast.makeText(getActivity(), "跳转到发现", Toast.LENGTH_SHORT).show();
+                mMainActivity.toGoWhat(1);
                 break;
         }
     }

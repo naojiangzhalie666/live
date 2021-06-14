@@ -11,6 +11,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.http.support.throwable.HttpThrowable;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.animators.AnimationType;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.listener.OnItemClickListener;
+import com.luck.picture.lib.tools.SdkVersionUtils;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.PersonImageAdapter;
 import com.tyxh.framlive.adapter.PersonOneAdapter;
@@ -35,19 +49,6 @@ import com.tyxh.framlive.utils.SoftKeyboardFixerForFullscreen;
 import com.tyxh.framlive.utils.TitleUtils;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.google.gson.Gson;
-import com.ljy.devring.DevRing;
-import com.ljy.devring.http.support.observer.CommonObserver;
-import com.ljy.devring.http.support.throwable.HttpThrowable;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.animators.AnimationType;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.listener.OnItemClickListener;
-import com.luck.picture.lib.tools.SdkVersionUtils;
-import com.tencent.imsdk.v2.V2TIMConversation;
-import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -79,6 +80,8 @@ import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 
 public class LookPersonActivity extends LiveBaseActivity {
 
+    @BindView(R.id.smart)
+    SmartRefreshLayout mPersonalSmart;
     @BindView(R.id.personal_head)
     ImageView mPersonalHead;
     @BindView(R.id.personal_name)
@@ -154,6 +157,10 @@ public class LookPersonActivity extends LiveBaseActivity {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
         SoftKeyboardFixerForFullscreen.assistActivity(this);
+       mPersonalSmart.setEnablePureScrollMode(true);//是否启用纯滚动模式
+       mPersonalSmart.setEnableNestedScroll(true);//是否启用嵌套滚动;
+       mPersonalSmart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+       mPersonalSmart.setEnableOverScrollBounce(true);//是否启用越界回弹
         mPersonalHead.requestFocus();
         initShare();
         mBtPopupWindow = new BtPopupWindow(this);
@@ -542,6 +549,7 @@ public class LookPersonActivity extends LiveBaseActivity {
             mPersonalJigou.setText("无");
             mPersonalId.setText("ID:" + zxs_id);
             mPersonalGeren.setText(beansBean.getPerIntroduce());
+            Glide.with(this).load(beansBean.getCouHeadImg()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).centerCrop().into(mPersonalHead);
             List<UserDetailBean.RetDataBean.CounselorBeansBean.CouPicBean> couPiclist = beansBean.getCouPiclist();
             mLocalMedias.clear();
             mLocalMedias_strs.clear();
@@ -555,23 +563,22 @@ public class LookPersonActivity extends LiveBaseActivity {
             mPersonImageAdapter.notifyDataSetChanged();
 
             String interest = beansBean.getInterests();
-            if(!TextUtils.isEmpty(interest)){
+            if (!TextUtils.isEmpty(interest)) {
                 mStr_listones.clear();
-            if (interest.endsWith(",")) {
-                interest = interest.substring(0, interest.length() - 1);
-                String[] split = interest.split(",");
-                for (int i = 0; i < split.length; i++) {
-                    mStr_listones.add(split[i]);
+                if (interest.endsWith(",")) {
+                    interest = interest.substring(0, interest.length() - 1);
+                    String[] split = interest.split(",");
+                    for (int i = 0; i < split.length; i++) {
+                        mStr_listones.add(split[i]);
+                    }
+                    mPersonOneAdapter.notifyDataSetChanged();
                 }
-                mPersonOneAdapter.notifyDataSetChanged();
-            }
             }
 
         }
         if (retData.getUser() != null) {
             UserDetailBean.RetDataBean.UserBean user = retData.getUser();
             mNickname = user.getNickname();
-            Glide.with(this).load(retData.getUser().getIco()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).centerCrop().into(mPersonalHead);
 //            RoundedCorners roundedCorners = new RoundedCorners(15);
 //            Glide.with(this).load(retData.getUser().getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg)
 //                    .apply(new RequestOptions().transform(new CenterCrop(),roundedCorners )).into(mPersonalHead);

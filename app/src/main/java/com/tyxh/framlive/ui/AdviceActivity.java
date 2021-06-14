@@ -13,20 +13,27 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.superc.yyfflibrary.utils.DateUtil;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.WalletDiamondAdapter;
 import com.tyxh.framlive.base.LiveBaseActivity;
+import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.IncomeBean;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.bean.WalletDiaBean;
 import com.tyxh.framlive.pop_dig.BuyzActivity;
 import com.tyxh.framlive.pop_dig.ShimDialog;
 import com.tyxh.framlive.utils.LiveDateUtil;
+import com.tyxh.framlive.utils.MyPropety;
 import com.tyxh.framlive.utils.datepicker.CustomDatePicker;
 import com.tyxh.framlive.utils.datepicker.DateFormatUtils;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +48,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.tyxh.framlive.bean.EventMessage.PAY_SUCCESS;
 
 /********************************************************************
  @version: 1.0.0
@@ -111,6 +120,7 @@ public class AdviceActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         view_nodata = findViewById(R.id.nodata);
         mShimDialog = new ShimDialog(this);
         initTvTime();
@@ -406,5 +416,38 @@ public class AdviceActivity extends LiveBaseActivity {
             }
             is_firstin = false;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEventMsg(EventMessage message) {
+        if (message.getCode() == PAY_SUCCESS) {
+            MyPropety.getInstance().getUserInfo(new MyPropety.OnUserInfoBackListener() {
+                @Override
+                public void onUserInfoSuccessListener(UserInfoBean userInfoBean) {
+                    if (mIndex == 0 && show_zuanshi) {
+                        mAdviceNum.setText(userInfoBean.getRetData().getDiamond() + "");
+                    } else if (show_money) {
+                        mAdviceNum.setText(userInfoBean.getRetData().getCumulativeIncome());
+                    }
+                    mAuthStatus = userInfoBean.getRetData().getAuthStatus();
+                    mNormalTxMoney.setText("￥" + userInfoBean.getRetData().getBalance());
+                }
+
+                @Override
+                public void onUserInfoFailLIstener() {
+
+                }
+            });
+        } else if (message.getCode() == 1005) {
+            ToastUtil.showToast(this, "登录过期，请重新登录!");
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

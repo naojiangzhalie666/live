@@ -1377,6 +1377,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                     @Override
                     public void onPlayEvent(final int event, final Bundle param) {
                         if (event == TXLiveConstants.PLAY_EVT_PLAY_BEGIN) {
+                            /* 2021、06、14 注释，暂时不用混流，混流需要交钱
                             if (mSelfRoleType == LIVEROOM_ROLE_PUSHER) {
                                 //主播进行混流
                                 if (mMixMode == STREAM_MIX_MODE_PK) {
@@ -1384,7 +1385,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                                 } else {
                                     mStreamMixturer.addSubVideoStream(anchorInfo.accelerateURL);
                                 }
-                            }
+                            }*/
                             callbackOnThread(callback, "onBegin");
                         }
                         else if (event == TXLiveConstants.PLAY_EVT_PLAY_END || event == TXLiveConstants.PLAY_ERR_NET_DISCONNECT){

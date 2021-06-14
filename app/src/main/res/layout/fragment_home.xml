@@ -39,16 +39,6 @@
             android:textColor="#F7D4B6"
             android:textSize="10sp" />
 
-        <ImageView
-            android:id="@+id/home_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tvone"
-            android:layout_alignBottom="@+id/tvtwo"
-            android:layout_alignParentRight="true"
-            android:paddingRight="@dimen/dp_18"
-            android:src="@drawable/home_camera" />
-
 
     </RelativeLayout>
 
@@ -111,9 +101,9 @@
                         android:gravity="center"
                         android:paddingTop="@dimen/dp_6"
                         android:paddingBottom="@dimen/dp_5"
-                        android:textSize="13sp"
                         android:text="产品特色"
                         android:textColor="@color/home_txt"
+                        android:textSize="13sp"
                         app:layout_constraintEnd_toStartOf="@+id/home_tiyan"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -129,9 +119,9 @@
                         android:gravity="center"
                         android:paddingTop="@dimen/dp_6"
                         android:paddingBottom="@dimen/dp_5"
-                        android:textSize="13sp"
                         android:text="如何体验"
                         android:textColor="@color/home_txt"
+                        android:textSize="13sp"
                         app:layout_constraintBaseline_toBaselineOf="@+id/home_chanpin"
                         app:layout_constraintEnd_toStartOf="@+id/home_newman"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -146,9 +136,9 @@
                         android:gravity="center"
                         android:paddingTop="@dimen/dp_6"
                         android:paddingBottom="@dimen/dp_5"
-                        android:textSize="13sp"
                         android:text="新人福利"
                         android:textColor="@color/home_txt"
+                        android:textSize="13sp"
                         app:layout_constraintBaseline_toBaselineOf="@+id/home_tiyan"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -212,6 +202,7 @@
 
                     </LinearLayout>
 
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
@@ -221,5 +212,33 @@
             android:layout_height="wrap_content" />
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
+    <ImageView
+        android:id="@+id/home_guajian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_18"
+        android:src="@drawable/guajian"
+        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        app:layout_constraintEnd_toEndOf="parent"
+/>
+    <ImageView
+        android:id="@+id/home_camera"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/relativeLayout2"
+        app:layout_constraintBottom_toBottomOf="@+id/relativeLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingRight="@dimen/dp_18"
+        android:paddingBottom="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_28"
+        android:paddingLeft="@dimen/dp_18"
+        android:src="@drawable/home_camera" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/dp_200" />
 </androidx.constraintlayout.widget.ConstraintLayout>

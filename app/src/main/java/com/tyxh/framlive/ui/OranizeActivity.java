@@ -435,6 +435,7 @@ public class OranizeActivity extends LiveBaseActivity {
             mPersonalJigou.setText(couMechanism.getMeAddress());
             mPersonalId.setText("ID:" + jigou_id);
             mPersonalGeren.setText(couMechanism.getMeIntroduce());
+            Glide.with(this).load(couMechanism.getMeLogo()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).centerCrop().into(mPersonalHead);
             mLocalMedias_bt.clear();
             mLocalMediasBt_strs.clear();
             List<UserDetailBean.RetDataBean.CouMechanismBean.CouPicBean> couPiclist = couMechanism.getCouPiclist();
@@ -467,7 +468,6 @@ public class OranizeActivity extends LiveBaseActivity {
         }
         if (retData.getUser() != null) {
             mNickname = retData.getUser().getNickname();
-            Glide.with(this).load(retData.getUser().getIco()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).centerCrop().into(mPersonalHead);
         }
         if (retData.getServicePackages() != null) {
             mStr_noSelects.clear();

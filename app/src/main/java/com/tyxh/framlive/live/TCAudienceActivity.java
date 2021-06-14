@@ -225,7 +225,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private BroadcastTimerTask mBroadcastTimerTask;    // 定时任务
     protected long mLeft_second = 70;
     private Timer mBroadcastTimer;        // 定时的 Timer
-    private TextView mtv_name, mtv_gg, mtv_id, mtv_date, mtv_jg, mtv_title, mtv_ctcTm, mtv_ctcleftTm, mDigLmTm;
+    private TextView mtv_name, mtv_gg, mtv_id, mtv_date, mtv_jg, mtv_title, mtv_ctcTm, mtv_ctcleftTm, mDigLmTm,mDigCz;
     private LinearLayout ll_conline;//连麦时上面的布局展示--连麦时间、剩余可用时间
     private TXCloudVideoView mtx_contact;
     private FrameLayout mfram_contact;
@@ -323,6 +323,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         mtv_title = findViewById(R.id.cam_title);
         mtv_ctcTm = findViewById(R.id.video_ctc_time);
         mDigLmTm = findViewById(R.id.dig_lm_tm);
+        mDigCz = findViewById(R.id.textView143);
         mtv_ctcleftTm = findViewById(R.id.video_ctc_lefttm);
         ll_conline = findViewById(R.id.video_ll_contactline);
         mtx_contact = findViewById(R.id.video_player1);
@@ -376,6 +377,12 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             @Override
             public void onCancelClickListener() {
 
+            }
+        });
+        mDigCz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TCAudienceActivity.this, BuyzActivity.class));
             }
         });
     }
@@ -1909,7 +1916,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             if (mCarDialog != null) {
                 mCarDialog.getMineAsset();
             }
-            getMineAsset();
+             getMineAsset();
         } else if (message.getCode() == 1005) {
             ToastUtil.showToast(this, "登录过期，请重新登录!");
             finish();
@@ -2129,7 +2136,11 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                             map.put("platform", "1");//1：安卓2：ios
                             map.put("proType", select_bean.getProType());
                             map.put("proId", select_bean.getProId());
-                            mWebSocketClient.send(new Gson().toJson(map));
+                            try {
+                                mWebSocketClient.send(new Gson().toJson(map));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             proType = select_bean.getProType();
                             select_bean = null;
                         }

@@ -161,7 +161,7 @@ public class BindPhoneActivity extends LiveBaseActivity {
                 super.onSuccessListener(result);
                 BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
                 if (baseBean.getRetCode() == 0) {
-                    getUserInfo();
+                    getUserInfo(token);
                 } else {
                     hideLoad();
                     ToastShow(baseBean.getRetMsg());
@@ -188,7 +188,7 @@ public class BindPhoneActivity extends LiveBaseActivity {
                 if (loginBean.getRetCode() == 0) {
                     Constant.TOKEN = "bearer " + loginBean.getRetData().getToken();
                     LiveShareUtil.getInstance(BindPhoneActivity.this).putToken("bearer " + loginBean.getRetData().getToken());
-                    getUserInfo();
+                    getUserInfo("bearer " + loginBean.getRetData().getToken());
                 } else {
                     ToastShow(loginBean.getRetMsg());
                     hideLoad();
@@ -203,8 +203,8 @@ public class BindPhoneActivity extends LiveBaseActivity {
     }
 
     /*获取用户信息*/
-    private void getUserInfo() {
-        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getUserInfo(token), new CommonObserver<UserInfoBean>() {
+    private void getUserInfo(String tk) {
+        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getUserInfo(tk), new CommonObserver<UserInfoBean>() {
             @Override
             public void onResult(UserInfoBean userInfoBean) {
                 if (userInfoBean.getRetCode() == 0) {

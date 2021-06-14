@@ -84,19 +84,22 @@ public class FindFragment extends Fragment {
         mFindWonderFragment = new FindWonderFragment();
         mFindLimitmFragment = new FindLimitmFragment();
         Bundle arguments = getArguments();
-        if(arguments!=null){
+        if (arguments != null) {
             String msg = arguments.getString("msg");
-            if(msg.equals("ever")){
+            if (msg.equals("ever")) {
                 getChildFragmentManager().beginTransaction().add(R.id.find_fram, mFindNoviceFragment).commit();
                 getChildFragmentManager().beginTransaction().show(mFindNoviceFragment);
                 Bundle bundle = new Bundle();
-                bundle.putInt("index",1);
+                bundle.putInt("index", 1);
                 mFindNoviceFragment.setArguments(bundle);
-            }else if(msg.equals("pipei")){
+            } else if (msg.equals("pipei")) {
                 getChildFragmentManager().beginTransaction().add(R.id.find_fram, mFindMatchFragment).commit();
                 getChildFragmentManager().beginTransaction().show(mFindMatchFragment);
+            } else if (msg.equals("act")) {
+                getChildFragmentManager().beginTransaction().add(R.id.find_fram, mFindWonderFragment).commit();
+                getChildFragmentManager().beginTransaction().show(mFindWonderFragment);
             }
-        }else {
+        } else {
             getChildFragmentManager().beginTransaction().add(R.id.find_fram, mFindNoviceFragment).commit();
             getChildFragmentManager().beginTransaction().show(mFindNoviceFragment);
         }
@@ -110,12 +113,12 @@ public class FindFragment extends Fragment {
 
 
     @OnClick({R.id.find_pipeiview, R.id.find_pipei, R.id.find_xinshouview, R.id.find_xinshou, R.id.find_wonderview, R.id.find_wonder,
-            R.id.find_limittmview, R.id.find_limittm,R.id.textView5})
+            R.id.find_limittmview, R.id.find_limittm, R.id.textView5})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textView5:
                 Intent intent = new Intent(getActivity(), MailListActivity.class);
-                intent.putExtra("index","end");
+                intent.putExtra("index", "end");
                 startActivity(intent);
                 break;
             case R.id.find_xinshouview:
@@ -125,7 +128,7 @@ public class FindFragment extends Fragment {
                 mFindWonderview.setBackgroundResource(R.drawable.home_tranthreetran);
                 mFindLimittmview.setBackgroundResource(R.drawable.home_tranthreetran);
                 Bundle bundle = new Bundle();
-                bundle.putInt("index",0);
+                bundle.putInt("index", 0);
                 mFindNoviceFragment.setArguments(bundle);
                 getChildFragmentManager().beginTransaction().replace(R.id.find_fram, mFindNoviceFragment).commit();
                 getChildFragmentManager().beginTransaction().show(mFindNoviceFragment);
@@ -163,16 +166,17 @@ public class FindFragment extends Fragment {
                 break;
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void getEventMsg(EventMessage msg){
-        if(msg.getMessage().equals("ever")){
+    public void getEventMsg(EventMessage msg) {
+        if (msg.getMessage().equals("ever")) {
             mFindPipeiview.setBackgroundResource(R.drawable.home_tranthreetran);
             mFindXinshouview.setBackgroundResource(R.drawable.home_tranthree);
             mFindWonderview.setBackgroundResource(R.drawable.home_tranthreetran);
             mFindLimittmview.setBackgroundResource(R.drawable.home_tranthreetran);
             getChildFragmentManager().beginTransaction().replace(R.id.find_fram, mFindNoviceFragment).commitAllowingStateLoss();
             getChildFragmentManager().beginTransaction().show(mFindNoviceFragment);
-        }else if(msg.getMessage().equals("pipei")){
+        } else if (msg.getMessage().equals("pipei")) {
             mFindPipeiview.setBackgroundResource(R.drawable.home_tranthree);
             mFindXinshouview.setBackgroundResource(R.drawable.home_tranthreetran);
             mFindWonderview.setBackgroundResource(R.drawable.home_tranthreetran);
@@ -181,8 +185,9 @@ public class FindFragment extends Fragment {
             getChildFragmentManager().beginTransaction().show(mFindMatchFragment);
         }
     }
+
     /*获取我的关注*/
-    private void getMyGz(){
+    private void getMyGz() {
         /*LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyAttention(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
@@ -204,9 +209,9 @@ public class FindFragment extends Fragment {
 
     }
 
-    private void toSetAttenData(List<AttentionBean.RetDataBean> dataBeanList){
+    private void toSetAttenData(List<AttentionBean.RetDataBean> dataBeanList) {
         mAttens.clear();
-        List<AttentionBean.RetDataBean.DatasBean> datasBeans  = new ArrayList<>();
+        List<AttentionBean.RetDataBean.DatasBean> datasBeans = new ArrayList<>();
         for (int i = 0; i < dataBeanList.size(); i++) {
             AttentionBean.RetDataBean retDataBean = dataBeanList.get(i);
             List<AttentionBean.RetDataBean.DatasBean> datas = retDataBean.getDatas();
@@ -221,6 +226,24 @@ public class FindFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getMyGz();
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            String msg = arguments.getString("msg");
+            if (msg.equals("act")) {
+                mFindPipeiview.setBackgroundResource(R.drawable.home_tranthreetran);
+                mFindXinshouview.setBackgroundResource(R.drawable.home_tranthreetran);
+                mFindWonderview.setBackgroundResource(R.drawable.home_tranthree);
+                mFindLimittmview.setBackgroundResource(R.drawable.home_tranthreetran);
+                if (!mFindWonderFragment.isAdded()) {
+                    getChildFragmentManager().beginTransaction().add(R.id.find_fram, mFindWonderFragment).commit();
+                } else {
+                    getChildFragmentManager().beginTransaction().replace(R.id.find_fram, mFindWonderFragment).commit();
+                }
+                getChildFragmentManager().beginTransaction().show(mFindWonderFragment);
+            }
+            setArguments(null);
+        }
+
     }
 
     @Override

@@ -53,7 +53,7 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
         Object payType = bean.getPayType();
         if(orderType==1){
             if(null!=payType){
-                vh.mItemCzTitle.setText((Integer)payType==1?"微信充值":"支付宝充值");
+                vh.mItemCzTitle.setText((Double)payType==1?"微信充值":"支付宝充值");
             }
         }else{
             vh.mItemCzTitle.setText("收益兑钻");

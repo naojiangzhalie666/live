@@ -329,7 +329,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
 
     /*我的资产*/
     private void getMineAsset() {
-        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getAsset(LiveShareUtil.getInstance(getActivity()).getToken(), mUserInfo.getRetData().getId()), new CommonObserver<AssetBean>() {
+        DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getAsset(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken(), mUserInfo.getRetData().getId()), new CommonObserver<AssetBean>() {
             @Override
             public void onResult(AssetBean assetBean) {
                 if (assetBean.getRetCode() == 0) {

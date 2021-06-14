@@ -178,7 +178,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     private GiftAnimatorLayout mGiftAnimatorLayout;   //礼物动画和礼物弹幕的显示
     private GiftAdapter mGiftAdapter;
     private GiftInfoDataHandler mGiftInfoDataHandler;
-    private GuanzDialog mGuanzDialog;
+    protected GuanzDialog mGuanzDialog;
     public UserInfoBean mUserInfo;
     public String mToken;
     private List<UserDetailBean.RetDataBean.ServicePackagesBean> mCar_strs;
@@ -398,6 +398,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
     /*邀请观众进行连麦*/
     private void startLinkMic(String userid, String ico) {
+        Toast.makeText(this, "连麦请求中...", Toast.LENGTH_LONG).show();
         mLiveRoom.requestJoinUserAnchor("连麦", userid, new RequestJoinAnchorCallback() {
             @Override
             public void onAccept() {
