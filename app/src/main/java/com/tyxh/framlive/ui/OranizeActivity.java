@@ -175,7 +175,13 @@ public class OranizeActivity extends LiveBaseActivity {
             mPersonalFouredt.setVisibility(View.GONE);
             mPersonalFiveedt.setVisibility(View.GONE);
             mCons_bt.setVisibility(View.VISIBLE);
-            mImgvMore.setVisibility(View.VISIBLE);
+            if(mPower ==Constant.POWER_NORMAL) {
+                mImgvMore.setVisibility(View.VISIBLE);
+                mImgvShare.setVisibility(View.GONE);
+            }else{
+                mImgvShare.setVisibility(View.VISIBLE);
+                mImgvMore.setVisibility(View.GONE);
+            }
         } else {//是自己身份点击过来的--且为咨询机构可修改
             if (mPower == Constant.POWER_ZIXUNJIGOU) {
                 mPersonalOneedt.setVisibility(View.VISIBLE);
@@ -805,10 +811,10 @@ public class OranizeActivity extends LiveBaseActivity {
 
     private void initShare() {
         mShareDialog = new ShareDialog(this);
-        UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");
-        web.setTitle("边框心理");//标题
-        web.setThumb(new UMImage(this, R.drawable.mine_live));  //缩略图
-        web.setDescription("my description");//描述
+        UMWeb web = new UMWeb(Constant.SHARE_URL);
+        web.setTitle(Constant.SHARE_NAME);//标题
+        web.setThumb(new UMImage(this, R.drawable.share_suolue));  //缩略图
+        web.setDescription(Constant.SHARE_MS);//描述
 
         mShareDialog.setOnItemClickListener(new ShareDialog.OnItemClickListener() {
             @Override

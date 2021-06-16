@@ -215,6 +215,7 @@
     <ImageView
         android:id="@+id/home_guajian"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/dp_18"
         android:src="@drawable/guajian"

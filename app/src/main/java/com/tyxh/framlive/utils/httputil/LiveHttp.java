@@ -3,20 +3,19 @@ package com.tyxh.framlive.utils.httputil;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tyxh.framlive.base.ApiService;
-import com.tyxh.framlive.base.LiveApplication;
-import com.tyxh.framlive.bean.EventMessage;
+import com.google.gson.Gson;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.ljy.devring.util.NetworkUtil;
 import com.superc.yyfflibrary.utils.ToastUtil;
+import com.tyxh.framlive.base.ApiService;
+import com.tyxh.framlive.base.LiveApplication;
+import com.tyxh.framlive.bean.EventMessage;
 
 import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.Observable;
-
-import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 
 
 public class LiveHttp {
@@ -94,10 +93,18 @@ public class LiveHttp {
                  if (backListener != null) {
                     backListener.onErrorLIstener(throwable.toString());
                 }
-                 if(throwable.errorType==HTTP_ERROR){//重新登录
-                     EventBus.getDefault().post(new EventMessage(1005));
-                 }
+                try {
+                    JSONObject jsonObject =JSONObject.parseObject(new Gson().toJson(throwable));
+                    JSONObject throwab = jsonObject.getJSONObject("throwable");
+                    int code = throwab.getInteger("code");
+                    if(code == 401){
+                        EventBus.getDefault().post(new EventMessage(1005));
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "onError: 解析异常= " + e.toString());
+                }
                 Log.e(TAG, "onError: " + throwable.toString());
+//                Log.e(TAG, "onError: " + new Gson().toJson(throwable) );
             }
         }, TAG);
     }

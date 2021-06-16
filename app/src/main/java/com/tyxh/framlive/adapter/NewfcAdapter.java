@@ -40,9 +40,9 @@ public class NewfcAdapter extends RecyclerView.Adapter<NewfcAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder vh, int position) {
         String bean = mLists.get(position);
-        vh.mItemNewfcTitle.setText("V1.1"+position+"新版功能最是厉害");
-        vh.mItemNewfcContent.setText("你告诉大家各位哦来了送给");
-        vh.mItemNewfcTime.setText("发布时间："+"2021.12.2"+position);
+        vh.mItemNewfcTitle.setText("V1.0"+position+"系统");
+        vh.mItemNewfcContent.setText("希望大家使用愉快");
+        vh.mItemNewfcTime.setText("发布时间："+"2021.12.02");
 
 
     }

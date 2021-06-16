@@ -432,10 +432,10 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
 
     private void initShare() {
         mShareDialog = new ShareDialog(getActivity());
-        UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");
-        web.setTitle("边框心理");//标题
-        web.setThumb(new UMImage(getActivity(), R.drawable.mine_live));  //缩略图
-        web.setDescription("my description");//描述
+        UMWeb web = new UMWeb(Constant.SHARE_URL);
+        web.setTitle(Constant.SHARE_NAME);//标题
+        web.setThumb(new UMImage(getActivity(), R.drawable.share_suolue));  //缩略图
+        web.setDescription(Constant.SHARE_MS);//描述
 
         mShareDialog.setOnItemClickListener(new ShareDialog.OnItemClickListener() {
             @Override

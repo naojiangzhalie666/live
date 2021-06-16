@@ -5,11 +5,26 @@ import com.tyxh.xzb.Constantc;
 public class Constant {
 
     /*app信息*/
+    /*
+     * 正式地址  ：https://appshop.bkxinli.com/portal/
+     * 测试地址  ：http://172.16.66.225:9091/
+     * */
+    public static final String BASE_URL = "https://appshop.bkxinli.com/portal/";
+    public static final String BASE_WEB = "https://appshop.bkxinli.com/bkapp/";//各种web页拼接地址
+    /**
+     * Socket地址：
+     * 正式地址   ：https://appshop.bkxinli.com/portal/socket/
+     * 测试地址   ：http://172.16.66.225:9091/socket/
+     * 云龙地址   ：http://172.16.3.235:8081/socket/
+     */
+    public static final String SOCKET_URL = "wss://appshop.bkxinli.com/portal/socket/";
+    /*分享公共*/
+    public static final String SHARE_URL = "http://www.tianyuxh.com/";
+    public static final String SHARE_NAME = "边框心理";
+    public static final String SHARE_MS  ="整合心理咨询机构与心理咨询师，为广大老百姓提供心理健康服务的平台";
+
     public static final boolean PRINT_LOG = true;
     public static final boolean IS_JIAMI = false;
-    public static final String BASE_URL = "http://172.16.66.225:9091/";
-    //云龙Socket地址   http://172.16.3.235:8081/socket/
-    public static final String SOCKET_URL = "http://172.16.66.225:9091/socket/";
     public static String TOKEN = null;
     public static boolean has_navi = false;
 

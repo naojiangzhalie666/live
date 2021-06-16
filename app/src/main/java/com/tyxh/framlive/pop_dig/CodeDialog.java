@@ -34,6 +34,13 @@ public class CodeDialog extends Dialog {
                 return false;
             }
         });
+        findViewById(R.id.imageView16).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                savePhoto();
+                return false;
+            }
+        });
     }
 
     private void savePhoto(){

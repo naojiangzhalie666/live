@@ -83,8 +83,8 @@ public class SjAdapter extends RecyclerView.Adapter<SjAdapter.ViewHolder> {
         vh.mItemSjLefKa.setVisibility(View.INVISIBLE);
         if (bean.getProHistory() != null) {
             SjBean.RetDataBean.ListBean.ProHistoryBean proHistory = bean.getProHistory();
-            int proType = proHistory.getProType();
-            switch (proType) {
+            int proConType = proHistory.getProConType();
+            switch (proConType) {
                 case 2://卡
                     vh.mItemSjLefKa.setVisibility(View.VISIBLE);
                     vh.mItemSjLefKa.setText("-" + proHistory.getProName());

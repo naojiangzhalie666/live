@@ -381,6 +381,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
 
     private void changeSelect() {
         if (is_lw) {
+            if(giftInfoList_left!=null)
             initGiftData(giftInfoList_left);
             if (mGiftController.getSelectGiftInfo() != null && mGiftController.getSelectGiftInfo().price > Double.parseDouble(money_zuan)) {
                 mtv_cz.setText("充值");

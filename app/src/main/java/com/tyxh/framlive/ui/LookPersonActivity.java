@@ -181,7 +181,13 @@ public class LookPersonActivity extends LiveBaseActivity {
             mPersonalFouredt.setVisibility(View.GONE);
             mPersonalBtShare.setVisibility(View.VISIBLE);
             mPersonalBtTalk.setVisibility(View.VISIBLE);
-            mPersonalThireDd.setVisibility(View.VISIBLE);
+            if(mPower ==Constant.POWER_NORMAL) {
+                mPersonalThireDd.setVisibility(View.VISIBLE);
+                mPersonalShare.setVisibility(View.GONE);
+            }else{
+                mPersonalShare.setVisibility(View.VISIBLE);
+                mPersonalThireDd.setVisibility(View.GONE);
+            }
         } else {//是自己身份点击过来的--且是咨询师
             if (mPower == Constant.POWER_ZIXUNSHI) {
                 mPersonalOneedt.setVisibility(View.VISIBLE);
@@ -567,12 +573,12 @@ public class LookPersonActivity extends LiveBaseActivity {
                 mStr_listones.clear();
                 if (interest.endsWith(",")) {
                     interest = interest.substring(0, interest.length() - 1);
-                    String[] split = interest.split(",");
-                    for (int i = 0; i < split.length; i++) {
-                        mStr_listones.add(split[i]);
-                    }
-                    mPersonOneAdapter.notifyDataSetChanged();
                 }
+                String[] split = interest.split(",");
+                for (int i = 0; i < split.length; i++) {
+                    mStr_listones.add(split[i]);
+                }
+                mPersonOneAdapter.notifyDataSetChanged();
             }
 
         }
@@ -669,10 +675,10 @@ public class LookPersonActivity extends LiveBaseActivity {
 
     private void initShare() {
         mShareDialog = new ShareDialog(this);
-        UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");
-        web.setTitle("边框心理");//标题
-        web.setThumb(new UMImage(this, R.drawable.mine_live));  //缩略图
-        web.setDescription("my description");//描述
+        UMWeb web = new UMWeb(Constant.SHARE_URL);
+        web.setTitle(Constant.SHARE_NAME);//标题
+        web.setThumb(new UMImage(this, R.drawable.share_suolue));  //缩略图
+        web.setDescription(Constant.SHARE_MS);//描述
 
         mShareDialog.setOnItemClickListener(new ShareDialog.OnItemClickListener() {
             @Override

@@ -33,6 +33,7 @@
             android:id="@+id/msg_item_level"
             android:layout_width="wrap_content"
             android:textSize="9sp"
+            android:visibility="gone"
             android:layout_toRightOf="@+id/msg_item_name"
             android:paddingLeft="3dp"
             android:layout_marginLeft="6dp"

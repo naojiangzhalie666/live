@@ -102,7 +102,7 @@ public class OffsupportActivity extends LiveBaseActivity {
     private void toGetGl() {
         mOffsupportRecy.setAdapter(mLiveglAdapter);
         mLive_datas.clear();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             Map<String,Object > map =new HashMap<>();
             map.put("select",false);
             List<String> list = new ArrayList<>();
@@ -122,7 +122,7 @@ public class OffsupportActivity extends LiveBaseActivity {
     private void toGetNew() {
         mOffsupportRecy.setAdapter(mFcAdapter_new);
         mLists_new.clear();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             mLists_new.add("");
         }
         mFcAdapter_new.notifyDataSetChanged();
@@ -134,7 +134,7 @@ public class OffsupportActivity extends LiveBaseActivity {
     private void toGetTg() {
         mOffsupportRecy.setAdapter(mFcAdapter_act);
         mLists_act.clear();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             mLists_act.add("");
         }
         mFcAdapter_act.notifyDataSetChanged();

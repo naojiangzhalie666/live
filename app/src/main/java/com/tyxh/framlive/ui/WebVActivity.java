@@ -7,9 +7,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.tyxh.framlive.R;
-import com.tyxh.framlive.base.LiveBaseActivity;
 import com.just.agentweb.AgentWeb;
+import com.tyxh.framlive.R;
+import com.tyxh.framlive.base.Constant;
+import com.tyxh.framlive.base.LiveBaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +26,6 @@ public class WebVActivity extends LiveBaseActivity {
     View mWebLine;
     @BindView(R.id.web_ll)
     LinearLayout mWebLl;
-    private String base_wb = "http://172.16.66.225/bkapp/";
     private AgentWeb mAgentWeb;
 
     public static void startMe(Activity activity, String str) {
@@ -50,7 +50,7 @@ public class WebVActivity extends LiveBaseActivity {
                 .useDefaultIndicator()
                 .createAgentWeb()
                 .ready()
-                .go(base_wb + data + ".html");
+                .go(Constant.BASE_WEB + data + ".html");
 
 /*
         WebSettings webSettings = mWebView.getSettings();

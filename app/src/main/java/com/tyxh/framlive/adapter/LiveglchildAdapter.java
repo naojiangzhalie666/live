@@ -41,7 +41,7 @@ public class LiveglchildAdapter extends RecyclerView.Adapter<LiveglchildAdapter.
     public void onBindViewHolder(ViewHolder vh, int position) {
         String bean = mLists.get(position);
         vh.mItemLchildTitle.setText((position+1)+"、直播常见工具");
-        vh.mItemLchildContent.setText("你就给卡了我那么狗我I恩哦你问哦I我io哦你傻瓜都I昂哦哦gia我饿");
+        vh.mItemLchildContent.setText("手机、电脑，网络");
 
     }
 

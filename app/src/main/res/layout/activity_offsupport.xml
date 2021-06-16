@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:paddingTop="@dimen/title_top"
-            android:text="官方扶持"
+            android:text="咨询师须知"
             android:textColor="@color/black"
             android:textSize="@dimen/titile_size" />
     </RelativeLayout>

@@ -141,7 +141,7 @@ public class ChatFragment extends BaseFragment {
         mcon_tp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mPower == Constant.POWER_NORMAL) {//本人为普通  跳转咨询师/机构详情
+               /* if (mPower == Constant.POWER_NORMAL) {//本人为普通  跳转咨询师/机构详情*/
                     switch (mType) {
                         case 1:
                             if (mHeadDialog != null) {
@@ -164,13 +164,13 @@ public class ChatFragment extends BaseFragment {
                             startActivity(int_orgi);
                             break;
                     }
-                } else {//本人为咨询师/机构--弹出信息
+               /* } else {//本人为咨询师/机构--弹出信息
                     if (mHeadDialog != null) {
                         mHeadDialog.show();
                     } else {
                         ToastUtil.showToast(getActivity(), "用户信息获取失败，退出重试");
                     }
-                }
+                }*/
 
             }
         });
@@ -219,11 +219,9 @@ public class ChatFragment extends BaseFragment {
             MessageInfo msg = buildTextMessage("私聊1钻石/每条");
             mChatLayout.getChatManager().getCurrentProvider().getDataSource().add(msg);
             mChatLayout.getChatManager().getCurrentProvider().updateAdapter(DATA_CHANGE_TYPE_REFRESH, 0);
-            mtv_content.setText("擅长方向");
         } else {
             mChatLayout.getInputLayout().disableServiceAction(true);
             mChatLayout.getInputLayout().disableSjbgAction(false);
-            mtv_content.setText("关注方向");
             getContHis(mChatInfo.getId());
         }
         mChatLayout.getMessageLayout().setOnItemClickListener(new MessageLayout.OnItemClickListener() {
@@ -333,30 +331,6 @@ public class ChatFragment extends BaseFragment {
         }
         if (is_first) {
             getDetail(mChatInfo.getId());
-            boolean lm = mChatInfo.isLm();
-            if(lm){       //连线类型[1:视频；2:语音]
-                int lm_type = mChatInfo.getLm_type();
-                if(lm_type ==1){
-                    if(mPower == Constant.POWER_NORMAL) {//我是用户  肯定弹
-                        getUseData(false);
-                    }else if(mType>1){//我是咨询师  对方也是or机构   我也会弹
-                        getUseData(false);
-                    }else {//我是咨询师   对方是用户  那就不弹  对方弹
-                        toCallVideo(new LiveCotctBean.RetDataBean(),false);
-                    }
-                }else if(lm_type ==2){
-                    if(mPower == Constant.POWER_NORMAL) {//我是用户  肯定弹
-                        getUseData(true);
-                    }else if(mType>1){//我是咨询师  对方也是or机构   我也会弹
-                        getUseData(true);
-                    }else {//我是咨询师   对方是用户  那就不弹  对方弹
-                        toCallAudio(new LiveCotctBean.RetDataBean(),false);
-                    }
-                }
-
-
-            }
-
             is_first = false;
         }
      /*   mInputLayout = mChatLayout.getInputLayout();
@@ -618,7 +592,7 @@ public class ChatFragment extends BaseFragment {
                 Log.d(TAG, new Gson().toJson(result));
                 if (result.getRetCode() == 0) {
                     UserDetailBean.RetDataBean retData = result.getRetData();
-                    if (retData != null) {
+                    if (retData != null&&!getActivity().isFinishing()) {
                         setUserDatil(retData);
                     }
                 } else {
@@ -644,15 +618,19 @@ public class ChatFragment extends BaseFragment {
             mtv_title.setText(user.getNickname());
             Glide.with(getActivity()).load(user.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mimgv_head);
             String interest = "";
-            if (mPower == Constant.POWER_NORMAL) {//擅长方向---机构没有添加擅长方向的位置
-                List<UserDetailBean.RetDataBean.CounselorBeansBean> counselorBeans = data.getCounselorBeans();
-                if (counselorBeans != null && counselorBeans.size() > 0) {
-                    UserDetailBean.RetDataBean.CounselorBeansBean counselorBeansBean = counselorBeans.get(0);
-                    interest = counselorBeansBean.getInterests();
-                    mtv_title.setText(counselorBeansBean.getCouName());
-                }
-            } else {//关注方向
+            if(mType==1){//被聊人为普通用户---关注方向
+                mtv_content.setText("关注方向");
                 interest = user.getInterests();
+            }else{//擅长方向---机构没有添加擅长方向的位置
+                mtv_content.setText("擅长方向");
+                if(mType ==2){
+                    List<UserDetailBean.RetDataBean.CounselorBeansBean> counselorBeans = data.getCounselorBeans();
+                    if (counselorBeans != null && counselorBeans.size() > 0) {
+                        UserDetailBean.RetDataBean.CounselorBeansBean counselorBeansBean = counselorBeans.get(0);
+                        interest = counselorBeansBean.getInterests();
+                        mtv_title.setText(counselorBeansBean.getCouName());
+                    }
+                }
             }
             mStringList.clear();
             if (!TextUtils.isEmpty(interest)) {
@@ -684,6 +662,28 @@ public class ChatFragment extends BaseFragment {
                 if(couMechanism!=null){
                     Glide.with(getActivity()).load(couMechanism.getMeLogo()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mimgv_head);
                     mtv_title.setText(couMechanism.getMeName());
+                }
+            }
+            /*订单跳转过来的时候判断进行那种连麦方式*/
+            boolean lm = mChatInfo.isLm();
+            if(lm){       //连线类型[1:视频；2:语音]
+                int lm_type = mChatInfo.getLm_type();
+                if(lm_type ==1){
+                    if(mPower == Constant.POWER_NORMAL) {//我是用户  肯定弹
+                        getUseData(false);
+                    }else if(mType>1){//我是咨询师  对方也是or机构   我也会弹
+                        getUseData(false);
+                    }else {//我是咨询师   对方是用户  那就不弹  对方弹
+                        toCallVideo(new LiveCotctBean.RetDataBean(),false);
+                    }
+                }else if(lm_type ==2){
+                    if(mPower == Constant.POWER_NORMAL) {//我是用户  肯定弹
+                        getUseData(true);
+                    }else if(mType>1){//我是咨询师  对方也是or机构   我也会弹
+                        getUseData(true);
+                    }else {//我是咨询师   对方是用户  那就不弹  对方弹
+                        toCallAudio(new LiveCotctBean.RetDataBean(),false);
+                    }
                 }
             }
         }

@@ -61,7 +61,7 @@
         android:drawableTop="@drawable/mine_fuchi"
         android:drawablePadding="@dimen/dp_4"
         android:gravity="center"
-        android:text="官方支持"
+        android:text="咨询师须知"
         android:textColor="@color/sixsixsix"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/fw_speak"

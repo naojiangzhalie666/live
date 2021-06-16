@@ -491,8 +491,9 @@ public class EdtmsgActivity extends LiveBaseActivity {
                 UploadBean bean = new Gson().fromJson(result.toString(), UploadBean.class);
                 if (bean.getRetCode() == 0) {
                     pic_url = bean.getRetData().getUrl();
+                }else {
+                    ToastShow(bean.getRetMsg());
                 }
-                ToastShow(bean.getRetMsg());
                 hideLoad();
             }
 

@@ -97,7 +97,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     private List<TCSimpleUserInfo> mOnlin_entits;
     private int mPower;
     private ShareDialog mShareDialog;
-
+    private BaseDialog mBase_closelm;       //确认断开连麦
 
 
 
@@ -142,13 +142,26 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
             @Override
             public void onKickUser(String userID) {
                 if (userID != null) {
-                    for (AnchorInfo item : mPusherList) {
-                        if (userID.equalsIgnoreCase(item.userID)) {
-                            onAnchorExit(item);
-                            break;
+                    mBase_closelm.setOnItemClickListener(new BaseDialog.OnItemClickListener() {
+                        @Override
+                        public void onSureClickListener() {
+                            for (AnchorInfo item : mPusherList) {
+                                if (userID.equalsIgnoreCase(item.userID)) {
+                                    onAnchorExit(item);
+                                    break;
+                                }
+                            }
+                            mLiveRoom.kickoutJoinAnchor(userID);
                         }
-                    }
-                    mLiveRoom.kickoutJoinAnchor(userID);
+
+                        @Override
+                        public void onCancelClickListener() {
+
+                        }
+                    });
+                    mBase_closelm.show();
+
+
                 }
             }
         });
@@ -223,6 +236,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 startActivity(intent);
             }
         });
+        mBase_closelm = new BaseDialog.BaseBuild().setCancel("取消").setSure("确定").setTitle("确定断开连麦？").build(TCCameraAnchorActivity.this);
     }
 
     /*邀请观众进行连麦*/
@@ -554,6 +568,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         } else if (id == R.id.btn_close) {
             if (mSecond == 0) {
                 finish();
+           /* }  else if(false){
+                mBase_closelm.show();*/
             } else {
                 showExitInfoDialog("当前正在直播，是否退出直播？", false);
             }
@@ -614,10 +630,10 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
 
     private void initShare(){
         mShareDialog = new ShareDialog(this);
-        UMWeb web = new UMWeb("https://lanhuapp.com/web/#/item/project/stage?pid=90197f71-56ef-4ecd-8d1b-2fdf22fc9d4c");
-        web.setTitle("边框心理");//标题
-        web.setThumb(new UMImage(this, com.tyxh.framlive.R.drawable.mine_live));  //缩略图
-        web.setDescription("my description");//描述
+        UMWeb web = new UMWeb(Constant.SHARE_URL);
+        web.setTitle(Constant.SHARE_NAME);//标题
+        web.setThumb(new UMImage(this, R.drawable.share_suolue));  //缩略图
+        web.setDescription(Constant.SHARE_MS);//描述
 
         mShareDialog.setOnItemClickListener(new ShareDialog.OnItemClickListener() {
             @Override
