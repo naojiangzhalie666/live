@@ -11,6 +11,7 @@
     <string name="errcode_deny">发送被拒绝</string>
     <string name="errcode_unsupported">不支持错误</string>
     <string name="errcode_unknown">发送返回</string>
+    <string name="data_nomore">---- 亲,没有更多了哦🙂 ----</string>
 
     <!--dataPick-->
     <string name="cancel">取消</string>

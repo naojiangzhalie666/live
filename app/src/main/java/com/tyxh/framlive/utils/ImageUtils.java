@@ -82,6 +82,7 @@ public class ImageUtils {
         }catch (Exception e) {
             e.getStackTrace();
             Toast.makeText(context, "保存失败，可手动截屏保存", Toast.LENGTH_SHORT).show();
+            return;
         } finally {
             try {
                 if (outStream != null) {

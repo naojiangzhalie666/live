@@ -206,6 +206,7 @@ public class ConnectRecordActivity extends LiveBaseActivity {
             @Override
             public void onTimeSelected(long timestamp) {
                 mtv.setText(DateFormatUtils.long2WithStrDay(timestamp, false, false));
+                mNormalSmart.setEnableLoadMore(true);
                 page = 1;
                 toGetdata();
             }

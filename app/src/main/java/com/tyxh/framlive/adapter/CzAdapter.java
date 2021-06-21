@@ -49,7 +49,7 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
         vh.mItemCzCreattime.setText("创建时间：" + bean.getCreateDate());
         vh.mItemCzCode.setText("订单编号：" + bean.getOrderSn());
         vh.mItemCzMoney.setText(bean.getAmount() + "");
-        int orderType = bean.getOrderType();
+      /*  int orderType = bean.getOrderType();
         Object payType = bean.getPayType();
         if(orderType==1){
             if(null!=payType){
@@ -57,13 +57,12 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
             }
         }else{
             vh.mItemCzTitle.setText("收益兑钻");
-        }
-
-
+        }*/
         OrderBean.RetDataBean.ListBean.DiamondBagBean diamondBag = bean.getDiamondBag();
         RoundedCorners roundedCorners = new RoundedCorners(15);
         Glide.with(mContext).load(R.drawable.live_defaultimg).apply(new RequestOptions().transform(new CenterCrop(), roundedCorners)).into(vh.mItemCzHead);
         vh.mItemCzZsnum.setText("钻石数量：" + diamondBag.getProNum());
+        vh.mItemCzTitle.setText(diamondBag.getProName()+(bean.getOrderType()==2?"收益兑钻":""));
         int discountType = diamondBag.getDiscountType();
         switch (discountType) {//1:加赠;2:折扣;3:特价)
             case 1:
@@ -74,6 +73,7 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
             case 3:
                 break;
         }
+        vh.mItemCzBtstate.setText("更多充值");
         int orderStatus = bean.getOrderStatus();
         switch (orderStatus) {//(1:待支付;2:支付成功;3:关闭;4:退款;5:已评价)
             case 1:
@@ -89,7 +89,7 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
 //                if (position == 2) {
 //                    vh.mItemCzBtstate.setText("更多充值");
 //                } else {
-                vh.mItemCzBtstate.setText("再次购买");
+//                vh.mItemCzBtstate.setText("再次购买");
 //                }
                 break;
             case 3:
@@ -99,7 +99,7 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
 //                if (position == 2) {
 //                    vh.mItemCzBtstate.setText("更多充值");
 //                } else {
-                vh.mItemCzBtstate.setText("再次购买");
+//                vh.mItemCzBtstate.setText("再次购买");
 //                }
                 break;
             case 4:
@@ -109,13 +109,12 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
 //                if (position == 2) {
 //                    vh.mItemCzBtstate.setText("更多充值");
 //                } else {
-                vh.mItemCzBtstate.setText("再次购买");
+//                vh.mItemCzBtstate.setText("再次购买");
 //                }
                 break;
             case 5:
                 break;
         }
-        vh.mItemCzBtstate.setText("更多充值");
         vh.mItemCzBtstate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

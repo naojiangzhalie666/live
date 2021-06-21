@@ -234,11 +234,11 @@ public class FindFragment extends Fragment {
                 mFindXinshouview.setBackgroundResource(R.drawable.home_tranthreetran);
                 mFindWonderview.setBackgroundResource(R.drawable.home_tranthree);
                 mFindLimittmview.setBackgroundResource(R.drawable.home_tranthreetran);
-                if (!mFindWonderFragment.isAdded()) {
-                    getChildFragmentManager().beginTransaction().add(R.id.find_fram, mFindWonderFragment).commit();
-                } else {
+//                if (!mFindWonderFragment.isAdded()) {
+//                    getChildFragmentManager().beginTransaction().add(R.id.find_fram, mFindWonderFragment).commit();
+//                } else {
                     getChildFragmentManager().beginTransaction().replace(R.id.find_fram, mFindWonderFragment).commit();
-                }
+//                }
                 getChildFragmentManager().beginTransaction().show(mFindWonderFragment);
             }
             setArguments(null);

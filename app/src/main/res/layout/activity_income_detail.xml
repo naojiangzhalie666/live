@@ -24,9 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/title"
             android:layout_alignBottom="@+id/title"
+            android:paddingLeft="@dimen/dp_12"
             android:paddingTop="@dimen/title_top"
             android:paddingRight="@dimen/dp_20"
-            android:paddingLeft="@dimen/dp_12"
             app:srcCompat="@drawable/back" />
 
         <TextView
@@ -34,9 +34,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/title_top"
             android:text="收入明细"
             android:textColor="@color/black"
-            android:paddingTop="@dimen/title_top"
             android:textSize="@dimen/titile_size" />
     </RelativeLayout>
 
@@ -179,7 +179,8 @@
 
             <com.scwang.smart.refresh.footer.ClassicsFooter
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:srlTextNothing="@string/data_nomore" />
 
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

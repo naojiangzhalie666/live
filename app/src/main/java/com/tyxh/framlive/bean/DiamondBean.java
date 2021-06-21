@@ -269,10 +269,19 @@ public class DiamondBean {
             private int diamondCount;
             private int limitAmountType;
             private int isShelves;
+            private int firstCharge;
             private String createDate;
             private String modifyDate;
             private int flag;
             private boolean select;
+
+            public int getFirstCharge() {
+                return firstCharge;
+            }
+
+            public void setFirstCharge(int firstCharge) {
+                this.firstCharge = firstCharge;
+            }
 
             public boolean isSelect() {
                 return select;

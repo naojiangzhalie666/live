@@ -35,6 +35,7 @@ import com.tyxh.framlive.thirdpush.MessageNotification;
 import com.tyxh.framlive.thirdpush.PrivateConstants;
 import com.tyxh.framlive.ui.SplashActivity;
 import com.tyxh.framlive.utils.LiveLog;
+import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.xzbgift.important.TUIKitLive;
 import com.tyxh.xzb.important.MLVBLiveRoomImpl;
 import com.tyxh.xzb.utils.login.TCUserMgr;
@@ -49,7 +50,6 @@ public class LiveApplication extends Application {
     private static final String TAG = "LiveApplication";
     public static volatile LiveApplication mInstance;
     public static IWXAPI api;
-    public static final String APP_ID ="1400527451";//腾讯云一键登录appid
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -61,13 +61,20 @@ public class LiveApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        /*同意协议后才可初始化*/
+        boolean agree = LiveShareUtil.getInstance(this).getAgree();
+        if(agree) {
+            toInitAll();
+        }
+    }
+
+    public void toInitAll(){
         init();
         initTent();
         initWachat();
         initUmeng();
         initTuisong();
         initTencentPhone();
-
     }
 
     public static LiveApplication getmInstance() {
@@ -129,7 +136,7 @@ public class LiveApplication extends Application {
 
     }
     private void initTencentPhone(){
-        RichAuth.getInstance().init(this, APP_ID);
+        RichAuth.getInstance().init(this, Constant.TENCENT_PHONE);
     }
 
     /*各大平台推送初始化*/

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_123"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/about_imgv" />
+
+    <TextView
+        android:id="@+id/textView144"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="边框心理"
+        android:textColor="@color/threethree"
+        android:textSize="21sp"
+        android:padding="@dimen/dp_4"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView17" />
+
+    <TextView
+        android:id="@+id/about_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/threethree"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView144"
+        tools:text="version1.0.0" />
+
+    <TextView
+        android:id="@+id/about_jianjie"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="43dp"
+        android:layout_marginEnd="43dp"
+        android:text="功能简介"
+        android:textSize="13sp"
+        android:paddingLeft="@dimen/dp_4"
+        android:paddingRight="@dimen/dp_4"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        android:textColor="@color/black"
+        android:drawableRight="@drawable/about_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.187"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView17"
+        app:layout_constraintVertical_bias="0.262" />
+
+    <View
+        android:id="@+id/textView150"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/ccc"
+        app:layout_constraintEnd_toEndOf="@+id/about_jianjie"
+        app:layout_constraintStart_toStartOf="@+id/about_jianjie"
+        app:layout_constraintTop_toBottomOf="@+id/about_jianjie" />
+
+    <TextView
+        android:id="@+id/about_newbb"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="最新版本"
+        android:textSize="13sp"
+        android:paddingLeft="@dimen/dp_4"
+        android:paddingRight="@dimen/dp_4"
+        android:paddingTop="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_10"
+        android:textColor="@color/black"
+        android:drawableRight="@drawable/about_back"
+        app:layout_constraintEnd_toEndOf="@+id/about_jianjie"
+        app:layout_constraintStart_toStartOf="@+id/about_jianjie"
+        app:layout_constraintTop_toBottomOf="@+id/textView150" />
+
+    <View
+        android:id="@+id/textView153"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/ccc"
+        app:layout_constraintEnd_toEndOf="@+id/about_newbb"
+        app:layout_constraintStart_toStartOf="@+id/about_newbb"
+        app:layout_constraintTop_toBottomOf="@+id/about_newbb" />
+
+    <TextView
+        android:id="@+id/about_hping"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="赏个好评"
+        android:textSize="13sp"
+        android:paddingLeft="@dimen/dp_4"
+        android:paddingRight="@dimen/dp_4"
+        android:paddingTop="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_10"
+        android:textColor="@color/black"
+        android:drawableRight="@drawable/about_back"
+        app:layout_constraintEnd_toEndOf="@+id/about_jianjie"
+        app:layout_constraintStart_toStartOf="@+id/about_jianjie"
+        app:layout_constraintTop_toBottomOf="@+id/textView153" />
+
+    <View
+        android:id="@+id/textView155"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/ccc"
+        app:layout_constraintEnd_toEndOf="@+id/about_hping"
+        app:layout_constraintStart_toStartOf="@+id/about_hping"
+        app:layout_constraintTop_toBottomOf="@+id/about_hping" />
+
+    <TextView
+        android:id="@+id/textView156"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="@dimen/dp_4"
+        android:paddingBottom="@dimen/dp_20"
+        android:text="天津天宇新航科技有限公司|版权所有\n2020-2030边框心理\n津ICP备2020007988号-2"
+        android:textColor="@color/sixsixsix"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

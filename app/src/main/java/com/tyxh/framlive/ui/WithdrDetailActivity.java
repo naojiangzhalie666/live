@@ -107,6 +107,7 @@ public class WithdrDetailActivity extends LiveBaseActivity {
         mNormalSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mNormalSmart.setEnableLoadMore(true);
                 page=1;
                 toGetdata();
             }
@@ -192,6 +193,10 @@ public class WithdrDetailActivity extends LiveBaseActivity {
                     }
                     mStringList.addAll(bean.getRetData().getList());
                     mWithdrAdapter.notifyDataSetChanged();
+                    if(bean.getRetData() ==null ||bean.getRetData().getList() ==null||bean.getRetData().getList().size()<page_size){
+                        mNormalSmart.finishLoadMoreWithNoMoreData();
+                    }
+
                 }else{
                     ToastShow(bean.getRetMsg());
                 }
@@ -238,6 +243,7 @@ public class WithdrDetailActivity extends LiveBaseActivity {
     protected void onRestart() {
         super.onRestart();
         getMineAsset();
+        mNormalSmart.setEnableLoadMore(true);
         page=1;
         toGetdata();
     }
@@ -261,6 +267,7 @@ public class WithdrDetailActivity extends LiveBaseActivity {
             @Override
             public void onTimeSelected(long timestamp) {
                 mtv.setText(DateFormatUtils.long2WithStrDay(timestamp, false,false));
+                mNormalSmart.setEnableLoadMore(true);
                 page=1;
                 toGetdata();
             }

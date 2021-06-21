@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.DigserviceAdapter;
 import com.tyxh.framlive.bean.UserDetailBean;
@@ -23,6 +24,8 @@ import butterknife.OnClick;
 
 public class ServiceDialog extends Dialog {
 
+    @BindView(R.id.dig_service_smart)
+    SmartRefreshLayout mDigServiceSmart;
     @BindView(R.id.dig_service_recy)
     RecyclerView mDigServiceRecy;
 
@@ -47,19 +50,23 @@ public class ServiceDialog extends Dialog {
         setContentView(R.layout.dialog_service);
         ButterKnife.bind(this);
 
-        getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT,mStringList.size()>4? DensityUtil.dp2px(mContext,400): RelativeLayout.LayoutParams.WRAP_CONTENT);
+        getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, mStringList.size() > 4 ? DensityUtil.dp2px(mContext, 400) : RelativeLayout.LayoutParams.WRAP_CONTENT);
         getWindow().setBackgroundDrawableResource(R.color.transparent);
         getWindow().setGravity(Gravity.BOTTOM);
+        mDigServiceSmart.setEnablePureScrollMode(true);//是否启用纯滚动模式
+        mDigServiceSmart.setEnableNestedScroll(true);//是否启用嵌套滚动;
+        mDigServiceSmart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        mDigServiceSmart.setEnableOverScrollBounce(true);//是否启用越界回弹
         mDigserviceAdapter = new DigserviceAdapter(mContext, mStringList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mDigServiceRecy.setLayoutManager(linearLayoutManager);
         mDigServiceRecy.setAdapter(mDigserviceAdapter);
         mDigserviceAdapter.setOnItemClickListener(new DigserviceAdapter.OnItemClickListener() {
             @Override
-            public void onItemClickListener(int pos,String title) {
+            public void onItemClickListener(int pos, String title) {
                 ServiceDialog.this.dismiss();
-                if(mOnTalkClickListener!=null)
-                    mOnTalkClickListener.onTalkClickListener("咨询一下"+title);
+                if (mOnTalkClickListener != null)
+                    mOnTalkClickListener.onTalkClickListener("咨询一下" + title);
             }
         });
 
@@ -75,7 +82,7 @@ public class ServiceDialog extends Dialog {
         }
     }
 
-    public interface OnTalkClickListener{
+    public interface OnTalkClickListener {
         void onTalkClickListener(String content);
     }
 }

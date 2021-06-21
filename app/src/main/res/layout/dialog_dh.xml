@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="@dimen/dp_200"
-        android:layout_height="@dimen/dp_200"
+        android:layout_width="@dimen/dp_240"
+        android:layout_height="@dimen/dp_240"
         android:src="@drawable/dh_dig"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,7 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:text="输入礼包码兑换奖励"
         android:textColor="@color/black"
         android:textSize="10sp"

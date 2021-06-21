@@ -62,13 +62,6 @@ public class SetActivity extends LiveBaseActivity {
         if (mUserInfo != null) {
             setData(mUserInfo.getRetData());
         }
-        mDhDialog = new DhDialog(this);
-        mDhDialog.setOnDhClickListener(new DhDialog.OnDhClickListener() {
-            @Override
-            public void onDhClickLictener(String code) {
-                toDh(code);
-            }
-        });
         RequestOptions requestOptions = new RequestOptions().circleCrop();
         mConphoneDialog = new ConphoneDialog(this);
         mConphoneDialog.setOnSureClickListener(new ConphoneDialog.OnSureClickListener() {
@@ -108,6 +101,13 @@ public class SetActivity extends LiveBaseActivity {
                 finish();
                 break;
             case R.id.set_duihuan:
+                mDhDialog = new DhDialog(this);
+                mDhDialog.setOnDhClickListener(new DhDialog.OnDhClickListener() {
+                    @Override
+                    public void onDhClickLictener(String code) {
+                        toDh(code);
+                    }
+                });
                 mDhDialog.show();
                 break;
             case R.id.set_edtmsg_ll:
@@ -122,6 +122,7 @@ public class SetActivity extends LiveBaseActivity {
                     mConphoneDialog.show();
                 break;
             case R.id.set_about:
+                statActivity(AboutActivity.class);
                 break;
             case R.id.set_xieyi:
                 WebVActivity.startMe(this,"边框心理用户协议");
@@ -137,9 +138,24 @@ public class SetActivity extends LiveBaseActivity {
     }
 
     private void toDh(String code) {
-        ToastShow("兑换失败,请输入正确的兑换码");
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().exchangeCode(token,code, user_Info.getRetData().getId()), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
+                if(baseBean.getRetCode() ==0){
+                    ToastShow("兑换成功");
+                }else {
+                    ToastShow(baseBean.getRetMsg());
+                }
 
+            }
 
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
     }
 
     private void toSetPhone(String phone) {

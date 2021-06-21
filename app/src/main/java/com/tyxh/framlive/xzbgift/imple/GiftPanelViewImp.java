@@ -14,12 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.xzbgift.imple.adapter.GiftPanelAdapter;
 import com.tyxh.framlive.xzbgift.imple.adapter.GiftViewPagerAdapter;
 import com.tyxh.framlive.xzbgift.important.GiftInfo;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -446,9 +447,10 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
 
     @Override
     public void setJingYAndNeedZunas(double eve, double shengexp) {
+        DecimalFormat d_for = new DecimalFormat("0.###");
         mProgressBar_eve.setMax(new Double( eve+shengexp).intValue());
         mProgressBar_eve.setProgress(new Double(eve).intValue());
-        mNeedZsNum.setText(shengexp+"");
+        mNeedZsNum.setText(d_for.format(shengexp));
 
     }
 }

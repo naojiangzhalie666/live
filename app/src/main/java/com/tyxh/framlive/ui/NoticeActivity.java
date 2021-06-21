@@ -88,9 +88,11 @@ public class NoticeActivity extends LiveBaseActivity {
                     }
                     mStringList.addAll(bean.getRetData().getList());
                     mNoticeAdapter.notifyDataSetChanged();
-
+                    if(bean.getRetData() ==null ||bean.getRetData().getList() ==null ||bean.getRetData().getList().size()<10){
+                        mNoticeSmart.finishLoadMoreWithNoMoreData();
+                    }
                 }else {
-                    mNoticeSmart.setEnableLoadMore(false);
+                    mNoticeSmart.finishLoadMoreWithNoMoreData();
                     ToastShow(bean.getRetMsg());
                 }
 

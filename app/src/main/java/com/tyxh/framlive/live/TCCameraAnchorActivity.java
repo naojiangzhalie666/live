@@ -180,7 +180,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         mRecordBall = (ImageView) findViewById(R.id.anchor_iv_record_ball);
         mPower = LiveShareUtil.getInstance(this).getPower();
         mHeadIcon = (ImageView) findViewById(R.id.anchor_iv_head_icon);
-        showHeadIcon(mHeadIcon, TCUserMgr.getInstance().getAvatar());
+        showHeadIcon(mHeadIcon,mAvatarPicUrl);
         mMemberCount = (TextView) findViewById(R.id.anchor_tv_member_counts);
         mMemberCount.setText("人气0");
 

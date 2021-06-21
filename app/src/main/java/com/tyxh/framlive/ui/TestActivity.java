@@ -21,7 +21,7 @@ import com.rich.oauth.core.UIConfigBuild;
 import com.rich.oauth.util.RichLogUtil;
 import com.rich.oauth.util.SHA256Util;
 import com.tyxh.framlive.R;
-import com.tyxh.framlive.base.LiveApplication;
+import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.utils.TitleUtils;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
@@ -227,7 +227,7 @@ public class TestActivity extends LiveBaseActivity {
         params.put("token", token);
         params.put("time", time);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), new Gson().toJson(params));
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getvalidata(LiveApplication.APP_ID, randomNumber, requestBody), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getvalidata(Constant.TENCENT_PHONE, randomNumber, requestBody), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);

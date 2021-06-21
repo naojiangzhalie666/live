@@ -26,6 +26,7 @@ import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.HomeAdapter;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveApplication;
+import com.tyxh.framlive.bean.ActBackBean;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.MineTCVideoInfo;
 import com.tyxh.framlive.bean.RoomBean;
@@ -90,6 +91,8 @@ public class HomeFragment extends Fragment {
     SmartRefreshLayout mHomeSmart;
     @BindView(R.id.home_camera)
     ImageView mImgv_camera;
+  @BindView(R.id.home_guajian)
+    ImageView mImgv_guajian;
 
     private List<MineTCVideoInfo> mLists;
     private HomeAdapter mHomeAdapter;
@@ -177,7 +180,6 @@ public class HomeFragment extends Fragment {
         } else {
             mImgv_camera.setVisibility(View.VISIBLE);
         }
-        mHomeSmart.setEnableLoadMore(false);
         mHomeSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -189,7 +191,7 @@ public class HomeFragment extends Fragment {
         mHomeSmart.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                ++page;
+                page+=10;
                 getLiveData();
             }
         });
@@ -248,6 +250,34 @@ public class HomeFragment extends Fragment {
         if(mHomeSmart!=null)
             mHomeSmart.autoRefresh();
     }
+    /*获取是否可购买一元活动*/
+    private void getZig(){
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().queryJoAct(LiveShareUtil.getInstance(getActivity()).getToken(), "2"), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                ActBackBean backBean =new Gson().fromJson(result.toString(),ActBackBean.class);
+                if(backBean.getRetCode() ==0 ){
+                    //一元活动购买情况【0:不可；1:可购】
+                    if(backBean.getRetData().getUnaryAct().equals("1")) {
+                        if(mImgv_guajian!=null)
+                        mImgv_guajian.setVisibility(View.VISIBLE);
+                    }else{
+                        if(mImgv_guajian!=null)
+                            mImgv_guajian.setVisibility(View.GONE);
+                    }
+                }else{
+                    if(mImgv_guajian!=null)
+                        mImgv_guajian.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
 
     /*获取直播列表*/
     private void getLiveData() {
@@ -264,7 +294,7 @@ public class HomeFragment extends Fragment {
             return;
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("index", 0);
+        map.put("index", page);
         map.put("cnt", 10);
         map.put("userID", mUserId);
         map.put("token", TCHTTPMgr.getInstance().getToken());
@@ -290,6 +320,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                mHomeSmart.finishRefresh();
+                mHomeSmart.finishLoadMore();
             }
         });
 
@@ -331,6 +363,7 @@ public class HomeFragment extends Fragment {
                     AVCallManager.getInstance().init(LiveApplication.getmInstance());
                 }
                 loginTUIKitLive(sdk_id, userid, usersig);
+                page =0;
                 getLiveData();
                 Log.i("HomeFragment", "onSuccess: MLVB登录成功");
             }
@@ -399,7 +432,6 @@ public class HomeFragment extends Fragment {
         mLists.addAll(infos);
         mHomeAdapter.notifyDataSetChanged();
         toSetOldData();
-
     }
 
     /*填充之前获取直播列表时的数据*/
@@ -461,6 +493,7 @@ public class HomeFragment extends Fragment {
      * 准备发起直播界面
      */
     private void startPublish() {
+        mUserInfo = LiveShareUtil.getInstance(getActivity()).getUserInfo();
         Intent intent = null;
         if (mRecordType == TCConstants.RECORD_TYPE_SCREEN) {
 //            intent = new Intent(this, TCScreenAnchorActivity.class);//录屏
@@ -502,6 +535,7 @@ public class HomeFragment extends Fragment {
         if (Constantc.mlvb_login) {
             page = 0;
             getLiveData();
+            getZig();
         } else {
             if (Constantc.use_old) {
                 theOldLoginMlvb();
@@ -515,6 +549,7 @@ public class HomeFragment extends Fragment {
     public void onEventMsg(EventMessage msg) {
         if (msg.getMessage().equals("fresh_home")) {
             if (Constantc.mlvb_login) {
+                page =0;
                 getLiveData();
             } else {
                 loginMLVB();
@@ -548,6 +583,7 @@ public class HomeFragment extends Fragment {
                     AVCallManager.getInstance().init(getActivity());
                 }
                 loginTUIKitLive(sdk_id, userid, usersig);
+                page =0;
                 getLiveData();
             }
         });

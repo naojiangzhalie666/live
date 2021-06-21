@@ -1,7 +1,11 @@
 package com.tyxh.framlive.fragment;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,7 +37,6 @@ import com.tyxh.framlive.pop_dig.CodeDialog;
 import com.tyxh.framlive.pop_dig.LogoutDialog;
 import com.tyxh.framlive.pop_dig.ShareDialog;
 import com.tyxh.framlive.ui.AdviceActivity;
-import com.tyxh.framlive.ui.EdtmsgActivity;
 import com.tyxh.framlive.ui.LoginActivity;
 import com.tyxh.framlive.ui.LookPersonActivity;
 import com.tyxh.framlive.ui.MailListActivity;
@@ -43,7 +46,9 @@ import com.tyxh.framlive.ui.OranizeActivity;
 import com.tyxh.framlive.ui.SetActivity;
 import com.tyxh.framlive.ui.SetInActivity;
 import com.tyxh.framlive.ui.WebVActivity;
+import com.tyxh.framlive.utils.ImageUtils;
 import com.tyxh.framlive.utils.LiveShareUtil;
+import com.tyxh.xzb.utils.TCConstants;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -57,6 +62,7 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
@@ -146,7 +152,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mine_head:
-                startActivity(new Intent(getActivity(), EdtmsgActivity.class));
+//                startActivity(new Intent(getActivity(), EdtmsgActivity.class));
                 break;
             case R.id.mine_set:
                 startActivity(new Intent(getActivity(), SetActivity.class));
@@ -308,12 +314,20 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
             @Override
             public void onLogoutClickListener() {
                 LiveShareUtil.getInstance(getActivity()).clear();
+                LiveShareUtil.getInstance(LiveApplication.getmInstance()).put(LiveShareUtil.APP_AGREE,true);
                 getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();
             }
         });
         mMineVp.addOnPageChangeListener(this);
-
+        mCodeDialog.setOnPhotoSaveListener(new CodeDialog.OnPhotoSaveListener() {
+            @Override
+            public void onSaveListener(Bitmap bitmap) {
+                if(checkPublishPermission()) {
+                    ImageUtils.saveBmp2Gallery(getActivity(), bitmap, "saomiao");
+                }
+            }
+        });
     }
 
     private void setData(UserInfoBean.RetDataBean data) {
@@ -510,6 +524,25 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
 //            UserInfoBean.RetDataBean retData = userInfo.getRetData();
 //            setData(retData);
 //        }
+    }
+
+    /**
+     * 动态权限检查相关
+     */
+    private boolean checkPublishPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            List<String> permissions = new ArrayList<>();
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (permissions.size() != 0) {
+                ActivityCompat.requestPermissions(getActivity(), permissions.toArray(new String[0]), TCConstants.WRITE_PERMISSION_REQ_CODE);
+                Toast.makeText(getActivity(), "该功能需要存储权限", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

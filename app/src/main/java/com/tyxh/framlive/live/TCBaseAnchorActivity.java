@@ -140,7 +140,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
 
     private String mTitle;                 // 直播标题
     private String mCoverPicUrl;           // 直播封面图
-    private String mAvatarPicUrl;          // 个人头像地址
+    protected String mAvatarPicUrl;          // 个人头像地址
     private String mNickName;              // 个人昵称
     public String mUserId;                // 个人用户id
     private String mLocation;              // 个人定位地址

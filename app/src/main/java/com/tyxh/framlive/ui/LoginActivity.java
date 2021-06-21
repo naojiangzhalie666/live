@@ -46,6 +46,7 @@ import com.tyxh.framlive.bean.LoginBean;
 import com.tyxh.framlive.bean.SignBean;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.chat.tuikit.AVCallManager;
+import com.tyxh.framlive.pop_dig.XieyDialog;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
@@ -60,8 +61,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -76,7 +75,7 @@ import static com.tyxh.framlive.base.LiveApplication.api;
 public class LoginActivity extends LiveBaseActivity {
 
 
-//    @BindView(R.id.login_phonenum)
+    //    @BindView(R.id.login_phonenum)
 //    TextView mLoginPhonenum;
     @BindView(R.id.login_tvxieyi)
     TextView mTvXieyi;
@@ -87,6 +86,7 @@ public class LoginActivity extends LiveBaseActivity {
     private boolean isNeedUpmsg = true;
     private boolean isNeedUpMobile = false;
     private String xieyi_tv = "我已阅读并同意《中国移动认证服务条款》和《用户协议》、《隐私政策》";
+    private XieyDialog mXieyDialog;
 
     @Override
     public int getContentLayoutId() {
@@ -97,15 +97,42 @@ public class LoginActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         ButterKnife.bind(this);
-        if (!this.isTaskRoot()){
+        EventBus.getDefault().register(this);
+        setTextContent();
+        if (!this.isTaskRoot()) {
             finish();
             return;
         }
-        setTextContent();
+        boolean agree = LiveShareUtil.getInstance(LiveApplication.getmInstance()).getAgree();
+        if(agree) {
+            goNext();
+        }else{
+            mXieyDialog = new XieyDialog(this, this);
+            mXieyDialog.setOnBtClickListener(new XieyDialog.OnBtClickListener() {
+                @Override
+                public void onAgreeClickListener() {
+                    LiveApplication.getmInstance().toInitAll();
+                    mXieyDialog.dismiss();
+                    mLoginImgv.setVisibility(View.VISIBLE);
+                    LiveShareUtil.getInstance(LiveApplication.getmInstance()).put(LiveShareUtil.APP_AGREE,true);
+                    goNext();
+                }
+
+                @Override
+                public void onNotAgreeClickListener() {
+                  LoginActivity.this.finish();
+
+                }
+            });
+            mXieyDialog.show();
+        }
+
+    }
+
+    private void goNext() {
         mPermission = checkPublishPermission();
-        EventBus.getDefault().register(this);
 //        getPhoneNum();
-        if(user_Info!=null){
+        if (user_Info != null) {
             if (Constantc.use_old) {
                 showLoad();
                 LiveShareUtil.getInstance(LoginActivity.this).putPower(2);//用户类型
@@ -115,10 +142,11 @@ public class LoginActivity extends LiveBaseActivity {
             mLoginImgv.setVisibility(View.VISIBLE);
             getUserInfo(token);
         }
+
     }
 
 
-    @OnClick({R.id.login_loginthis, R.id.login_loginother, R.id.ll_wx, R.id.login_rela,R.id.ll_zi})
+    @OnClick({R.id.login_loginthis, R.id.login_loginother, R.id.ll_wx, R.id.login_rela, R.id.ll_zi})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_loginthis://一键登录
@@ -146,7 +174,7 @@ public class LoginActivity extends LiveBaseActivity {
                 break;
             case R.id.ll_zi:
 //                if (mLoginImgv.getVisibility() == View.VISIBLE) {
-                    startActivity(new Intent(this,ChildLoginActivity.class));
+                startActivity(new Intent(this, ChildLoginActivity.class));
 //                } else {
 //                    ToastShow("请阅读并勾选协议");
 //                }
@@ -168,33 +196,35 @@ public class LoginActivity extends LiveBaseActivity {
         ClickableSpan clickableSpan_one = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                WebVActivity.startMe(LoginActivity.this,"中国移动认证服务条款");
+                WebVActivity.startMe(LoginActivity.this, "中国移动认证服务条款");
             }
 
             @Override
             public void updateDrawState(@NonNull TextPaint drawState) {
                 super.updateDrawState(drawState);
                 drawState.setColor(Color.parseColor("#0DACF6"));
-                drawState.setUnderlineText(false);  drawState.clearShadowLayer();
+                drawState.setUnderlineText(false);
+                drawState.clearShadowLayer();
             }
         };
         ClickableSpan clickableSpan_two = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                WebVActivity.startMe(LoginActivity.this,"边框心理用户协议");
+                WebVActivity.startMe(LoginActivity.this, "边框心理用户协议");
             }
 
             @Override
             public void updateDrawState(@NonNull TextPaint drawState) {
                 super.updateDrawState(drawState);
                 drawState.setColor(Color.parseColor("#0DACF6"));
-                drawState.setUnderlineText(false);  drawState.clearShadowLayer();
+                drawState.setUnderlineText(false);
+                drawState.clearShadowLayer();
             }
         };
         ClickableSpan clickableSpan_three = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                WebVActivity.startMe(LoginActivity.this,"用户隐私条款");
+                WebVActivity.startMe(LoginActivity.this, "用户隐私条款");
             }
 
             @Override
@@ -218,6 +248,7 @@ public class LoginActivity extends LiveBaseActivity {
 
     /*登录*/
     private void login(String name, String pwd, String type) {
+        showLoad();
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().login(name, pwd, type), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
@@ -242,7 +273,6 @@ public class LoginActivity extends LiveBaseActivity {
     /*获取用户信息*/
     private void getUserInfo(String tk) {
         showLoad();
-
         DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getUserInfo(tk), new CommonObserver<UserInfoBean>() {
             @Override
             public void onResult(UserInfoBean userInfoBean) {
@@ -264,7 +294,7 @@ public class LoginActivity extends LiveBaseActivity {
                     }
                     int type = userInfoBean.getRetData().getType();
                     if (TextUtils.isEmpty(mobile)) {
-                        if(type!=4){
+                        if (type != 4) {
                             isNeedUpMobile = true;
                         }
                     } else {
@@ -357,7 +387,7 @@ public class LoginActivity extends LiveBaseActivity {
                 if (signBean.getRetCode() == 0) {
                     LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERSIGN, signBean.getRetData());
                     gotLogin(user_id, bean, signBean.getRetData());
-                }else{
+                } else {
                     hideLoad();
                 }
             }
@@ -405,25 +435,25 @@ public class LoginActivity extends LiveBaseActivity {
      * 动态权限检查相关
      */
     private boolean checkPublishPermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            List<String> permissions = new ArrayList<>();
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)) {
-                permissions.add(Manifest.permission.READ_PHONE_STATE);
-            }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)) {
-                permissions.add(Manifest.permission.RECORD_AUDIO);
-            }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
-                permissions.add(Manifest.permission.CAMERA);
-            }
-            if (permissions.size() != 0) {
-                ActivityCompat.requestPermissions(this, permissions.toArray(new String[0]), TCConstants.WRITE_PERMISSION_REQ_CODE);
-                return false;
-            }
-        }
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            List<String> permissions = new ArrayList<>();
+//            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//            }
+//            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)) {
+//                permissions.add(Manifest.permission.READ_PHONE_STATE);
+//            }
+//            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)) {
+//                permissions.add(Manifest.permission.RECORD_AUDIO);
+//            }
+//            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
+//                permissions.add(Manifest.permission.CAMERA);
+//            }
+//            if (permissions.size() != 0) {
+//                ActivityCompat.requestPermissions(this, permissions.toArray(new String[0]), TCConstants.WRITE_PERMISSION_REQ_CODE);
+//                return false;
+//            }
+//        }
 
         return true;
     }
@@ -475,7 +505,7 @@ public class LoginActivity extends LiveBaseActivity {
     }
 
     /*一键登录*/
-    private void toYjLogin(){
+    private void toYjLogin() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
                 TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
@@ -486,7 +516,7 @@ public class LoginActivity extends LiveBaseActivity {
                     Log.e(TAG, "getPhoneNum:未获取到手机号 ");
                 }
                 return;
-            }else {
+            } else {
                 requestPermission();
             }
         }
@@ -497,9 +527,11 @@ public class LoginActivity extends LiveBaseActivity {
     private String mToken, mCarrier;
 
     private void preLogin() {
+        showLoad();
         RichAuth.getInstance().preLogin(LoginActivity.this, new PreLoginCallback() {
             @Override
             public void onPreLoginSuccess() {
+                hideLoad();
                 // 预登录成功
                 RichLogUtil.e("预登录成功");
                 Toast.makeText(LoginActivity.this, "预登录成功", Toast.LENGTH_SHORT).show();
@@ -508,11 +540,12 @@ public class LoginActivity extends LiveBaseActivity {
 
             @Override
             public void onPreLoginFailure(String errorMsg) {
+                hideLoad();
                 // 预登录失败，错误信息为errorMsg
                 // errorMsg为“用户未使用流量进行登录，不满足一键登录条件”
                 JSONObject jsonObject = JSONObject.parseObject(errorMsg);
                 Integer code = jsonObject.getInteger("code");
-                if(code ==81010){
+                if (code == 81010) {
                     Toast.makeText(LoginActivity.this, "请开启移动网络", Toast.LENGTH_SHORT).show();
                 }
                 RichLogUtil.e("预登录失败:" + errorMsg);
@@ -568,7 +601,7 @@ public class LoginActivity extends LiveBaseActivity {
 //                Toast.makeText(LoginActivity.this, "token获取成功:" + token, Toast.LENGTH_SHORT).show();
                 mToken = token;  // 百纳token两分钟有效。
                 mCarrier = carrier;
-                login(carrier,token,"phone");
+                login(carrier, token, "phone");
             }
 
             @Override
@@ -591,6 +624,7 @@ public class LoginActivity extends LiveBaseActivity {
     }
 
     public static final String[] MYPERMISSIONS = new String[]{Manifest.permission.READ_PHONE_STATE,};
+
     private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ActivityCompat.requestPermissions(this, MYPERMISSIONS, 1010);

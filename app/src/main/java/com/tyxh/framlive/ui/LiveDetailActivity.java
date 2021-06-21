@@ -129,6 +129,7 @@ public class LiveDetailActivity extends LiveBaseActivity {
         mLivedetailSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mLivedetailSmart.setEnableLoadMore(true);
                 page = 1;
                 toGetdata();
             }
@@ -164,7 +165,7 @@ public class LiveDetailActivity extends LiveBaseActivity {
                 mLivedetailTvfour.setText("观看次数(次)");
                 SimpleDateFormat dateFormatd = new SimpleDateFormat("yyyy-MM-dd");
                 mLivedetailDate.setText(dateFormatd.format(new Date()));
-
+                mLivedetailSmart.setEnableLoadMore(true);
                 toGetdata();
                 break;
             case R.id.livedetail_month:
@@ -182,6 +183,7 @@ public class LiveDetailActivity extends LiveBaseActivity {
                 mLivedetailTvfour.setText("直播时长(H)");
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
                 mLivedetailDate.setText(dateFormat.format(new Date()));
+                mLivedetailSmart.setEnableLoadMore(true);
                 toGetdata();
                 break;
             case R.id.livedetail_date:
@@ -236,6 +238,9 @@ public class LiveDetailActivity extends LiveBaseActivity {
                     }
                     mLivedeAdapter.notifyDataSetChanged();
                     ++page;
+                    if(bean.getRetData() ==null||bean.getRetData().getList() ==null||bean.getRetData().getList().size()<page_size){
+                        mLivedetailSmart.finishLoadMoreWithNoMoreData();
+                    }
                 } else {
                     ToastShow(bean.getRetMsg());
                 }
@@ -283,6 +288,9 @@ public class LiveDetailActivity extends LiveBaseActivity {
                     }
                     mLivedeAdapter.notifyDataSetChanged();
                     ++page;
+                    if(bean.getRetData() ==null||bean.getRetData().getList() ==null||bean.getRetData().getList().size()<page_size){
+                        mLivedetailSmart.finishLoadMoreWithNoMoreData();
+                    }
                 } else {
                     ToastShow(bean.getRetMsg());
                 }
@@ -325,6 +333,7 @@ public class LiveDetailActivity extends LiveBaseActivity {
             @Override
             public void onTimeSelected(long timestamp) {
                 mtv.setText(DateFormatUtils.long2WithStrDay(timestamp, false, false));
+                mLivedetailSmart.setEnableLoadMore(true);
                 page = 1;
                 toGetdata();
             }

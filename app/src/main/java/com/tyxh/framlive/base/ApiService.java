@@ -392,9 +392,8 @@ public interface ApiService {
 
     /**
      * 获取支付订单
-     *
      * @param token
-     * @param body  diamondId-钻石包id  remark--备注。。。
+     * @param body  diamondId-钻石包id  remark--备注。。。 购买一元活动礼包时传actId =1 其它时候不传
      * @return
      */
     @POST("sysOrderController/add")
@@ -657,6 +656,7 @@ public interface ApiService {
 
     /**
      * 子账号-发送验证码
+     *
      * @param username
      * @return
      */
@@ -665,24 +665,27 @@ public interface ApiService {
 
     /**
      * 子账号  --验证码验证
+     *
      * @param username
      * @param code
      * @return
      */
     @POST("userController/smsVerify")
-    Observable<JSONObject> smsVerify(@Query("username")String username,@Query("code")String code);
+    Observable<JSONObject> smsVerify(@Query("username") String username, @Query("code") String code);
 
     /**
      * 子账号--修改账号密码
+     *
      * @param uuid
      * @param password
      * @return
      */
     @POST("userController/updateUserPassword")
-    Observable<JSONObject> updateZiPwd(@Query("uuid")String uuid,@Query("password")String password);
+    Observable<JSONObject> updateZiPwd(@Query("uuid") String uuid, @Query("password") String password);
 
     /**
-     *直播日数据
+     * 直播日数据
+     *
      * @param token
      * @param page
      * @param size
@@ -695,6 +698,7 @@ public interface ApiService {
 
     /**
      * 直播月数据
+     *
      * @param token
      * @param page
      * @param size
@@ -707,13 +711,33 @@ public interface ApiService {
 
     /**
      * 连线记录
+     *
      * @param token
      * @param startDate
      * @param endDate
      * @return
      */
     @GET("connectHistoryController/queryCounselorConnectHistory/{page}/{size}")
-    Observable<JSONObject> queryCotctHis(@Header("Authorization") String token, @Path("page") int page, @Path("size") int size, @Query("startDate") String startDate, @Query("endDate") String endDate,@Query("words")String words);
+    Observable<JSONObject> queryCotctHis(@Header("Authorization") String token, @Path("page") int page, @Path("size") int size, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("words") String words);
+
+    /**
+     * 兑换码兑换
+     *
+     * @param code
+     * @param userId
+     * @return
+     */
+    @POST("exchangeWaterController/exchange")
+    Observable<JSONObject> exchangeCode(@Header("Authorization") String token, @Query("code") String code, @Query("userId") String userId);
+
+    /**
+     * 查询参加活动情况
+     *
+     * @param platform 【1:IOS;2:Android】
+     * @return
+     */
+    @GET("userController/queryJoinActivity")
+    Observable<JSONObject> queryJoAct(@Header("Authorization") String token, @Query("platform") String platform);
 
     /*-------------------------------------------如下为微信登录时获取数据---------------------------------------------------*/
 

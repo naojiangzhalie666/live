@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="@dimen/dp_48"
+    android:layout_marginRight="@dimen/dp_48"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_corner_ft">
+
+    <TextView
+        android:id="@+id/textView147"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10"
+        android:text="隐私政策"
+        android:textColor="@color/home_txt"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/textView149"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/home_txt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView147" />
+
+    <LinearLayout
+        android:id="@+id/dig_xieyi_ll"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_280"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/dig_xieyi_notagr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView149"></LinearLayout>
+
+    <Button
+        android:id="@+id/dig_xieyi_notagr"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_35"
+        android:background="@drawable/bg_xiey_notagree"
+        android:layout_margin="@dimen/dp_16"
+        android:text="不同意"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dig_xieyi_agr"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dig_xieyi_ll" />
+
+    <Button
+        android:id="@+id/dig_xieyi_agr"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_35"
+        android:textColor="@color/white"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:background="@drawable/bg_xiey_agree"
+        android:text="同意"
+        app:layout_constraintBottom_toBottomOf="@+id/dig_xieyi_notagr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/dig_xieyi_notagr"
+        app:layout_constraintTop_toTopOf="@+id/dig_xieyi_notagr" />
+</androidx.constraintlayout.widget.ConstraintLayout>

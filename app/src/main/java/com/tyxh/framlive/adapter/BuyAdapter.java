@@ -38,7 +38,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
     public void setLook_more(boolean look_more) {
         this.look_more = look_more;
         notifyDataSetChanged();
-        onClicView =null;
+        onClicView = null;
     }
 
     @Override
@@ -53,20 +53,21 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
         if (!look_more && position == 3) {
             vh.mItemBuyCon.setVisibility(View.INVISIBLE);
             vh.mDigBuyRel.setVisibility(View.VISIBLE);
+            vh.mDigBuyRtp.setVisibility(View.GONE);
             vh.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mOnItemClickListener!=null)
+                    if (mOnItemClickListener != null)
                         mOnItemClickListener.onLookMoreListener();
                 }
             });
-        }else {
+        } else {
             DiamondBean.RetDataBean.ListBean bean = mLists.get(position);
             boolean select = bean.isSelect();
-            vh.mItemBuyCon.setBackgroundResource(select?R.drawable.buy_bg_se:R.drawable.buy_bg_unse);
+            vh.mItemBuyCon.setBackgroundResource(select ? R.drawable.buy_bg_se : R.drawable.buy_bg_unse);
             vh.mItemBuyCon.setVisibility(View.VISIBLE);
             vh.mDigBuyRel.setVisibility(View.GONE);
-            vh.mDigBuyZuan.setText(bean.getProNum()+ "钻石");
+            vh.mDigBuyZuan.setText(bean.getProNum() + "钻石");
             int discountType = bean.getDiscountType();
             vh.mDigBuyMoney.setText(bean.getOriginalPrice() + "元");
             switch (discountType) {//优惠类型(1:加赠;2:折扣;3:特价)
@@ -78,15 +79,25 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
                     vh.mDigBuyMoney.setText(bean.getSpecialOffer() + "元");
                     break;
             }
+            int firstCharge = bean.getFirstCharge();
+            if(firstCharge ==1){//首充  1：是  0：否
+                vh.mDigBuyRtp.setVisibility(View.VISIBLE);
+                vh.mDigBuyRtp.setText("首充");
+                vh.mDigBuyRtp.setBackgroundResource(R.drawable.cz_grad_shouc);
+            }else{
+                vh.mDigBuyRtp.setVisibility(View.GONE);
+            }
+            //                R.drawable.cz_grad_chaoh  超嗨
+
             vh.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(view !=onClicView){
-                        if(onClicView!=null){
-                            ConstraintLayout con_old =onClicView.findViewById(R.id.item_buy_con);
+                    if (view != onClicView) {
+                        if (onClicView != null) {
+                            ConstraintLayout con_old = onClicView.findViewById(R.id.item_buy_con);
                             con_old.setBackgroundResource(R.drawable.buy_bg_unse);
                         }
-                        ConstraintLayout con_new=view.findViewById(R.id.item_buy_con);
+                        ConstraintLayout con_new = view.findViewById(R.id.item_buy_con);
                         con_new.setBackgroundResource(R.drawable.buy_bg_se);
                         onClicView = view;
                     }
@@ -100,17 +111,20 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mLists == null ? 0 : (look_more ? mLists.size() : (mLists.size()>4?4:mLists.size()));
+        return mLists == null ? 0 : (look_more ? mLists.size() : (mLists.size() > 4 ? 4 : mLists.size()));
     }
 
     public interface OnItemClickListener {
         void onItemClickListener(int pos);
+
         void onLookMoreListener();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.dig_buy_zuan)
         TextView mDigBuyZuan;
+        @BindView(R.id.buyzuan_righttp)
+        TextView mDigBuyRtp;
         @BindView(R.id.dig_buy_money)
         TextView mDigBuyMoney;
         @BindView(R.id.item_buy_con)

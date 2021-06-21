@@ -78,6 +78,7 @@ public class SjbgDialog extends Dialog {
         mDigServiceSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mDigServiceSmart.setEnableLoadMore(true);
                 page = 1;
                 getContHis();
             }
@@ -136,7 +137,12 @@ public class SjbgDialog extends Dialog {
                     mStringList.addAll(list);
                     getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, mStringList.size() > 4 ? DensityUtil.dp2px(mContext, 400) : RelativeLayout.LayoutParams.WRAP_CONTENT);
                     mDigsjbgAdapter.notifyDataSetChanged();
+                    if(bean.getRetData() ==null||bean.getRetData().getList() ==null||bean.getRetData().getList().size()<page_size){
+                        mDigServiceSmart.finishLoadMoreWithNoMoreData();
+                    }
+
                 } else {
+                    mDigServiceSmart.finishLoadMoreWithNoMoreData();
                     Toast.makeText(mContext, bean.getRetMsg(), Toast.LENGTH_SHORT).show();
                 }
             }

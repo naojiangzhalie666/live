@@ -312,7 +312,7 @@ public class BuyzActivity extends AppCompatActivity {
             LiveApplication.api.sendReq(req);
         } catch (Exception e) {
             Log.e("PAY_GET", "异常：" + e.getMessage());
-            Toast.makeText(this, "异常：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "异常：" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         mTvPaywechat.setEnabled(true);
     }

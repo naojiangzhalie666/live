@@ -2068,6 +2068,8 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             public void run() {
                 if (mTXLivePusher != null && mTXLivePushListener != null) {
                     mTXLivePushListener.setCallback(callback);
+                    //TODO 设置镜像效果--
+                    mTXLivePusher.setMirror(true);
                     mTXLivePusher.setVideoQuality(videoQuality, false, false);
                     int ret = mTXLivePusher.startPusher(url);
                     if (ret == -5) {

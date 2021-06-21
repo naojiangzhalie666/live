@@ -75,6 +75,7 @@ public class FindActivity extends LiveBaseActivity {
         mFindSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mFindSmart.setEnableLoadMore(true);
                 view_nodata.setVisibility(View.GONE);
                 page = 1;
                 getData();
@@ -149,6 +150,10 @@ public class FindActivity extends LiveBaseActivity {
                     if(zxsallBean.getRetData()!=null&&zxsallBean.getRetData().getList().size()==0&&page ==1){
                         view_nodata.setVisibility(View.VISIBLE);
                     }
+                    if(zxsallBean.getRetData() ==null||zxsallBean.getRetData().getList() ==null||zxsallBean.getRetData().getList().size()<10){
+                        mFindSmart.finishLoadMoreWithNoMoreData();
+                    }
+
                 }else{
                     ToastShow(zxsallBean.getRetMsg());
                     if(page ==1){
@@ -200,6 +205,7 @@ public class FindActivity extends LiveBaseActivity {
 //                ToastShow("搜索"+content  +"  id:"+ mMapList.get(pos).getId());
                 view_nodata.setVisibility(View.GONE);
                 select_fav = mMapList.get(pos).getId()+"";
+                mFindSmart.setEnableLoadMore(true);
                 page =1;
                 getData();
             }
@@ -224,6 +230,7 @@ public class FindActivity extends LiveBaseActivity {
             public void onOptionPicked(int index, String item) {
                 select_pos = index;
                 view_nodata.setVisibility(View.GONE);
+                mFindSmart.setEnableLoadMore(true);
                 page =1;
                 getData();
             }

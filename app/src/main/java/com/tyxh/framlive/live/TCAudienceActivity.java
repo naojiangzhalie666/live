@@ -674,6 +674,10 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 }
             });
             mPlaying = false;
+            mLiveRoom.getTXLivePlayer().stopPlay(true);
+            if(mTXCloudVideoView!=null)
+            mTXCloudVideoView.onDestroy();
+            mTXCloudVideoView=null;
             mLiveRoom.setListener(null);
         }
     }

@@ -29,6 +29,7 @@
     <color name="dig_red">#FE3930</color>
     <color name="navpage">#FFE1E8EB</color>
     <color name="usewhat_tv">#71AAA5</color>
+    <color name="ccc">#CCCCCC</color>
 
     <!--dataPick-->
     <color name="date_picker_bg">#FFFFFF</color>

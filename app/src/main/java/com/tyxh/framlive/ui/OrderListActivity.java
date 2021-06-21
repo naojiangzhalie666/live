@@ -3,12 +3,18 @@ package com.tyxh.framlive.ui;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.ljy.devring.DevRing;
@@ -21,6 +27,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.superc.yyfflibrary.utils.ToastUtil;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.CzAdapter;
@@ -29,6 +36,7 @@ import com.tyxh.framlive.adapter.PjAdapter;
 import com.tyxh.framlive.adapter.SjAdapter;
 import com.tyxh.framlive.base.ApiService;
 import com.tyxh.framlive.base.Constant;
+import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.bean.BaseBean;
 import com.tyxh.framlive.bean.EventMessage;
@@ -37,9 +45,11 @@ import com.tyxh.framlive.bean.OrderBean;
 import com.tyxh.framlive.bean.SjBean;
 import com.tyxh.framlive.chat.ChatActivity;
 import com.tyxh.framlive.pop_dig.BuyzActivity;
+import com.tyxh.framlive.pop_dig.ChoseDialog;
 import com.tyxh.framlive.pop_dig.PjDialog;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
+import com.tyxh.framlive.zfb.PayResult;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -49,6 +59,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -116,6 +127,7 @@ public class OrderListActivity extends LiveBaseActivity {
     private View minclude_view;
     private List<LevelBean.RetDataBean.RankPrivilegeBeansBean> mLevel_maps;
     private LevelAdapter mLevelAdapter;
+    private ChoseDialog mChoseDialog;
 
     private int page = 1;
     private int pageSize = 10;
@@ -146,11 +158,10 @@ public class OrderListActivity extends LiveBaseActivity {
         mOrderTsj.setTextColor(getResources().getColor(R.color.black));
         mOrderTpj.setTextColor(getResources().getColor(R.color.black));
         mOrderFdj.setTextColor(getResources().getColor(R.color.black));
-
+        mChoseDialog = new ChoseDialog(this,this);
         initAdapter();
 //        mLevelDpjNum.setText("66");
         mLevelDpjNum.setVisibility(View.GONE);
-
     }
 
     /*评价*/
@@ -209,21 +220,32 @@ public class OrderListActivity extends LiveBaseActivity {
         mCzAdapter.setOnItemClickListener(new CzAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(int pos) {
-               /* OrderBean.RetDataBean.ListBean listBean = mCZlists.get(pos);
+                OrderBean.RetDataBean.ListBean listBean = mCZlists.get(pos);
                 int orderStatus = listBean.getOrderStatus();
                 switch (orderStatus) {//(1:待支付;2:支付成功;3:关闭;4:退款;5:已评价)
                     case 1:
-                        vh.mItemCzBtstate.setText("支付");
+                        mChoseDialog.setOnBuyClickListener(new ChoseDialog.OnBuyClickListener() {
+                            @Override
+                            public void onWechatListener() {
+                                mChoseDialog.dismiss();
+                                goPay("1",listBean.getOrderSn());
+                            }
+
+                            @Override
+                            public void onZfbListener() {
+                                mChoseDialog.dismiss();
+                                goPay("2",listBean.getOrderSn());
+                            }
+                        });
+                        mChoseDialog.show();
                         break;
                     case 2:
                     case 3:
                     case 4:
-                        vh.mItemCzBtstate.setText("再次购买");
+                    case 5:
+                        startActivity(new Intent(OrderListActivity.this, BuyzActivity.class));
                         break;
                 }
-                */
-                startActivity(new Intent(OrderListActivity.this, BuyzActivity.class));
-
             }
         });
 
@@ -320,6 +342,7 @@ public class OrderListActivity extends LiveBaseActivity {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mSmart.setEnableLoadMore(true);
                 v_nodata.setVisibility(View.GONE);
+                mSmart.setEnableLoadMore(true);
                 page = 1;
                 getData();
             }
@@ -363,6 +386,7 @@ public class OrderListActivity extends LiveBaseActivity {
             case R.id.order_cz:
                 mType = "0";
                 toGoAnima(mOrderCz);
+                mSmart.setEnableLoadMore(true);
                 page = 1;
                 mCZlists.clear();
                 mOrderRecy.setAdapter(mCzAdapter);
@@ -374,6 +398,7 @@ public class OrderListActivity extends LiveBaseActivity {
             case R.id.order_tsj:
                 mType = "1";
                 page = 1;
+                mSmart.setEnableLoadMore(true);
                 toGoAnima(mOrderTsj);
                 mSjLists.clear();
                 mOrderRecy.setAdapter(mSjAdapter);
@@ -385,6 +410,7 @@ public class OrderListActivity extends LiveBaseActivity {
             case R.id.order_tpj:
                 mType = "2";
                 page = 1;
+                mSmart.setEnableLoadMore(true);
                 toGoAnima(mOrderTpj);
                 mPjlists.clear();
                 mOrderRecy.setAdapter(mPjAdapter);
@@ -437,12 +463,15 @@ public class OrderListActivity extends LiveBaseActivity {
                     if (page == 1) {
                         if (bean.getRetData().getList() == null || bean.getRetData().getList().size() == 0) {
                             v_nodata.setVisibility(View.VISIBLE);
-                            mSmart.setEnableLoadMore(false);
+                            mSmart.finishLoadMoreWithNoMoreData();
                         }
                         mCZlists.clear();
                     }
                     mCZlists.addAll(bean.getRetData().getList());
                     mCzAdapter.notifyDataSetChanged();
+                    if(bean.getRetData()==null||bean.getRetData().getList() ==null ||bean.getRetData().getList().size()<pageSize){
+                        mSmart.finishLoadMoreWithNoMoreData();
+                    }
 
                 } else {
                     ToastShow(bean.getRetMsg());
@@ -479,12 +508,16 @@ public class OrderListActivity extends LiveBaseActivity {
                     if (page == 1) {
                         if (bean.getRetData().getList() == null || bean.getRetData().getList().size() == 0) {
                             v_nodata.setVisibility(View.VISIBLE);
-                            mSmart.setEnableLoadMore(false);
+                            mSmart.finishLoadMoreWithNoMoreData();
                         }
                         mSjLists.clear();
                     }
                     mSjLists.addAll(bean.getRetData().getList());
                     mSjAdapter.notifyDataSetChanged();
+                    if(bean.getRetData()==null||bean.getRetData().getList() ==null ||bean.getRetData().getList().size()<pageSize){
+                        mSmart.finishLoadMoreWithNoMoreData();
+                    }
+
                 } else {
                     ToastShow(bean.getRetMsg());
                     if (page == 1) {
@@ -520,12 +553,15 @@ public class OrderListActivity extends LiveBaseActivity {
                     if (page == 1) {
                         if (bean.getRetData().getList() == null || bean.getRetData().getList().size() == 0) {
                             v_nodata.setVisibility(View.VISIBLE);
-                            mSmart.setEnableLoadMore(false);
+                            mSmart.finishLoadMoreWithNoMoreData();
                         }
                         mPjlists.clear();
                     }
                     mPjlists.addAll(bean.getRetData().getList());
                     mPjAdapter.notifyDataSetChanged();
+                    if(bean.getRetData()==null||bean.getRetData().getList() ==null ||bean.getRetData().getList().size()<pageSize){
+                        mSmart.finishLoadMoreWithNoMoreData();
+                    }
                 } else {
                     ToastShow(bean.getRetMsg());
                     if (page == 1) {
@@ -655,12 +691,147 @@ public class OrderListActivity extends LiveBaseActivity {
         is_first = false;
     }
 
+
+    /*----购买--start---*/
+    private static final int SDK_PAY_FLAG = 1;
+
+    /*支付--type  1微信 2支付宝*/
+    private void goPay(String type, String orderSn) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().goPay(token, orderSn, type), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                JSONObject jsonObject = (JSONObject) result;
+                Integer retCode = jsonObject.getInteger("retCode");
+                if (retCode == 0) {
+                    if (type.equals("1")) {
+                        payByWechat(jsonObject);
+                    } else {
+                        if (jsonObject.getJSONObject("retData") != null)
+                            payByZfb(jsonObject.getJSONObject("retData").getJSONObject("payData").getString("payUrl"));
+                    }
+                } else {
+                    String retMsg = jsonObject.getString("retMsg");
+                    Toast.makeText(OrderListActivity.this, retMsg, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    /*微信支付*/
+    private void payByWechat(JSONObject jsonObject) {
+        JSONObject retData = jsonObject.getJSONObject("retData");
+        try {
+            JSONObject payData = retData.getJSONObject("payData");
+            PayReq req = new PayReq();
+            req.appId = payData.getString("appid");
+            req.partnerId = payData.getString("partnerid");
+            req.prepayId = payData.getString("prepayid");
+            req.nonceStr = payData.getString("noncestr");
+            req.timeStamp = payData.getString("timestamp");
+            req.packageValue = payData.getString("package");
+            req.sign = payData.getString("sign");
+            req.extData = payData.getString("android_wxpay"); // optional
+            LiveApplication.api.sendReq(req);
+        } catch (Exception e) {
+            Log.e("PAY_GET", "异常：" + e.getMessage());
+//            Toast.makeText(mContext, "异常：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /*支付宝支付*/
+    private void payByZfb(String info) {
+        Runnable payRunnable = new Runnable() {
+            @Override
+            public void run() {
+                PayTask alipay = new PayTask(OrderListActivity.this);
+                Map<String, String> result = alipay.payV2(info, true);
+                Message msg = new Message();
+                msg.what = SDK_PAY_FLAG;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+            }
+        };
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
+    }
+
+    /*支付宝返回--支付结果*/
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SDK_PAY_FLAG: {
+                    @SuppressWarnings("unchecked")
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {//成功
+                        toHandlePay(0);
+                    } else if (TextUtils.equals(resultStatus, "6001")) {//取消
+                        toHandlePay(2);
+                    } else {//失败
+                        toHandlePay(1);
+                    }
+                    break;
+                }
+            }
+        }
+
+        ;
+    };
+
+    /**
+     * 支付结果统一处理
+     *
+     * @param type 0：成功  1：失败  2：取消
+     */
+    private void toHandlePay(int type) {
+        switch (type) {
+            case 0:
+                ToastUtil.showToast(this, "支付成功");
+                if(mSmart!=null)
+                    mSmart.autoRefresh();
+                break;
+            case 1:
+                ToastUtil.showToast(this, "支付失败");
+                break;
+            case 2:
+                ToastUtil.showToast(this, "取消支付");
+//                if(mSmart!=null)
+//                    mSmart.autoRefresh();
+                break;
+        }
+    }
+
+
+    /*----购买--end---*/
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEventMsg(EventMessage message) {
         if (message.getCode() == PAY_SUCCESS) {
             if(mSmart!=null)
             mSmart.autoRefresh();
-        } else if (message.getCode() == 1005) {
+        }else if (message.getMessage().equals("pay_finish")) { /*微信返回--支付结果*/
+            switch (message.getCode()) {
+                case 0:
+                    toHandlePay(0);
+                    break;
+                case -1:
+                    toHandlePay(1);
+                    break;
+                case -2:
+                    toHandlePay(2);
+                    break;
+            }
+        }  else if (message.getCode() == 1005) {
             ToastUtil.showToast(this, "登录过期，请重新登录!");
             finish();
             startActivity(new Intent(this, LoginActivity.class));

@@ -69,6 +69,8 @@ GET_TASKS ：应用要使用该接口必须声明权限android.permission.REAL_G
         <activity android:name=".ui.ChildForgetActivity"></activity>
         <activity android:name=".ui.ChildForgetEndActivity"></activity>
         <activity
+            android:name=".ui.AboutActivity"
+            android:screenOrientation="portrait" />  <activity
             android:name=".ui.WebVActivity"
             android:screenOrientation="portrait" />
         <activity

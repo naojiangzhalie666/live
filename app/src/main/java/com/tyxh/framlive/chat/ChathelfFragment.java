@@ -230,7 +230,7 @@ public class ChathelfFragment extends BaseFragment {
             @Override
             public void onAudioClickListener() {
                 super.onAudioClickListener();
-                ToastUtil.showToast(getActivity(),"观看/直播时无法使用改功能");
+                ToastUtil.showToast(getActivity(),"观看/直播时无法使用该功能");
             }
 
             @Override

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.tyxh.framlive.R;
-import com.tyxh.framlive.utils.ImageUtils;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,10 +14,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class CodeDialog extends Dialog {
     private Context mContext;
     private ConstraintLayout mConstraintLayout;
+    private OnPhotoSaveListener mOnPhotoSaveListener;
 
     public CodeDialog(@NonNull Context context) {
         super(context);
         mContext =context;
+    }
+
+    public void setOnPhotoSaveListener(OnPhotoSaveListener onPhotoSaveListener) {
+        mOnPhotoSaveListener = onPhotoSaveListener;
     }
 
     @Override
@@ -54,9 +58,16 @@ public class CodeDialog extends Dialog {
         //转化为bitmap文件
         Bitmap bitmap = mConstraintLayout.getDrawingCache();
 //        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.mine_code);
-        ImageUtils.saveBmp2Gallery(mContext,bitmap,"saomiao");
+
+        if(mOnPhotoSaveListener!=null)
+            mOnPhotoSaveListener.onSaveListener(bitmap);
 
 
     }
+
+    public interface OnPhotoSaveListener{
+        void onSaveListener(Bitmap bitmap);
+    }
+
 
 }

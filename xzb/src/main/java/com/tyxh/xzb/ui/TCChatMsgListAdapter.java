@@ -56,7 +56,7 @@ public class TCChatMsgListAdapter extends BaseAdapter implements AbsListView.OnS
     }
 
     private static final int MAXANIMATORCOUNT = 8;
-    private static final int MAXLISTVIEWHEIGHT = 650;
+    private static  int MAXLISTVIEWHEIGHT = 650;
     private static final int ANIMATORDURING = 8000;
     private static final int MAXITEMCOUNT = 50;
     private LinkedList<AnimatorSet> mAnimatorSetList;
@@ -67,7 +67,7 @@ public class TCChatMsgListAdapter extends BaseAdapter implements AbsListView.OnS
         this.mContext = context;
         mListView = listview;
         this.mList = objects;
-
+//        MAXLISTVIEWHEIGHT = DensityUtil.dp2px(mContext, 650) ;
         mAnimatorSetList = new LinkedList<>();
         mAnimatorInfoList = new LinkedList<>();
 

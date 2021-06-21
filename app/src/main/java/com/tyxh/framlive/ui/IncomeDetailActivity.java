@@ -91,6 +91,7 @@ public class IncomeDetailActivity extends LiveBaseActivity {
         mNormalSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mNormalSmart.setEnableLoadMore(true);
                 page =1;
                 getData();
             }
@@ -118,6 +119,7 @@ public class IncomeDetailActivity extends LiveBaseActivity {
                     ToastShow("请输入搜索内容");
                     return;
                 }*/
+                mNormalSmart.setEnableLoadMore(true);
                 page =1;
                 getData();
                 break;
@@ -150,6 +152,7 @@ public class IncomeDetailActivity extends LiveBaseActivity {
             public void onOptionPicked(int index, String item) {
                 select_pos = index;
                 view_nodata.setVisibility(View.GONE);
+                mNormalSmart.setEnableLoadMore(true);
                 page = 1;
                 getData();
             }
@@ -178,6 +181,9 @@ public class IncomeDetailActivity extends LiveBaseActivity {
                         mStringList.clear();
                     }
                     mStringList.addAll(bean.getRetData().getList());
+                    if(bean.getRetData() ==null||bean.getRetData().getList() ==null||bean.getRetData().getList().size()<page_size){
+                        mNormalSmart.finishLoadMoreWithNoMoreData();
+                    }
                 } else {
                     ToastShow(bean.getRetMsg());
                 }
@@ -216,6 +222,7 @@ public class IncomeDetailActivity extends LiveBaseActivity {
             @Override
             public void onTimeSelected(long timestamp) {
                 mtv.setText(DateFormatUtils.long2WithStrDay(timestamp, false, false));
+                mNormalSmart.setEnableLoadMore(true);
                 page = 1;
                 getData();
             }

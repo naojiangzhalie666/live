@@ -108,6 +108,7 @@ public class NormalActivity extends LiveBaseActivity {
         mNormalSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mNormalSmart.setEnableLoadMore(true);
                 page=1;
                 getMineDia();
             }
@@ -186,7 +187,11 @@ public class NormalActivity extends LiveBaseActivity {
                     if(page==1)
                         mStringList.clear();
                     mStringList.addAll(bean.getRetData().getList());
+                    if(bean.getRetData() ==null ||bean.getRetData().getList()==null||bean.getRetData().getList().size()<10){
+                        mNormalSmart.finishLoadMoreWithNoMoreData();
+                    }
                 } else {
+                    mNormalSmart.finishLoadMoreWithNoMoreData();
                     ToastShow(bean.getRetMsg());
                 }
                 mWalletAdapter.notifyDataSetChanged();

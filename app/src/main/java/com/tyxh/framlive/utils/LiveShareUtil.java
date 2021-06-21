@@ -15,10 +15,12 @@ public class LiveShareUtil {
 
     private static LiveShareUtil mShareUtil;
     private static Context mContext;
-    public static final String APP_POWER = "app_power";
-    public static final String APP_TOKEN = "app_token";
-    public static final String APP_USERID = "app_userid";
-    public static final String APP_USERNAME = "app_name";
+    public static final String APP_BUYONE = "app_oneb";//是否可购买一元活动
+    public static final String APP_AGREE = "app_agree";//是否同意了用户协议
+    public static final String APP_POWER = "app_power";//用户等级
+    public static final String APP_TOKEN = "app_token";//用户token
+    public static final String APP_USERID = "app_userid";//用户userid
+    public static final String APP_USERNAME = "app_name";//用户名称
     public static final String APP_USERSIGN = "app_sign";//用户签名
     public static final String APP_USERHEAD = "app_head";//头像
     public static final String APP_USERCOVER = "app_cover";//封面图
@@ -51,6 +53,27 @@ public class LiveShareUtil {
     public int getPower() {
         SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.getInt(APP_POWER, 0);
+    }
+
+    /**
+     * 是否同意了协议
+     *
+     * @return true同意 false未同意
+     */
+    public boolean getAgree() {
+        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        return sp.getBoolean(APP_AGREE, false);
+    }
+
+    /**
+     * 目前未使用到
+     * 是否购买过一元活动
+     *
+     * @return true购买过 false未购买过
+     */
+    public boolean getOneBuy() {
+        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        return sp.getBoolean(APP_BUYONE, false);
     }
 
     /*存储及获取Token*/

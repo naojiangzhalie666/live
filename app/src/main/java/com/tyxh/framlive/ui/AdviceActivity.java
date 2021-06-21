@@ -161,6 +161,7 @@ public class AdviceActivity extends LiveBaseActivity {
         mNormalSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mNormalSmart.setEnableLoadMore(true);
                 page=1;
                 getMineDia();
             }
@@ -322,7 +323,11 @@ public class AdviceActivity extends LiveBaseActivity {
                         mStringList.clear();
                     }
                     mStringList.addAll(bean.getRetData().getList());
+                    if(bean.getRetData()==null||bean.getRetData().getList()==null||bean.getRetData().getList().size()<10){
+                        mNormalSmart.finishLoadMoreWithNoMoreData();
+                    }
                 } else {
+                    mNormalSmart.finishLoadMoreWithNoMoreData();
                     ToastShow(bean.getRetMsg());
                 }
                 mWalletAdapter.notifyDataSetChanged();
@@ -396,6 +401,7 @@ public class AdviceActivity extends LiveBaseActivity {
             @Override
             public void onTimeSelected(long timestamp) {
                 mtv.setText(DateFormatUtils.long2WithStrDay(timestamp, false, false));
+                mNormalSmart.setEnableLoadMore(true);
                 page = 1;
                 getMineDia();
             }
