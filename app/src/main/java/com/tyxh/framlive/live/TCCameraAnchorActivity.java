@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -14,6 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tencent.liteav.audiosettingkit.AudioEffectPanel;
+import com.tencent.liteav.demo.beauty.BeautyParams;
+import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
+import com.tencent.liteav.demo.beauty.model.BeautyInfo;
+import com.tencent.liteav.demo.beauty.model.ItemInfo;
+import com.tencent.liteav.demo.beauty.model.TabInfo;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
+import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.pop_dig.BaseDialog;
@@ -30,14 +39,6 @@ import com.tyxh.xzb.ui.TCVideoView;
 import com.tyxh.xzb.utils.TCUtils;
 import com.tyxh.xzb.utils.login.TCUserMgr;
 import com.tyxh.xzb.utils.roomutil.AnchorInfo;
-import com.tencent.liteav.audiosettingkit.AudioEffectPanel;
-import com.tencent.liteav.demo.beauty.BeautyParams;
-import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
-import com.tencent.liteav.demo.beauty.model.BeautyInfo;
-import com.tencent.liteav.demo.beauty.model.ItemInfo;
-import com.tencent.liteav.demo.beauty.model.TabInfo;
-import com.tencent.liteav.demo.beauty.view.BeautyPanel;
-import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -104,6 +105,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.BeautyTheme);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
 //        TCELKReportMgr.getInstance().reportELK(TCConstants.ELK_ACTION_CAMERA_PUSH, TCUserMgr.getInstance().getUserId(), 0, "摄像头推流", null);
         mPusherList = new ArrayList<>();

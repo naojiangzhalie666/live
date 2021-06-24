@@ -65,6 +65,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             vh.mItemHomerecyName.setVisibility(View.VISIBLE);
             vh.mItemHomerecyTitle.setVisibility(View.VISIBLE);
             vh.mItemHomerecyLinear.setVisibility(View.VISIBLE);
+            vh.mItemHomeImgCover.setVisibility(View.VISIBLE);
             vh.mItemHomerecyImgvState.setVisibility(View.GONE);
             vh.mItemHomeImgSun.setVisibility(View.VISIBLE);
             MineTCVideoInfo data = mLists.get(position);
@@ -145,6 +146,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             vh.mItemHomeImgRenz.setVisibility(View.GONE);
             vh.mItemHomerecyImgvState.setVisibility(View.GONE);
             vh.mItemHomerecyImgv.setImageResource(R.drawable.home_more);
+            vh.mItemHomeImgCover.setVisibility(View.GONE);
             vh.mItemHomerecyBiao.setVisibility(View.GONE);
             vh.mItemHomerecyRenqi.setVisibility(View.GONE);
             vh.mItemHomerecyName.setVisibility(View.GONE);
@@ -194,6 +196,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         ImageView mItemHomeImgRenz;
         @BindView(R.id.item_home_sun)
         ImageView mItemHomeImgSun;
+  @BindView(R.id.item_homerecy_cover)
+        ImageView mItemHomeImgCover;
 
         ViewHolder(View view) {
             super(view);

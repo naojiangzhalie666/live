@@ -139,6 +139,8 @@ public class SjbgDialog extends Dialog {
                     mDigsjbgAdapter.notifyDataSetChanged();
                     if(bean.getRetData() ==null||bean.getRetData().getList() ==null||bean.getRetData().getList().size()<page_size){
                         mDigServiceSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mDigServiceSmart.setNoMoreData(false);
                     }
 
                 } else {

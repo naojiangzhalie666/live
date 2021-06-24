@@ -477,4 +477,9 @@ public class ChathelfFragment extends BaseFragment {
             }
         });
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        DevRing.httpManager().stopRequestByTag(TAG);
+    }
 }

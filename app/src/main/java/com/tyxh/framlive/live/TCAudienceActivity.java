@@ -302,11 +302,11 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         mBeautyControl.setBeautyManager(mLiveRoom.getBeautyManager());
         startPlay();
         //在这里停留，让列表界面卡住几百毫秒，给sdk一点预加载的时间，形成秒开的视觉效果
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         mTxLivePusher = mLiveRoom.getTxLivePusher();
         getDetail();
         isAttention();

@@ -9,11 +9,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.utils.LiveShareUtil;
 
 public class BtPopupWindow extends PopupWindow {
     private View mPopView;
     private TextView mtv_ruzhu,mtv_jubao;
     private OnItemClickListener mOnItemClickListener;
+    private int mPower;
 
     public BtPopupWindow(Context context) {
         super(context);
@@ -26,10 +28,14 @@ public class BtPopupWindow extends PopupWindow {
     }
 
     private void initView(Context context) {
+        mPower = LiveShareUtil.getInstance(context).getPower();
         LayoutInflater inflater = LayoutInflater.from(context);
         mPopView = inflater.inflate(R.layout.dialog_bt, null);
         mtv_ruzhu = mPopView.findViewById(R.id.ruzhu);
         mtv_jubao = mPopView.findViewById(R.id.jubao);
+        if(mPower>=2){
+            mtv_ruzhu.setText("分享");
+        }
         mtv_ruzhu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -90,6 +90,8 @@ public class NoticeActivity extends LiveBaseActivity {
                     mNoticeAdapter.notifyDataSetChanged();
                     if(bean.getRetData() ==null ||bean.getRetData().getList() ==null ||bean.getRetData().getList().size()<10){
                         mNoticeSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mNoticeSmart.setNoMoreData(false);
                     }
                 }else {
                     mNoticeSmart.finishLoadMoreWithNoMoreData();

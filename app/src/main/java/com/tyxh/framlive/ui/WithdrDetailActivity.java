@@ -195,6 +195,8 @@ public class WithdrDetailActivity extends LiveBaseActivity {
                     mWithdrAdapter.notifyDataSetChanged();
                     if(bean.getRetData() ==null ||bean.getRetData().getList() ==null||bean.getRetData().getList().size()<page_size){
                         mNormalSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mNormalSmart.setNoMoreData(false);
                     }
 
                 }else{

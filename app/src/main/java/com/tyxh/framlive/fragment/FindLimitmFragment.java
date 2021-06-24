@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
 import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.LiveApplication;
@@ -84,5 +85,6 @@ public class FindLimitmFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        DevRing.httpManager().stopRequestByTag(LiveHttp.TAG);
     }
 }

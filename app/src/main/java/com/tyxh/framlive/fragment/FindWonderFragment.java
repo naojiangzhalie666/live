@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
 import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tyxh.framlive.R;
@@ -298,5 +299,6 @@ public class FindWonderFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
         EventBus.getDefault().unregister(this);
+        DevRing.httpManager().stopRequestByTag(LiveHttp.TAG);
     }
 }

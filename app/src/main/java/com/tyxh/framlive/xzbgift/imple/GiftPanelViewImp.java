@@ -180,7 +180,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
             mViewpager.setVisibility(View.VISIBLE);
             mDotsLayout.setVisibility(View.VISIBLE);
             mVp_bb.setVisibility(View.GONE);
-            mDotsLayout_bb.setVisibility(View.GONE);
+            mDotsLayout_bb.setVisibility(View.INVISIBLE);
             if (mGiftController == null) {
                 mGiftController = new GiftController();
             } else {
@@ -211,7 +211,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
             if (pageSize > 1) {
                 mDotsLayout.setVisibility(View.VISIBLE);
             } else {
-                mDotsLayout.setVisibility(View.GONE);
+                mDotsLayout.setVisibility(View.INVISIBLE);
             }
             GiftViewPagerAdapter giftViewPagerAdapter = new GiftViewPagerAdapter(mGiftViews);
             mViewpager.setAdapter(giftViewPagerAdapter);
@@ -223,7 +223,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
         } else {
             mViewpager.setVisibility(View.GONE);
             mVp_bb.setVisibility(View.VISIBLE);
-            mDotsLayout.setVisibility(View.GONE);
+            mDotsLayout.setVisibility(View.INVISIBLE);
             mDotsLayout_bb.setVisibility(View.VISIBLE);
             if (mGiftController_bb == null) {
                 mGiftController_bb = new GiftController();
@@ -256,7 +256,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
             if (pageSize > 1) {
                 mDotsLayout_bb.setVisibility(View.VISIBLE);
             } else {
-                mDotsLayout_bb.setVisibility(View.GONE);
+                mDotsLayout_bb.setVisibility(View.INVISIBLE);
             }
             GiftViewPagerAdapter gift_bb = new GiftViewPagerAdapter(mGifts_bb);
             mVp_bb.setAdapter(gift_bb);

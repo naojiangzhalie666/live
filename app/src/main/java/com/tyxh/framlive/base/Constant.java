@@ -11,6 +11,7 @@ public class Constant {
      * */
     public static final String BASE_URL = "https://appshop.bkxinli.com/portal/";
     public static final String BASE_WEB = "https://appshop.bkxinli.com/bkapp/";//各种web页拼接地址
+    public static final boolean IS_DEBUG = true;
     /**
      * Socket地址：
      * 正式地址   ：https://appshop.bkxinli.com/portal/socket/
@@ -19,7 +20,7 @@ public class Constant {
      */
     public static final String SOCKET_URL = "wss://appshop.bkxinli.com/portal/socket/";
     /*分享公共*/
-    public static final String SHARE_URL = "http://www.tianyuxh.com/";
+    public static final String SHARE_URL = "https://a.app.qq.com/o/simple.jsp?pkgname=com.tyxh.framlive";
     public static final String SHARE_NAME = "边框心理";
     public static final String SHARE_MS  ="整合心理咨询机构与心理咨询师，为广大老百姓提供心理健康服务的平台";
 
@@ -30,6 +31,9 @@ public class Constant {
 
     /*app使用*/
     public static boolean IS_SHENHEING = false;//入驻是否在审核中
+
+    public static final String BUGLY_APPID = "b1b287bf47";
+
 
     /*腾讯云一键登录appid*/
     public static final String TENCENT_PHONE="1400527451";

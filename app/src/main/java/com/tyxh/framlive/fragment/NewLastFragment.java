@@ -6,6 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.OldLastAdapter;
 import com.tyxh.framlive.base.LiveApplication;
@@ -13,9 +17,6 @@ import com.tyxh.framlive.bean.InterestBean;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.google.gson.Gson;
-import com.scwang.smart.refresh.layout.SmartRefreshLayout;
-import com.superc.yyfflibrary.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +107,7 @@ public class NewLastFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        DevRing.httpManager().stopRequestByTag(LiveHttp.TAG);
     }
 
 }

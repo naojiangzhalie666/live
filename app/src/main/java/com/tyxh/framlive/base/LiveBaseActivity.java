@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.ljy.devring.DevRing;
+import com.superc.yyfflibrary.base.BaseActivity;
+import com.superc.yyfflibrary.utils.ToastUtil;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.pop_dig.LoadDialog;
 import com.tyxh.framlive.ui.LoginActivity;
 import com.tyxh.framlive.utils.LiveShareUtil;
-import com.superc.yyfflibrary.base.BaseActivity;
-import com.superc.yyfflibrary.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,6 +20,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import androidx.annotation.Nullable;
 
 public abstract class LiveBaseActivity extends BaseActivity {
+    public static final String TAG = "LiveHttp";
     public LoadDialog mLoadDialog;
     public String token = "";
     public UserInfoBean user_Info;
@@ -50,7 +52,8 @@ public abstract class LiveBaseActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-
+        //销毁时--关闭正在进行的网络访问
+        DevRing.httpManager().stopRequestByTag(TAG);
     }
 
     public void showLoad(){
@@ -70,6 +73,6 @@ public abstract class LiveBaseActivity extends BaseActivity {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-
     }
+
 }

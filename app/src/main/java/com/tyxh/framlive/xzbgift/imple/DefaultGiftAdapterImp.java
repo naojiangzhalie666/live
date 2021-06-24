@@ -141,7 +141,7 @@ public class DefaultGiftAdapterImp extends GiftAdapter {
     }
 
     private List<GiftData> transformGiftInfoList(AllGiftBean giftBean) {
-        if (giftBean == null) {
+        if (giftBean == null||giftBean.getRetData()==null) {
             return null;
         }
         List<AllGiftBean.RetDataBean.ListBean> giftBeanList = giftBean.getRetData().getList();
@@ -162,7 +162,7 @@ public class DefaultGiftAdapterImp extends GiftAdapter {
         return giftInfoList;
     }
     private List<GiftData> transformMineGiftInfoList(BeanMyBack giftBean) {
-        if (giftBean == null) {
+        if (giftBean == null||giftBean.getRetData()==null) {
             return null;
         }
         List<BeanMyBack.RetDataBean> giftBeanList = giftBean.getRetData();

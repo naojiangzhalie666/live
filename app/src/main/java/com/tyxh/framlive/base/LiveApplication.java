@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.heytap.msp.push.HeytapPushManager;
 import com.huawei.hms.push.HmsMessaging;
@@ -14,6 +15,7 @@ import com.ljy.devring.DevRing;
 import com.meizu.cloud.pushsdk.PushManager;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.rich.oauth.core.RichAuth;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
@@ -44,6 +46,10 @@ import com.umeng.socialize.PlatformConfig;
 import com.vivo.push.PushClient;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import androidx.multidex.MultiDex;
 
 public class LiveApplication extends Application {
@@ -70,6 +76,7 @@ public class LiveApplication extends Application {
 
     public void toInitAll(){
         init();
+        initBugly();
         initTent();
         initWachat();
         initUmeng();
@@ -80,7 +87,7 @@ public class LiveApplication extends Application {
     public static LiveApplication getmInstance() {
         return mInstance;
     }
-
+    /*网络框架初始化*/
     private void init() {
         DevRing.init(this);
         DevRing.configureHttp().setBaseUrl(Constant.BASE_URL).setIsUseCookie(true).setConnectTimeout(60).setIsUseLog(Constant.PRINT_LOG);
@@ -89,7 +96,7 @@ public class LiveApplication extends Application {
         DevRing.create();
 
     }
-
+    /*各种腾讯初始化*/
     private void initTent() {
         TUIKitConfigs configs = TUIKit.getConfigs();
         configs.setSdkConfig(new V2TIMSDKConfig());
@@ -287,6 +294,46 @@ public class LiveApplication extends Application {
         public void onActivityDestroyed(Activity activity) {
 
         }
+    }
+    /*bugly初始化*/
+    private void initBugly(){
+        Context context = getApplicationContext();
+        String packageName = context.getPackageName();
+        /*获取当前进程名*/
+        String processName = getProcessName(android.os.Process.myPid());
+        /*设置是否为上报进程*/
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(context);
+        strategy.setUploadProcess(processName == null || processName.equals(packageName));
+        CrashReport.initCrashReport(context, Constant.BUGLY_APPID, Constant.IS_DEBUG, strategy);
+
+    }
+    /**
+     * 获取进程号对应的进程名
+     *
+     * @param pid 进程号
+     * @return 进程名
+     */
+    private static String getProcessName(int pid) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("/proc/" + pid + "/cmdline"));
+            String processName = reader.readLine();
+            if (!TextUtils.isEmpty(processName)) {
+                processName = processName.trim();
+            }
+            return processName;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }

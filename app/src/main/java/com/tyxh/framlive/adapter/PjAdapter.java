@@ -76,8 +76,8 @@ public class PjAdapter extends RecyclerView.Adapter<PjAdapter.ViewHolder> {
         vh.mItemSjLefKa.setVisibility(View.INVISIBLE);
         if (bean.getProHistory() != null) {
             SjBean.RetDataBean.ListBean.ProHistoryBean proHistory = bean.getProHistory();
-            int proType = proHistory.getProType();
-            switch (proType) {
+            int proConType = proHistory.getProConType();
+            switch (proConType) {
                 case 2://卡
                     vh.mItemSjLefKa.setVisibility(View.VISIBLE);
                     vh.mItemSjLefKa.setText("-"+proHistory.getProName());
@@ -87,7 +87,7 @@ public class PjAdapter extends RecyclerView.Adapter<PjAdapter.ViewHolder> {
                     vh.mItemSjLeftm.setText(proHistory.getDurationConsume()+"");
                     break;
                 case 4://钻石
-                    vh.mItemSjZuan.setText("-" + bean.getProHistory().getDiaNum()+"钻石");
+                    vh.mItemSjZuan.setText("-" + bean.getProHistory().getDiaNum());
                     vh.mItemSjZuan.setVisibility(View.VISIBLE);
                     break;
             }

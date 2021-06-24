@@ -240,6 +240,8 @@ public class LiveDetailActivity extends LiveBaseActivity {
                     ++page;
                     if(bean.getRetData() ==null||bean.getRetData().getList() ==null||bean.getRetData().getList().size()<page_size){
                         mLivedetailSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mLivedetailSmart.setNoMoreData(false);
                     }
                 } else {
                     ToastShow(bean.getRetMsg());
@@ -290,6 +292,8 @@ public class LiveDetailActivity extends LiveBaseActivity {
                     ++page;
                     if(bean.getRetData() ==null||bean.getRetData().getList() ==null||bean.getRetData().getList().size()<page_size){
                         mLivedetailSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mLivedetailSmart.setNoMoreData(false);
                     }
                 } else {
                     ToastShow(bean.getRetMsg());

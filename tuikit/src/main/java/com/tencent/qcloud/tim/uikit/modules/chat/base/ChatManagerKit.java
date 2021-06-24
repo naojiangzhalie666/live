@@ -422,10 +422,10 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
     private void processHistoryMsgs(List<V2TIMMessage> v2TIMMessages, ChatInfo chatInfo, IUIKitCallBack callBack) {
         mIsLoading = false;
-        if (!safetyCall()) {
-            TUIKitLog.w(TAG, "getLocalMessage unSafetyCall");
-            return;
-        }
+//        if (!safetyCall()) {
+//            TUIKitLog.w(TAG, "设置已读getLocalMessage unSafetyCall");
+//            return;
+//        }
         if (chatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
             V2TIMManager.getMessageManager().markC2CMessageAsRead(chatInfo.getId(), new V2TIMCallback() {
                 @Override

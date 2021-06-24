@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
     android:layout_height="match_parent">
 
     <ImageView
@@ -63,6 +64,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView17"
         app:layout_constraintVertical_bias="0.262" />
+    <TextView
+        android:id="@+id/about_about"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="《边框心理》APP V1.0.0版本正式上线！作为一款专业平价的直播心理咨询服务APP，V1.0.0版本可以更直观地与咨询师互动，自由选择与自己匹配度更高的咨询师，还可以根据个人情况选择视频咨询、语音咨询、文字咨询服务。"
+        android:textSize="11sp"
+        android:paddingLeft="@dimen/dp_4"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:paddingRight="@dimen/dp_4"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingBottom="@dimen/dp_6"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/about_jianjie"
+        app:layout_constraintStart_toStartOf="@+id/about_jianjie"
+        app:layout_constraintTop_toBottomOf="@+id/about_jianjie" />
+
 
     <View
         android:id="@+id/textView150"
@@ -71,7 +89,7 @@
         android:background="@color/ccc"
         app:layout_constraintEnd_toEndOf="@+id/about_jianjie"
         app:layout_constraintStart_toStartOf="@+id/about_jianjie"
-        app:layout_constraintTop_toBottomOf="@+id/about_jianjie" />
+        app:layout_constraintTop_toBottomOf="@+id/about_about" />
 
     <TextView
         android:id="@+id/about_newbb"

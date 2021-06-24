@@ -15,6 +15,8 @@ import butterknife.OnClick;
 
 public class AboutActivity extends LiveBaseActivity {
 
+    @BindView(R.id.about_about)
+    TextView mAboutAbout;
     @BindView(R.id.about_code)
     TextView mAboutCode;
     @BindView(R.id.about_jianjie)
@@ -30,7 +32,7 @@ public class AboutActivity extends LiveBaseActivity {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
         try {
-            mAboutCode.setText("version"+getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+            mAboutCode.setText("version" + getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
         } catch (Exception e) {
             mAboutCode.setText("version1.0.0");
             e.printStackTrace();
@@ -42,7 +44,11 @@ public class AboutActivity extends LiveBaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.about_jianjie:
-                ToastShow("跳转简介");
+                if (mAboutAbout.getVisibility() == View.VISIBLE) {
+                    mAboutAbout.setVisibility(View.GONE);
+                } else {
+                    mAboutAbout.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.about_newbb:
             case R.id.about_hping:
@@ -51,7 +57,7 @@ public class AboutActivity extends LiveBaseActivity {
         }
     }
 
-    private void goShop(){
+    private void goShop() {
 //存在手机里没安装应用市场的情况，跳转会包异常，做一个接收判断
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("market://details?id=" + getPackageName()));
@@ -67,7 +73,6 @@ public class AboutActivity extends LiveBaseActivity {
                 startActivity(intent);
             }
         }
-
 
 
     }

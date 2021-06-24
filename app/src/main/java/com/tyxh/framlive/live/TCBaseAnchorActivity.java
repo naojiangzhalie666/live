@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -201,7 +200,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         mStartPushPts = System.currentTimeMillis();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         Intent intent = getIntent();
         mUserId = intent.getStringExtra(TCConstants.USER_ID);

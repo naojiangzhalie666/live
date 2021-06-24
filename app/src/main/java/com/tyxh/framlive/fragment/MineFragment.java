@@ -25,6 +25,7 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.ljy.devring.util.DensityUtil;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.VpAdapter;
 import com.tyxh.framlive.base.ApiService;
@@ -37,6 +38,7 @@ import com.tyxh.framlive.pop_dig.CodeDialog;
 import com.tyxh.framlive.pop_dig.LogoutDialog;
 import com.tyxh.framlive.pop_dig.ShareDialog;
 import com.tyxh.framlive.ui.AdviceActivity;
+import com.tyxh.framlive.ui.EdtmsgActivity;
 import com.tyxh.framlive.ui.LoginActivity;
 import com.tyxh.framlive.ui.LookPersonActivity;
 import com.tyxh.framlive.ui.MailListActivity;
@@ -118,6 +120,8 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
     LinearLayout mMineLinator;
     @BindView(R.id.tvvv)
     TextView mTvvv;
+    @BindView(R.id.smart)
+    SmartRefreshLayout mSmart;
     private Unbinder unbinder;
     private boolean show_zuanshi = true, show_money = true;
     private XfFragment mXfFragment;
@@ -147,12 +151,12 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
     }
 
     @OnClick({R.id.mine_set, R.id.mine_cons_eyezuanshi, R.id.mine_cons_eyemoney, R.id.mine_guanzhu, R.id.mine_guanzhugzongh, R.id.mine_help,
-            R.id.mine_edt, R.id.mine_ruzhu, R.id.mine_logout, R.id.mine_money_tv,R.id.mine_cons_money, R.id.textView16, R.id.mine_zuanshi,R.id.mine_cons_zuanshi, R.id.textView14,
-            R.id.mine_daojutv, R.id.textView17, R.id.mine_cons_daoju,R.id.mine_head})
+            R.id.mine_edt, R.id.mine_ruzhu, R.id.mine_logout, R.id.mine_money_tv, R.id.mine_cons_money, R.id.textView16, R.id.mine_zuanshi, R.id.mine_cons_zuanshi, R.id.textView14,
+            R.id.mine_daojutv, R.id.textView17, R.id.mine_cons_daoju, R.id.mine_head})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mine_head:
-//                startActivity(new Intent(getActivity(), EdtmsgActivity.class));
+                startActivity(new Intent(getActivity(), EdtmsgActivity.class));
                 break;
             case R.id.mine_set:
                 startActivity(new Intent(getActivity(), SetActivity.class));
@@ -257,6 +261,10 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
         mCodeDialog = new CodeDialog(getActivity());
         mFragments = new ArrayList<>();
         mXfFragment = new XfFragment();
+        mSmart.setEnablePureScrollMode(true);//是否启用纯滚动模式
+        mSmart.setEnableNestedScroll(true);//是否启用嵌套滚动;
+        mSmart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        mSmart.setEnableOverScrollBounce(true);//是否启用越界回弹
         initShare();
         mPower = LiveShareUtil.getInstance(getActivity()).getPower();
 //        if (mPower == Constant.POWER_NORMAL) {//普通
@@ -314,7 +322,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
             @Override
             public void onLogoutClickListener() {
                 LiveShareUtil.getInstance(getActivity()).clear();
-                LiveShareUtil.getInstance(LiveApplication.getmInstance()).put(LiveShareUtil.APP_AGREE,true);
+                LiveShareUtil.getInstance(LiveApplication.getmInstance()).put(LiveShareUtil.APP_AGREE, true);
                 getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();
             }
@@ -323,7 +331,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
         mCodeDialog.setOnPhotoSaveListener(new CodeDialog.OnPhotoSaveListener() {
             @Override
             public void onSaveListener(Bitmap bitmap) {
-                if(checkPublishPermission()) {
+                if (checkPublishPermission()) {
                     ImageUtils.saveBmp2Gallery(getActivity(), bitmap, "saomiao");
                 }
             }
@@ -336,7 +344,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
         mMineLevel.setText("lv " + data.getLevel());
         Glide.with(getActivity()).load(data.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).circleCrop().into(mMineHead);
         money = data.getCumulativeIncome();
-        if(show_money)
+        if (show_money)
             mMineMoneyTv.setText(money);
 
     }
@@ -356,8 +364,8 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                             zuan = diamond;
                         }
                     }
-                    if(show_zuanshi)
-                    mMineZuanshi.setText(zuan);
+                    if (show_zuanshi)
+                        mMineZuanshi.setText(zuan);
                     mMineDaojutv.setText(String.valueOf(data.getPropCount()));
                 }
             }
@@ -421,6 +429,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        DevRing.httpManager().stopRequestByTag(TAG);
     }
 
     @Override

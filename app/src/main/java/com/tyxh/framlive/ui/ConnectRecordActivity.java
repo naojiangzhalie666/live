@@ -167,6 +167,8 @@ public class ConnectRecordActivity extends LiveBaseActivity {
                     mConecrecordAdapter.notifyDataSetChanged();
                     if(bean.getRetData().getList()==null||bean.getRetData().getList().size()<10){
                         mNormalSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mNormalSmart.setNoMoreData(false);
                     }
                     ++page;
                 } else {

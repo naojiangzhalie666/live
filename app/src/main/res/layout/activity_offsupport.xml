@@ -24,9 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/title"
             android:layout_alignBottom="@+id/title"
+            android:paddingLeft="@dimen/dp_12"
             android:paddingTop="@dimen/title_top"
             android:paddingRight="@dimen/dp_20"
-            android:paddingLeft="@dimen/dp_12"
             app:srcCompat="@drawable/back" />
 
         <TextView
@@ -89,14 +89,29 @@
         app:layout_constraintStart_toStartOf="@+id/order_cz"
         app:layout_constraintTop_toBottomOf="@+id/order_cz" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/offsupport_recy"
-        android:paddingLeft="@dimen/dp_8"
-        android:paddingRight="@dimen/dp_8"
+    <LinearLayout
+        android:id="@+id/offsupport_ll"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginBottom="@dimen/dp_8"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/order_cz" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/offsupport_recy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_8"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

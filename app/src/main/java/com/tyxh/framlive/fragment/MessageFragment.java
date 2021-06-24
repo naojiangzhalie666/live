@@ -13,17 +13,8 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.tyxh.framlive.R;
-import com.tyxh.framlive.base.Constant;
-import com.tyxh.framlive.base.LiveApplication;
-import com.tyxh.framlive.bean.NoticeBean;
-import com.tyxh.framlive.chat.ChatActivity;
-import com.tyxh.framlive.ui.MailListActivity;
-import com.tyxh.framlive.ui.NoticeActivity;
-import com.tyxh.framlive.utils.LiveShareUtil;
-import com.tyxh.framlive.utils.httputil.HttpBackListener;
-import com.tyxh.framlive.utils.httputil.LiveHttp;
 import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
 import com.superc.yyfflibrary.utils.DateUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.qcloud.tim.uikit.base.BaseFragment;
@@ -37,6 +28,16 @@ import com.tencent.qcloud.tim.uikit.modules.conversation.ConversationListLayout;
 import com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.tencent.qcloud.tim.uikit.utils.DateTimeUtil;
 import com.tencent.qcloud.tim.uikit.utils.PopWindowUtil;
+import com.tyxh.framlive.R;
+import com.tyxh.framlive.base.Constant;
+import com.tyxh.framlive.base.LiveApplication;
+import com.tyxh.framlive.bean.NoticeBean;
+import com.tyxh.framlive.chat.ChatActivity;
+import com.tyxh.framlive.ui.MailListActivity;
+import com.tyxh.framlive.ui.NoticeActivity;
+import com.tyxh.framlive.utils.LiveShareUtil;
+import com.tyxh.framlive.utils.httputil.HttpBackListener;
+import com.tyxh.framlive.utils.httputil.LiveHttp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -268,5 +269,11 @@ public class MessageFragment extends BaseFragment {
                 super.onErrorLIstener(error);
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        DevRing.httpManager().stopRequestByTag(LiveHttp.TAG);
     }
 }

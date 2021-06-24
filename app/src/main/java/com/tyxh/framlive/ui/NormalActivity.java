@@ -189,6 +189,8 @@ public class NormalActivity extends LiveBaseActivity {
                     mStringList.addAll(bean.getRetData().getList());
                     if(bean.getRetData() ==null ||bean.getRetData().getList()==null||bean.getRetData().getList().size()<10){
                         mNormalSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mNormalSmart.setNoMoreData(false);
                     }
                 } else {
                     mNormalSmart.finishLoadMoreWithNoMoreData();

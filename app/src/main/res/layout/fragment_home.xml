@@ -159,7 +159,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:text="让你回归完整的自己"
+                        android:text="你的专属心理咨询师"
                         android:textColor="@color/sixsixsix"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"

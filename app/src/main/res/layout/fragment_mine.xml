@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="none"
     tools:context=".fragment.MineFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,495 +23,512 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/smart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/mine_nestscroll"
+                android:layout_width="match_parent"
+                android:scrollbars="none"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="@dimen/dp_128"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/mine_kuang"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/mine_cons_zuanshi"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_14"
+                            android:layout_marginBottom="16dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/mine_cons_money"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/mine_id">
+
+                            <ImageView
+                                android:id="@+id/imageView6"
+                                android:layout_width="@dimen/dp_13"
+                                android:layout_height="@dimen/dp_10"
+                                android:layout_marginTop="@dimen/dp_8"
+                                android:layout_marginEnd="6dp"
+                                android:src="@drawable/mine_zuanshi"
+                                app:layout_constraintBottom_toBottomOf="@+id/mine_zuanshi"
+                                app:layout_constraintEnd_toStartOf="@+id/mine_zuanshi"
+                                app:layout_constraintTop_toTopOf="@+id/mine_zuanshi" />
+
+                            <TextView
+                                android:id="@+id/mine_zuanshi"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:maxWidth="@dimen/dp_70"
+                                android:paddingTop="@dimen/dp_8"
+                                android:textColor="#181818"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toTopOf="@+id/textView14"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                tools:text="14344" />
+
+                            <TextView
+                                android:id="@+id/textView14"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="钻石（个）"
+                                android:textSize="10sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/mine_zuanshi" />
+
+                            <ImageView
+                                android:id="@+id/mine_cons_eyezuanshi"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="@dimen/dp_3"
+                                android:paddingTop="@dimen/dp_11"
+                                android:paddingBottom="@dimen/dp_10"
+                                android:src="@drawable/mine_kai"
+                                app:layout_constraintStart_toEndOf="@+id/mine_zuanshi"
+                                app:layout_constraintTop_toTopOf="@+id/mine_zuanshi" />
+
+                            <TextView
+                                android:id="@+id/textView15"
+                                android:layout_width="@dimen/dp_1"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="@dimen/dp_15"
+                                android:layout_marginBottom="@dimen/dp_15"
+                                android:background="#DCDCDC"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/mine_cons_money"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="@+id/mine_cons_zuanshi"
+                            app:layout_constraintEnd_toStartOf="@+id/mine_cons_daoju"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/mine_cons_zuanshi"
+                            app:layout_constraintTop_toTopOf="@+id/mine_cons_zuanshi">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_8"
+                                android:layout_marginEnd="6dp"
+                                android:text="¥"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="@+id/mine_money_tv"
+                                app:layout_constraintEnd_toStartOf="@+id/mine_money_tv"
+                                app:layout_constraintTop_toTopOf="@+id/mine_money_tv" />
+
+                            <TextView
+                                android:id="@+id/mine_money_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:maxWidth="@dimen/dp_70"
+                                android:paddingTop="@dimen/dp_8"
+                                android:textColor="#181818"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toTopOf="@+id/textView16"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                tools:text="15632" />
+
+                            <TextView
+                                android:id="@+id/textView16"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="现金（元）"
+                                android:textSize="10sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/mine_money_tv" />
+
+                            <ImageView
+                                android:id="@+id/mine_cons_eyemoney"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="@dimen/dp_3"
+                                android:paddingTop="@dimen/dp_11"
+                                android:paddingBottom="@dimen/dp_10"
+                                android:src="@drawable/mine_kai"
+                                app:layout_constraintStart_toEndOf="@+id/mine_money_tv"
+                                app:layout_constraintTop_toTopOf="@+id/mine_money_tv" />
+
+                            <TextView
+                                android:layout_width="@dimen/dp_1"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="@dimen/dp_15"
+                                android:layout_marginBottom="@dimen/dp_15"
+                                android:background="#DCDCDC"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <TextView
+                            android:id="@+id/mine_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_50"
+                            android:textColor="#181818"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="萌嘉斐茄最帅" />
+
+                        <TextView
+                            android:id="@+id/mine_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_4"
+                            android:textColor="@color/nineninenine"
+                            android:textSize="11sp"
+                            app:layout_constraintEnd_toStartOf="@+id/mine_level"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/mine_title"
+                            tools:text="ID 12345678" />
+
+                        <TextView
+                            android:id="@+id/mine_level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/mine_grad"
+                            android:paddingLeft="@dimen/dp_10"
+                            android:paddingTop="@dimen/dp_1"
+                            android:paddingRight="@dimen/dp_10"
+                            android:paddingBottom="@dimen/dp_1"
+                            android:textColor="@color/white"
+                            android:textSize="9sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/mine_id"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/mine_id"
+                            app:layout_constraintTop_toTopOf="@+id/mine_id"
+                            tools:text="lv3" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/mine_cons_daoju"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="@+id/mine_cons_money"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/mine_cons_money"
+                            app:layout_constraintTop_toTopOf="@+id/mine_cons_money">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_8"
+                                android:layout_marginEnd="6dp"
+                                android:src="@drawable/mine_money"
+                                app:layout_constraintBottom_toBottomOf="@+id/mine_daojutv"
+                                app:layout_constraintEnd_toStartOf="@+id/mine_daojutv"
+                                app:layout_constraintTop_toTopOf="@+id/mine_daojutv" />
+
+                            <TextView
+                                android:id="@+id/mine_daojutv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxWidth="@dimen/dp_70"
+                                android:paddingTop="@dimen/dp_8"
+                                android:textColor="#181818"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toTopOf="@+id/textView17"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_chainStyle="packed"
+                                tools:text="15632" />
+
+                            <TextView
+                                android:id="@+id/textView17"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="道具（个）"
+                                android:textSize="10sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/mine_daojutv" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/mine_head"
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="@dimen/dp_80"
+                        android:background="@drawable/bg_circle_white"
+                        android:padding="@dimen/dp_2"
+                        android:src="@drawable/live_defaultimg"
+                        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/constraintLayout2" />
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/mine_vp"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_120"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/bg_corner_whitea"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+                    <LinearLayout
+                        android:id="@+id/mine_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/dp_6"
+                        app:layout_constraintBottom_toBottomOf="@+id/mine_vp"
+                        app:layout_constraintEnd_toEndOf="@+id/mine_vp"
+                        app:layout_constraintStart_toStartOf="@+id/mine_vp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/bg_corner_whitea"
+                        android:paddingBottom="@dimen/dp_8"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mine_vp">
+
+                        <TextView
+                            android:id="@+id/textView18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:layout_marginTop="16dp"
+                            android:text="其他服务"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/textView19"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/dp_14"
+                            android:layout_marginEnd="14dp"
+                            android:background="@color/ftwo"
+                            android:text="TextView"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/textView18"
+                            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+
+                        <TextView
+                            android:id="@+id/mine_guanzhu"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:drawableLeft="@drawable/mine_meguanzhu"
+                            android:drawableRight="@drawable/mine_next"
+                            android:drawablePadding="@dimen/dp_5"
+                            android:paddingTop="@dimen/dp_8"
+                            android:paddingBottom="@dimen/dp_8"
+                            android:text="@string/mine_guanzhu"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            app:layout_constraintEnd_toEndOf="@+id/textView19"
+                            app:layout_constraintStart_toStartOf="@+id/textView19"
+                            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+                        <View
+                            android:id="@+id/textView21"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@color/ftwo"
+                            android:text="TextView"
+                            app:layout_constraintEnd_toEndOf="@+id/textView19"
+                            app:layout_constraintStart_toStartOf="@+id/textView19"
+                            app:layout_constraintTop_toBottomOf="@+id/mine_guanzhu" />
+
+                        <TextView
+                            android:id="@+id/mine_guanzhugzongh"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:drawableLeft="@drawable/mine_gzhguanzhu"
+                            android:drawableRight="@drawable/mine_next"
+                            android:drawablePadding="@dimen/dp_5"
+                            android:paddingTop="@dimen/dp_8"
+                            android:paddingBottom="@dimen/dp_8"
+                            android:text="关注公众号"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            app:layout_constraintEnd_toEndOf="@+id/textView19"
+                            app:layout_constraintStart_toStartOf="@+id/textView19"
+                            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+                        <View
+                            android:id="@+id/textView23"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@color/ftwo"
+                            app:layout_constraintEnd_toEndOf="@+id/textView19"
+                            app:layout_constraintStart_toStartOf="@+id/textView19"
+                            app:layout_constraintTop_toBottomOf="@+id/mine_guanzhugzongh" />
+
+                        <TextView
+                            android:id="@+id/mine_help"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:drawableLeft="@drawable/mine_help"
+                            android:drawableRight="@drawable/mine_next"
+                            android:drawablePadding="@dimen/dp_5"
+                            android:paddingTop="@dimen/dp_8"
+                            android:paddingBottom="@dimen/dp_8"
+                            android:text="帮助与反馈"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            app:layout_constraintEnd_toEndOf="@+id/textView19"
+                            app:layout_constraintStart_toStartOf="@+id/textView19"
+                            app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+                        <View
+                            android:id="@+id/mine_edtline"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@color/ftwo"
+                            app:layout_constraintEnd_toEndOf="@+id/textView19"
+                            app:layout_constraintStart_toStartOf="@+id/textView19"
+                            app:layout_constraintTop_toBottomOf="@+id/mine_help" />
+
+                        <TextView
+                            android:id="@+id/mine_edt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:drawableLeft="@drawable/mine_edit"
+                            android:drawableRight="@drawable/mine_next"
+                            android:drawablePadding="@dimen/dp_5"
+                            android:paddingTop="@dimen/dp_8"
+                            android:text="修改个人页面"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/textView19"
+                            app:layout_constraintStart_toStartOf="@+id/textView19"
+                            app:layout_constraintTop_toBottomOf="@+id/mine_edtline" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/mine_ruzhu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_14"
+                        android:background="@drawable/mine_ruzhu"
+                        app:layout_constraintEnd_toEndOf="@+id/constraintLayout6"
+                        app:layout_constraintStart_toStartOf="@+id/constraintLayout6"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/dp_6"
+                            android:layout_toLeftOf="@+id/tvvv"
+                            android:src="@drawable/mine_ruzhuleft" />
+
+                        <TextView
+                            android:id="@+id/tvvv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="我要入驻"
+                            android:textColor="@color/login_txt"
+                            android:textSize="16sp" />
+
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/mine_logout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_14"
+                        android:layout_marginBottom="@dimen/dp_14"
+                        android:background="@drawable/bg_circle_white"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_10"
+                        android:text="退出登录"
+                        android:textColor="@color/sixsixsix"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/constraintLayout6"
+                        app:layout_constraintStart_toStartOf="@+id/constraintLayout6"
+                        app:layout_constraintTop_toBottomOf="@+id/mine_ruzhu" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
         <ImageView
             android:id="@+id/mine_set"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_38"
-            android:src="@drawable/mine_set"
             android:padding="@dimen/dp_12"
+            android:src="@drawable/mine_set"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/mine_kuang"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline">
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/mine_cons_zuanshi"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_14"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/mine_cons_money"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mine_id">
-
-                <ImageView
-                    android:id="@+id/imageView6"
-                    android:layout_width="@dimen/dp_13"
-                    android:layout_height="@dimen/dp_10"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginTop="@dimen/dp_8"
-                    android:src="@drawable/mine_zuanshi"
-                    app:layout_constraintBottom_toBottomOf="@+id/mine_zuanshi"
-                    app:layout_constraintEnd_toStartOf="@+id/mine_zuanshi"
-                    app:layout_constraintTop_toTopOf="@+id/mine_zuanshi" />
-
-                <TextView
-                    android:id="@+id/mine_zuanshi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/dp_8"
-                    android:ellipsize="end"
-                    android:lines="1"
-                    android:maxWidth="@dimen/dp_70"
-                    android:textColor="#181818"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/textView14"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed"
-                    tools:text="14344" />
-
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="钻石（个）"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mine_zuanshi" />
-
-                <ImageView
-                    android:id="@+id/mine_cons_eyezuanshi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dp_10"
-                    android:paddingTop="@dimen/dp_11"
-                    android:paddingLeft="@dimen/dp_3"
-                    android:src="@drawable/mine_kai"
-                    app:layout_constraintStart_toEndOf="@+id/mine_zuanshi"
-                    app:layout_constraintTop_toTopOf="@+id/mine_zuanshi" />
-
-                <TextView
-                    android:id="@+id/textView15"
-                    android:layout_width="@dimen/dp_1"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/dp_15"
-                    android:layout_marginBottom="@dimen/dp_15"
-                    android:background="#DCDCDC"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/mine_cons_money"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/mine_cons_zuanshi"
-                app:layout_constraintEnd_toStartOf="@+id/mine_cons_daoju"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/mine_cons_zuanshi"
-                app:layout_constraintTop_toTopOf="@+id/mine_cons_zuanshi">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:text="¥"
-                    android:layout_marginTop="@dimen/dp_8"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/mine_money_tv"
-                    app:layout_constraintEnd_toStartOf="@+id/mine_money_tv"
-                    app:layout_constraintTop_toTopOf="@+id/mine_money_tv" />
-
-                <TextView
-                    android:id="@+id/mine_money_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/dp_8"
-                    android:ellipsize="end"
-                    android:lines="1"
-                    android:maxWidth="@dimen/dp_70"
-                    android:textColor="#181818"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/textView16"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed"
-                    tools:text="15632" />
-
-                <TextView
-                    android:id="@+id/textView16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="现金（元）"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mine_money_tv" />
-
-                <ImageView
-                    android:id="@+id/mine_cons_eyemoney"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dp_10"
-                    android:paddingTop="@dimen/dp_11"
-                    android:paddingLeft="@dimen/dp_3"
-                    android:src="@drawable/mine_kai"
-                    app:layout_constraintStart_toEndOf="@+id/mine_money_tv"
-                    app:layout_constraintTop_toTopOf="@+id/mine_money_tv" />
-
-                <TextView
-                    android:layout_width="@dimen/dp_1"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/dp_15"
-                    android:layout_marginBottom="@dimen/dp_15"
-                    android:background="#DCDCDC"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/mine_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_50"
-                android:textColor="#181818"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="萌嘉斐茄最帅" />
-
-            <TextView
-                android:id="@+id/mine_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_4"
-                android:textColor="@color/nineninenine"
-                android:textSize="11sp"
-                app:layout_constraintEnd_toStartOf="@+id/mine_level"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mine_title"
-                tools:text="ID 12345678" />
-
-            <TextView
-                android:id="@+id/mine_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/mine_grad"
-                android:paddingLeft="@dimen/dp_10"
-                android:paddingTop="@dimen/dp_1"
-                android:paddingRight="@dimen/dp_10"
-                android:paddingBottom="@dimen/dp_1"
-                android:textColor="@color/white"
-                android:textSize="9sp"
-                app:layout_constraintBottom_toBottomOf="@+id/mine_id"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/mine_id"
-                app:layout_constraintTop_toTopOf="@+id/mine_id"
-                tools:text="lv3" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/mine_cons_daoju"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/mine_cons_money"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/mine_cons_money"
-                app:layout_constraintTop_toTopOf="@+id/mine_cons_money">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:src="@drawable/mine_money"
-                    android:layout_marginTop="@dimen/dp_8"
-                    app:layout_constraintBottom_toBottomOf="@+id/mine_daojutv"
-                    app:layout_constraintEnd_toStartOf="@+id/mine_daojutv"
-                    app:layout_constraintTop_toTopOf="@+id/mine_daojutv" />
-
-                <TextView
-                    android:id="@+id/mine_daojutv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/dp_8"
-                    android:maxWidth="@dimen/dp_70"
-                    android:textColor="#181818"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/textView17"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed"
-                    tools:text="15632" />
-
-                <TextView
-                    android:id="@+id/textView17"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="道具（个）"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mine_daojutv" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:src="@drawable/live_defaultimg"
-            android:id="@+id/mine_head"
-            android:padding="@dimen/dp_2"
-            android:background="@drawable/bg_circle_white"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_80"/>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="@dimen/dp_128" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/mine_vp"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_120"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_corner_whitea"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
-
-        <LinearLayout
-            android:id="@+id/mine_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/dp_6"
-            app:layout_constraintBottom_toBottomOf="@+id/mine_vp"
-            app:layout_constraintEnd_toEndOf="@+id/mine_vp"
-            app:layout_constraintStart_toStartOf="@+id/mine_vp" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_corner_whitea"
-            android:paddingBottom="@dimen/dp_8"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mine_vp">
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="16dp"
-                android:text="其他服务"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/textView19"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/dp_14"
-                android:layout_marginEnd="14dp"
-                android:background="@color/ftwo"
-                android:text="TextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView18"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-
-            <TextView
-                android:id="@+id/mine_guanzhu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawableLeft="@drawable/mine_meguanzhu"
-                android:drawableRight="@drawable/mine_next"
-                android:drawablePadding="@dimen/dp_5"
-                android:paddingTop="@dimen/dp_8"
-                android:paddingBottom="@dimen/dp_8"
-                android:text="@string/mine_guanzhu"
-                android:textSize="13sp"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="@+id/textView19"
-                app:layout_constraintStart_toStartOf="@+id/textView19"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-            <View
-                android:id="@+id/textView21"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/ftwo"
-                android:text="TextView"
-                app:layout_constraintEnd_toEndOf="@+id/textView19"
-                app:layout_constraintStart_toStartOf="@+id/textView19"
-                app:layout_constraintTop_toBottomOf="@+id/mine_guanzhu" />
-
-            <TextView
-                android:id="@+id/mine_guanzhugzongh"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawableLeft="@drawable/mine_gzhguanzhu"
-                android:drawableRight="@drawable/mine_next"
-                android:drawablePadding="@dimen/dp_5"
-                android:paddingTop="@dimen/dp_8"
-                android:paddingBottom="@dimen/dp_8"
-                android:text="关注公众号"  android:textSize="13sp"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="@+id/textView19"
-                app:layout_constraintStart_toStartOf="@+id/textView19"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-            <View
-                android:id="@+id/textView23"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/ftwo"
-                app:layout_constraintEnd_toEndOf="@+id/textView19"
-                app:layout_constraintStart_toStartOf="@+id/textView19"
-                app:layout_constraintTop_toBottomOf="@+id/mine_guanzhugzongh" />
-
-            <TextView
-                android:id="@+id/mine_help"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawableLeft="@drawable/mine_help"
-                android:drawableRight="@drawable/mine_next"
-                android:drawablePadding="@dimen/dp_5"
-                android:paddingTop="@dimen/dp_8"
-                android:paddingBottom="@dimen/dp_8"
-                android:text="帮助与反馈"
-                android:textColor="@color/black"  android:textSize="13sp"
-                app:layout_constraintEnd_toEndOf="@+id/textView19"
-                app:layout_constraintStart_toStartOf="@+id/textView19"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
-
-            <View
-                android:id="@+id/mine_edtline"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/ftwo"
-                app:layout_constraintEnd_toEndOf="@+id/textView19"
-                app:layout_constraintStart_toStartOf="@+id/textView19"
-                app:layout_constraintTop_toBottomOf="@+id/mine_help" />
-
-            <TextView
-                android:id="@+id/mine_edt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:drawableLeft="@drawable/mine_edit"
-                android:drawableRight="@drawable/mine_next"
-                android:drawablePadding="@dimen/dp_5"
-                android:paddingTop="@dimen/dp_8"
-                android:text="修改个人页面"  android:textSize="13sp"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textView19"
-                app:layout_constraintStart_toStartOf="@+id/textView19"
-                app:layout_constraintTop_toBottomOf="@+id/mine_edtline" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <RelativeLayout
-            android:id="@+id/mine_ruzhu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_14"
-            android:background="@drawable/mine_ruzhu"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout6"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout6"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/dp_6"
-                android:layout_toLeftOf="@+id/tvvv"
-                android:src="@drawable/mine_ruzhuleft" />
-
-            <TextView
-                android:id="@+id/tvvv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="我要入驻"
-                android:textColor="@color/login_txt"
-                android:textSize="16sp" />
-
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/mine_logout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_14"
-            android:layout_marginBottom="@dimen/dp_14"
-            android:background="@drawable/bg_circle_white"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            android:text="退出登录"
-            android:textColor="@color/sixsixsix"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout6"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout6"
-            app:layout_constraintTop_toBottomOf="@+id/mine_ruzhu" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

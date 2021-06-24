@@ -183,6 +183,8 @@ public class IncomeDetailActivity extends LiveBaseActivity {
                     mStringList.addAll(bean.getRetData().getList());
                     if(bean.getRetData() ==null||bean.getRetData().getList() ==null||bean.getRetData().getList().size()<page_size){
                         mNormalSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mNormalSmart.setNoMoreData(false);
                     }
                 } else {
                     ToastShow(bean.getRetMsg());

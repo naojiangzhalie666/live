@@ -19,6 +19,7 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.superc.yyfflibrary.utils.ToastUtil;
+import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
@@ -35,6 +36,7 @@ import com.tencent.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout;
 import com.tencent.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.tencent.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.tencent.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.TalkAdapter;
 import com.tyxh.framlive.base.ApiService;
@@ -341,6 +343,21 @@ public class ChatFragment extends BaseFragment {
         //开始计时
         mInputLayout.stopVideoCall();//停止视频连线*/
 
+//        toSetred();
+    }
+
+    private void toSetred(){
+        V2TIMManager.getMessageManager().markC2CMessageAsRead(mChatInfo.getId(), new V2TIMCallback() {
+            @Override
+            public void onError(int code, String desc) {
+                TUIKitLog.e(TAG, "processHistoryMsgs setReadMessage failed, code = " + code + ", desc = " + desc);
+            }
+
+            @Override
+            public void onSuccess() {
+                TUIKitLog.d(TAG, "processHistoryMsgs setReadMessage success");
+            }
+        });
 
     }
 
@@ -726,7 +743,7 @@ public class ChatFragment extends BaseFragment {
                 ContctBean bean = new Gson().fromJson(result.toString(), ContctBean.class);
                 if (bean.getRetCode() == 0) {
                     List<ContctBean.RetDataBean.ListBean> list = bean.getRetData().getList();
-                    if (list != null && list.size() != 0) {
+                    if (list != null && list.size() != 0&&getActivity()!=null&&!getActivity().isFinishing()) {
                         setSjbgDig(toid, list);
                     }
                 }
@@ -745,4 +762,9 @@ public class ChatFragment extends BaseFragment {
         mSjbgDialog = new SjbgDialog(getActivity(), mSjbg_strs, mToken, toUserid);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        DevRing.httpManager().stopRequestByTag(TAG);
+    }
 }

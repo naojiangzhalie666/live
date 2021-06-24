@@ -51,7 +51,7 @@ public class NoviceAdapter extends RecyclerView.Adapter<NoviceAdapter.ViewHolder
         vh.mItemNoviceTitle.setText(bean.getTaskName());
         StringBuilder strin_content =new StringBuilder();
         if(bean.getAwardEXP()>0){//经验值
-            strin_content.append("+奖励"+bean.getAwardJewel()+"经验值");
+            strin_content.append("+奖励"+bean.getAwardEXP()+"经验值");
         }
         if(bean.getAwardJewel()>0){//钻石
             strin_content.append("+"+bean.getAwardJewel()+"钻石");
@@ -62,8 +62,8 @@ public class NoviceAdapter extends RecyclerView.Adapter<NoviceAdapter.ViewHolder
         if(bean.getRewardGiftNum()>0){//礼物
             strin_content.append("+"+bean.getGiftName()+"*"+bean.getRewardGiftNum());
         }
-        if(!TextUtils.isEmpty(bean.getTaskAwardMoney())){//金额
-            strin_content.append("+"+bean.getTaskAwardMoney());
+        if(!TextUtils.isEmpty(bean.getTaskAwardMoney())&&Double.parseDouble(bean.getTaskAwardMoney())!=0){//金额
+            strin_content.append("+"+bean.getTaskAwardMoney()+"元");
         }
         vh.mItemNoviceContent.setText(strin_content.toString());
         /*vh.mItemNoviceImgv.setVisibility(View.GONE);

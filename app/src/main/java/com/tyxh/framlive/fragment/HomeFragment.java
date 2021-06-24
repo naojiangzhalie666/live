@@ -1,7 +1,10 @@
 package com.tyxh.framlive.fragment;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
@@ -67,6 +71,7 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -125,7 +130,9 @@ public class HomeFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.home_camera:
-                startPublish();
+                if(checkPublishPermission()) {
+                    startPublish();
+                }
                 break;
             case R.id.home_chanpin:
 //                Intent int_person =new Intent(getActivity(), LookPersonActivity.class);
@@ -155,6 +162,26 @@ public class HomeFragment extends Fragment {
                 mMainActivity.toGoWhat(1);
                 break;
         }
+    }
+    /**
+     * 动态权限检查相关
+     */
+    private boolean checkPublishPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            List<String> permissions = new ArrayList<>();
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO)) {
+                permissions.add(Manifest.permission.RECORD_AUDIO);
+            }
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)) {
+                permissions.add(Manifest.permission.CAMERA);
+            }
+            if (permissions.size() != 0) {
+                ActivityCompat.requestPermissions(getActivity(), permissions.toArray(new String[0]), TCConstants.WRITE_PERMISSION_REQ_CODE);
+                Toast.makeText(mMainActivity, "需要相机以及音频权限才能使用该功能", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
     }
 
     private void startChatActivity(String title,String userid) {
@@ -568,6 +595,7 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        DevRing.httpManager().stopRequestByTag(LiveHttp.TAG);
     }
 /*---------------------------原可连麦数据--------之后用不到可以删掉----------*/
     private void theOldLoginMlvb() {

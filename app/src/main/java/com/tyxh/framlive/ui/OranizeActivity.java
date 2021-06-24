@@ -22,6 +22,12 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnItemClickListener;
 import com.luck.picture.lib.tools.SdkVersionUtils;
+import com.scwang.smart.refresh.layout.api.RefreshFooter;
+import com.scwang.smart.refresh.layout.api.RefreshHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.constant.RefreshState;
+import com.scwang.smart.refresh.layout.listener.OnMultiListener;
+import com.scwang.smart.refresh.layout.util.SmartUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.tyxh.framlive.R;
@@ -66,7 +72,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -124,6 +133,12 @@ public class OranizeActivity extends LiveBaseActivity {
     ImageView mImgvMore;
     @BindView(R.id.personal_share)
     ImageView mImgvShare;
+    @BindView(R.id.parallax)
+    ImageView parallax;
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
+    @BindView(R.id.smart)
+    RefreshLayout mPersonalSmart;
 
     private boolean is_user = true;                     //是否为观看者身份进入--true 是  false不是(自己点击--可编辑)
     private List<JgBean> mLocalMedias;                  //咨询师展示列表
@@ -157,6 +172,7 @@ public class OranizeActivity extends LiveBaseActivity {
         ButterKnife.bind(this);
         mPersonalHead.requestFocus();
         initShare();
+        initScroll();
         mPersonalName.setEnabled(false);
         mPersonalGeren.setEnabled(false);
         mPersonalJigou.setEnabled(false);
@@ -175,13 +191,13 @@ public class OranizeActivity extends LiveBaseActivity {
             mPersonalFouredt.setVisibility(View.GONE);
             mPersonalFiveedt.setVisibility(View.GONE);
             mCons_bt.setVisibility(View.VISIBLE);
-            if(mPower ==Constant.POWER_NORMAL) {
+//            if(mPower ==Constant.POWER_NORMAL) {
                 mImgvMore.setVisibility(View.VISIBLE);
                 mImgvShare.setVisibility(View.GONE);
-            }else{
-                mImgvShare.setVisibility(View.VISIBLE);
-                mImgvMore.setVisibility(View.GONE);
-            }
+//            }else{
+//                mImgvShare.setVisibility(View.VISIBLE);
+//                mImgvMore.setVisibility(View.GONE);
+//            }
         } else {//是自己身份点击过来的--且为咨询机构可修改
             if (mPower == Constant.POWER_ZIXUNJIGOU) {
                 mPersonalOneedt.setVisibility(View.VISIBLE);
@@ -298,7 +314,11 @@ public class OranizeActivity extends LiveBaseActivity {
         mBtPopupWindow.setOnItemClickListener(new BtPopupWindow.OnItemClickListener() {
             @Override
             public void onRuzhuClickListener() {
-                startActivity(new Intent(OranizeActivity.this, SetInActivity.class));
+                if(mPower>=2){
+                    mShareDialog.show();
+                }else {
+                    startActivity(new Intent(OranizeActivity.this, SetInActivity.class));
+                }
             }
 
             @Override
@@ -309,10 +329,86 @@ public class OranizeActivity extends LiveBaseActivity {
                 startActivity(int_report);
             }
         });
-
-
     }
+    private int mOffset = 0;
+    private int mScrollY = 0;
+    private void initScroll(){
+        mPersonalSmart.setEnablePureScrollMode(true);//是否启用纯滚动模式
+        mPersonalSmart.setEnableNestedScroll(true);//是否启用嵌套滚动;
+        mPersonalSmart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        mPersonalSmart.setEnableOverScrollBounce(true);//是否启用越界回弹
+        mPersonalSmart.setOnMultiListener(new OnMultiListener() {
+            @Override
+            public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
+                mOffset = offset / 2;
+                parallax.setTranslationY(mOffset - mScrollY);
+            }
 
+            @Override
+            public void onHeaderReleased(RefreshHeader header, int headerHeight, int maxDragHeight) {
+
+            }
+
+            @Override
+            public void onHeaderStartAnimator(RefreshHeader header, int headerHeight, int maxDragHeight) {
+
+            }
+
+            @Override
+            public void onHeaderFinish(RefreshHeader header, boolean success) {
+
+            }
+
+            @Override
+            public void onFooterMoving(RefreshFooter footer, boolean isDragging, float percent, int offset, int footerHeight, int maxDragHeight) {
+
+            }
+
+            @Override
+            public void onFooterReleased(RefreshFooter footer, int footerHeight, int maxDragHeight) {
+
+            }
+
+            @Override
+            public void onFooterStartAnimator(RefreshFooter footer, int footerHeight, int maxDragHeight) {
+
+            }
+
+            @Override
+            public void onFooterFinish(RefreshFooter footer, boolean success) {
+
+            }
+
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+
+            }
+
+            @Override
+            public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
+
+            }
+        });
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            private int lastScrollY = 0;
+            private int h = SmartUtil.dp2px(170);
+            private int color = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)&0x00ffffff;
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (lastScrollY < h) {
+                    scrollY = Math.min(h, scrollY);
+                    mScrollY = scrollY > h ? h : scrollY;
+                    parallax.setTranslationY(mOffset - mScrollY);
+                }
+                lastScrollY = scrollY;
+            }
+        });
+    }
     @OnClick({R.id.personal_back, R.id.personal_share,R.id.personal_more, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt,
             R.id.personal_threesure, R.id.personal_fouredt, R.id.personal_foursure, R.id.personal_fiveedt, R.id.personal_fivesure, R.id.look_btshare, R.id.look_bttalk})
     public void onClick(View view) {
@@ -442,6 +538,7 @@ public class OranizeActivity extends LiveBaseActivity {
             mPersonalId.setText("ID:" + jigou_id);
             mPersonalGeren.setText(couMechanism.getMeIntroduce());
             Glide.with(this).load(couMechanism.getMeLogo()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).centerCrop().into(mPersonalHead);
+            Glide.with(this).load(couMechanism.getMeLogo()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(parallax);
             mLocalMedias_bt.clear();
             mLocalMediasBt_strs.clear();
             List<UserDetailBean.RetDataBean.CouMechanismBean.CouPicBean> couPiclist = couMechanism.getCouPiclist();

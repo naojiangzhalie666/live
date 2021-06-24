@@ -39,3 +39,5 @@
 -keep class com.tyxh.framlive.thirdpush.XiaomiMsgReceiver {*;}
 -keep public class * extends android.app.Service
 -keep class com.heytap.msp.** { *;}
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}

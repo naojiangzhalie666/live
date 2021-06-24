@@ -74,9 +74,9 @@ dependencies {
     implementation 'com.ljy.ring:devring:1.2.0'
     implementation 'com.alibaba:fastjson:1.2.73'
     implementation 'com.alibaba:fastjson:1.1.72.android'
-    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.1'
-    implementation 'com.scwang.smart:refresh-header-classics:2.0.1'
-    implementation 'com.scwang.smart:refresh-footer-classics:2.0.1'
+    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.3'
+    implementation 'com.scwang.smart:refresh-header-classics:2.0.3'
+    implementation 'com.scwang.smart:refresh-footer-classics:2.0.3'
     implementation 'com.wang.avi:library:2.1.3'
     implementation 'org.greenrobot:eventbus:3.2.0'
     implementation project(path: ':tuikit')
@@ -107,5 +107,6 @@ dependencies {
     implementation 'com.tencent.tpns:vivo:1.2.1.2-release'
     implementation 'com.tencent.tpns:meizu:1.2.1.2-release'
     implementation files('libs\\TXOauthSDK_V.2.0.2.aar')
+    implementation 'com.tencent.bugly:crashreport:latest.release'//bugly
 
 }

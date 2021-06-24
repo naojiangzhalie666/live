@@ -29,7 +29,7 @@ import com.tyxh.framlive.base.ApiService;
 import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.bean.AgeBean;
-import com.tyxh.framlive.bean.BaseBean;
+import com.tyxh.framlive.bean.EetBean;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.InterestBean;
 import com.tyxh.framlive.bean.NickBean;
@@ -197,11 +197,6 @@ public class EdtmsgActivity extends LiveBaseActivity {
             ToastShow("昵称不能为空");
             return;
         }
-     /*   if (true) {//如果名字违禁
-            mEdtmsgllisWj.setVisibility(View.VISIBLE);
-        } else {
-            mEdtmsgllisWj.setVisibility(View.GONE);
-        }*/
         if(TextUtils.isEmpty(inter_contentid)){
             ToastShow("请选择您的兴趣爱好");
             return;
@@ -212,6 +207,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
                 return;
             }
         }
+        mEdtmsgllisWj.setVisibility(View.GONE);
 
         Map<String, Object> map = new HashMap<>();
         map.put("nickname", mEdtmsgName.getText().toString());
@@ -227,13 +223,18 @@ public class EdtmsgActivity extends LiveBaseActivity {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
+                EetBean baseBean = new Gson().fromJson(result.toString(), EetBean.class);
                 if (baseBean.getRetCode() == 0) {
-                    getUserInfo();
+                    if(baseBean.getRetData().getCode() == 0){
+                        getUserInfo();
+                        ToastShow("修改成功");
+                    }else{
+                        ToastShow("修改失败，昵称存在违禁词");
+                        mEdtmsgllisWj.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    ToastShow(baseBean.getRetMsg());
                 }
-                ToastShow(baseBean.getRetMsg());
-
-
             }
 
             @Override

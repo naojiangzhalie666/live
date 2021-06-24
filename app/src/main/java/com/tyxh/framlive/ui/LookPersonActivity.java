@@ -22,7 +22,12 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnItemClickListener;
 import com.luck.picture.lib.tools.SdkVersionUtils;
-import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshFooter;
+import com.scwang.smart.refresh.layout.api.RefreshHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.constant.RefreshState;
+import com.scwang.smart.refresh.layout.listener.OnMultiListener;
+import com.scwang.smart.refresh.layout.util.SmartUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.tyxh.framlive.R;
@@ -67,6 +72,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -81,7 +89,7 @@ import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 public class LookPersonActivity extends LiveBaseActivity {
 
     @BindView(R.id.smart)
-    SmartRefreshLayout mPersonalSmart;
+    RefreshLayout mPersonalSmart;
     @BindView(R.id.personal_head)
     ImageView mPersonalHead;
     @BindView(R.id.personal_name)
@@ -122,6 +130,10 @@ public class LookPersonActivity extends LiveBaseActivity {
     ImageView mPersonalThireDd;
     @BindView(R.id.personal_share)
     ImageView mPersonalShare;
+    @BindView(R.id.parallax)
+    ImageView parallax;
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
 
 
     private List<String> mStr_listones;
@@ -157,17 +169,13 @@ public class LookPersonActivity extends LiveBaseActivity {
         TitleUtils.setStatusTextColor(true, this);
         ButterKnife.bind(this);
         SoftKeyboardFixerForFullscreen.assistActivity(this);
-       mPersonalSmart.setEnablePureScrollMode(true);//是否启用纯滚动模式
-       mPersonalSmart.setEnableNestedScroll(true);//是否启用嵌套滚动;
-       mPersonalSmart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
-       mPersonalSmart.setEnableOverScrollBounce(true);//是否启用越界回弹
-        mPersonalHead.requestFocus();
         initShare();
+        initScroll();
+        mPower = LiveShareUtil.getInstance(this).getPower();
         mBtPopupWindow = new BtPopupWindow(this);
         mReportDialog = new ReportDialog(this);
         mPersonalGeren.setEnabled(false);
         mPersonalName.setEnabled(false);
-        mPower = LiveShareUtil.getInstance(this).getPower();
         Intent intent = getIntent();
         if (intent != null) {
             is_user = intent.getBooleanExtra("is_user", true);
@@ -181,13 +189,13 @@ public class LookPersonActivity extends LiveBaseActivity {
             mPersonalFouredt.setVisibility(View.GONE);
             mPersonalBtShare.setVisibility(View.VISIBLE);
             mPersonalBtTalk.setVisibility(View.VISIBLE);
-            if(mPower ==Constant.POWER_NORMAL) {
+//            if (mPower == Constant.POWER_NORMAL) {
                 mPersonalThireDd.setVisibility(View.VISIBLE);
                 mPersonalShare.setVisibility(View.GONE);
-            }else{
-                mPersonalShare.setVisibility(View.VISIBLE);
-                mPersonalThireDd.setVisibility(View.GONE);
-            }
+//            } else {
+//                mPersonalShare.setVisibility(View.VISIBLE);
+//                mPersonalThireDd.setVisibility(View.GONE);
+//            }
         } else {//是自己身份点击过来的--且是咨询师
             if (mPower == Constant.POWER_ZIXUNSHI) {
                 mPersonalOneedt.setVisibility(View.VISIBLE);
@@ -204,6 +212,7 @@ public class LookPersonActivity extends LiveBaseActivity {
                 mPersonalBtShare.setVisibility(View.VISIBLE);
                 mPersonalBtTalk.setVisibility(View.VISIBLE);
             }
+            mPersonalThireDd.setVisibility(View.GONE);
             mPersonalShare.setVisibility(View.VISIBLE);
         }
 
@@ -291,7 +300,11 @@ public class LookPersonActivity extends LiveBaseActivity {
         mBtPopupWindow.setOnItemClickListener(new BtPopupWindow.OnItemClickListener() {
             @Override
             public void onRuzhuClickListener() {
-                startActivity(new Intent(LookPersonActivity.this, SetInActivity.class));
+                if(mPower>=2){
+                    mShareDialog.show();
+                }else {
+                    startActivity(new Intent(LookPersonActivity.this, SetInActivity.class));
+                }
             }
 
             @Override
@@ -304,6 +317,87 @@ public class LookPersonActivity extends LiveBaseActivity {
         });
 
 
+    }
+    private int mOffset = 0;
+    private int mScrollY = 0;
+
+    private void initScroll(){
+        mPersonalSmart.setEnablePureScrollMode(true);//是否启用纯滚动模式
+        mPersonalSmart.setEnableNestedScroll(true);//是否启用嵌套滚动;
+        mPersonalSmart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        mPersonalSmart.setEnableOverScrollBounce(true);//是否启用越界回弹
+        mPersonalHead.requestFocus();
+        mPersonalSmart.setOnMultiListener(new OnMultiListener() {
+            @Override
+            public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
+                mOffset = offset / 2;
+                parallax.setTranslationY(mOffset - mScrollY);
+            }
+
+            @Override
+            public void onHeaderReleased(RefreshHeader header, int headerHeight, int maxDragHeight) {
+
+            }
+
+            @Override
+            public void onHeaderStartAnimator(RefreshHeader header, int headerHeight, int maxDragHeight) {
+
+            }
+
+            @Override
+            public void onHeaderFinish(RefreshHeader header, boolean success) {
+
+            }
+
+            @Override
+            public void onFooterMoving(RefreshFooter footer, boolean isDragging, float percent, int offset, int footerHeight, int maxDragHeight) {
+
+            }
+
+            @Override
+            public void onFooterReleased(RefreshFooter footer, int footerHeight, int maxDragHeight) {
+
+            }
+
+            @Override
+            public void onFooterStartAnimator(RefreshFooter footer, int footerHeight, int maxDragHeight) {
+
+            }
+
+            @Override
+            public void onFooterFinish(RefreshFooter footer, boolean success) {
+
+            }
+
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+
+            }
+
+            @Override
+            public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
+
+            }
+        });
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            private int lastScrollY = 0;
+            private int h = SmartUtil.dp2px(170);
+            private int color = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)&0x00ffffff;
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (lastScrollY < h) {
+                    scrollY = Math.min(h, scrollY);
+                    mScrollY = scrollY > h ? h : scrollY;
+                    parallax.setTranslationY(mOffset - mScrollY);
+                }
+                lastScrollY = scrollY;
+            }
+        });
     }
 
     @OnClick({R.id.personal_back, R.id.personal_more, R.id.personal_share, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt,
@@ -556,6 +650,7 @@ public class LookPersonActivity extends LiveBaseActivity {
             mPersonalId.setText("ID:" + zxs_id);
             mPersonalGeren.setText(beansBean.getPerIntroduce());
             Glide.with(this).load(beansBean.getCouHeadImg()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).centerCrop().into(mPersonalHead);
+            Glide.with(this).load(beansBean.getCouHeadImg()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(parallax);
             List<UserDetailBean.RetDataBean.CounselorBeansBean.CouPicBean> couPiclist = beansBean.getCouPiclist();
             mLocalMedias.clear();
             mLocalMedias_strs.clear();

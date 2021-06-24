@@ -390,7 +390,7 @@ public class OrderListActivity extends LiveBaseActivity {
                 page = 1;
                 mCZlists.clear();
                 mOrderRecy.setAdapter(mCzAdapter);
-                toGetCz();
+                getData();
                 mOrderTsj.setTextColor(getResources().getColor(R.color.black));
                 mOrderTpj.setTextColor(getResources().getColor(R.color.black));
                 mOrderFdj.setTextColor(getResources().getColor(R.color.black));
@@ -402,7 +402,7 @@ public class OrderListActivity extends LiveBaseActivity {
                 toGoAnima(mOrderTsj);
                 mSjLists.clear();
                 mOrderRecy.setAdapter(mSjAdapter);
-                toGetTsj();
+                getData();
                 mOrderCz.setTextColor(getResources().getColor(R.color.black));
                 mOrderTpj.setTextColor(getResources().getColor(R.color.black));
                 mOrderFdj.setTextColor(getResources().getColor(R.color.black));
@@ -414,7 +414,7 @@ public class OrderListActivity extends LiveBaseActivity {
                 toGoAnima(mOrderTpj);
                 mPjlists.clear();
                 mOrderRecy.setAdapter(mPjAdapter);
-                toGetTpj();
+                getData();
                 mOrderCz.setTextColor(getResources().getColor(R.color.black));
                 mOrderTsj.setTextColor(getResources().getColor(R.color.black));
                 mOrderFdj.setTextColor(getResources().getColor(R.color.black));
@@ -464,6 +464,8 @@ public class OrderListActivity extends LiveBaseActivity {
                         if (bean.getRetData().getList() == null || bean.getRetData().getList().size() == 0) {
                             v_nodata.setVisibility(View.VISIBLE);
                             mSmart.finishLoadMoreWithNoMoreData();
+                        }else{
+                            mSmart.setNoMoreData(false);
                         }
                         mCZlists.clear();
                     }
@@ -471,6 +473,8 @@ public class OrderListActivity extends LiveBaseActivity {
                     mCzAdapter.notifyDataSetChanged();
                     if(bean.getRetData()==null||bean.getRetData().getList() ==null ||bean.getRetData().getList().size()<pageSize){
                         mSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mSmart.setNoMoreData(false);
                     }
 
                 } else {
@@ -509,6 +513,8 @@ public class OrderListActivity extends LiveBaseActivity {
                         if (bean.getRetData().getList() == null || bean.getRetData().getList().size() == 0) {
                             v_nodata.setVisibility(View.VISIBLE);
                             mSmart.finishLoadMoreWithNoMoreData();
+                        }else{
+                            mSmart.setNoMoreData(false);
                         }
                         mSjLists.clear();
                     }
@@ -516,6 +522,8 @@ public class OrderListActivity extends LiveBaseActivity {
                     mSjAdapter.notifyDataSetChanged();
                     if(bean.getRetData()==null||bean.getRetData().getList() ==null ||bean.getRetData().getList().size()<pageSize){
                         mSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mSmart.setNoMoreData(false);
                     }
 
                 } else {
@@ -554,6 +562,8 @@ public class OrderListActivity extends LiveBaseActivity {
                         if (bean.getRetData().getList() == null || bean.getRetData().getList().size() == 0) {
                             v_nodata.setVisibility(View.VISIBLE);
                             mSmart.finishLoadMoreWithNoMoreData();
+                        }else{
+                            mSmart.setNoMoreData(false);
                         }
                         mPjlists.clear();
                     }
@@ -561,6 +571,8 @@ public class OrderListActivity extends LiveBaseActivity {
                     mPjAdapter.notifyDataSetChanged();
                     if(bean.getRetData()==null||bean.getRetData().getList() ==null ||bean.getRetData().getList().size()<pageSize){
                         mSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mSmart.setNoMoreData(false);
                     }
                 } else {
                     ToastShow(bean.getRetMsg());

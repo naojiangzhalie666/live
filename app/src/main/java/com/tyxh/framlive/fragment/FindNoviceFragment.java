@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.ljy.devring.DevRing;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -216,8 +217,8 @@ public class FindNoviceFragment extends Fragment {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                if(mFragNoviceSmart!=null)
-                mFragNoviceSmart.finishRefresh();
+                if (mFragNoviceSmart != null)
+                    mFragNoviceSmart.finishRefresh();
                 TaskBean bean = new Gson().fromJson(result.toString(), TaskBean.class);
                 if (bean.getRetCode() == 0) {
                     mStringList.clear();
@@ -347,5 +348,6 @@ public class FindNoviceFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
         EventBus.getDefault().unregister(this);
+        DevRing.httpManager().stopRequestByTag(LiveHttp.TAG);
     }
 }

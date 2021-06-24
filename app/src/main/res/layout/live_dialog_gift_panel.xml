@@ -147,6 +147,7 @@
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_gravity="center"
+        android:visibility="invisible"
         android:gravity="center"
         android:orientation="horizontal" />
 
@@ -167,7 +168,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:id="@+id/giftBottomBar"

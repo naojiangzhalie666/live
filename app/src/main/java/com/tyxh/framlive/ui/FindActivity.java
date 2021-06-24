@@ -152,6 +152,8 @@ public class FindActivity extends LiveBaseActivity {
                     }
                     if(zxsallBean.getRetData() ==null||zxsallBean.getRetData().getList() ==null||zxsallBean.getRetData().getList().size()<10){
                         mFindSmart.finishLoadMoreWithNoMoreData();
+                    }else{
+                        mFindSmart.setNoMoreData(false);
                     }
 
                 }else{

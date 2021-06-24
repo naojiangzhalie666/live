@@ -19,7 +19,7 @@ import io.reactivex.Observable;
 
 
 public class LiveHttp {
-    private static final String TAG = "LiveHttp";
+    public static final String TAG = "LiveHttp";
     private static volatile LiveHttp instance;
 
 
