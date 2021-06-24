@@ -4,7 +4,7 @@ import com.tyxh.xzb.Constantc;
 
 public class Constant {
 
-    /*app信息*/
+    /*app信息 */
     /*
      * 正式地址  ：https://appshop.bkxinli.com/portal/
      * 测试地址  ：http://172.16.66.225:9091/
