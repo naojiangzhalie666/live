@@ -56,6 +56,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/dp_10"
         android:paddingBottom="@dimen/dp_20"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,6 +76,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/dp_5"
                 android:text="新手任务"
+                android:paddingTop="@dimen/dp_55"
                 android:textSize="12sp"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/tv_two"
@@ -118,6 +120,7 @@
                 android:paddingLeft="@dimen/dp_5"
                 android:text="精彩活动"
                 android:textSize="12sp"
+                android:paddingTop="@dimen/dp_55"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/tv_three"
                 app:layout_constraintStart_toStartOf="@+id/tv_three" />
@@ -157,6 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/dp_5"
+                android:paddingTop="@dimen/dp_55"
                 android:text="限时活动"
                 android:textSize="12sp"
                 android:textColor="@color/white"
@@ -190,8 +194,8 @@
             android:layout_width="0dp"
             android:background="@drawable/find_sm_pipei"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_10"
             android:layout_weight="1">
 
             <TextView

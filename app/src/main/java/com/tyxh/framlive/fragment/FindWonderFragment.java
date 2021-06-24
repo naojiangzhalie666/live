@@ -107,11 +107,13 @@ public class FindWonderFragment extends Fragment {
                 super.onSuccessListener(result);
                 ActBackBean backBean =new Gson().fromJson(result.toString(),ActBackBean.class);
                 if(backBean.getRetCode() ==0 ){
-                    //一元活动购买情况【0:不可；1:可购】
-                    if(backBean.getRetData().getUnaryAct().equals("1")) {
-                        mChoseDialog.show();
-                    }else{
-                        ToastUtil.showToast(getActivity(),"您已购买过，无法重复购买");
+                    //一元活动购买情况【0:活动未开始; 1:可购; 2:已购买; 3:活动已过期】
+                    String unaryAct = backBean.getRetData().getUnaryAct();
+                    switch (unaryAct){
+                        case "0":ToastUtil.showToast(getActivity(),"活动未开始，请耐心等待");break;
+                        case "1":    mChoseDialog.show();break;
+                        case "2": ToastUtil.showToast(getActivity(),"您已购买过，无法重复购买");break;
+                        case "3": ToastUtil.showToast(getActivity(),"活动已过期，无法购买");break;
                     }
                 }else{
                     ToastUtil.showToast(getActivity(),backBean.getRetMsg());

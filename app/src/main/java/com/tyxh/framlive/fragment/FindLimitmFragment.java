@@ -62,11 +62,13 @@ public class FindLimitmFragment extends Fragment {
                 super.onSuccessListener(result);
                 ActBackBean backBean =new Gson().fromJson(result.toString(),ActBackBean.class);
                 if(backBean.getRetCode() ==0 ){
-                    //首充【0:不可；1:可购】
-                    if(backBean.getRetData().getFirstCharge().equals("1")) {
-                        startActivity(new Intent(getActivity(), BuyzActivity.class));
-                    }else{
-                        ToastUtil.showToast(getActivity(),"您已购买过，无法重复购买");
+                    //首充【0:活动未开始; 1:可购; 2:已购买; 3:活动已过期】
+                    String firstCharge = backBean.getRetData().getFirstCharge();
+                    switch (firstCharge){
+                        case "0":ToastUtil.showToast(getActivity(),"活动未开始，请耐心等待");break;
+                        case "1": startActivity(new Intent(getActivity(), BuyzActivity.class));break;
+                        case "2": ToastUtil.showToast(getActivity(),"您已购买过，无法重复购买");break;
+                        case "3": ToastUtil.showToast(getActivity(),"活动已过期，无法购买");break;
                     }
                 }else{
                     ToastUtil.showToast(getActivity(),backBean.getRetMsg());
