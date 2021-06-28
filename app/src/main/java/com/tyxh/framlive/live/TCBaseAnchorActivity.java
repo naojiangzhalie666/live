@@ -783,8 +783,8 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         entity.setType(TCConstants.MEMBER_EXIT);
         entity.setHead(userInfo.avatar);
         entity.setUserid(userInfo.userid);
-
-        notifyMsg(entity);
+        /*去掉界面提醒*/
+//        notifyMsg(entity);
     }
 
     /**

@@ -309,6 +309,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         }
         mTxLivePusher = mLiveRoom.getTxLivePusher();
         getDetail();
+        mtv_gg.setVisibility(View.GONE);
         isAttention();
     }
 
@@ -1198,7 +1199,8 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         entity.setContent("离开了");
         entity.setType(TCConstants.MEMBER_EXIT);
         entity.setHead(userInfo.avatar);
-        notifyMsg(entity);
+        /*去掉界面提醒*/
+//        notifyMsg(entity);
     }
 
     /**
@@ -1772,6 +1774,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
                 if (baseBean.getRetCode() == 0) {
                     is_guanzhu = (boolean) baseBean.getRetData();
+                    mtv_gg.setVisibility(View.VISIBLE);
                     mtv_gg.setText(is_guanzhu ? "已关注" : "关注");
                 }
 

@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.ljy.devring.DevRing;
 import com.superc.yyfflibrary.utils.DateUtil;
@@ -56,7 +57,7 @@ public class MessageFragment extends BaseFragment {
     private ConversationLayout mConversationLayout;
     private View mBaseView;
     private TextView mtv_notic, mtv_content, mtv_time, mtv_nomsg;
-    private ImageView mimg_mail;
+    private ImageView mimg_mail,mimg_notice;
     private ListView mConversationPopList;
     private PopDialogAdapter mConversationPopAdapter;
     private PopupWindow mConversationPopWindow;
@@ -80,6 +81,7 @@ public class MessageFragment extends BaseFragment {
         mtv_content = mBaseView.findViewById(R.id.message_content);
         mtv_time = mBaseView.findViewById(R.id.message_time);
         mimg_mail = mBaseView.findViewById(R.id.msg_tongxunlv);
+        mimg_notice = mBaseView.findViewById(R.id.imageView11);
         TitleBarLayout titleBarLayout = mConversationLayout.findViewById(R.id.conversation_title);
         titleBarLayout.setVisibility(GONE);
         // 会话列表面板的默认UI和交互初始化
@@ -251,6 +253,8 @@ public class MessageFragment extends BaseFragment {
                             mtv_notic.setText("通知");
                             mtv_content.setText(bean.getRetData().getList().get(0).getNoticeContent());
                             mtv_time.setText(DateTimeUtil.getTimeFormatText(new Date(Long.parseLong(DateUtil.getTimeLong(createDate, "yyyy-MM-dd HH:mm:ss")) * 1000)));
+                            Glide.with(getActivity()).load(bean.getRetData().getList().get(0).getIco()).placeholder(R.drawable.live_defaultimg).error(R.drawable.live_defaultimg).into(mimg_notice);
+
                         }
                         Log.e("MessageFragment", "onSuccessListener:createDate: "+createDate  +"  format: "+format );
 

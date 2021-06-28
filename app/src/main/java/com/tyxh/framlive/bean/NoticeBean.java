@@ -113,6 +113,15 @@ public class NoticeBean {
             private String createDate;
             private String modifyDate;
             private int flag;
+            private String ico;
+
+            public String getIco() {
+                return ico;
+            }
+
+            public void setIco(String ico) {
+                this.ico = ico;
+            }
 
             public int getId() {
                 return id;

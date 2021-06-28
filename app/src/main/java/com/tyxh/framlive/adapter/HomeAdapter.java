@@ -71,7 +71,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             MineTCVideoInfo data = mLists.get(position);
             vh.mItemHomerecyBiao.setText(data.lable);
 //            vh.mItemHomerecyRenqi.setText( data.viewerCount+"人气"); //直播观看人数
-            vh.mItemHomerecyRenqi.setText( new Random().nextInt(51) +"人气"); //直播观看人数
+            data.viewerCount =new Random().nextInt(501);
+            vh.mItemHomerecyRenqi.setText(data.viewerCount +"人气"); //直播观看人数
             vh.mItemHomerecyName.setText(TextUtils.isEmpty(data.nickname) ? TCUtils.getLimitString(data.userId, 10) : TCUtils.getLimitString(data.nickname, 10));   //主播昵称
             vh.mItemHomerecyName.setTextColor(mContext.getResources().getColor(R.color.login_txt));
             vh.mItemHomerecyTitle.setTextColor(mContext.getResources().getColor(R.color.white));
@@ -85,6 +86,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
             int push_size = data.push_size;
             if(push_size>1){
+                vh.mItemHomeImgCover.setVisibility(View.GONE);
                 Glide.with(mContext).load(R.drawable.home_white_grad).placeholder(R.drawable.home_white_grad).error(R.drawable.home_white_grad).into(vh.mItemHomerecyImgv);
                 vh.mItemHomerecyImgvState.setVisibility(View.VISIBLE);
                 vh.mItemHomerecyImgvState.setImageResource(R.drawable.home_media);

@@ -128,7 +128,8 @@ public class GiftBulletFrameLayout extends FrameLayout implements Handler.Callba
     }
 
     private void startAnimationForMsg() {
-        hideView();
+        /*2021.06.28 暂时去掉图片延时出现的特效*/
+       /* hideView();*/
         ObjectAnimator giftLayoutAnimator = AnimationUtils.createFadesInFromLtoR(
                 mGiftGroup, -getWidth(), 0, 400, new OvershootInterpolator());
         giftLayoutAnimator.addListener(new AnimatorListenerAdapter() {
@@ -139,8 +140,10 @@ public class GiftBulletFrameLayout extends FrameLayout implements Handler.Callba
             }
         });
 
+/*        ObjectAnimator giftImageAnimator = AnimationUtils.createFadesInFromLtoR(
+                mImageGiftIcon, -getWidth(), 0, 400, new DecelerateInterpolator()); */
         ObjectAnimator giftImageAnimator = AnimationUtils.createFadesInFromLtoR(
-                mImageGiftIcon, -getWidth(), 0, 400, new DecelerateInterpolator());
+                mImageGiftIcon, -getWidth(), 0, 0, new DecelerateInterpolator());
         giftImageAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {

@@ -92,7 +92,7 @@ public class MybackpActivity extends LiveBaseActivity {
             public void onItemClickListener(int pos) {
                 ServiceBean.RetDataBean retDataBean = mTimes.get(pos);
                 if(retDataBean.isSelect()){
-                    ToastShow("去使用");
+//                    ToastShow("去使用");
                 }
                 for (int i = 0; i < mTimes.size(); i++) {
                     ServiceBean.RetDataBean map = mTimes.get(i);

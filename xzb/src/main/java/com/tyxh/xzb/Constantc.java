@@ -4,9 +4,9 @@ public class Constantc {
 
     /*直播跟im聊天用相同的SDKAPPID  签名使用同一个*/
     public static final boolean use_old = false;     //是否用原来可连麦的数据
-    //有连麦功能的 1400188366
-    //现在用的 1400515936
-    public static final int SDKAPPID = use_old?1400188366:1400522274;//原  测试
+    //有连麦功能的 1400188366  小直播的appid
+    //现在用的 1400522274       正式的appid
+    public static final int SDKAPPID = use_old?1400188366:1400522274;//原  正式
     public static final String SECRETKEY = "5f0edf244ede892ff43f701c0cfab05085ced7c5eef4265c54e3ed07558a87d8";
     public static final long test_sdkAppID = SDKAPPID;
 

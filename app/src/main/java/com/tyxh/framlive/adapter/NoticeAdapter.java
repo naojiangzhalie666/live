@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.bean.NoticeBean;
 import com.superc.yyfflibrary.utils.DateUtil;
@@ -47,6 +49,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
         vh.mItemNoticeTitle.setText("通知");
         vh.mItemNoticeContent.setText(bean.getNoticeContent());
         vh.mItemNoticeTm.setText(DateTimeUtil.getTimeFormatText(new Date(Long.parseLong(DateUtil.getTimeLong( bean.getCreateDate(),"yyyy-MM-dd HH:mm:ss")) * 1000)));
+        Glide.with(mContext).load(bean.getIco()).placeholder(R.drawable.live_defaultimg).error(R.drawable.live_defaultimg).into(vh.mItemNoticeImg);
 
     }
 
@@ -65,7 +68,8 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
         @BindView(R.id.item_notice_content)
         TextView mItemNoticeContent;
         @BindView(R.id.item_notice_tm)
-        TextView mItemNoticeTm;
+        TextView mItemNoticeTm;    @BindView(R.id.imageView11)
+        ImageView mItemNoticeImg;
 
         ViewHolder(View view) {
             super(view);

@@ -7,21 +7,21 @@
     android:layout_marginBottom="@dimen/dp_1"
     android:background="@color/white">
 
-    <LinearLayout
+    <ImageView
         android:id="@+id/imageView11"
         android:layout_width="@dimen/dp_40"
         android:layout_height="@dimen/dp_40"
         android:layout_marginLeft="@dimen/dp_12"
         android:layout_marginTop="@dimen/dp_5"
         android:layout_marginBottom="@dimen/dp_5"
-        android:background="@drawable/bg_circle_solder_notice"
         android:gravity="center"
+        android:src="@drawable/live_defaultimg"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/item_notice_title">
 
-        <ImageView
+    <!--    <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/mine_ruzhuleft" />
@@ -32,9 +32,9 @@
             android:paddingTop="@dimen/dp_3"
             android:text="边框心理"
             android:textColor="@color/login_txt"
-            android:textSize="6sp" />
+            android:textSize="6sp" />-->
 
-    </LinearLayout>
+    </ImageView>
 
     <TextView
         android:id="@+id/item_notice_title"

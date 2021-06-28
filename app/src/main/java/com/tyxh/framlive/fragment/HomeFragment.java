@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment {
     SmartRefreshLayout mHomeSmart;
     @BindView(R.id.home_camera)
     ImageView mImgv_camera;
-  @BindView(R.id.home_guajian)
+    @BindView(R.id.home_guajian)
     ImageView mImgv_guajian;
 
     private List<MineTCVideoInfo> mLists;
@@ -109,6 +109,7 @@ public class HomeFragment extends Fragment {
     private String mUserId;
     private int page = 0;
     private MainActivity mMainActivity;
+    private boolean is_cliclpush =false;
 
 
     @Override
@@ -126,12 +127,14 @@ public class HomeFragment extends Fragment {
         init();
     }
 
-    @OnClick({R.id.home_camera, R.id.home_chanpin, R.id.home_tiyan, R.id.home_newman,R.id.home_guajian})
+    @OnClick({R.id.home_camera, R.id.home_chanpin, R.id.home_tiyan, R.id.home_newman, R.id.home_guajian})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.home_camera:
-                if(checkPublishPermission()) {
+                if (checkPublishPermission()) {
+                    if(!is_cliclpush)
                     startPublish();
+                    is_cliclpush =true;
                 }
                 break;
             case R.id.home_chanpin:
@@ -139,21 +142,21 @@ public class HomeFragment extends Fragment {
 //                int_person.putExtra("is_user",true);
 //                int_person.putExtra("query_id","7");
 //                startActivity(int_person);//咨询师页面
-                WebVActivity.startMe(getActivity(),"产品特色");
+                WebVActivity.startMe(getActivity(), "产品特色");
                 break;
             case R.id.home_tiyan:
 //                Intent int_orgi = new Intent(getActivity(), OranizeActivity.class);
 //                int_orgi.putExtra("is_user",true);
 //                int_orgi.putExtra("query_id","8");
 //                startActivity(int_orgi);//咨询机构页面
-                WebVActivity.startMe(getActivity(),"如何体验");
+                WebVActivity.startMe(getActivity(), "如何体验");
                 break;
             case R.id.home_newman:
 //                startActivity(new Intent(getActivity(), ShowGoodsActivity.class));//商品套餐页面
 //                Toast toast = Toast.makeText(getActivity(), "跳转商品页面", Toast.LENGTH_SHORT);
 //                toast.setGravity(Gravity.CENTER, 0, 0);
 //                toast.show();
-                WebVActivity.startMe(getActivity(),"新人福利");
+                WebVActivity.startMe(getActivity(), "新人福利");
 //                startChatActivity("随和的金苞花","11115");
 //                startActivity(new Intent(getActivity(), SetInActivity.class));
                 break;
@@ -163,6 +166,7 @@ public class HomeFragment extends Fragment {
                 break;
         }
     }
+
     /**
      * 动态权限检查相关
      */
@@ -184,7 +188,7 @@ public class HomeFragment extends Fragment {
         return true;
     }
 
-    private void startChatActivity(String title,String userid) {
+    private void startChatActivity(String title, String userid) {
         ChatInfo chatInfo = new ChatInfo();
         chatInfo.setType(V2TIMConversation.V2TIM_C2C);
 //        chatInfo.setChatName(title);
@@ -218,7 +222,7 @@ public class HomeFragment extends Fragment {
         mHomeSmart.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                page+=10;
+                page += 10;
                 getLiveData();
             }
         });
@@ -272,29 +276,31 @@ public class HomeFragment extends Fragment {
             loginMLVB();
         }
     }
+
     /*用于主页调用刷新*/
-    public void toRefresh(){
-        if(mHomeSmart!=null)
+    public void toRefresh() {
+        if (mHomeSmart != null)
             mHomeSmart.autoRefresh();
     }
+
     /*获取是否可购买一元活动*/
-    private void getZig(){
+    private void getZig() {
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().queryJoAct(LiveShareUtil.getInstance(getActivity()).getToken(), "2"), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                ActBackBean backBean =new Gson().fromJson(result.toString(),ActBackBean.class);
-                if(backBean.getRetCode() ==0 ){
+                ActBackBean backBean = new Gson().fromJson(result.toString(), ActBackBean.class);
+                if (backBean.getRetCode() == 0) {
                     //一元活动购买情况【0:不可；1:可购】
-                    if(backBean.getRetData().getUnaryAct().equals("1")) {
-                        if(mImgv_guajian!=null)
-                        mImgv_guajian.setVisibility(View.VISIBLE);
-                    }else{
-                        if(mImgv_guajian!=null)
+                    if (backBean.getRetData().getUnaryAct().equals("1")) {
+                        if (mImgv_guajian != null)
+                            mImgv_guajian.setVisibility(View.VISIBLE);
+                    } else {
+                        if (mImgv_guajian != null)
                             mImgv_guajian.setVisibility(View.GONE);
                     }
-                }else{
-                    if(mImgv_guajian!=null)
+                } else {
+                    if (mImgv_guajian != null)
                         mImgv_guajian.setVisibility(View.GONE);
                 }
             }
@@ -338,7 +344,8 @@ public class HomeFragment extends Fragment {
                     if (page == 0) {
                         mLists.clear();
                     }
-                    toZhData(bean.getRetData());
+                    count=0;
+                    toSeiCount(bean);
                 } else {
                     Toast.makeText(getActivity(), bean.getRetMsg(), Toast.LENGTH_LONG).show();
                 }
@@ -352,6 +359,44 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
+
+    private int count = 0;
+
+    private void toSeiCount(RoomBean bean) {
+        toZhData(bean.getRetData());
+        /*if (bean.getRetData() == null || bean.getRetData().size() == 0) {
+            return;
+        }
+        RoomBean.RetDataBean retBean = bean.getRetData().get(count);
+        V2TIMManager.getGroupManager().getGroupOnlineMemberCount(retBean.getRoomID(), new V2TIMSendCallback<Integer>() {
+            @Override
+            public void onProgress(int progress) {
+
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+                retBean.audienceCount = 0;
+                if(count ==bean.getRetData().size()-1){
+                    toZhData(bean.getRetData());
+                }else{
+                    count+=1;
+                    toSeiCount(bean);
+                }
+            }
+
+            @Override
+            public void onSuccess(Integer integer) {
+                retBean.audienceCount = integer-1;
+                if(count ==bean.getRetData().size() -1){
+                    toZhData(bean.getRetData());
+                }else{
+                    count+=1;
+                    toSeiCount(bean);
+                }
+            }
+        });*/
     }
 
     /*获取直播的sign*/
@@ -390,7 +435,7 @@ public class HomeFragment extends Fragment {
                     AVCallManager.getInstance().init(LiveApplication.getmInstance());
                 }
                 loginTUIKitLive(sdk_id, userid, usersig);
-                page =0;
+                page = 0;
                 getLiveData();
                 Log.i("HomeFragment", "onSuccess: MLVB登录成功");
             }
@@ -416,24 +461,24 @@ public class HomeFragment extends Fragment {
             info.roomInfo = value.roomInfo;
             info.viewerCount = value.audienceCount;
             info.livePlay = true;
-            info.type =value.getUserInfo().getType();
-            if(value.getUserInfo().getType()>2){//机构--子机构
+            info.type = value.getUserInfo().getType();
+            if (value.getUserInfo().getType() > 2) {//机构--子机构
                 try {
-                    info.meName =value.getCouData().getMeName();
+                    info.meName = value.getCouData().getMeName();
                 } catch (Exception e) {
-                    info.meName ="天宇新航心理咨询机构";
-                    Log.e("HomeFragment", "toZhData: "+e.toString());
+                    info.meName = "天宇新航心理咨询机构";
+                    Log.e("HomeFragment", "toZhData: " + e.toString());
                 }
             }
-            info.mUserInfoBean =value.getUserInfo();
+            info.mUserInfoBean = value.getUserInfo();
             if (pushers != null && !pushers.isEmpty()) {
                 RoomBean.RetDataBean.PushersBean pusher = pushers.get(0);
                 info.nickname = pusher.userName;
                 info.avatar = pusher.userAvatar;
                 info.push_size = pushers.size();
-                if(pushers.size()>1){//正在连线中的用户信息
+                if (pushers.size() > 1) {//正在连线中的用户信息
                     info.lxavatar = pushers.get(1).userAvatar;
-                    info.lxUserid=pushers.get(1).userID;
+                    info.lxUserid = pushers.get(1).userID;
                 }
             }
             try {
@@ -508,10 +553,10 @@ public class HomeFragment extends Fragment {
         intent.putExtra(TCConstants.ROOM_TITLE, item.title);
         intent.putExtra(Constant.LIVE_JGNAME, item.meName);
         intent.putExtra(Constant.LIVE_ISJG, item.type);
-        intent.putExtra(Constant.LIVE_ISGZ,true);//是否关注了该主播---字段还没有
-        intent.putExtra(Constant.LVIE_ISLIANX,item.push_size>1?true:false);//是否正在连线
-        intent.putExtra(Constant.LIVE_LIANXHEAD,item.lxavatar);//连线中的用户头像
-        intent.putExtra(Constant.LIVE_LXUSERID,item.lxUserid);//连线中的用户id
+        intent.putExtra(Constant.LIVE_ISGZ, true);//是否关注了该主播---字段还没有
+        intent.putExtra(Constant.LVIE_ISLIANX, item.push_size > 1 ? true : false);//是否正在连线
+        intent.putExtra(Constant.LIVE_LIANXHEAD, item.lxavatar);//连线中的用户头像
+        intent.putExtra(Constant.LIVE_LXUSERID, item.lxUserid);//连线中的用户id
 
         startActivityForResult(intent, START_LIVE_PLAY);
     }
@@ -529,15 +574,16 @@ public class HomeFragment extends Fragment {
         }
 
         if (intent != null) {
-            intent.putExtra(TCConstants.ROOM_TITLE,mUserInfo.getRetData().getNickname());
+            intent.putExtra(TCConstants.ROOM_TITLE, mUserInfo.getRetData().getNickname());
             intent.putExtra(TCConstants.USER_ID, TCUserMgr.getInstance().getUserId());
-            intent.putExtra(TCConstants.USER_NICK,mUserInfo.getRetData().getNickname());
-            intent.putExtra(TCConstants.USER_HEADPIC,mUserInfo.getRetData().getIco());
-            intent.putExtra(TCConstants.COVER_PIC,mUserInfo.getRetData().getIco());
+            intent.putExtra(TCConstants.USER_NICK, mUserInfo.getRetData().getNickname());
+            intent.putExtra(TCConstants.USER_HEADPIC, mUserInfo.getRetData().getIco());
+            intent.putExtra(TCConstants.COVER_PIC, mUserInfo.getRetData().getIco());
             intent.putExtra(TCConstants.JIGOU_NAME, "");
             intent.putExtra(TCConstants.USER_LOC, "天津");
             startActivity(intent);
         }
+        is_cliclpush =false;
     }
 
     private static void loginTUIKitLive(long sdkAppid, String userId, String userSig) {
@@ -559,6 +605,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        is_cliclpush =false;
         if (Constantc.mlvb_login) {
             page = 0;
             getLiveData();
@@ -576,7 +623,7 @@ public class HomeFragment extends Fragment {
     public void onEventMsg(EventMessage msg) {
         if (msg.getMessage().equals("fresh_home")) {
             if (Constantc.mlvb_login) {
-                page =0;
+                page = 0;
                 getLiveData();
             } else {
                 loginMLVB();
@@ -597,7 +644,8 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
         DevRing.httpManager().stopRequestByTag(LiveHttp.TAG);
     }
-/*---------------------------原可连麦数据--------之后用不到可以删掉----------*/
+
+    /*---------------------------原可连麦数据--------之后用不到可以删掉----------*/
     private void theOldLoginMlvb() {
         mInstance = TCUserMgr.getInstance();
         mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
@@ -611,7 +659,7 @@ public class HomeFragment extends Fragment {
                     AVCallManager.getInstance().init(getActivity());
                 }
                 loginTUIKitLive(sdk_id, userid, usersig);
-                page =0;
+                page = 0;
                 getLiveData();
             }
         });
@@ -623,7 +671,7 @@ public class HomeFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (retCode == 0 ) {
+                    if (retCode == 0) {
                         mLists.clear();
                         if (result != null) {
                             mLists.addAll(toCLone(result));
@@ -639,15 +687,15 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private List<MineTCVideoInfo> toCLone( ArrayList<TCVideoInfo> result){
-        List<MineTCVideoInfo> list =new ArrayList<>();
+    private List<MineTCVideoInfo> toCLone(ArrayList<TCVideoInfo> result) {
+        List<MineTCVideoInfo> list = new ArrayList<>();
         for (int i = 0; i < result.size(); i++) {
             TCVideoInfo tcVideoInfo = result.get(i);
-            MineTCVideoInfo mineTCVideoInfo =new MineTCVideoInfo();
-            mineTCVideoInfo.push_size =1;
+            MineTCVideoInfo mineTCVideoInfo = new MineTCVideoInfo();
+            mineTCVideoInfo.push_size = 1;
             mineTCVideoInfo.lable = "人气主播";
-            mineTCVideoInfo.avatar =tcVideoInfo.avatar;
-            mineTCVideoInfo.createTime =tcVideoInfo.createTime;
+            mineTCVideoInfo.avatar = tcVideoInfo.avatar;
+            mineTCVideoInfo.createTime = tcVideoInfo.createTime;
             mineTCVideoInfo.fileId = tcVideoInfo.fileId;
             mineTCVideoInfo.frontCover = tcVideoInfo.frontCover;
             mineTCVideoInfo.groupId = tcVideoInfo.groupId;
@@ -655,11 +703,11 @@ public class HomeFragment extends Fragment {
             mineTCVideoInfo.likeCount = tcVideoInfo.likeCount;
             mineTCVideoInfo.livePlay = tcVideoInfo.livePlay;
             mineTCVideoInfo.location = tcVideoInfo.location;
-            mineTCVideoInfo.nickname =tcVideoInfo.nickname;
-            mineTCVideoInfo.playUrl =tcVideoInfo.playUrl;
+            mineTCVideoInfo.nickname = tcVideoInfo.nickname;
+            mineTCVideoInfo.playUrl = tcVideoInfo.playUrl;
             mineTCVideoInfo.title = tcVideoInfo.title;
             mineTCVideoInfo.userId = tcVideoInfo.userId;
-            mineTCVideoInfo.viewerCount =tcVideoInfo.viewerCount;
+            mineTCVideoInfo.viewerCount = tcVideoInfo.viewerCount;
             list.add(mineTCVideoInfo);
         }
         return list;

@@ -271,8 +271,8 @@
 
         <ImageView
             android:id="@+id/anchor_camera"
-            android:layout_width="@dimen/live_btn_size"
-            android:layout_height="@dimen/live_btn_size"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
             android:layout_above="@+id/tool_bar"
             android:layout_alignParentRight="true"
             android:visibility="gone"
@@ -311,8 +311,8 @@
 
             <Button
                 android:id="@+id/audience_btn_switch_cam"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -322,8 +322,8 @@
 
             <Button
                 android:id="@+id/audience_btn_linkmic"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -332,8 +332,8 @@
 
             <Button
                 android:id="@+id/audience_gift"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -343,8 +343,8 @@
 
             <Button
                 android:id="@+id/audience_car"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -354,8 +354,8 @@
 
             <Button
                 android:id="@+id/audience_siliao"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -364,8 +364,8 @@
 
             <ImageView
                 android:id="@+id/btn_share"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -374,8 +374,8 @@
 
             <ImageView
                 android:id="@+id/btn_log"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -385,8 +385,8 @@
 
             <ImageView
                 android:id="@+id/btn_like"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -397,8 +397,8 @@
 
             <Button
                 android:id="@+id/btn_back"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -468,8 +468,8 @@
 
             <ImageView
                 android:id="@+id/close_record"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="50dp"
                 android:background="@drawable/btn_close"
@@ -486,8 +486,8 @@
 
             <ImageView
                 android:id="@+id/retry_record"
-                android:layout_width="@dimen/live_btn_size"
-                android:layout_height="@dimen/live_btn_size"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="50dp"
@@ -532,10 +532,10 @@
     <com.tyxh.framlive.xzbgift.important.GiftAnimatorLayout
         android:id="@+id/lottie_animator_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/live_gift_lottie_view_height"
+        android:layout_height="@dimen/dp_400"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/live_gift_panel_height" />
+        android:layout_marginBottom="@dimen/dp_350" />
     <include
         android:id="@+id/audience_include"
         layout="@layout/dig_lm_note"

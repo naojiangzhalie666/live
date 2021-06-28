@@ -146,7 +146,7 @@ public class LoginActivity extends LiveBaseActivity {
     }
 
 
-    @OnClick({R.id.login_loginthis, R.id.login_loginother, R.id.ll_wx, R.id.login_rela, R.id.ll_zi})
+    @OnClick({R.id.login_loginthis, R.id.login_loginother, R.id.ll_wx, R.id.login_rela, R.id.ll_zi,R.id.login_cbxieyi})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_loginthis://一键登录
@@ -180,6 +180,7 @@ public class LoginActivity extends LiveBaseActivity {
 //                }
                 break;
             case R.id.login_rela://协议
+            case R.id.login_cbxieyi:
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
                     mLoginImgv.setVisibility(View.GONE);
                 } else {

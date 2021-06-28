@@ -530,12 +530,13 @@ public class OranizeActivity extends LiveBaseActivity {
     }
 
     private void setData(UserDetailBean.RetDataBean retData) {
+        mPersonalId.setText("ID:" + retData.getUser().getId());
         if (retData.getCouMechanism() != null) {
             UserDetailBean.RetDataBean.CouMechanismBean couMechanism = retData.getCouMechanism();
             jigou_id = couMechanism.getId() + "";
             mPersonalName.setText(couMechanism.getMeName());
             mPersonalJigou.setText(couMechanism.getMeAddress());
-            mPersonalId.setText("ID:" + jigou_id);
+//            mPersonalId.setText("ID:" + jigou_id);
             mPersonalGeren.setText(couMechanism.getMeIntroduce());
             Glide.with(this).load(couMechanism.getMeLogo()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).centerCrop().into(mPersonalHead);
             Glide.with(this).load(couMechanism.getMeLogo()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(parallax);

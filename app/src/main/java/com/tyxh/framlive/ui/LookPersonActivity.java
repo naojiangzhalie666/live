@@ -642,12 +642,13 @@ public class LookPersonActivity extends LiveBaseActivity {
     }
 
     private void setData(UserDetailBean.RetDataBean retData) {
+        mPersonalId.setText("ID:" + retData.getUser().getId());
         if (retData.getCounselorBeans() != null && retData.getCounselorBeans().size() != 0) {
             UserDetailBean.RetDataBean.CounselorBeansBean beansBean = retData.getCounselorBeans().get(0);
             zxs_id = beansBean.getId() + "";
             mPersonalName.setText(beansBean.getCouName());
             mPersonalJigou.setText("无");
-            mPersonalId.setText("ID:" + zxs_id);
+//            mPersonalId.setText("ID:" + zxs_id);
             mPersonalGeren.setText(beansBean.getPerIntroduce());
             Glide.with(this).load(beansBean.getCouHeadImg()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).centerCrop().into(mPersonalHead);
             Glide.with(this).load(beansBean.getCouHeadImg()).transform(new GlideRoundTransUtils(this, 20)).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(parallax);

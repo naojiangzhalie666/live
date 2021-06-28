@@ -42,7 +42,7 @@ public class Constant {
     public static final String LICENCEURL = "http://license.vod2.myqcloud.com/license/v1/b0bad46a4f678c3fb63e229c6633da58/TXLiveSDK.licence"; // 获取到的 licence url
     public static final String LICENCEKEY = "abee753ed54f7e7e2e54391d8e1b9d20"; // 获取到的 licence key
 
-    /*im聊天*/
+    /*im聊天及直播通用*/
     public static final String SECRETKEY = Constantc.SECRETKEY;//聊天key
     public static final int SDKAPPID = Constantc.SDKAPPID;//聊天APPID
 

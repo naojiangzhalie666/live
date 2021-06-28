@@ -44,6 +44,10 @@ public class CarshowAdapter extends RecyclerView.Adapter<CarshowAdapter.ViewHold
         vh.mItemDigcarTitle.setText(bean.getProTitle());
         vh.mItemDigcarTime.setText("");
         vh.mItemDigcarZuansh.setText(String.valueOf(bean.getLowestPrice()));
+        vh.mItemDigcarvv.setVisibility(View.VISIBLE);
+        if(position == mLists.size()-1){
+            vh.mItemDigcarvv.setVisibility(View.GONE);
+        }
         vh.mItemDigcarTiyan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,6 +85,8 @@ public class CarshowAdapter extends RecyclerView.Adapter<CarshowAdapter.ViewHold
         TextView mItemDigcarTime;
         @BindView(R.id.item_digcar_tiyan)
         TextView mItemDigcarTiyan;
+  @BindView(R.id.vvv)
+        View mItemDigcarvv;
 
         ViewHolder(View view) {
             super(view);
