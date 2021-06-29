@@ -1,65 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
-
-    <RelativeLayout
-        android:id="@+id/gift_group"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="8dp"
-        android:background="@drawable/live_gift_bullet_bg">
-
-        <com.tyxh.framlive.xzbgift.important.CircleImageView
-            android:id="@+id/iv_send_user_icon"
-            android:layout_width="39dp"
-            android:layout_height="39dp"
-            android:layout_margin="3dp"
-            android:scaleType="centerCrop"
-            android:layout_centerVertical="true" />
+        android:layout_marginTop="20dp">
 
         <RelativeLayout
-            android:id="@+id/gift_text_group"
-            android:layout_toRightOf="@id/iv_send_user_icon"
+            android:id="@+id/gift_group"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/dp_42"
+            android:layout_marginRight="@dimen/dp_5"
+            android:layout_gravity="left"
+            android:background="@drawable/live_gift_bullet_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+      >
 
-            <TextView
-                android:id="@+id/tv_send_user_name"
-                android:maxLines="1"
-                android:maxWidth="@dimen/live_text_max_show_width"
+            <com.tyxh.framlive.xzbgift.important.CircleImageView
+                android:id="@+id/iv_send_user_icon"
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_centerVertical="true"
+                android:layout_margin="3dp"
+                android:scaleType="centerCrop" />
+
+            <RelativeLayout
+                android:id="@+id/gift_text_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/live_gift_white"
-                android:textSize="12sp" />
+                android:layout_toRightOf="@id/iv_send_user_icon">
 
-            <TextView
-                android:id="@+id/tv_gift_title"
-                android:maxLines="1"
-                android:maxWidth="@dimen/live_text_max_show_width"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tv_send_user_name"
-                android:layout_below="@id/tv_send_user_name"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:textColor="@color/live_gift_white"
-                android:textSize="11sp" />
+                <TextView
+                    android:id="@+id/tv_send_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="4dp"
+                    android:maxWidth="@dimen/live_text_max_show_width"
+                    android:maxLines="1"
+                    android:textColor="@color/live_gift_white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_gift_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_send_user_name"
+                    android:layout_alignLeft="@id/tv_send_user_name"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:maxWidth="@dimen/live_text_max_show_width"
+                    android:maxLines="1"
+                    android:textColor="@color/live_gift_white"
+                    android:textSize="11sp" />
+            </RelativeLayout>
+
+
         </RelativeLayout>
-
-
         <ImageView
             android:id="@+id/iv_gift_icon"
-            android:layout_width="39dp"
-            android:layout_height="39dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/gift_text_group" />
-    </RelativeLayout>
-
+            android:layout_width="@dimen/dp_47"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/gift_group"
+            tools:src="@drawable/live_defaultimg"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="@dimen/dp_54"
+            android:layout_centerVertical="true" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

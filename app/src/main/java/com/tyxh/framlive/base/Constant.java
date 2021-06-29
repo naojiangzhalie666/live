@@ -24,7 +24,7 @@ public class Constant {
     public static final String SHARE_NAME = "边框心理";
     public static final String SHARE_MS  ="整合心理咨询机构与心理咨询师，为广大老百姓提供心理健康服务的平台";
 
-    public static final boolean PRINT_LOG = false;
+    public static final boolean PRINT_LOG = IS_DEBUG;
     public static final boolean IS_JIAMI = false;
     public static String TOKEN = null;
     public static boolean has_navi = false;

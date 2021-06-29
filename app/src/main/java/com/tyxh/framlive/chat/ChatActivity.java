@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.tyxh.framlive.R;
-import com.tyxh.framlive.base.Constant;
-import com.tyxh.framlive.ui.LoginActivity;
-import com.tyxh.framlive.utils.SoftKeyboardFixerForFullscreen;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
+import com.tyxh.framlive.R;
+import com.tyxh.framlive.base.Constant;
+import com.tyxh.framlive.base.LiveApplication;
+import com.tyxh.framlive.ui.LoginActivity;
+import com.tyxh.framlive.utils.LiveShareUtil;
+import com.tyxh.framlive.utils.SoftKeyboardFixerForFullscreen;
 
 import androidx.annotation.Nullable;
 
@@ -39,7 +41,6 @@ public class ChatActivity extends BaseChatActivity {
     }
 
 
-
     private void chat(Intent intent) {
         Bundle bundle = intent.getExtras();
         Log.i(TAG, "bundle: " + bundle + " intent: " + intent);
@@ -56,11 +57,11 @@ public class ChatActivity extends BaseChatActivity {
 //            bundle.putSerializable(Constant.CHAT_INFO, mChatInfo);
 //            Log.i(TAG, "offline mChatInfo: " + mChatInfo);
 //        } else {
-            mChatInfo = (ChatInfo) bundle.getSerializable(Constant.CHAT_INFO);
-            if (mChatInfo == null) {
-                startSplashActivity(null);
-                return;
-            }
+        mChatInfo = (ChatInfo) bundle.getSerializable(Constant.CHAT_INFO);
+        if (mChatInfo == null) {
+            startSplashActivity(null);
+            return;
+        }
 //        }
 
         if (V2TIMManager.getInstance().getLoginStatus() == V2TIM_STATUS_LOGINED) {
@@ -79,6 +80,9 @@ public class ChatActivity extends BaseChatActivity {
         }
         startActivity(intent);
         Toast.makeText(this, "登录失效，请重新登录", Toast.LENGTH_SHORT).show();
+        LiveShareUtil.getInstance(this).clear();
+        LiveShareUtil.getInstance(LiveApplication.getmInstance()).put(LiveShareUtil.APP_AGREE, true);
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 }

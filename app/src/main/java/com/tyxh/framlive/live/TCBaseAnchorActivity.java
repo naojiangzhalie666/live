@@ -62,7 +62,6 @@ import com.tyxh.framlive.xzbgift.important.GiftAnimatorLayout;
 import com.tyxh.framlive.xzbgift.important.GiftInfo;
 import com.tyxh.xzb.Constantc;
 import com.tyxh.xzb.important.IMLVBLiveRoomListener;
-import com.tyxh.xzb.important.MLVBCommonDef;
 import com.tyxh.xzb.important.MLVBLiveRoom;
 import com.tyxh.xzb.important.MLVBLiveRoomImpl;
 import com.tyxh.xzb.ui.ErrorDialogFragment;
@@ -123,7 +122,7 @@ import static com.tyxh.xzb.utils.TCConstants.IMCMD_DISCONTACT;
  * <p>
  * 2. 处理消息接收到的文本信息：{@link TCBaseAnchorActivity#onRecvRoomTextMsg(String, String, String, String, String)}
  */
-public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListener, View.OnClickListener, TCInputTextMsgDialog.OnTextSendListener, MLVBLiveRoomImpl.StandardCallback {
+public abstract class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListener, View.OnClickListener, TCInputTextMsgDialog.OnTextSendListener, MLVBLiveRoomImpl.StandardCallback {
     private static final String TAG = TCBaseAnchorActivity.class.getSimpleName();
 
     // 消息列表相关
@@ -710,11 +709,23 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
         TXLog.w(TAG, "room closed");
         showErrorAndQuit(0, "房间已解散");
     }
-
+    /*JxqDialog mJxqDialog;
     @Override
     public void onError(int errorCode, String errorMessage, Bundle extraInfo) {
+        Log.e(TAG, "onError: 错误" );
         if (errorCode == MLVBCommonDef.LiveRoomErrorCode.ERROR_IM_FORCE_OFFLINE) {
-            TCUtils.showKickOut(TCBaseAnchorActivity.this);
+            Log.e(TAG, "onError:登录失效");
+            mJxqDialog =new JxqDialog(this);
+            mJxqDialog.setOnOutClickListener(new JxqDialog.OnOutClickListener() {
+                @Override
+                public void onOutListener() {
+                    LiveShareUtil.getInstance(TCBaseAnchorActivity.this).clear();
+                    LiveShareUtil.getInstance(LiveApplication.getmInstance()).put(LiveShareUtil.APP_AGREE, true);
+                    startActivity(new Intent(TCBaseAnchorActivity.this, LoginActivity.class));
+                    finish();
+                }
+            });
+            mJxqDialog.show();
         } else {
             showErrorAndQuit(errorCode, errorMessage);
         }
@@ -728,7 +739,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
     @Override
     public void onDebugLog(String log) {
         Log.d(TAG, log);
-    }
+    }*/
 
 
     /**

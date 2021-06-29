@@ -59,6 +59,7 @@ import com.tyxh.framlive.pop_dig.BaseDialog;
 import com.tyxh.framlive.pop_dig.BuyzActivity;
 import com.tyxh.framlive.pop_dig.CarDialog;
 import com.tyxh.framlive.pop_dig.ChathelfActivity;
+import com.tyxh.framlive.pop_dig.JxqDialog;
 import com.tyxh.framlive.pop_dig.ShareDialog;
 import com.tyxh.framlive.pop_dig.UseWhatDialog;
 import com.tyxh.framlive.ui.LoginActivity;
@@ -1121,13 +1122,23 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         stopLinkMic();
         showErrorAndQuit("10010");//10010代表房间已解散--直播已结束
     }
-
+    JxqDialog mJxqDialog;
     @Override
     public void onError(int errorCode, String errorMessage, Bundle extraInfo) {
         if (errorCode == MLVBCommonDef.LiveRoomErrorCode.ERROR_IM_FORCE_OFFLINE) { // IM 被强制下线。
-            TCUtils.showKickOut(TCAudienceActivity.this);
+            mJxqDialog =new JxqDialog(this);
+            mJxqDialog.setOnOutClickListener(new JxqDialog.OnOutClickListener() {
+                @Override
+                public void onOutListener() {
+                    LiveShareUtil.getInstance(TCAudienceActivity.this).clear();
+                    LiveShareUtil.getInstance(LiveApplication.getmInstance()).put(LiveShareUtil.APP_AGREE, true);
+                    startActivity(new Intent(TCAudienceActivity.this, LoginActivity.class));
+                    finish();
+                }
+            });
+            mJxqDialog.show();
         } else {
-            showErrorAndQuit("视频流播放失败，Error:");
+            showErrorAndQuit("视频流播放失败");
         }
     }
 

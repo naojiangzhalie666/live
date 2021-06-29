@@ -25,14 +25,18 @@ import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.Constant;
+import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.pop_dig.BaseDialog;
+import com.tyxh.framlive.pop_dig.JxqDialog;
 import com.tyxh.framlive.pop_dig.MeslistActivity;
 import com.tyxh.framlive.pop_dig.OnlineDialog;
 import com.tyxh.framlive.pop_dig.ShareDialog;
+import com.tyxh.framlive.ui.LoginActivity;
 import com.tyxh.framlive.ui.LookPersonActivity;
 import com.tyxh.framlive.ui.OranizeActivity;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.xzb.Constantc;
+import com.tyxh.xzb.important.MLVBCommonDef;
 import com.tyxh.xzb.ui.TCSimpleUserInfo;
 import com.tyxh.xzb.ui.TCUserAvatarListAdapter;
 import com.tyxh.xzb.ui.TCVideoView;
@@ -331,6 +335,38 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         super.onCreateRoomSuccess();
         startRecordAnimation();
     }
+
+    JxqDialog mJxqDialog;
+    @Override
+    public void onError(int errorCode, String errorMessage, Bundle extraInfo) {
+        if (errorCode == MLVBCommonDef.LiveRoomErrorCode.ERROR_IM_FORCE_OFFLINE) {
+            stopPublish();
+            mJxqDialog =new JxqDialog(this);
+            mJxqDialog.setOnOutClickListener(new JxqDialog.OnOutClickListener() {
+                @Override
+                public void onOutListener() {
+                    LiveShareUtil.getInstance(TCCameraAnchorActivity.this).clear();
+                    LiveShareUtil.getInstance(LiveApplication.getmInstance()).put(LiveShareUtil.APP_AGREE, true);
+                    startActivity(new Intent(TCCameraAnchorActivity.this, LoginActivity.class));
+                    finish();
+                }
+            });
+            mJxqDialog.show();
+        } else {
+            showErrorAndQuit(errorCode, errorMessage);
+        }
+    }
+
+    @Override
+    public void onWarning(int warningCode, String warningMsg, Bundle extraInfo) {
+
+    }
+
+    @Override
+    public void onDebugLog(String log) {
+        Log.d(TAG, log);
+    }
+
 
     /**
      * MLVB 组件回调

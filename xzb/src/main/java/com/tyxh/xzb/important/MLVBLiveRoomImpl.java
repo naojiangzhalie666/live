@@ -3274,6 +3274,8 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                                 method.invoke(object, args);
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
+                            }catch (IllegalArgumentException e) {
+                                e.printStackTrace();
                             } catch (InvocationTargetException e) {
                                 e.printStackTrace();
                             }

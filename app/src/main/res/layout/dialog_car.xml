@@ -64,6 +64,7 @@
 
     <View
         android:layout_width="match_parent"
+        android:visibility="invisible"
         android:layout_height="1px"
         android:layout_marginTop="11dp"
         android:background="@color/live_color_line" />
@@ -74,7 +75,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/bg_corner_ft"
+        android:background="@drawable/bg_corner_car"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -94,6 +95,8 @@
             android:id="@+id/dialog_car_recy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            tools:listitem="@layout/item_dialog_car"
+            tools:itemCount="4"
             android:paddingTop="4dp" />
     </LinearLayout>
 
@@ -145,13 +148,13 @@
             android:layout_marginEnd="22dp"
             android:background="@drawable/bg_circle_red"
             android:clickable="true"
-            android:paddingLeft="16dp"
-            android:paddingTop="6dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="6dp"
+            android:paddingLeft="@dimen/dp_18"
+            android:paddingTop="@dimen/dp_3"
+            android:paddingRight="@dimen/dp_18"
+            android:paddingBottom="@dimen/dp_3"
             android:text="@string/live_gift_charge"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="15sp" />
 
     </RelativeLayout>
 

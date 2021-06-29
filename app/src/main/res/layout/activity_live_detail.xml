@@ -81,7 +81,7 @@
                     android:paddingBottom="@dimen/dp_6"
                     android:text="日数据"
                     android:textColor="@color/login_txt"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@+id/livedetail_month"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/live_ll" />
@@ -94,7 +94,7 @@
                     android:paddingBottom="@dimen/dp_6"
                     android:text="月数据"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/livedetail_day"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/livedetail_day" />
