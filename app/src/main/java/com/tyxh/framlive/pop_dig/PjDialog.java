@@ -7,10 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.tyxh.framlive.R;
+import com.tyxh.framlive.views.MyRatingBar;
 
 import androidx.annotation.NonNull;
 import butterknife.BindView;
@@ -19,13 +19,14 @@ import butterknife.OnClick;
 
 public class PjDialog extends Dialog {
     private static final String TAG = "PjDialog";
-    @BindView(R.id.dialog_pj_star)
-    RatingBar mDialogPjStar;
+    @BindView(R.id.dialog_pj_star_my)
+    MyRatingBar mDialogPjStarMy;
     @BindView(R.id.dialog_pj_note)
     TextView mDialogPjNote;
     private Context mContext;
     private Window mWindow;
     private OnSubClickListener mOnSubClickListener;
+    private float xing_num = 0 ;
 
     public PjDialog(@NonNull Context context) {
         super(context);
@@ -45,23 +46,24 @@ public class PjDialog extends Dialog {
     }
 
     private void init() {
-        mDialogPjStar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+        mDialogPjStarMy.setOnRatChangeListener(new MyRatingBar.OnRatChangeListener() {
             @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                Log.e(TAG, "onRatingChanged: " + v);
-                if (v <= 3) {
+            public void onRatingChangListener(float rating) {
+                Log.e(TAG, "onRatingChanged:  rating :" + rating);
+                xing_num = rating;
+                if (rating <= 3) {
 //                    ratingBar.setProgressDrawable(mContext.getResources().getDrawable(R.drawable.ratingbar_bad));
-                    if (v == 0) {
+                    if (rating == 0) {
                         mDialogPjNote.setText("满意度");
                     } else {
                         mDialogPjNote.setText("一般");
                     }
-                } else if (v == 4) {
+                } else if (rating == 4) {
 //                    ratingBar.setProgressDrawable(mContext.getResources().getDrawable(R.drawable.ratingbar_normal));
                     mDialogPjNote.setText("满意");
-                } else if (v == 5) {
+                } else if (rating == 5) {
                     mDialogPjNote.setText("非常满意");
-                }  else {
+                } else {
 //                    ratingBar.setProgressDrawable(mContext.getResources().getDrawable(R.drawable.ratingbar_nice));
                 }
             }
@@ -82,7 +84,7 @@ public class PjDialog extends Dialog {
                 break;
             case R.id.dialog_pj_sub:
                 if (mOnSubClickListener != null)
-                    mOnSubClickListener.onSbCLickListner(mDialogPjStar.getRating());
+                    mOnSubClickListener.onSbCLickListner(xing_num);
                 break;
         }
     }

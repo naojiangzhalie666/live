@@ -39,6 +39,7 @@ import com.tencent.rtmp.TXLog;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.adapter.QianAdapter;
 import com.tyxh.framlive.base.ApiService;
+import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.InterestBean;
@@ -97,8 +98,10 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -362,6 +365,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements IMLVBLive
                     @Override
                     public void onRenmingClickListener() {
                         ToastUtil.showToast(TCBaseAnchorActivity.this, "任命" + tcChatEntity.getSenderName() + "为助理");
+//                        rmZhuli(tcChatEntity.getUserid());
                     }
                 });
                 mGuanzDialog.show();
@@ -389,13 +393,56 @@ public abstract class TCBaseAnchorActivity extends Activity implements IMLVBLive
                         startPublish();
                     }
                 });
+                toPushTitle();
+            }
+        });
+    }
 
+    /*任命助理*/
+    private void rmZhuli(String userid){
+        HashMap<String,String> map =new HashMap<>();
+        map.put("zl",userid);
+        V2TIMManager.getGroupManager().setGroupAttributes(groupId, map, new V2TIMCallback() {
+            @Override
+            public void onError(int code, String desc) {
+                Log.e(TAG, "aaa_onError: 任命助理失败 code: "+code+"  desc: "+desc );
+            }
+
+            @Override
+            public void onSuccess() {
+                Log.e(TAG, "aaa_onSuccess: 已任命"+userid+"为助理");
+                getGroupMsg();
+            }
+        });
+    }
+    /**
+    *   获取群属性
+    * */
+    private void getGroupMsg(){
+        V2TIMManager.getGroupManager().getGroupAttributes(groupId, null, new V2TIMSendCallback<Map<String, String>>() {
+            @Override
+            public void onProgress(int progress) {
+
+            }
+
+            @Override
+            public void onError(int code, String desc) {
+                Log.e(TAG, "onError: code: "+code+"  desc: "+desc);
+            }
+
+            @Override
+            public void onSuccess(Map<String, String> stringStringMap) {
+                Log.e(TAG, "onSuccess: "+new Gson().toJson(stringStringMap) );
             }
         });
     }
 
     /*邀请观众进行连麦*/
     private void startLinkMic(String userid, String ico) {
+        if(Constant.USER_STATE.equals("3")){
+            Toast.makeText(this, "连麦中无法继续邀请", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Toast.makeText(this, "连麦请求中...", Toast.LENGTH_LONG).show();
         mLiveRoom.requestJoinUserAnchor("连麦", userid, new RequestJoinAnchorCallback() {
             @Override
@@ -432,6 +479,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements IMLVBLive
      */
 
     private void sendContactMsg(boolean is_lm, String userid) {
+        Constant.USER_STATE = is_lm?"3":"2";
         mLiveRoom.sendRoomCustomMsg(String.valueOf(is_lm ? IMCMD_CONTACT : IMCMD_DISCONTACT), userid, new SendRoomCustomMsgCallback() {
             @Override
             public void onError(int errCode, String errInfo) {
@@ -568,6 +616,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements IMLVBLive
             @Override
             public void onSuccess(String roomId) {
                 Log.w(TAG, String.format("创建直播间%s成功", roomId));
+                Constant.USER_STATE = "2";
                 groupId = roomId;
                 onCreateRoomSuccess();
             }
@@ -585,7 +634,6 @@ public abstract class TCBaseAnchorActivity extends Activity implements IMLVBLive
      */
     protected void onCreateRoomSuccess() {
         toNotice();
-        toPushTitle();
         startTimer();
         // 填写了后台服务器地址
         if (!TextUtils.isEmpty(TCGlobalConfig.APP_SVR_URL)) {
@@ -605,11 +653,13 @@ public abstract class TCBaseAnchorActivity extends Activity implements IMLVBLive
         mLiveRoom.exitRoom(new ExitRoomCallback() {
             @Override
             public void onSuccess() {
+                Constant.USER_STATE = "1";
                 Log.i(TAG, "exitRoom Success");
             }
 
             @Override
             public void onError(int errCode, String e) {
+                Constant.USER_STATE = "1";
                 Log.e(TAG, "exitRoom failed, errorCode = " + errCode + " errMessage = " + e);
             }
         });
@@ -626,7 +676,7 @@ public abstract class TCBaseAnchorActivity extends Activity implements IMLVBLive
      */
     @Override
     public void onAnchorEnter(AnchorInfo pusherInfo) {
-        Log.i(TAG, "onAccept:观众接受已经接收连麦");
+        Log.i(TAG, "onAccept:观众接收连麦");
         /*连麦成功*/
         mLiveRoom.responseJoinAnchor(pusherInfo.userID, true, "");
         Constantc.LX_HEAD = pusherInfo.userAvatar;

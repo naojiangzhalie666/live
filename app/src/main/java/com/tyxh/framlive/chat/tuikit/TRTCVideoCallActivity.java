@@ -154,6 +154,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
         @Override
         public void onUserEnter(final String userId) {
             Log.e(TAG, "onUserLeave: 视频对方-接通了");
+            Constant.USER_STATE = "3";
             if (mNeed_sock) {//是否需要进行计时--咨询师打给用户的时候不需要进行连接
                 mLeft_second = select_bean.getDuration();
                 initSocket();
@@ -276,7 +277,8 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                 UserModel userModel = mCallUserModelMap.remove(userId);
                 if (userModel != null) {
                     mCallUserModelList.remove(userModel);
-                    ToastUtil.toastLongMessage(userModel.userName + getString(R.string.line_busy));
+//                    ToastUtil.toastLongMessage(userModel.userName + getString(R.string.line_busy));
+                    ToastUtil.toastLongMessage(getString(R.string.lin_busy));
                 }
             }
         }
@@ -958,7 +960,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             public void run() {
                 try {
                     //如果还在继续进行连麦的话----重连
-                    if (false)
+                    if (all_Second!=0)
                         mWebSocketClient.reconnectBlocking();
                     Log.e(TAG, "run: 重连中。。。");
                 } catch (InterruptedException e) {
@@ -1045,6 +1047,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     }
 
     private void startTimer() {
+        Constant.USER_STATE = "3";
         mSecond = 0;
         //直播时间
         if (mBroadcastTimer == null) {
@@ -1055,6 +1058,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     }
 
     private void stopTimer() {
+        Constant.USER_STATE = "1";
         all_Second = 0;
         is_lmfirst = true;
         if (mWebSocketClient != null)

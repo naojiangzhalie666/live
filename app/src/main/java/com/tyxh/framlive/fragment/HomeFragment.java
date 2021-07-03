@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,11 +37,13 @@ import com.tyxh.framlive.bean.SignBean;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.chat.ChatActivity;
 import com.tyxh.framlive.chat.tuikit.AVCallManager;
-import com.tyxh.framlive.live.TCAudienceActivity;
 import com.tyxh.framlive.live.TCCameraAnchorActivity;
 import com.tyxh.framlive.ui.FindActivity;
 import com.tyxh.framlive.ui.MainActivity;
-import com.tyxh.framlive.ui.WebVActivity;
+import com.tyxh.framlive.ui.WebGoodActivity;
+import com.tyxh.framlive.ui.WebNewActivity;
+import com.tyxh.framlive.ui.WebTiyanActivity;
+import com.tyxh.framlive.utils.LiveDateZh;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
@@ -52,14 +53,11 @@ import com.tyxh.xzb.important.MLVBLiveRoomImpl;
 import com.tyxh.xzb.utils.TCConstants;
 import com.tyxh.xzb.utils.TCHTTPMgr;
 import com.tyxh.xzb.utils.login.TCUserMgr;
-import com.tyxh.xzb.utils.onlinelive.TCVideoInfo;
-import com.tyxh.xzb.utils.onlinelive.TCVideoListMgr;
 import com.tyxh.xzb.utils.roomutil.RoomInfo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -138,30 +136,15 @@ public class HomeFragment extends Fragment {
                 }
                 break;
             case R.id.home_chanpin:
-//                Intent int_person =new Intent(getActivity(), LookPersonActivity.class);
-//                int_person.putExtra("is_user",true);
-//                int_person.putExtra("query_id","7");
-//                startActivity(int_person);//咨询师页面
-                WebVActivity.startMe(getActivity(), "产品特色");
+                WebGoodActivity.startMe(getActivity(), "产品特色");
                 break;
             case R.id.home_tiyan:
-//                Intent int_orgi = new Intent(getActivity(), OranizeActivity.class);
-//                int_orgi.putExtra("is_user",true);
-//                int_orgi.putExtra("query_id","8");
-//                startActivity(int_orgi);//咨询机构页面
-                WebVActivity.startMe(getActivity(), "如何体验");
+                WebTiyanActivity.startMe(getActivity(), "如何体验");
                 break;
             case R.id.home_newman:
-//                startActivity(new Intent(getActivity(), ShowGoodsActivity.class));//商品套餐页面
-//                Toast toast = Toast.makeText(getActivity(), "跳转商品页面", Toast.LENGTH_SHORT);
-//                toast.setGravity(Gravity.CENTER, 0, 0);
-//                toast.show();
-                WebVActivity.startMe(getActivity(), "新人福利");
-//                startChatActivity("随和的金苞花","11115");
-//                startActivity(new Intent(getActivity(), SetInActivity.class));
+                WebNewActivity.startMe(getActivity(), "新人福利");
                 break;
             case R.id.home_guajian:
-//                Toast.makeText(getActivity(), "跳转到发现", Toast.LENGTH_SHORT).show();
                 mMainActivity.toGoWhat(1);
                 break;
         }
@@ -251,7 +234,8 @@ public class HomeFragment extends Fragment {
                             Log.e("Home", "live list item is null at position:" + pos);
                             return;
                         }
-                        startLivePlay(item);
+                        /* 开始播放视频  item  视频数据*/
+                        startActivityForResult(LiveDateZh.startPlay(item,getActivity()), START_LIVE_PLAY);
                     }
                     mLastClickTime = System.currentTimeMillis();
                 } catch (Exception e) {
@@ -269,10 +253,6 @@ public class HomeFragment extends Fragment {
         if (Constantc.mlvb_login) {
             getLiveData();
         } else {
-            if (Constantc.use_old) {
-                theOldLoginMlvb();
-                return;
-            }
             loginMLVB();
         }
     }
@@ -314,18 +294,6 @@ public class HomeFragment extends Fragment {
 
     /*获取直播列表*/
     private void getLiveData() {
-        if (Constantc.use_old) {
-            /*原生直播列表获取--要不要调用？*/
-            TCVideoListMgr.getInstance().fetchLiveList(getActivity(), new TCVideoListMgr.Listener() {
-                @Override
-                public void onVideoList(int retCode, ArrayList<TCVideoInfo> result, boolean refresh) {
-                    mHomeSmart.finishRefresh();
-                    mHomeSmart.finishLoadMore();
-                    onRefreshVideoList(retCode, result, refresh);
-                }
-            });
-            return;
-        }
         Map<String, Object> map = new HashMap<>();
         map.put("index", page);
         map.put("cnt", 10);
@@ -341,9 +309,6 @@ public class HomeFragment extends Fragment {
                 mHomeSmart.finishLoadMore();
                 RoomBean bean = new Gson().fromJson(result.toString(), RoomBean.class);
                 if (bean.getRetCode() == 0) {
-                    if (page == 0) {
-                        mLists.clear();
-                    }
                     count=0;
                     toSeiCount(bean);
                 } else {
@@ -365,7 +330,8 @@ public class HomeFragment extends Fragment {
 
     private void toSeiCount(RoomBean bean) {
         toZhData(bean.getRetData());
-        /*if (bean.getRetData() == null || bean.getRetData().size() == 0) {
+       /* if (bean.getRetData() == null || bean.getRetData().size() == 0) {
+            toZhData(bean.getRetData());
             return;
         }
         RoomBean.RetDataBean retBean = bean.getRetData().get(count);
@@ -446,60 +412,15 @@ public class HomeFragment extends Fragment {
 
     /*整合直播数据*/
     private void toZhData(List<RoomBean.RetDataBean> data) {
+        if (page == 0) {
+            mLists.clear();
+        }
         if (data == null || data.size() < 10) {
             mHomeSmart.setEnableLoadMore(false);
         }
         ArrayList<MineTCVideoInfo> infos = new ArrayList();
         for (RoomBean.RetDataBean value : data) {
-            List<RoomBean.RetDataBean.PushersBean> pushers = value.pushers;
-
-            MineTCVideoInfo info = new MineTCVideoInfo();
-            info.playUrl = value.mixedPlayURL;
-            info.title = value.roomName;
-            info.userId = value.roomCreator;
-            info.groupId = value.roomID;
-            info.roomInfo = value.roomInfo;
-            info.viewerCount = value.audienceCount;
-            info.livePlay = true;
-            info.type = value.getUserInfo().getType();
-            if (value.getUserInfo().getType() > 2) {//机构--子机构
-                try {
-                    info.meName = value.getCouData().getMeName();
-                } catch (Exception e) {
-                    info.meName = "天宇新航心理咨询机构";
-                    Log.e("HomeFragment", "toZhData: " + e.toString());
-                }
-            }
-            info.mUserInfoBean = value.getUserInfo();
-            if (pushers != null && !pushers.isEmpty()) {
-                RoomBean.RetDataBean.PushersBean pusher = pushers.get(0);
-                info.nickname = pusher.userName;
-                info.avatar = pusher.userAvatar;
-                info.push_size = pushers.size();
-                if (pushers.size() > 1) {//正在连线中的用户信息
-                    info.lxavatar = pushers.get(1).userAvatar;
-                    info.lxUserid = pushers.get(1).userID;
-                }
-            }
-            try {
-                JSONObject jsonRoomInfo = new JSONObject(value.roomInfo);
-                info.title = jsonRoomInfo.optString("title");
-                info.frontCover = jsonRoomInfo.optString("frontcover");
-                info.location = jsonRoomInfo.optString("location");
-                info.lable = jsonRoomInfo.optString("label");
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (!TextUtils.isEmpty(value.roomInfo)) {
-                    info.title = value.roomInfo;
-                }
-            }
-            try {
-                JSONObject jsonCunstomInfo = new JSONObject(value.custom);
-                info.likeCount = jsonCunstomInfo.optInt("praise");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            infos.add(info);
+            infos.add(LiveDateZh.getMineVideo(value));
         }
         mLists.addAll(infos);
         mHomeAdapter.notifyDataSetChanged();
@@ -525,41 +446,6 @@ public class HomeFragment extends Fragment {
         liveRoom.setRoomList(room_infos);
     }
 
-    /**
-     * 开始播放视频
-     *
-     * @param item 视频数据
-     */
-    private void startLivePlay(final MineTCVideoInfo item) {
-        Intent intent = null;
-        if (item.livePlay) {
-            intent = new Intent(getActivity(), TCAudienceActivity.class);
-            intent.putExtra(TCConstants.PLAY_URL, item.playUrl);
-        } else {
-//            intent = new Intent(getActivity(), TCPlaybackActivity.class);回放
-//            intent.putExtra(TCConstants.PLAY_URL, TextUtils.isEmpty(item.hlsPlayUrl) ? item.playUrl : item.hlsPlayUrl);
-        }
-
-        intent.putExtra(TCConstants.PUSHER_ID, item.userId != null ? item.userId : "");
-        intent.putExtra(TCConstants.PUSHER_NAME, TextUtils.isEmpty(item.nickname) ? item.userId : item.nickname);
-        intent.putExtra(TCConstants.PUSHER_AVATAR, item.avatar);
-        intent.putExtra(TCConstants.HEART_COUNT, "" + item.likeCount);
-        intent.putExtra(TCConstants.MEMBER_COUNT, "" + item.viewerCount);
-        intent.putExtra(TCConstants.GROUP_ID, item.groupId);
-        intent.putExtra(TCConstants.PLAY_TYPE, item.livePlay);
-        intent.putExtra(TCConstants.FILE_ID, item.fileId != null ? item.fileId : "");
-        intent.putExtra(TCConstants.COVER_PIC, item.frontCover);
-        intent.putExtra(TCConstants.TIMESTAMP, item.createTime);
-        intent.putExtra(TCConstants.ROOM_TITLE, item.title);
-        intent.putExtra(Constant.LIVE_JGNAME, item.meName);
-        intent.putExtra(Constant.LIVE_ISJG, item.type);
-        intent.putExtra(Constant.LIVE_ISGZ, true);//是否关注了该主播---字段还没有
-        intent.putExtra(Constant.LVIE_ISLIANX, item.push_size > 1 ? true : false);//是否正在连线
-        intent.putExtra(Constant.LIVE_LIANXHEAD, item.lxavatar);//连线中的用户头像
-        intent.putExtra(Constant.LIVE_LXUSERID, item.lxUserid);//连线中的用户id
-
-        startActivityForResult(intent, START_LIVE_PLAY);
-    }
 
     /**
      * 准备发起直播界面
@@ -572,7 +458,6 @@ public class HomeFragment extends Fragment {
         } else {
             intent = new Intent(getActivity(), TCCameraAnchorActivity.class);
         }
-
         if (intent != null) {
             intent.putExtra(TCConstants.ROOM_TITLE, mUserInfo.getRetData().getNickname());
             intent.putExtra(TCConstants.USER_ID, TCUserMgr.getInstance().getUserId());
@@ -611,10 +496,6 @@ public class HomeFragment extends Fragment {
             getLiveData();
             getZig();
         } else {
-            if (Constantc.use_old) {
-                theOldLoginMlvb();
-                return;
-            }
             loginMLVB();
         }
     }
@@ -629,7 +510,6 @@ public class HomeFragment extends Fragment {
                 loginMLVB();
             }
         }
-
     }
 
     @Override
@@ -644,74 +524,4 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
         DevRing.httpManager().stopRequestByTag(LiveHttp.TAG);
     }
-
-    /*---------------------------原可连麦数据--------之后用不到可以删掉----------*/
-    private void theOldLoginMlvb() {
-        mInstance = TCUserMgr.getInstance();
-        mInstance.setOnLoginBackListener(new TCUserMgr.OnLoginBackListener() {
-            @Override
-            public void onLoginBackListener(String userid, String usersig, long sdk_id) {
-                if (TUIKitConfigs.getConfigs().getGeneralConfig().isSupportAVCall()) {
-                    UserModel self = new UserModel();
-                    self.userId = userid;
-                    self.userSig = usersig;
-                    ProfileManager.getInstance().setUserModel(self);
-                    AVCallManager.getInstance().init(getActivity());
-                }
-                loginTUIKitLive(sdk_id, userid, usersig);
-                page = 0;
-                getLiveData();
-            }
-        });
-        mInstance.loginMLVB(Constantc.test_USERID, Constantc.USER_NAME, Constantc.USER_UserAvatar, Constantc.USER_CoverPic, 1, Constantc.test_userSig);
-    }
-
-    private void onRefreshVideoList(final int retCode, final ArrayList<TCVideoInfo> result, final boolean refresh) {
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (retCode == 0) {
-                        mLists.clear();
-                        if (result != null) {
-                            mLists.addAll(toCLone(result));
-                        }
-                        if (refresh) {
-                            mHomeAdapter.notifyDataSetChanged();
-                        }
-                    } else {
-                        Toast.makeText(getActivity(), "刷新列表失败", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }
-    }
-
-    private List<MineTCVideoInfo> toCLone(ArrayList<TCVideoInfo> result) {
-        List<MineTCVideoInfo> list = new ArrayList<>();
-        for (int i = 0; i < result.size(); i++) {
-            TCVideoInfo tcVideoInfo = result.get(i);
-            MineTCVideoInfo mineTCVideoInfo = new MineTCVideoInfo();
-            mineTCVideoInfo.push_size = 1;
-            mineTCVideoInfo.lable = "人气主播";
-            mineTCVideoInfo.avatar = tcVideoInfo.avatar;
-            mineTCVideoInfo.createTime = tcVideoInfo.createTime;
-            mineTCVideoInfo.fileId = tcVideoInfo.fileId;
-            mineTCVideoInfo.frontCover = tcVideoInfo.frontCover;
-            mineTCVideoInfo.groupId = tcVideoInfo.groupId;
-            mineTCVideoInfo.hlsPlayUrl = tcVideoInfo.hlsPlayUrl;
-            mineTCVideoInfo.likeCount = tcVideoInfo.likeCount;
-            mineTCVideoInfo.livePlay = tcVideoInfo.livePlay;
-            mineTCVideoInfo.location = tcVideoInfo.location;
-            mineTCVideoInfo.nickname = tcVideoInfo.nickname;
-            mineTCVideoInfo.playUrl = tcVideoInfo.playUrl;
-            mineTCVideoInfo.title = tcVideoInfo.title;
-            mineTCVideoInfo.userId = tcVideoInfo.userId;
-            mineTCVideoInfo.viewerCount = tcVideoInfo.viewerCount;
-            list.add(mineTCVideoInfo);
-        }
-        return list;
-    }
-
-
 }

@@ -88,7 +88,7 @@ public class FindNoviceFragment extends Fragment {
     private UserInfoBean user_Info;
     private LoadDialog mLoadDialog;
     private int mPower;
-
+    private boolean is_xins=true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_novice, container, false);
@@ -153,8 +153,10 @@ public class FindNoviceFragment extends Fragment {
         String created = user_Info.getRetData().getCreated();
         Date creat_datae = DateUtils.parseDate(created);
         long l = DateUtils.calculateDifference(creat_datae, new Date(), DateUtils.Day);
-        if (l >= 30) {//如果注册时间大于30天时，新手任务消失  无法进行
-            mFragNoviceXinshou.setVisibility(View.GONE);
+        if (l > 30) {//如果注册时间大于30天时，新手任务消失  无法进行
+            is_xins = false;
+            mFragNoviceDayrenwu.setVisibility(View.GONE);
+            mFragNoviceXinshou.setText("每日任务");
         }
         mFragNoviceSmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -180,7 +182,14 @@ public class FindNoviceFragment extends Fragment {
             case R.id.frag_novice_xinshou:
                 mFragNoviceXinshou.setBackgroundResource(R.drawable.bg_one);
                 mFragNoviceXinshou.setTextSize(12);
-                state = 0;
+                if(is_xins) {
+                    state = 0;
+                }else{
+                    mFragNoviceNote.setVisibility(View.VISIBLE);
+                    mFragNoviceNote.setText("每日凌晨00：00重置");
+                    mFragNoviceNote.setTextColor(getResources().getColor(R.color.nineninenine));
+                    state = 1;
+                }
                 break;
             case R.id.frag_novice_dayrenwu:
                 mFragNoviceDayrenwu.setBackgroundResource(R.drawable.bg_center);
@@ -203,7 +212,7 @@ public class FindNoviceFragment extends Fragment {
                 mFragNoviceMonthshouyi.setTextSize(12);
                 mFragNoviceNote.setVisibility(View.VISIBLE);
                 mFragNoviceImgvNote.setVisibility(View.VISIBLE);
-                mFragNoviceNote.setText("每自然月1日00:00自动更新");
+                mFragNoviceNote.setText("每月1日凌晨00:00重置");
                 mFragNoviceNote.setTextColor(getResources().getColor(R.color.home_txt));
                 state = 3;
                 break;
@@ -212,11 +221,12 @@ public class FindNoviceFragment extends Fragment {
     }
 
     private void getData(int type) {
-
+        mLoadDialog.show();
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserTask(token, type), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
+                mLoadDialog.dismiss();
                 if (mFragNoviceSmart != null)
                     mFragNoviceSmart.finishRefresh();
                 TaskBean bean = new Gson().fromJson(result.toString(), TaskBean.class);
@@ -234,6 +244,7 @@ public class FindNoviceFragment extends Fragment {
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                mLoadDialog.dismiss();
                 mFragNoviceSmart.finishRefresh();
             }
         });

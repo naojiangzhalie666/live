@@ -58,11 +58,20 @@ public class RoomBean {
        public int roomStatusCode;
        public String custom;
        public int audienceCount;
+       public int cumulativeNum;//累计观看人数
        public String roomID;
        public String roomName;
        public String roomInfo;
         public List<PushersBean> pushers;
         private CouDataBean couData;
+
+        public int getCumulativeNum() {
+            return cumulativeNum;
+        }
+
+        public void setCumulativeNum(int cumulativeNum) {
+            this.cumulativeNum = cumulativeNum;
+        }
 
         public String getRoomName() {
             return roomName;

@@ -105,7 +105,6 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     private BaseDialog mBase_closelm;       //确认断开连麦
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.BeautyTheme);
@@ -139,8 +138,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         mOnlineDialog = new OnlineDialog(this, mOnlin_entits, TCUserMgr.getInstance().getUserId());
         mOnlineDialog.setOnItemLxListener(new OnlineDialog.OnItemLxListener() {
             @Override
-            public void onItemLxLixtener(String userid,String ico) {
-                startLinkMic(userid,ico);
+            public void onItemLxLixtener(String userid, String ico) {
+                startLinkMic(userid, ico);
             }
         });
 
@@ -186,7 +185,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         mRecordBall = (ImageView) findViewById(R.id.anchor_iv_record_ball);
         mPower = LiveShareUtil.getInstance(this).getPower();
         mHeadIcon = (ImageView) findViewById(R.id.anchor_iv_head_icon);
-        showHeadIcon(mHeadIcon,mAvatarPicUrl);
+        showHeadIcon(mHeadIcon, mAvatarPicUrl);
         mMemberCount = (TextView) findViewById(R.id.anchor_tv_member_counts);
         mMemberCount.setText("人气0");
 
@@ -238,7 +237,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                     intent = new Intent(TCCameraAnchorActivity.this, OranizeActivity.class);
                     intent.putExtra("is_user", mPower == Constant.POWER_ZIXUNJIGOU ? false : true);
                 }
-                intent.putExtra("query_id",mUserId);
+                intent.putExtra("query_id", mUserId);
                 startActivity(intent);
             }
         });
@@ -246,7 +245,11 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     }
 
     /*邀请观众进行连麦*/
-    private void startLinkMic(String userid,String ico) {
+    private void startLinkMic(String userid, String ico) {
+        if(Constant.USER_STATE.equals("3")){
+            Toast.makeText(this, "连麦中无法继续邀请", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Toast.makeText(this, "连麦请求中...", Toast.LENGTH_LONG).show();
         mLiveRoom.requestJoinUserAnchor("连麦", userid, new RequestJoinAnchorCallback() {
             @Override
@@ -254,9 +257,9 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 Log.i(TAG, "onAccept:观众接受已经接收连麦");
                 mLiveRoom.responseJoinAnchor(userid, true, "");
                 mPendingRequest = false;
-                Constantc.LX_HEAD =ico;
+                Constantc.LX_HEAD = ico;
                 sendContactMsg(true, userid);
-                if(mOnlineDialog!=null&&mOnlineDialog.isShowing())
+                if (mOnlineDialog != null && mOnlineDialog.isShowing())
                     mOnlineDialog.dismiss();
             }
 
@@ -337,11 +340,12 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
     }
 
     JxqDialog mJxqDialog;
+
     @Override
     public void onError(int errorCode, String errorMessage, Bundle extraInfo) {
         if (errorCode == MLVBCommonDef.LiveRoomErrorCode.ERROR_IM_FORCE_OFFLINE) {
             stopPublish();
-            mJxqDialog =new JxqDialog(this);
+            mJxqDialog = new JxqDialog(this);
             mJxqDialog.setOnOutClickListener(new JxqDialog.OnOutClickListener() {
                 @Override
                 public void onOutListener() {
@@ -359,7 +363,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
 
     @Override
     public void onWarning(int warningCode, String warningMsg, Bundle extraInfo) {
-
+        Log.e(TAG, "onWarning:您当前的网络环境不佳，请尽快更换网络保证正常直播 " );
+        Toast.makeText(this, "您当前的网络环境不佳，请尽快更换网络保证正常直播 ", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -379,13 +384,12 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         /*连麦成功*/
         mLiveRoom.responseJoinAnchor(pusherInfo.userID, true, "");
         mPendingRequest = false;
-        Constantc.LX_HEAD =pusherInfo.userAvatar;
+        Constantc.LX_HEAD = pusherInfo.userAvatar;
         sendContactMsg(true, pusherInfo.userID);
-        if(mOnlineDialog!=null&&mOnlineDialog.isShowing())
+        if (mOnlineDialog != null && mOnlineDialog.isShowing())
             mOnlineDialog.dismiss();
         if (mGuanzDialog != null && mGuanzDialog.isShowing())
             mGuanzDialog.dismiss();
-
 
 
         mTCVideoView.userID = pusherInfo.userID;
@@ -506,6 +510,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
      */
 
     private void sendContactMsg(boolean is_lm, String userid) {
+        Constant.USER_STATE = is_lm ? "3" : "2";
         mLiveRoom.sendRoomCustomMsg(String.valueOf(is_lm ? IMCMD_CONTACT : IMCMD_DISCONTACT), userid, new SendRoomCustomMsgCallback() {
             @Override
             public void onError(int errCode, String errInfo) {
@@ -634,7 +639,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
             close_locayy = !close_locayy;
         } else if (id == R.id.btn_online) {
             mOnlineDialog.show();
-        }else if (id == R.id.camera_siliao) {
+        } else if (id == R.id.camera_siliao) {
             startActivity(new Intent(this, MeslistActivity.class));
         } else if (id == R.id.btn_share) {
             mShareDialog.show();
@@ -666,7 +671,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         mTCVideoView.videoView.showLog(mShowLog);
     }
 
-    private void initShare(){
+    private void initShare() {
         mShareDialog = new ShareDialog(this);
         UMWeb web = new UMWeb(Constant.SHARE_URL);
         web.setTitle(Constant.SHARE_NAME);//标题
@@ -803,8 +808,8 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                 @Override
                 public void run() {
                     mtv_ctcTm.setText(TCUtils.formattedTime(mSecond_con));
-                    if(mSecond_con>=30) {
-                        mtv_ctcget.setText((30 * (mSecond_con-30) / 60) + "");
+                    if (mSecond_con >= 30) {
+                        mtv_ctcget.setText((30 * (mSecond_con - 30) / 60) + "");
                     }
                 }
             });

@@ -1,5 +1,6 @@
 package com.tyxh.framlive.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -61,6 +62,8 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         EventBus.getDefault().register(this);
+        Intent intent =new Intent(this,StateService.class);
+        startService(intent);
         prepareThirdPushToken();
         mHomeFragment = new HomeFragment();
         mFindFragment = new FindFragment();
@@ -177,6 +180,10 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
 
     }
 
+    /**
+     * 主页进行指定跳转
+     * @param type  1跳转发现--精彩活动 2跳转发现-新手任务
+     */
     public void toGoWhat(int type){
         switch (type){
             case 1:
@@ -184,6 +191,13 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
                 bundle.putString("msg","act");
                 if(mFindFragment!=null)
                     mFindFragment.setArguments(bundle);
+                mPager.setCurrentItem(1);
+                break;
+            case 2:
+                Bundle bundleever =new Bundle();
+                bundleever.putString("msg","ever");
+                if(mFindFragment!=null)
+                    mFindFragment.setArguments(bundleever);
                 mPager.setCurrentItem(1);
                 break;
         }
@@ -194,7 +208,7 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     public void getEventMsgt(EventMessage msg) {
         if (msg.getMessage().equals("ever") || (msg.getMessage().equals("pipei"))) {
             mPager.setCurrentItem(1);
-        }else if(msg.getMessage().equals("main")){
+        } else if(msg.getMessage().equals("main")){
             mPager.setCurrentItem(0);
         }
     }
@@ -217,6 +231,23 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        Intent intentFour = new Intent(this, StateService.class);
+        stopService(intentFour);
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String what = intent.getStringExtra("what");
+        if(!TextUtils.isEmpty(what)){
+            switch (what){
+                case "web":
+                    toGoWhat(2);
+                    break;
+
+            }
+        }
     }
 
     @Override

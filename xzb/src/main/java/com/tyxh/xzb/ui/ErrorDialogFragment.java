@@ -47,7 +47,7 @@ public class ErrorDialogFragment extends DialogFragment {
         } else {
             info_msg = getArguments().getString("errorMsg");
         }
-        mErrorDialog = new ErrorDialog.ErrorBuilder().setTitle("推流失败").setContent(info_msg).build(getActivity());
+        mErrorDialog = new ErrorDialog.ErrorBuilder().setTitle("温馨提示").setContent(info_msg).build(getActivity());
         mErrorDialog.setOnBtViewClickListener(new ErrorDialog.OnBtViewClickListener() {
             @Override
             public void onCancelClickListener() {

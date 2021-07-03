@@ -63,7 +63,7 @@ public class NoviceAdapter extends RecyclerView.Adapter<NoviceAdapter.ViewHolder
             strin_content.append("+"+bean.getGiftName()+"*"+bean.getRewardGiftNum());
         }
         if(!TextUtils.isEmpty(bean.getTaskAwardMoney())&&Double.parseDouble(bean.getTaskAwardMoney())!=0){//金额
-            strin_content.append("+"+bean.getTaskAwardMoney()+"元");
+            strin_content.append("+额外奖励"+bean.getTaskAwardMoney()+"元");
         }
         vh.mItemNoviceContent.setText(strin_content.toString());
         /*vh.mItemNoviceImgv.setVisibility(View.GONE);

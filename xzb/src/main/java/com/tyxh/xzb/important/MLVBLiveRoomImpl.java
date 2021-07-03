@@ -386,6 +386,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             @Override
             public void onResponse(int retcode, String retmsg, HttpResponse.PushUrl data) {
                 if (retcode == HttpResponse.CODE_OK && data != null && data.pushURL != null) {
+                    data.pushURL+="&type=1";
                     final String pushURL = data.pushURL;
                     mSelfPushUrl = data.pushURL;
                     mSelfAccelerateURL = data.accelerateURL;
@@ -962,6 +963,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             @Override
             public void onResponse(int retcode, String retmsg, final HttpResponse.PushUrl data) {
                 if (retcode == HttpResponse.CODE_OK && data != null && data.pushURL != null) {
+                    data.pushURL+="&type=2";
                     mSelfPushUrl = data.pushURL;
                     mSelfAccelerateURL = data.accelerateURL;
                     //5. 开始推流
@@ -3230,7 +3232,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 //            else if (event == TXLiveConstants.PUSH_WARNING_NET_BUSY) {
 //                String msg = "[LivePusher] 您当前的网络环境不佳，请尽快更换网络保证正常直播  ";
 //                TXCLog.e(TAG,msg);
-//                callbackOnThread(mCallback, "onError", event, msg);
+//                callbackOnThread(mCallback, "onWarning", event, msg);
 //            }
         }
 

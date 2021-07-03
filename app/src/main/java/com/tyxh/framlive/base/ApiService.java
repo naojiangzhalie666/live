@@ -98,12 +98,31 @@ public interface ApiService {
     Observable<JSONObject> bindEmergencyPhone(@Header("Authorization") String token, @Query("phone") String phone);
 
     /**
+     * 直播列表
      * @param mtoken 自己的TOKEN
      * @return
      */
     @Headers({"Content-Type: application/json"})
     @POST("liveController/getRoomList")
     Observable<JSONObject> getRoomList(@Header("Authorization") String mtoken, @Body RequestBody body);
+
+    /**
+     * 获取要观看的直播数据
+     * @param mtoken 自己的TOKEN
+     * @return
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("liveController/getRoomInfo")
+    Observable<JSONObject> getRoomData(@Header("Authorization") String mtoken, @Body RequestBody body);
+
+  /**
+     * 观众观看直播时调用--累计人数
+     * @param mtoken 自己的TOKEN
+     * @return
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("watchHistoryController")
+    Observable<JSONObject> watchHis(@Header("Authorization") String mtoken, @Body RequestBody body);
 
     /**
      * 查询我关注的

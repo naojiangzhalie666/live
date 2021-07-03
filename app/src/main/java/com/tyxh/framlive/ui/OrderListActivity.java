@@ -299,7 +299,7 @@ public class OrderListActivity extends LiveBaseActivity {
 
             @Override
             public void onItemPjClickListener(int pos) {
-                SjBean.RetDataBean.ListBean listBean = mSjLists.get(pos);
+                SjBean.RetDataBean.ListBean listBean = mPjlists.get(pos);
                 pj_id = listBean.getId();
                 mPjDialog = new PjDialog(OrderListActivity.this);
                 mPjDialog.setOnSubClickListener(new PjDialog.OnSubClickListener() {
@@ -319,13 +319,13 @@ public class OrderListActivity extends LiveBaseActivity {
             @Override
             public void onItemSxClickListener(int pos) {
                 // TODO: 2021/6/4 聊天人的名字？
-                SjBean.RetDataBean.ListBean listBean = mSjLists.get(pos);
+                SjBean.RetDataBean.ListBean listBean = mPjlists.get(pos);
                 startChatActivity("", listBean.getRoomId() + "", false, 0);
             }
 
             @Override
             public void onItemAgainClickListener(int pos) {
-                SjBean.RetDataBean.ListBean listBean = mSjLists.get(pos);
+                SjBean.RetDataBean.ListBean listBean = mPjlists.get(pos);
                 //连线类型[1:视频；2:语音]
                 startChatActivity("", listBean.getRoomId() + "", true, listBean.getType());
 //

@@ -53,6 +53,10 @@
     <color name="live_color_light_red_transform">#CC5353</color>
     <color name="live_color_light_red">#FF5353</color>
     <color name="live_color_line">#FFE5E5E5</color>
-
+    <color name="star_color">#E5E5E5</color>
+    <color name="star_gray">#E5E5E5</color>
+    <color name="star_gray_se">#BFBFBF</color>
+    <color name="star_yellow">#FFBB28</color>
+    <color name="star_red">#FE3930</color>
 
 </resources>

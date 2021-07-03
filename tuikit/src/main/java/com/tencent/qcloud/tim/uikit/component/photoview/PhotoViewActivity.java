@@ -45,6 +45,12 @@ public class PhotoViewActivity extends Activity {
         mPhotoView.setOnMatrixChangeListener(new MatrixChangeListener());
         mPhotoView.setOnPhotoTapListener(new PhotoTapListener());
         mPhotoView.setOnSingleFlingListener(new SingleFlingListener());
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mViewOriginalBtn = findViewById(R.id.view_original_btn);
         if (isSelf || mCurrentOriginalImage == null) {
             mPhotoView.setImageURI(uri);

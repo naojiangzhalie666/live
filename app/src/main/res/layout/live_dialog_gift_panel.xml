@@ -136,11 +136,12 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/gift_panel_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="@dimen/dp_185"
         android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginRight="10dp" />
+        android:layout_marginLeft="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginRight="@dimen/dp_10" />
 
     <LinearLayout
         android:id="@+id/dots_container"
@@ -154,11 +155,12 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/gift_vp_bb"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="@dimen/dp_185"
         android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginRight="@dimen/dp_10"
         android:visibility="gone" />
 
     <LinearLayout

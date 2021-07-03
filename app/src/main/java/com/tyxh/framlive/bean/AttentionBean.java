@@ -82,6 +82,15 @@ public class AttentionBean {
             private String ico;
             private String initials;
             private String pinyin; // 姓名对应的拼音
+            private int state ;
+
+            public int getState() {
+                return state;
+            }
+
+            public void setState(int state) {
+                this.state = state;
+            }
 
             public String getUserId() {
                 return userId;

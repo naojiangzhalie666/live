@@ -10,12 +10,12 @@
     <ImageView
         android:id="@+id/parallax"
         android:layout_width="match_parent"
-        android:layout_height="596dp"
-        android:layout_marginTop="-350dp"
-        android:adjustViewBounds="true"
+        android:layout_height="396dp"
         android:visibility="gone"
+        android:layout_marginTop="-150dp"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"
-        android:scaleType="fitEnd"
+        android:scaleType="centerCrop"
         android:src="@drawable/personal_bg"
         app:layout_collapseMode="parallax" />
 

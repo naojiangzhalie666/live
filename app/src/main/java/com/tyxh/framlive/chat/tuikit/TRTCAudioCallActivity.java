@@ -157,6 +157,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         @Override
         public void onUserEnter(final String userId) {
             Log.e(TAG, "onUserLeave: 语音对方-接通了");
+            Constant.USER_STATE = "3";
             if (mNeed_sock) {
                 mLeft_second = select_bean.getDuration();
                 initSocket();
@@ -271,7 +272,8 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 UserModel userModel = mCallUserModelMap.remove(userId);
                 if (userModel != null) {
                     mCallUserModelList.remove(userModel);
-                    ToastUtil.toastLongMessage(userModel.userName + getString(R.string.line_busy));
+//                    ToastUtil.toastLongMessage(userModel.userName + getString(R.string.line_busy));
+                    ToastUtil.toastLongMessage(getString(R.string.lin_busy));
                 }
             }
         }
@@ -984,7 +986,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
             public void run() {
                 try {
                     //如果还在继续进行连麦的话----重连
-                    if (false)
+                    if (all_Second!=0)
                         mWebSocketClient.reconnectBlocking();
                     Log.e(TAG, "run: 重连中。。。");
                 } catch (InterruptedException e) {
@@ -1073,6 +1075,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     }
 
     private void startTimer() {
+        Constant.USER_STATE = "3";
         mSecond = 0;
         //直播时间
         if (mBroadcastTimer == null) {
@@ -1083,6 +1086,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     }
 
     private void stopTimer() {
+        Constant.USER_STATE = "1";
         all_Second = 0;
         is_lmfirst = true;
         if (mWebSocketClient != null)

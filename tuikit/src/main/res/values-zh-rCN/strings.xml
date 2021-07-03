@@ -128,6 +128,7 @@
     <string name="reject_call">拒绝通话</string>
     <string name="no_response">无响应</string>
     <string name="line_busy">忙线</string>
+    <string name="lin_busy">对方正在连线中，请稍后再试</string>
     <string name="cancle_calling"> 取消了通话</string>
     <string name="call_time_out"> 通话超时</string>
     <string name="open_silent">开启静音</string>

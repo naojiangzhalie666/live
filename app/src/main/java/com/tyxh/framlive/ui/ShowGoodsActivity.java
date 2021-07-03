@@ -68,6 +68,8 @@ public class ShowGoodsActivity extends LiveBaseActivity {
     TextView mShowgoodsEdtsure;
     @BindView(R.id.showgoods_shanchang)
     EditText mShowgoodsShanchang;
+    @BindView(R.id.textView73)
+    TextView mShowgoodsTvZhendui;
     @BindView(R.id.showgoods_zhendui)
     EditText mShowgoodsZhendui;
     @BindView(R.id.showgoods_service)
@@ -131,6 +133,10 @@ public class ShowGoodsActivity extends LiveBaseActivity {
         mShowgoodsName.setText("");
         mShowgoodsTitle.setText("专属时长咨询包");
         mShowgoodsShanchang.setText(mBean.getServiceFeature());
+        if(TextUtils.isEmpty(mBean.getServiceFeature2())&&is_user){
+            mShowgoodsTvZhendui.setVisibility(View.GONE);
+            mShowgoodsZhendui.setVisibility(View.GONE);
+        }
         mShowgoodsZhendui.setText(mBean.getServiceFeature2());
         mShowgoodsService.setText(mBean.getServiceIntroduce());
         mShowgoodsNote.setText(mBean.getReminder());

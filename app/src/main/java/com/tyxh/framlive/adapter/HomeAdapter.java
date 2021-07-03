@@ -18,7 +18,6 @@ import com.tyxh.framlive.bean.MineTCVideoInfo;
 import com.tyxh.xzb.utils.TCUtils;
 
 import java.util.List;
-import java.util.Random;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -70,9 +69,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             vh.mItemHomeImgSun.setVisibility(View.VISIBLE);
             MineTCVideoInfo data = mLists.get(position);
             vh.mItemHomerecyBiao.setText(data.lable);
-//            vh.mItemHomerecyRenqi.setText( data.viewerCount+"人气"); //直播观看人数
-            data.viewerCount =new Random().nextInt(501);
-            vh.mItemHomerecyRenqi.setText(data.viewerCount +"人气"); //直播观看人数
+            vh.mItemHomerecyRenqi.setText( data.viewerCount+"人气"); //直播观看人数
+//            data.viewerCount =new Random().nextInt(501);
+//            vh.mItemHomerecyRenqi.setText(data.viewerCount +"人气"); //直播观看人数
             vh.mItemHomerecyName.setText(TextUtils.isEmpty(data.nickname) ? TCUtils.getLimitString(data.userId, 10) : TCUtils.getLimitString(data.nickname, 10));   //主播昵称
             vh.mItemHomerecyName.setTextColor(mContext.getResources().getColor(R.color.login_txt));
             vh.mItemHomerecyTitle.setTextColor(mContext.getResources().getColor(R.color.white));

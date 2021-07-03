@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,6 +17,7 @@ import com.tyxh.framlive.R;
 import com.tyxh.framlive.bean.SjBean;
 import com.tyxh.framlive.utils.Common.util.DateUtils;
 import com.tyxh.framlive.utils.LiveDateUtil;
+import com.tyxh.framlive.views.MyRatingBar;
 
 import java.util.Date;
 import java.util.List;
@@ -162,7 +162,7 @@ public class PjAdapter extends RecyclerView.Adapter<PjAdapter.ViewHolder> {
         @BindView(R.id.item_sj_pj)
         TextView mItemSjPj;
         @BindView(R.id.item_sj_start)
-        RatingBar mItemSjStart;
+        MyRatingBar mItemSjStart;
         @BindView(R.id.item_sj_leftm)
         TextView mItemSjLeftm;
         @BindView(R.id.item_sj_ka)

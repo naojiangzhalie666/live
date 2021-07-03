@@ -7,30 +7,39 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.bean.AttentionBean;
+import com.tyxh.framlive.bean.LiveOneBean;
+import com.tyxh.framlive.bean.MineTCVideoInfo;
 import com.tyxh.framlive.bean.ZxsListBean;
 import com.tyxh.framlive.chat.ChatActivity;
+import com.tyxh.framlive.utils.LiveDateZh;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.TitleUtils;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
 import com.tyxh.framlive.utils.indelistview.LetterListView;
 import com.tyxh.framlive.utils.indelistview.SortAdapter;
-import com.google.gson.Gson;
-import com.tencent.imsdk.v2.V2TIMConversation;
-import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
+import com.tyxh.xzb.utils.TCHTTPMgr;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class MailListActivity extends LiveBaseActivity {
 
@@ -150,11 +159,27 @@ public class MailListActivity extends LiveBaseActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
                 String id = user_Info.getRetData().getId();
                 AttentionBean.RetDataBean.DatasBean datasBean = list_gzmine.get(pos);
-                if (id.equals(datasBean.getAttId())) {
-                    ToastShow("不能和自己聊天");
-                    return;
+                int state = datasBean.getState();
+                switch (state){
+                    case 2:
+                        getLiveDate(datasBean.getAttId());
+                        break;
+                    case 1:
+                    case 3:
+                    case 4:
+                        if(datasBean!=null&&!TextUtils.isEmpty(datasBean.getAttId())){
+                            String compare_id =datasBean.getAttId();
+                            if(datasBean.getAttId().contains(".")){
+                                compare_id =datasBean.getAttId().substring(0,datasBean.getAttId().indexOf("."));
+                            }
+                            if (id.equals(compare_id)) {
+                                ToastShow("不能和自己聊天");
+                                return;
+                            }
+                        }
+                        startChatActivity(datasBean.getAttId(), datasBean.getNickname());
+                        break;
                 }
-                startChatActivity(datasBean.getAttId(), datasBean.getNickname());
             }
         });
     }
@@ -173,14 +198,49 @@ public class MailListActivity extends LiveBaseActivity {
         startActivity(intent);
     }
 
+    private void getLiveDate(String id) {
+        showLoad();
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", TCHTTPMgr.getInstance().getToken());
+        map.put("userID", user_Info.getRetData().getId());
+        map.put("roomID", id.contains(".")?id.substring(0,id.indexOf(".")):id);
+        String result = new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getRoomData(LiveShareUtil.getInstance(this).getToken(), requestBody), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                hideLoad();
+                LiveOneBean bean = new Gson().fromJson(result.toString(), LiveOneBean.class);
+                if (bean.getRetCode() == 0) {
+                    toGoLive( LiveDateZh.getMineVideo(bean.getRetData()));
+                } else {
+                    Toast.makeText(MailListActivity.this, bean.getRetMsg(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+                hideLoad();
+            }
+        });
+    }
+
+    private void toGoLive(MineTCVideoInfo item){
+        startActivityForResult(LiveDateZh.startPlay(item,this), 100);
+    }
+
     /*关注我的--我的粉丝*/
     private void getGzmine() {
+        showLoad();
         list_gzmine.clear();
         mMailTvNodata.setVisibility(View.GONE);
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getAttentionMe(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
+                hideLoad();
                 AttentionBean bean = new Gson().fromJson(result.toString(), AttentionBean.class);
                 if (bean.getRetCode() == 0) {
                     List<AttentionBean.RetDataBean> retData = bean.getRetData();
@@ -197,6 +257,7 @@ public class MailListActivity extends LiveBaseActivity {
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
             }
         });
         mAdapter.notifyDataSetChanged();
@@ -204,12 +265,14 @@ public class MailListActivity extends LiveBaseActivity {
 
     /*我的关注*/
     private void getWodGz() {
+        showLoad();
         toGoAnima(mMailTxltwoo);
         mMailTvNodata.setVisibility(View.GONE);
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyAttention(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
+                hideLoad();
                 AttentionBean bean = new Gson().fromJson(result.toString(), AttentionBean.class);
                 if (bean.getRetCode() == 0) {
                     List<AttentionBean.RetDataBean> retData = bean.getRetData();
@@ -226,18 +289,21 @@ public class MailListActivity extends LiveBaseActivity {
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
             }
         });
     }
 
     /*咨询师列表*/
     private void getZxsList() {
+        showLoad();
         toGoAnima(mMailTxlthreee);
         mMailTvNodata.setVisibility(View.GONE);
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().queryCou(token), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
+                hideLoad();
                 ZxsListBean bean = new Gson().fromJson(result.toString(), ZxsListBean.class);
                 if (bean.getRetCode() == 0) {
                     List<ZxsListBean.RetDataBean> retData = bean.getRetData();
@@ -253,6 +319,7 @@ public class MailListActivity extends LiveBaseActivity {
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
+                hideLoad();
             }
         });
 
@@ -300,6 +367,8 @@ public class MailListActivity extends LiveBaseActivity {
             bean.setNickname(datasBean.getCouName());
             bean.setIco(datasBean.getCouHeadImg());
             bean.setAttId(datasBean.getUserId());
+            bean.setState(datasBean.getAnchorState());
+            bean.setUserId(datasBean.getUserId());
             beans.add(bean);
         }
 

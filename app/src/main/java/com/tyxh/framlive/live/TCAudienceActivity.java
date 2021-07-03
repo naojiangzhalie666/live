@@ -52,7 +52,9 @@ import com.tyxh.framlive.bean.AssetBean;
 import com.tyxh.framlive.bean.BaseBean;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.LiveCotctBean;
+import com.tyxh.framlive.bean.LiveOneBean;
 import com.tyxh.framlive.bean.NextLevel;
+import com.tyxh.framlive.bean.RoomBean;
 import com.tyxh.framlive.bean.UserDetailBean;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.pop_dig.BaseDialog;
@@ -98,6 +100,7 @@ import com.tyxh.xzb.ui.views.TCSwipeAnimationController;
 import com.tyxh.xzb.utils.TCConstants;
 import com.tyxh.xzb.utils.TCDanmuMgr;
 import com.tyxh.xzb.utils.TCGlobalConfig;
+import com.tyxh.xzb.utils.TCHTTPMgr;
 import com.tyxh.xzb.utils.TCUtils;
 import com.tyxh.xzb.utils.audience.TCFrequeControl;
 import com.tyxh.xzb.utils.login.TCELKReportMgr;
@@ -226,7 +229,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private BroadcastTimerTask mBroadcastTimerTask;    // 定时任务
     protected long mLeft_second = 70;
     private Timer mBroadcastTimer;        // 定时的 Timer
-    private TextView mtv_name, mtv_gg, mtv_id, mtv_date, mtv_jg, mtv_title, mtv_ctcTm, mtv_ctcleftTm, mDigLmTm,mDigCz;
+    private TextView mtv_name, mtv_gg, mtv_id, mtv_date, mtv_jg, mtv_title, mtv_ctcTm, mtv_ctcleftTm, mDigLmTm, mDigCz;
     private LinearLayout ll_conline;//连麦时上面的布局展示--连麦时间、剩余可用时间
     private TXCloudVideoView mtx_contact;
     private FrameLayout mfram_contact;
@@ -312,6 +315,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         getDetail();
         mtv_gg.setVisibility(View.GONE);
         isAttention();
+        toCommitWatch();
     }
 
     /*-------新增布局的一些设置--------*/
@@ -649,16 +653,48 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
                 mBgImageView.setVisibility(View.GONE);
                 mLiveRoom.sendRoomCustomMsg(String.valueOf(TCConstants.IMCMD_ENTER_LIVE), "", null);
-                if (is_lianxianz) {//主播正在连麦中的展示效果
-                    mPuserLxAvatar = getIntent().getStringExtra(Constant.LIVE_LIANXHEAD);
-                    mPuserLxUserid = getIntent().getStringExtra(Constant.LIVE_LXUSERID);
-                    onRecvRoomCustomMsg("", "", "", mPuserLxAvatar, String.valueOf(IMCMD_CONTACT), mPuserLxUserid);
-                }
-//                TCELKReportMgr.getInstance().reportELK(TCConstants.ELK_ACTION_LIVE_PLAY, TCUserMgr.getInstance().getUserId(), 10000, "进入LiveRoom成功", null);
+                    getLiveDate();
             }
         });
         mPlaying = true;
     }
+    /*是否连麦检测*/
+    private void getLiveDate() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", TCHTTPMgr.getInstance().getToken());
+        map.put("userID", mUserId);
+        map.put("roomID", mPusherId);
+        String result = new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getRoomData(LiveShareUtil.getInstance(this).getToken(), requestBody), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                LiveOneBean bean = new Gson().fromJson(result.toString(), LiveOneBean.class);
+                if (bean.getRetCode() == 0) {
+                    toChulLiveResult(bean.getRetData());
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    private void toChulLiveResult(RoomBean.RetDataBean bean) {
+        List<RoomBean.RetDataBean.PushersBean> pushers = bean.pushers;
+        if (pushers != null && !pushers.isEmpty()) {
+            if (pushers.size() > 1) {//正在连线中的用户信息--//主播正在连麦中的展示效果
+                is_lianxianz = true;
+                mPuserLxAvatar = pushers.get(1).userAvatar;
+                mPuserLxUserid = pushers.get(1).userID;
+                onRecvRoomCustomMsg("", "", "", mPuserLxAvatar, String.valueOf(IMCMD_CONTACT), mPuserLxUserid);
+            }
+        }
+    }
+
 
     private void stopPlay() {
         stopTaskTimer();
@@ -677,22 +713,14 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             });
             mPlaying = false;
             mLiveRoom.getTXLivePlayer().stopPlay(true);
-            if(mTXCloudVideoView!=null)
-            mTXCloudVideoView.onDestroy();
-            mTXCloudVideoView=null;
+            if (mTXCloudVideoView != null)
+                mTXCloudVideoView.onDestroy();
+            mTXCloudVideoView = null;
             mLiveRoom.setListener(null);
         }
     }
 
-    /**
-     * /////////////////////////////////////////////////////////////////////////////////
-     * //
-     * //                      发起和结束连麦
-     * //
-     * /////////////////////////////////////////////////////////////////////////////////
-     */
-
-
+    /*开始连麦*/
     private void startLinkMic() {
         if (mIsBeingLinkMic) {
             return;
@@ -746,12 +774,11 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             }
         });
     }
-
+    /*连麦成功后--加入推流*/
     private void joinPusher() {
 //        TCVideoView videoView = mVideoViewMgr.getFirstRoomView();
         mTCVideoView.setUsed(true);
         mTCVideoView.userID = mUserId;
-
         mLiveRoom.startLocalPreview(true, mTCVideoView.videoView);
         mLiveRoom.setCameraMuteImage(BitmapFactory.decodeResource(getResources(), R.drawable.pause_publish));
         /*--------设置连麦时关闭摄像头--start-----------*/
@@ -804,7 +831,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             }
         });
     }
-
+    /*断开连麦*/
     private void stopLinkMic() {
         if (!mIsBeingLinkMic) return;
         ll_conline.setVisibility(View.GONE);
@@ -854,11 +881,10 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
     /**
      * 主播连麦成功后发送该自定义消息
-     *
      * @param is_lm true = 连麦中   false==中断连麦
      */
-
     private void sendContactMsg(boolean is_lm, String userid) {
+
         mLiveRoom.sendRoomCustomMsg(String.valueOf(is_lm ? IMCMD_CONTACT : IMCMD_DISCONTACT), userid, new SendRoomCustomMsgCallback() {
             @Override
             public void onError(int errCode, String errInfo) {
@@ -965,7 +991,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     public void onAudienceExit(AudienceInfo audienceInfo) {
 
     }
-
+    /*主播主动邀请连麦时的处理--回调方法*/
     @Override
     public void onRequestJoinAnchor(AnchorInfo pusherInfo, String reason) {
         BaseDialog dig = new BaseDialog.BaseBuild().setSure("接受").setCancel("拒绝").setTitle(pusherInfo.userName + "向您发起连麦请求").build(this);
@@ -1008,7 +1034,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         });
     }
 
-
+    /*连麦被主播中断*/
     @Override
     public void onKickoutJoinAnchor() {
         Toast.makeText(getApplicationContext(), "已中断连麦", Toast.LENGTH_LONG).show();
@@ -1030,7 +1056,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         TCSimpleUserInfo userInfo = new TCSimpleUserInfo(userID, userName, userAvatar);
         handleTextMsg(userInfo, message);
     }
-
+    /*接收各种消息的回调*/
     @Override
     public void onRecvRoomCustomMsg(String roomID, String userID, String userName, String userAvatar, String cmd, String message) {
         TCSimpleUserInfo userInfo = new TCSimpleUserInfo(userID, userName, userAvatar);
@@ -1103,8 +1129,8 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                     UserDetailBean.RetDataBean retData = result.getRetData();
                     if (retData != null) {
                         UserDetailBean.RetDataBean.UserBean user = retData.getUser();
-                        if(user!=null)
-                        Glide.with(TCAudienceActivity.this).load(user.getIco()).placeholder(R.drawable.bg).error(R.drawable.bg).centerCrop().into(mimgv_lx);
+                        if (user != null)
+                            Glide.with(TCAudienceActivity.this).load(user.getIco()).placeholder(R.drawable.bg).error(R.drawable.bg).centerCrop().into(mimgv_lx);
                     }
                 }
             }
@@ -1122,11 +1148,12 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         stopLinkMic();
         showErrorAndQuit("10010");//10010代表房间已解散--直播已结束
     }
+    /*处理意外Error的方法--被挤下去or主播意外断开直播*/
     JxqDialog mJxqDialog;
     @Override
     public void onError(int errorCode, String errorMessage, Bundle extraInfo) {
         if (errorCode == MLVBCommonDef.LiveRoomErrorCode.ERROR_IM_FORCE_OFFLINE) { // IM 被强制下线。
-            mJxqDialog =new JxqDialog(this);
+            mJxqDialog = new JxqDialog(this);
             mJxqDialog.setOnOutClickListener(new JxqDialog.OnOutClickListener() {
                 @Override
                 public void onOutListener() {
@@ -1138,7 +1165,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             });
             mJxqDialog.show();
         } else {
-            showErrorAndQuit("视频流播放失败");
+            showErrorAndQuit("网络异常，请退出重试");
         }
     }
 
@@ -1179,7 +1206,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             return;
 
         mCurrentAudienceCount++;
-        mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentAudienceCount));
+        mMemberCount.setText("人气" + String.format(Locale.CHINA, "%d", mCurrentAudienceCount));
 
         //左下角显示用户加入消息
         TCChatEntity entity = new TCChatEntity();
@@ -1196,12 +1223,13 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
      * @param userInfo
      */
     public void handleAudienceQuitMsg(TCSimpleUserInfo userInfo) {
-        if (mCurrentAudienceCount > 0)
-            mCurrentAudienceCount--;
-        else
-            Log.d(TAG, "接受多次退出请求，目前人数为负数");
+        //去掉了出人减数量
+//        if (mCurrentAudienceCount > 0)
+//            mCurrentAudienceCount--;
+//        else
+//            Log.d(TAG, "接受多次退出请求，目前人数为负数");
 
-        mMemberCount.setText(String.format(Locale.CHINA, "%d", mCurrentAudienceCount));
+        mMemberCount.setText("人气" + String.format(Locale.CHINA, "%d", mCurrentAudienceCount));
 
         mAvatarListAdapter.removeItem(userInfo.userid);
 
@@ -1696,8 +1724,8 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     protected void onRestart() {
         super.onRestart();
         getMineAsset();
-        if(mCarDialog!=null)
-        mCarDialog.getNextLevel();
+        if (mCarDialog != null)
+            mCarDialog.getNextLevel();
         Log.e(TAG, "onRestart: ");
     }
 
@@ -1928,13 +1956,35 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         }, TAG);
     }
 
+    /*观看直播调用--为累计人数用*/
+    private void toCommitWatch() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("roomId", mPusherId);
+        map.put("userId", mUserId);
+        String result = new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().watchHis(mToken, requestBody), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+
+
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEventMsg(EventMessage message) {
         if (message.getCode() == PAY_SUCCESS) {
             if (mCarDialog != null) {
                 mCarDialog.getMineAsset();
             }
-             getMineAsset();
+            getMineAsset();
         } else if (message.getCode() == 1005) {
             ToastUtil.showToast(this, "登录过期，请重新登录!");
             finish();
@@ -2116,7 +2166,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             public void run() {
                 try {
                     //如果还在继续进行连麦的话----重连
-                    if (false)
+                    if (all_Second != 0)
                         mWebSocketClient.reconnectBlocking();
                     Log.e(TAG, "run: 重连中。。。");
                 } catch (InterruptedException e) {
@@ -2203,6 +2253,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
     private void startTimer() {
         mSecond = 0;
+        Constant.USER_STATE = "3";
         //直播时间
         if (mBroadcastTimer == null) {
             mBroadcastTimer = new Timer(true);
@@ -2214,8 +2265,9 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private void stopTimer() {
         all_Second = 0;
         is_lmfirst = true;
-        if(mWebSocketClient!=null)
-        mWebSocketClient.close();
+        Constant.USER_STATE = "1";
+        if (mWebSocketClient != null)
+            mWebSocketClient.close();
         mHandler_socket.removeCallbacks(heartBeatRunnable);
         //直播时间
         if (null != mBroadcastTimer) {

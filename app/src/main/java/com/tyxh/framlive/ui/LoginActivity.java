@@ -133,12 +133,6 @@ public class LoginActivity extends LiveBaseActivity {
         mPermission = checkPublishPermission();
 //        getPhoneNum();
         if (user_Info != null) {
-            if (Constantc.use_old) {
-                showLoad();
-                LiveShareUtil.getInstance(LoginActivity.this).putPower(2);//用户类型
-                theOldLoginMlvb();
-                return;
-            }
             mLoginImgv.setVisibility(View.VISIBLE);
             getUserInfo(token);
         }

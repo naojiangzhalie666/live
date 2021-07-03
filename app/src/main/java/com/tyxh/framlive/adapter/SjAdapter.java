@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,6 +17,7 @@ import com.tyxh.framlive.R;
 import com.tyxh.framlive.bean.SjBean;
 import com.tyxh.framlive.utils.Common.util.DateUtils;
 import com.tyxh.framlive.utils.LiveDateUtil;
+import com.tyxh.framlive.views.MyRatingBar;
 
 import java.util.Date;
 import java.util.List;
@@ -74,8 +74,9 @@ public class SjAdapter extends RecyclerView.Adapter<SjAdapter.ViewHolder> {
             vh.mItemSjState.setText("已评价");
             vh.mItemSjState.setTextColor(mContext.getResources().getColor(R.color.nineninenine));
             vh.mItemSjState.setBackgroundResource(R.drawable.bg_solder_nin);
+            vh.mItemSjStart.setShow_other(false);
             vh.mItemSjStart.setVisibility(View.VISIBLE);
-            vh.mItemSjStart.setNumStars(star);
+            vh.mItemSjStart.setRating(star);
             vh.mItemSjPj.setVisibility(View.GONE);
         }
         vh.mItemSjBtll.setVisibility(View.GONE);
@@ -169,7 +170,7 @@ public class SjAdapter extends RecyclerView.Adapter<SjAdapter.ViewHolder> {
         @BindView(R.id.item_sj_pj)
         TextView mItemSjPj;
         @BindView(R.id.item_sj_start)
-        RatingBar mItemSjStart;
+        MyRatingBar mItemSjStart;
         @BindView(R.id.item_sj_leftm)
         TextView mItemSjLeftm;
         @BindView(R.id.item_sj_ka)

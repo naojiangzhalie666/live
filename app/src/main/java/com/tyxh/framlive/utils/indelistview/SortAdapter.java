@@ -69,18 +69,16 @@ public class SortAdapter extends BaseAdapter{
         }
         vh.mItemFindrecyTitle.setText(user.getNickname());
         Glide.with(mContext).load(user.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).circleCrop().into(vh.mItemFindrecyImgv);
-
         vh.mItemFindrecyStatetop.setText("去留言");
-        vh.mItemFindrecyTvstate.setVisibility(View.GONE);
-        vh.mItemFindrecyLlnow.setVisibility(View.GONE);
-//        vh.mItemFindrecyTvstate.setText("[ 待上线 ]");
         vh.mItemFindrecyImgv.setBackgroundResource(0);
         vh.mtv_type.setVisibility(View.GONE);
-       /* switch (position) {
-            case 0:
+        int state = user.getState();
+        switch (state) {
+            case 2:
                 vh.mtv_type.setVisibility(View.VISIBLE);
                 vh.mItemFindrecyImgv.setBackgroundResource(R.drawable.bg_circle_stoke_hom);
                 vh.mItemFindrecyTvstate.setVisibility(View.GONE);
+                vh.mItemFindrecyLlnow.setVisibility(View.GONE);
                 vh.mItemFindrecyStatetop.setText("去观看");
                 break;
             case 1:
@@ -90,15 +88,19 @@ public class SortAdapter extends BaseAdapter{
                 vh.mItemFindrectwo.setImageResource(R.drawable.find_speak);
                 vh.mItemFindrecyStatetop.setText("去私聊");
                 break;
-            case 2:
+            case 3:
                 vh.mItemFindrecyTvstate.setVisibility(View.GONE);
                 vh.mItemFindrecyLlnow.setVisibility(View.VISIBLE);
                 vh.mItemFindrecyStatebt.setText("私密连线中");
                 vh.mItemFindrectwo.setImageResource(R.drawable.find_phone);
                 vh.mItemFindrecyStatetop.setText("去私聊");
                 break;
+            case 4:
+                vh.mItemFindrecyTvstate.setVisibility(View.VISIBLE);
+                vh.mItemFindrecyLlnow.setVisibility(View.GONE);
+                vh.mItemFindrecyTvstate.setText("[ 待上线 ]");
+                break;
         }
-*/
         return view;
 
     }

@@ -102,7 +102,7 @@ public class ZxsListBean {
             private String userId;
             private Object shareRatio;
             private Object fansNum;
-            private Object anchorState;
+            private int anchorState;
             private int isBan;
             private Object banReason;
             private String createDate;
@@ -216,11 +216,11 @@ public class ZxsListBean {
                 this.fansNum = fansNum;
             }
 
-            public Object getAnchorState() {
+            public int getAnchorState() {
                 return anchorState;
             }
 
-            public void setAnchorState(Object anchorState) {
+            public void setAnchorState(int anchorState) {
                 this.anchorState = anchorState;
             }
 

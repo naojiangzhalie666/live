@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ljy.devring.DevRing;
@@ -107,12 +108,6 @@ public class ChathelfFragment extends BaseFragment {
         }
 
         mService_strs = new ArrayList<>();
-
-        mSjbg_strs = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            mSjbg_strs.add(new ContctBean.RetDataBean.ListBean());
-        }
-        mSjbgDialog = new SjbgDialog(getActivity(), mSjbg_strs,mToken,"2");
 //        getDetail(mChatInfo.getId());
 
     }
@@ -159,6 +154,7 @@ public class ChathelfFragment extends BaseFragment {
         } else {
             mChatLayout.getInputLayout().disableServiceAction(true);
             mChatLayout.getInputLayout().disableSjbgAction(false);
+            getContHis(mChatInfo.getId());
         }
         if (mChatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
             mTitleBar.setOnRightClickListener(new View.OnClickListener() {
@@ -224,6 +220,10 @@ public class ChathelfFragment extends BaseFragment {
 
             @Override
             public void onSjbgClickListener() {
+                if (mSjbgDialog == null) {
+                    Toast.makeText(getActivity(), "与当前用户暂无咨询记录", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 mSjbgDialog.show();
             }
 
@@ -462,6 +462,33 @@ public class ChathelfFragment extends BaseFragment {
             });
         }
     }
+    private void getContHis(String toid) {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getContxtHis(mToken, 1, 10, toid), new HttpBackListener() {
+            @Override
+            public void onSuccessListener(Object result) {
+                super.onSuccessListener(result);
+                ContctBean bean = new Gson().fromJson(result.toString(), ContctBean.class);
+                if (bean.getRetCode() == 0) {
+                    List<ContctBean.RetDataBean.ListBean> list = bean.getRetData().getList();
+                    if (list != null && list.size() != 0&&getActivity()!=null&&!getActivity().isFinishing()) {
+                        setSjbgDig(toid, list);
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorLIstener(String error) {
+                super.onErrorLIstener(error);
+            }
+        });
+    }
+
+    private void setSjbgDig(String toUserid, List<ContctBean.RetDataBean.ListBean> listBeans) {
+        mSjbg_strs.clear();
+        mSjbg_strs.addAll(listBeans);
+        mSjbgDialog = new SjbgDialog(getActivity(), mSjbg_strs, mToken, toUserid);
+    }
+
 
     /*私聊自动关注该主播--如果不是普通人*/
     private void toAttentionThis(int mPusherId) {

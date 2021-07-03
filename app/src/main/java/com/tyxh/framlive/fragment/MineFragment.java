@@ -321,6 +321,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
         mLogoutDialog.setOnLogoutClickListener(new LogoutDialog.OnLogoutClickListener() {
             @Override
             public void onLogoutClickListener() {
+                Constant.USER_STATE ="4";
                 LiveShareUtil.getInstance(getActivity()).clear();
                 LiveShareUtil.getInstance(LiveApplication.getmInstance()).put(LiveShareUtil.APP_AGREE, true);
                 getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));

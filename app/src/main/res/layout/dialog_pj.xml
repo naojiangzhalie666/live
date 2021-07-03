@@ -40,8 +40,22 @@
             android:layout_height="@dimen/dp_21"
             android:layout_marginTop="@dimen/dp_20"
             android:numStars="5"
+            android:visibility="gone"
             android:progressDrawable="@drawable/ratingbar_nice"
             android:stepSize="1" />
+
+        <com.tyxh.framlive.views.MyRatingBar
+            android:id="@+id/dialog_pj_star_my"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            app:space="@dimen/dp_5"
+            app:starHeight="@dimen/dp_21"
+            app:starWidth="@dimen/dp_21"
+            app:starDrawable="@drawable/ssd"
+            app:progressColor="@color/star_gray"
+            app:rating="4.5"
+            app:isIndicator="false" />
 
         <TextView
             android:id="@+id/dialog_pj_note"

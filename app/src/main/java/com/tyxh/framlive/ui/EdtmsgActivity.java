@@ -37,6 +37,7 @@ import com.tyxh.framlive.bean.UploadBean;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.pop_dig.BotListDialog;
 import com.tyxh.framlive.pop_dig.InterestDialog;
+import com.tyxh.framlive.pop_dig.RemindDialog;
 import com.tyxh.framlive.utils.GlideEngine;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.WheelPicker.picker.OptionPicker;
@@ -105,6 +106,8 @@ public class EdtmsgActivity extends LiveBaseActivity {
     private String inter_contentid = "";//兴趣爱好id
     private String userId = "";
     private String pic_url = "";
+    private boolean is_xiug = false;
+    private RemindDialog mRemindDialog;
 
 
     @Override
@@ -127,6 +130,18 @@ public class EdtmsgActivity extends LiveBaseActivity {
         mListStrings = new ArrayList<>();
         getInterest();
         getAgeList();
+        mRemindDialog = new RemindDialog.RemindBuilder().setContent("未保存修改信息，是否确定离开？").setCancel_msg("取消").setSub_msg("确定").setShow_close(true).build(this);
+        mRemindDialog.setOnTvClickListener(new RemindDialog.OnTvClickListener() {
+            @Override
+            public void onCancelClickListener() {
+//                ToastShow("取消了");
+            }
+
+            @Override
+            public void onSubClickListener() {
+                finish();
+            }
+        });
     }
 
     private void setData(UserInfoBean.RetDataBean userInfo) {
@@ -152,7 +167,11 @@ public class EdtmsgActivity extends LiveBaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgv_back:
-                finish();
+                if(is_xiug){
+                    mRemindDialog.show();
+                }else {
+                    finish();
+                }
                 break;
             case R.id.edtmsg_head:
                 toSelectPic();
@@ -228,6 +247,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
                     if(baseBean.getRetData().getCode() == 0){
                         getUserInfo();
                         ToastShow("修改成功");
+                        is_xiug =false;
                     }else{
                         ToastShow("修改失败，昵称存在违禁词");
                         mEdtmsgllisWj.setVisibility(View.VISIBLE);
@@ -298,6 +318,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
                     mEdtmsgName.setText(bean.getRetData());
                     mEdtmsgName.setSelection(mEdtmsgName.getText().toString().length());
                     mEdtmsgllisWj.setVisibility(View.GONE);
+                    is_xiug = true;
                 }else{
                     ToastShow(bean.getRetMsg());
                 }
@@ -360,6 +381,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
             public void onItemClickListener(String content, int pos) {
                 mEdtmsgAge.setText(content);
                 old_pos = pos;
+                is_xiug = true;
             }
         });
 
@@ -373,6 +395,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
                 mEdtmsgInterest.setText(content.endsWith(",")?content.substring(0,content.length()-1):content);
                 inter_content = content;
                 inter_contentid =content_id;
+                is_xiug = true;
             }
         });
     }
@@ -466,6 +489,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
             public void onOptionPicked(int index, String item) {
                 select_pos = index;
                 mEdtmsgSex.setText(item);
+                is_xiug = true;
             }
         });
     }
@@ -492,6 +516,7 @@ public class EdtmsgActivity extends LiveBaseActivity {
                 UploadBean bean = new Gson().fromJson(result.toString(), UploadBean.class);
                 if (bean.getRetCode() == 0) {
                     pic_url = bean.getRetData().getUrl();
+                    is_xiug=true;
                 }else {
                     ToastShow(bean.getRetMsg());
                 }
@@ -522,4 +547,12 @@ public class EdtmsgActivity extends LiveBaseActivity {
         return contentTypeFor;
     }
 
+    @Override
+    public void onBackPressed() {
+        if(is_xiug){
+            mRemindDialog.show();
+        }else{
+            super.onBackPressed();
+        }
+    }
 }

@@ -52,11 +52,9 @@ public class FIndAdapter extends RecyclerView.Adapter<FIndAdapter.ViewHolder> {
         vh.mItemFindrecyTitle.setText(bean.getName());
         vh.mItemFindrecyFaverite.setText("擅长:"+bean.getInterests());
         vh.mItemFindrecyStatetop.setText("去留言");
-      /*  vh.mItemFindrecyTvstate.setVisibility(View.VISIBLE);
-        vh.mItemFindrecyLlnow.setVisibility(View.GONE);
-        vh.mItemFindrecyTvstate.setText("[ 待上线 ]");*/
-        /*switch (position) {
-            case 0:
+        int anchorState = bean.getAnchorState();
+        switch (anchorState) {
+            case 2:
                 vh.mItemFindrecyTvstate.setVisibility(View.GONE);
                 vh.mItemFindrecyLlnow.setVisibility(View.VISIBLE);
                 vh.mItemFindrecyStatebt.setText("直播中");
@@ -70,14 +68,19 @@ public class FIndAdapter extends RecyclerView.Adapter<FIndAdapter.ViewHolder> {
                 vh.mItemFindrectwo.setImageResource(R.drawable.find_speak);
                 vh.mItemFindrecyStatetop.setText("去私聊");
                 break;
-            case 2:
+            case 3:
                 vh.mItemFindrecyTvstate.setVisibility(View.GONE);
                 vh.mItemFindrecyLlnow.setVisibility(View.VISIBLE);
                 vh.mItemFindrecyStatebt.setText("私密连线中");
                 vh.mItemFindrectwo.setImageResource(R.drawable.find_phone);
                 vh.mItemFindrecyStatetop.setText("去私聊");
                 break;
-        }*/
+            case 4:
+                vh.mItemFindrecyTvstate.setVisibility(View.VISIBLE);
+                vh.mItemFindrecyLlnow.setVisibility(View.GONE);
+                vh.mItemFindrecyTvstate.setText("[ 待上线 ]");
+                break;
+        }
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

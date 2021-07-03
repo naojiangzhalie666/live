@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="40dp"
+    android:layout_margin="55dp"
     android:paddingBottom="8dp"
     android:background="@drawable/bg_corner_white">
 
@@ -11,7 +11,7 @@
         android:id="@+id/dig_error_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/h10"
+        android:layout_marginTop="@dimen/h5"
         android:layout_centerHorizontal="true"
         tools:text="推流失败"
         android:textColor="@color/black"
@@ -22,12 +22,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dig_error_title"
+        android:gravity="center"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:padding="@dimen/h8"
-        tools:text="网络断开"
-        android:textColor="@color/black" />
+        android:layout_marginBottom="4dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="@dimen/h5"
+        tools:text="网络断开网络断开网络断开网络断开网络断开网络断开"
+        android:textColor="#333333" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,13 +41,14 @@
             android:id="@+id/dig_error_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="12dp"
             android:layout_marginRight="12dp"
             android:layout_weight="1"
             android:background="@drawable/bg_corner_gra"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="6dp"
             android:visibility="invisible"
+            tools:visibility="visible"
             android:text="取消"
             android:textColor="@color/colorGray3" />
 
@@ -53,11 +57,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginRight="12dp"
             android:layout_weight="1"
             android:background="@drawable/bg_circle_red"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="6dp"
             android:text="确定"
             android:textColor="@color/white" />
 

@@ -21,8 +21,8 @@ public class Constant {
     public static final String SOCKET_URL = "wss://appshop.bkxinli.com/portal/socket/";
     /*分享公共*/
     public static final String SHARE_URL = "https://a.app.qq.com/o/simple.jsp?pkgname=com.tyxh.framlive";
-    public static final String SHARE_NAME = "边框心理";
-    public static final String SHARE_MS  ="整合心理咨询机构与心理咨询师，为广大老百姓提供心理健康服务的平台";
+    public static final String SHARE_NAME = "你专属的心理咨询师";
+    public static final String SHARE_MS  ="随时随地与心理咨询师面对面";
 
     public static final boolean PRINT_LOG = IS_DEBUG;
     public static final boolean IS_JIAMI = false;
@@ -31,6 +31,7 @@ public class Constant {
 
     /*app使用*/
     public static boolean IS_SHENHEING = false;//入驻是否在审核中
+    public static  String USER_STATE = "1"; //用户状态  state状态【1：在线；2：直播中；3：连线中；4：离线】
 
     public static final String BUGLY_APPID = "b1b287bf47";
 

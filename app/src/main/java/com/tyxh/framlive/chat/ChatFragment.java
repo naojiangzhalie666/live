@@ -110,6 +110,7 @@ public class ChatFragment extends BaseFragment {
     private boolean is_first = true;
     private int mType = 1;//被聊天人的权限 1-普通用户；2-咨询师；3-主机构；4-子机构
     private InputLayout mInputLayout;
+    private boolean lm_once = true;
 
 
     @Override
@@ -285,7 +286,7 @@ public class ChatFragment extends BaseFragment {
             @Override
             public void onSjbgClickListener() {
                 if (mSjbgDialog == null) {
-                    Toast.makeText(getActivity(), "暂无报告", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "与当前用户暂无咨询记录", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mSjbgDialog.show();
@@ -683,7 +684,7 @@ public class ChatFragment extends BaseFragment {
             }
             /*订单跳转过来的时候判断进行那种连麦方式*/
             boolean lm = mChatInfo.isLm();
-            if(lm){       //连线类型[1:视频；2:语音]
+            if(lm&&lm_once){       //连线类型[1:视频；2:语音]
                 int lm_type = mChatInfo.getLm_type();
                 if(lm_type ==1){
                     if(mPower == Constant.POWER_NORMAL) {//我是用户  肯定弹
@@ -702,6 +703,7 @@ public class ChatFragment extends BaseFragment {
                         toCallAudio(new LiveCotctBean.RetDataBean(),false);
                     }
                 }
+                lm_once=false;
             }
         }
         List<UserDetailBean.RetDataBean.ServicePackagesBean> servicePackages = data.getServicePackages();
