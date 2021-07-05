@@ -301,6 +301,8 @@ public class FindNoviceFragment extends Fragment {
                 startActivity(intent);
                 break;
             case 8://创建直播
+            case 9:
+            case 10:
                 startPublish();
                 break;
         }

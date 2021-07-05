@@ -1,7 +1,10 @@
 package com.tyxh.framlive.thirdpush;
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.tyxh.framlive.base.LiveApplication;
+import com.tyxh.framlive.ui.LoginActivity;
 import com.tyxh.framlive.utils.LiveLog;
 import com.vivo.push.model.UPSNotificationMessage;
 import com.vivo.push.sdk.OpenClientPushMessageReceiver;
@@ -25,6 +28,10 @@ public class VIVOPushMessageReceiverImpl extends OpenClientPushMessageReceiver {
         LiveLog.i(TAG, "onNotificationMessageClicked upsNotificationMessage " + upsNotificationMessage.toString());
         Map<String, String> extra = upsNotificationMessage.getParams();
         sExt = extra.get("ext");
+        Intent intent = new Intent(LiveApplication.getmInstance(), LoginActivity.class);
+        intent.putExtra("ext", sExt);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        LiveApplication.getmInstance().startActivity(intent);
     }
 
     public static String getParams() {

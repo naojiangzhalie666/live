@@ -5,17 +5,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveApplication;
+import com.tyxh.framlive.thirdpush.OfflineMessageDispatcher;
 import com.tyxh.framlive.ui.LoginActivity;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.SoftKeyboardFixerForFullscreen;
 
 import androidx.annotation.Nullable;
 
+import static com.tencent.imsdk.v2.V2TIMConversation.V2TIM_C2C;
 import static com.tencent.imsdk.v2.V2TIMManager.V2TIM_STATUS_LOGINED;
 
 public class ChatActivity extends BaseChatActivity {
@@ -49,20 +53,20 @@ public class ChatActivity extends BaseChatActivity {
             return;
         }
 
-//        OfflineMessageBean bean = OfflineMessageDispatcher.parseOfflineMessage(intent);
-//        if (bean != null) {
-//            mChatInfo = new ChatInfo();
-//            mChatInfo.setType(bean.chatType);
-//            mChatInfo.setId(bean.sender);
-//            bundle.putSerializable(Constant.CHAT_INFO, mChatInfo);
-//            Log.i(TAG, "offline mChatInfo: " + mChatInfo);
-//        } else {
+        OfflineMessageBean bean = OfflineMessageDispatcher.parseOfflineMessage(intent);
+        if (bean != null) {
+            mChatInfo = new ChatInfo();
+            mChatInfo.setType(V2TIM_C2C);//不进行type获取直接使用单聊 --bean.getType();--群聊or单聊
+            mChatInfo.setId(bean.sender);
+            bundle.putSerializable(Constant.CHAT_INFO, mChatInfo);
+            Log.i(TAG, "offline mChatInfo: " + new Gson().toJson(mChatInfo));
+        } else {
         mChatInfo = (ChatInfo) bundle.getSerializable(Constant.CHAT_INFO);
         if (mChatInfo == null) {
             startSplashActivity(null);
             return;
         }
-//        }
+        }
 
         if (V2TIMManager.getInstance().getLoginStatus() == V2TIM_STATUS_LOGINED) {
             mChatFragment = new ChatFragment();

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.heytap.msp.push.HeytapPushManager;
 import com.huawei.agconnect.config.AGConnectServicesConfig;
@@ -11,6 +13,7 @@ import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.common.ApiException;
 import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.superc.yyfflibrary.views.lowhurdles.TabFragmentAdapter;
+import com.tencent.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.Constant;
 import com.tyxh.framlive.base.LiveBaseActivity;
@@ -37,7 +40,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageChangeListener, ConversationManagerKit.MessageUnreadWatcher {
     /*tab图标集合  未选中  选中*/
     private final int ICONS_RES[][] = {{R.drawable.home_unse, R.drawable.home_se}, {R.drawable.find_unse, R.drawable.find_se}, {R.drawable.msg_unse, R.drawable.msg_se}, {R.drawable.mine_unse, R.drawable.mine_se}};
     /* tab 颜色值*/
@@ -50,7 +53,7 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     private MineFragment mMineFragment;
     private MainViewpager mPager;
     private TabContainerView mTabLayout;
-
+    private TextView muser_red;
 
     @Override
     public int getContentLayoutId() {
@@ -62,7 +65,7 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         EventBus.getDefault().register(this);
-        Intent intent =new Intent(this,StateService.class);
+        Intent intent = new Intent(this, StateService.class);
         startService(intent);
         prepareThirdPushToken();
         mHomeFragment = new HomeFragment();
@@ -85,12 +88,17 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
         mTabLayout.setContainerLayout(R.layout.tab_container_view, R.id.iv_tab_icon, R.id.tv_tab_text, width, height);
         mTabLayout.setViewPager(mPager);
         mPager.setCurrentItem(getIntent().getIntExtra("tab", 0));
+        View[] tabView = mTabLayout.getTabView();
+        if (tabView.length >= 2) {
+            muser_red = tabView[2].findViewById(R.id.iv_tab_red);
+        }
 
+        ConversationManagerKit.getInstance().addUnreadWatcher(this);
 
     }
 
     /*各大平台推送*/
-    private void prepareThirdPushToken(){
+    private void prepareThirdPushToken() {
         ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
         if (BrandUtil.isBrandHuawei()) {
             // 华为离线推送
@@ -102,7 +110,7 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
                         String appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
                         String token = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
                         LiveLog.i(TAG, "huawei get token:" + token);
-                        if(!TextUtils.isEmpty(token)) {
+                        if (!TextUtils.isEmpty(token)) {
                             ThirdPushTokenMgr.getInstance().setThirdPushToken(token);
                             ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
                         }
@@ -128,8 +136,7 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
                     }
                 }
             });
-        }
-        else if (HeytapPushManager.isSupportPush()) {
+        } else if (HeytapPushManager.isSupportPush()) {
             // oppo离线推送
             OPPOPushImpl oppo = new OPPOPushImpl();
             oppo.createNotificationChannel(this);
@@ -153,13 +160,13 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
         }
         switch (position) {
             case 0:
-                if(mHomeFragment!=null){
+                if (mHomeFragment != null) {
                     mHomeFragment.toRefresh();
                 }
                 TitleUtils.setStatusTextColor(false, this);
                 break;
             case 1:
-                if(mFindFragment!=null&&mFindFragment.isVisible())
+                if (mFindFragment != null && mFindFragment.isVisible())
                     mFindFragment.onResume();
                 TitleUtils.setStatusTextColor(true, this);
                 break;
@@ -167,7 +174,7 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
                 TitleUtils.setStatusTextColor(false, this);
                 break;
             case 3:
-                if(mMineFragment!=null&&mMineFragment.isVisible()){
+                if (mMineFragment != null && mMineFragment.isVisible()) {
                     mMineFragment.onResume();
                 }
                 TitleUtils.setStatusTextColor(false, this);
@@ -182,21 +189,22 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
 
     /**
      * 主页进行指定跳转
-     * @param type  1跳转发现--精彩活动 2跳转发现-新手任务
+     *
+     * @param type 1跳转发现--精彩活动 2跳转发现-新手任务
      */
-    public void toGoWhat(int type){
-        switch (type){
+    public void toGoWhat(int type) {
+        switch (type) {
             case 1:
-                Bundle bundle =new Bundle();
-                bundle.putString("msg","act");
-                if(mFindFragment!=null)
+                Bundle bundle = new Bundle();
+                bundle.putString("msg", "act");
+                if (mFindFragment != null)
                     mFindFragment.setArguments(bundle);
                 mPager.setCurrentItem(1);
                 break;
             case 2:
-                Bundle bundleever =new Bundle();
-                bundleever.putString("msg","ever");
-                if(mFindFragment!=null)
+                Bundle bundleever = new Bundle();
+                bundleever.putString("msg", "ever");
+                if (mFindFragment != null)
                     mFindFragment.setArguments(bundleever);
                 mPager.setCurrentItem(1);
                 break;
@@ -208,7 +216,7 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     public void getEventMsgt(EventMessage msg) {
         if (msg.getMessage().equals("ever") || (msg.getMessage().equals("pipei"))) {
             mPager.setCurrentItem(1);
-        } else if(msg.getMessage().equals("main")){
+        } else if (msg.getMessage().equals("main")) {
             mPager.setCurrentItem(0);
         }
     }
@@ -240,8 +248,8 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         String what = intent.getStringExtra("what");
-        if(!TextUtils.isEmpty(what)){
-            switch (what){
+        if (!TextUtils.isEmpty(what)) {
+            switch (what) {
                 case "web":
                     toGoWhat(2);
                     break;
@@ -253,15 +261,22 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(mMineFragment!=null&&mMineFragment.isVisible()){
+        if (mMineFragment != null && mMineFragment.isVisible()) {
 //            mMineFragment.toUpdateData();
         }
     }
+
     /*判断应用是否展示虚拟键*/
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         Constant.has_navi = NavigaUtils.isNavigationBarExist(this);
-        Log.i("MainActivity_foucus", "has navigation: "+Constant.has_navi);
+        Log.i("MainActivity_foucus", "has navigation: " + Constant.has_navi);
+    }
+
+    @Override
+    public void updateUnread(int count) {
+        muser_red.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
+        muser_red.setText(count>99?"99...":count + "");
     }
 }

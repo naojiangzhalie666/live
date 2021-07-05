@@ -21,6 +21,7 @@ public class XiaomiMsgReceiver extends PushMessageReceiver {
 
     private static final String TAG = XiaomiMsgReceiver.class.getSimpleName();
     private String mRegId;
+    private static String sExt = "";
 
     @Override
     public void onReceivePassThroughMessage(Context context, MiPushMessage miPushMessage) {
@@ -31,13 +32,13 @@ public class XiaomiMsgReceiver extends PushMessageReceiver {
     public void onNotificationMessageClicked(Context context, MiPushMessage miPushMessage) {
         LiveLog.d(TAG, "onNotificationMessageClicked miPushMessage " + miPushMessage.toString());
         Map<String, String> extra = miPushMessage.getExtra();
-        String ext = extra.get("ext");
-        if (TextUtils.isEmpty(ext)) {
+        sExt = extra.get("ext");
+        if (TextUtils.isEmpty(sExt)) {
             LiveLog.w(TAG, "onNotificationMessageClicked: no extra data found");
             return;
         }
         Intent intent = new Intent(LiveApplication.getmInstance(), LoginActivity.class);
-        intent.putExtra("ext", ext);
+        intent.putExtra("ext", sExt);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         LiveApplication.getmInstance().startActivity(intent);
     }
