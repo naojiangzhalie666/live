@@ -66,6 +66,7 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
         TitleUtils.setStatusTextColor(false, this);
         EventBus.getDefault().register(this);
         Intent intent = new Intent(this, StateService.class);
+        Constant.USER_STATE ="1";
         startService(intent);
         prepareThirdPushToken();
         mHomeFragment = new HomeFragment();
