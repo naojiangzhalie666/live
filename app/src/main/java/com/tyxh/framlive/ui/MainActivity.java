@@ -277,6 +277,6 @@ public class MainActivity extends LiveBaseActivity implements ViewPager.OnPageCh
     @Override
     public void updateUnread(int count) {
         muser_red.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
-        muser_red.setText(count>99?"99...":count + "");
+        muser_red.setText(count>99?"99.":count + "");
     }
 }

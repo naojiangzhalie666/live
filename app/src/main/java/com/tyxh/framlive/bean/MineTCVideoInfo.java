@@ -31,6 +31,8 @@ public class MineTCVideoInfo extends TCVideoInfo {
     public String   meName;         //机构名称
     public String   roomInfo;
     public int push_size;//推流个数
+    public int index ;
+    public boolean fault =false;
     public int type;//用户类型：1-普通用户；2-咨询师；3-主机构；4-子机构
     public RoomBean.RetDataBean.UserInfoBean mUserInfoBean;
 

@@ -4,7 +4,7 @@
     android:id="@+id/audience_play_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@drawable/live_contact_bg"
+    android:background="@drawable/live_contact_bg"
     tools:ignore="contentDescription">
 
     <com.tencent.rtmp.ui.TXCloudVideoView
@@ -29,6 +29,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="50dp"
+        android:visibility="gone"
         android:layout_marginRight="8dp">
 
         <com.tencent.rtmp.ui.TXCloudVideoView
@@ -191,8 +192,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_below="@+id/cam_title"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:visibility="visible"
+           >
 
 
             <LinearLayout
@@ -210,6 +211,7 @@
                 <ImageView
                     android:id="@+id/audience_headlx"
                     android:layout_width="0dp"
+                    android:background="@color/white"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
@@ -264,8 +266,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/tool_bar"
             android:layout_alignParentRight="true"
-            android:visibility="visible"
-            tools:visibility="gone"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
             android:src="@drawable/audice_lianx" />
@@ -520,8 +522,19 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_centerInParent="true" />
-
+        <TextView
+            android:id="@+id/audience_ttt"
+            android:onClick="onClick"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:paddingTop="@dimen/dp_8"
+            android:layout_below="@+id/audience_fram_contac"
+            android:textColor="@color/black"
+            android:text="该咨询师正在为用户一对一服务"
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
+
 
     <com.tencent.liteav.demo.beauty.view.BeautyPanel
         android:id="@+id/beauty_panel"
@@ -542,4 +555,12 @@
         layout="@layout/dig_lm_note"
         android:visibility="gone"
         />
+
+    <TextView
+        android:id="@+id/audience_newclose"
+        android:onClick="onClick"
+        android:layout_width="@dimen/dp_60"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_height="@dimen/dp_60"/>
 </RelativeLayout>

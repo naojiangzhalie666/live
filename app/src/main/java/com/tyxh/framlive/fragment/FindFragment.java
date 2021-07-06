@@ -240,6 +240,16 @@ public class FindFragment extends Fragment {
                     getChildFragmentManager().beginTransaction().replace(R.id.find_fram, mFindWonderFragment).commit();
 //                }
                 getChildFragmentManager().beginTransaction().show(mFindWonderFragment);
+            }else   if (msg.equals("ever")) {
+                mFindPipeiview.setBackgroundResource(R.drawable.home_tranthreetran);
+                mFindXinshouview.setBackgroundResource(R.drawable.home_tranthree);
+                mFindWonderview.setBackgroundResource(R.drawable.home_tranthreetran);
+                mFindLimittmview.setBackgroundResource(R.drawable.home_tranthreetran);
+                Bundle bundle = new Bundle();
+                bundle.putInt("index", 0);
+                mFindNoviceFragment.setArguments(bundle);
+                getChildFragmentManager().beginTransaction().replace(R.id.find_fram, mFindNoviceFragment).commit();
+                getChildFragmentManager().beginTransaction().show(mFindNoviceFragment);
             }
             setArguments(null);
         }

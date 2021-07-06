@@ -90,7 +90,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 vh.mItemHomerecyImgvState.setVisibility(View.VISIBLE);
                 vh.mItemHomerecyImgvState.setImageResource(R.drawable.home_media);
                 vh.mItemHomerecyName.setTextColor(mContext.getResources().getColor(R.color.home_txt));
-                vh.mItemHomerecyTitle.setTextColor(mContext.getResources().getColor(R.color.home_txt));
+//                vh.mItemHomerecyTitle.setTextColor(mContext.getResources().getColor(R.color.home_txt));
+                vh.mItemHomerecyTitle.setVisibility(View.GONE);
                 vh.mItemHomerecyLinear.setVisibility(View.GONE);
                 vh.mItemHomerecyBiao.setText("连线咨询中");
             }else{

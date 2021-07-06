@@ -691,6 +691,9 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 mPuserLxAvatar = pushers.get(1).userAvatar;
                 mPuserLxUserid = pushers.get(1).userID;
                 onRecvRoomCustomMsg("", "", "", mPuserLxAvatar, String.valueOf(IMCMD_CONTACT), mPuserLxUserid);
+                mBtnLinkMic.setVisibility(View.GONE);
+            }else{
+                mBtnLinkMic.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -1088,6 +1091,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                     mTXCloudVideoView.setVisibility(View.GONE);
                     mRelativeLayout.setBackground(getResources().getDrawable(R.drawable.live_contact_bg));
                     mfram_layout.setVisibility(View.VISIBLE);
+                    mBtnLinkMic.setVisibility(View.GONE);
                 }
                 Log.i(TAG, "onRecvRoomCustomMsg:开始连麦userID =  " + message);
                 break;
@@ -1097,6 +1101,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                     mTXCloudVideoView.setVisibility(View.VISIBLE);
                     mRelativeLayout.setBackground(null);
                     mfram_layout.setVisibility(View.GONE);
+                    mBtnLinkMic.setVisibility(View.VISIBLE);
                    /* //延迟2秒再进行拉流
                     new Timer().schedule(new TimerTask() {
                         public void run() {

@@ -37,6 +37,7 @@ import com.tyxh.framlive.bean.SignBean;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.chat.ChatActivity;
 import com.tyxh.framlive.chat.tuikit.AVCallManager;
+import com.tyxh.framlive.live.TCAudienceFaultActivity;
 import com.tyxh.framlive.live.TCCameraAnchorActivity;
 import com.tyxh.framlive.ui.FindActivity;
 import com.tyxh.framlive.ui.MainActivity;
@@ -108,6 +109,14 @@ public class HomeFragment extends Fragment {
     private int page = 0;
     private MainActivity mMainActivity;
     private boolean is_cliclpush =false;
+    private String[][] mDatas =new String[][]{
+            {"蒋心怡","与其痛苦，不如把你们的关系理明白"},
+            {"静兰","高段位恋爱思考方式,教你几招高效挽回"},
+            {"咨询师-微梦","男人不会告诉你的小心思，教你能掌握主动权"},
+            {"严卓轩","用绿茶思路经营一段你说了算的关系"},
+            {"咨询师-陈潇潇","揭秘你付出这么多却没回报的原因"},
+            {"咨询师-王媛","做到这几件事，让Ta对你欲罢不能"},
+            {"胡志伟","你是爱情里的舔狗？3个技巧让Ta爱上你"}};
 
 
     @Override
@@ -212,7 +221,8 @@ public class HomeFragment extends Fragment {
 
 
         mLists = new ArrayList<>();
-        mHomeAdapter = new HomeAdapter(getActivity(), mLists);
+        mLists_fault = new ArrayList<>();
+        mHomeAdapter = new HomeAdapter(getActivity(), mLists_fault);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2) {
             @Override
             public boolean canScrollVertically() {
@@ -225,11 +235,17 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClickListener(int pos) {
                 try {
-                    if (pos >= mLists.size()) {
+                    if (pos >= mLists_fault.size()) {
+                        return;
+                    }
+                    if(mLists_fault.get(pos).fault){
+                        Intent intent =new Intent(getActivity(), TCAudienceFaultActivity.class);
+                        intent.putExtra("index",mLists_fault.get(pos).index);
+                        startActivity(intent);
                         return;
                     }
                     if (0 == mLastClickTime || System.currentTimeMillis() - mLastClickTime > 1000) {
-                        MineTCVideoInfo item = mLists.get(pos);
+                        MineTCVideoInfo item = mLists_fault.get(pos);
                         if (item == null) {
                             Log.e("Home", "live list item is null at position:" + pos);
                             return;
@@ -330,39 +346,6 @@ public class HomeFragment extends Fragment {
 
     private void toSeiCount(RoomBean bean) {
         toZhData(bean.getRetData());
-       /* if (bean.getRetData() == null || bean.getRetData().size() == 0) {
-            toZhData(bean.getRetData());
-            return;
-        }
-        RoomBean.RetDataBean retBean = bean.getRetData().get(count);
-        V2TIMManager.getGroupManager().getGroupOnlineMemberCount(retBean.getRoomID(), new V2TIMSendCallback<Integer>() {
-            @Override
-            public void onProgress(int progress) {
-
-            }
-
-            @Override
-            public void onError(int code, String desc) {
-                retBean.audienceCount = 0;
-                if(count ==bean.getRetData().size()-1){
-                    toZhData(bean.getRetData());
-                }else{
-                    count+=1;
-                    toSeiCount(bean);
-                }
-            }
-
-            @Override
-            public void onSuccess(Integer integer) {
-                retBean.audienceCount = integer-1;
-                if(count ==bean.getRetData().size() -1){
-                    toZhData(bean.getRetData());
-                }else{
-                    count+=1;
-                    toSeiCount(bean);
-                }
-            }
-        });*/
     }
 
     /*获取直播的sign*/
@@ -409,7 +392,7 @@ public class HomeFragment extends Fragment {
         UserInfoBean.RetDataBean retData = mUserInfo.getRetData();
         mInstance.loginMLVB(retData.getId(), retData.getNickname(), retData.getIco(), retData.getIco(), retData.getGender(), sign);
     }
-
+    private List<MineTCVideoInfo> mLists_fault;//TODO 假数据添加之后删掉--替换成  mLists
     /*整合直播数据*/
     private void toZhData(List<RoomBean.RetDataBean> data) {
         if (page == 0) {
@@ -423,6 +406,20 @@ public class HomeFragment extends Fragment {
             infos.add(LiveDateZh.getMineVideo(value));
         }
         mLists.addAll(infos);
+        mLists_fault.clear();
+        mLists_fault.addAll(mLists);
+        for (int i = 0; i < 7; i++) {
+            MineTCVideoInfo mineTCVideoInfo=new MineTCVideoInfo();
+            mineTCVideoInfo.push_size=2;
+            mineTCVideoInfo.fault=true;
+            mineTCVideoInfo.index=i;
+            mineTCVideoInfo.lable ="婚姻情感";
+            mineTCVideoInfo.viewerCount =2*(i+1);
+            mineTCVideoInfo.nickname = mDatas[i][0];
+            mineTCVideoInfo.title = mDatas[i][1];
+            mineTCVideoInfo.type=1;// type>2时为机构or子机构
+            mLists_fault.add(mineTCVideoInfo);
+        }
         mHomeAdapter.notifyDataSetChanged();
         toSetOldData();
     }
