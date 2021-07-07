@@ -126,7 +126,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="每日凌晨00：00重置"
-            android:textColor="@color/threethree"
+            android:textColor="@color/home_txt"
             android:textSize="12sp"
             tools:visibility="visible"
             android:visibility="gone" />

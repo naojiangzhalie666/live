@@ -643,10 +643,10 @@ public class OrderListActivity extends LiveBaseActivity {
             int rewardDiaNum = nextLevel.getRewardDiaNum();//钻石id
             String img_Url = "";
             String img_name = "";
-            if (rewardDiaNum >= 0) {
+            if (rewardDiaNum > 0) {
                 img_Url = nextLevel.getRewardDiaICO();
                 img_name = nextLevel.getRewardDiaName();
-            } else if (giftId >= 0) {
+            } else if (giftId > 0) {
                 img_Url = nextLevel.getGiftICO();
                 img_name = nextLevel.getGiftName();
             } else {

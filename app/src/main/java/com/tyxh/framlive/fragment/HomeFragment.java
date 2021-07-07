@@ -71,6 +71,7 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,6 +90,8 @@ public class HomeFragment extends Fragment {
     private long mLastClickTime = 0;//避免连击
     private int mRecordType = TCConstants.RECORD_TYPE_CAMERA;   // 默认摄像头推流
 
+    @BindView(R.id.home_scroll)
+    NestedScrollView mHomeScroll;
     @BindView(R.id.home_recy)
     RecyclerView mHomeRecy;
     @BindView(R.id.home_smart)
@@ -275,8 +278,10 @@ public class HomeFragment extends Fragment {
 
     /*用于主页调用刷新*/
     public void toRefresh() {
-        if (mHomeSmart != null)
+        if (mHomeSmart != null&&mHomeScroll!=null) {
+            mHomeScroll.scrollTo(0, 0);
             mHomeSmart.autoRefresh();
+        }
     }
 
     /*获取是否可购买一元活动*/

@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
-            app:space="@dimen/dp_5"
+            app:space="@dimen/dp_13"
             app:starHeight="@dimen/dp_21"
             app:starWidth="@dimen/dp_21"
             app:starDrawable="@drawable/ssd"

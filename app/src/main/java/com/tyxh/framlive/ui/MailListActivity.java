@@ -70,6 +70,7 @@ public class MailListActivity extends LiveBaseActivity {
     private int line_startDis = 0;
     private boolean is_first = true;
     private String mType = "0";
+    private int mPower = 1;
 
 
     @Override
@@ -81,7 +82,9 @@ public class MailListActivity extends LiveBaseActivity {
     public void init() {
         TitleUtils.setStatusTextColor(false, this);
         ButterKnife.bind(this);
-        if (is_user) {
+        mPower = LiveShareUtil.getInstance(this).getPower();
+        if (mPower == Constant.POWER_NORMAL) {
+            is_user = true;
             mMailTxltwo.setVisibility(View.GONE);
             mMailTxltwoo.setVisibility(View.GONE);
             mMailTxlonee.setText("我的关注");
@@ -95,10 +98,18 @@ public class MailListActivity extends LiveBaseActivity {
                 mMailTxlthreee.performClick();
                 mType = "2";
             } else {
-                getGzmine();
+                if (is_user) {
+                    getWodGz();
+                } else {
+                    getGzmine();
+                }
             }
         } else {
-            getGzmine();
+            if (is_user) {
+                getWodGz();
+            } else {
+                getGzmine();
+            }
         }
     }
 
@@ -118,7 +129,6 @@ public class MailListActivity extends LiveBaseActivity {
                 } else {
                     getGzmine();
                 }
-                toGoAnima(mMailTxlonee);
                 break;
             case R.id.mail_txltwo:
             case R.id.mail_txltwoo:
@@ -137,6 +147,24 @@ public class MailListActivity extends LiveBaseActivity {
                 break;
 
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(mMailTxlthreee.getVisibility()==View.VISIBLE){
+            getZxsList();
+        }else if(mMailTxlonee.getVisibility() ==View.VISIBLE){
+            if (is_user) {
+                getWodGz();
+            } else {
+                getGzmine();
+            }
+            toGoAnima(mMailTxlonee);
+        }else{
+            getWodGz();
+        }
+
     }
 
     private void initV() {
@@ -160,25 +188,20 @@ public class MailListActivity extends LiveBaseActivity {
                 String id = user_Info.getRetData().getId();
                 AttentionBean.RetDataBean.DatasBean datasBean = list_gzmine.get(pos);
                 int state = datasBean.getState();
-                switch (state){
-                    case 2:
-                        getLiveDate(datasBean.getAttId());
-                        break;
-                    case 1:
-                    case 3:
-                    case 4:
-                        if(datasBean!=null&&!TextUtils.isEmpty(datasBean.getAttId())){
-                            String compare_id =datasBean.getAttId();
-                            if(datasBean.getAttId().contains(".")){
-                                compare_id =datasBean.getAttId().substring(0,datasBean.getAttId().indexOf("."));
-                            }
-                            if (id.equals(compare_id)) {
-                                ToastShow("不能和自己聊天");
-                                return;
-                            }
+                if (state == 2) {
+                    getLiveDate(datasBean.getAttId());
+                } else {
+                    if (datasBean != null && !TextUtils.isEmpty(datasBean.getAttId())) {
+                        String compare_id = datasBean.getAttId();
+                        if (datasBean.getAttId().contains(".")) {
+                            compare_id = datasBean.getAttId().substring(0, datasBean.getAttId().indexOf("."));
                         }
-                        startChatActivity(datasBean.getAttId(), datasBean.getNickname());
-                        break;
+                        if (id.equals(compare_id)) {
+                            ToastShow("不能和自己聊天");
+                            return;
+                        }
+                    }
+                    startChatActivity(datasBean.getAttId(), datasBean.getNickname());
                 }
             }
         });
@@ -203,7 +226,7 @@ public class MailListActivity extends LiveBaseActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("token", TCHTTPMgr.getInstance().getToken());
         map.put("userID", user_Info.getRetData().getId());
-        map.put("roomID", id.contains(".")?id.substring(0,id.indexOf(".")):id);
+        map.put("roomID", id.contains(".") ? id.substring(0, id.indexOf(".")) : id);
         String result = new Gson().toJson(map);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), result);
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getRoomData(LiveShareUtil.getInstance(this).getToken(), requestBody), new HttpBackListener() {
@@ -213,7 +236,7 @@ public class MailListActivity extends LiveBaseActivity {
                 hideLoad();
                 LiveOneBean bean = new Gson().fromJson(result.toString(), LiveOneBean.class);
                 if (bean.getRetCode() == 0) {
-                    toGoLive( LiveDateZh.getMineVideo(bean.getRetData()));
+                    toGoLive(LiveDateZh.getMineVideo(bean.getRetData()));
                 } else {
                     Toast.makeText(MailListActivity.this, bean.getRetMsg(), Toast.LENGTH_LONG).show();
                 }
@@ -227,8 +250,8 @@ public class MailListActivity extends LiveBaseActivity {
         });
     }
 
-    private void toGoLive(MineTCVideoInfo item){
-        startActivityForResult(LiveDateZh.startPlay(item,this), 100);
+    private void toGoLive(MineTCVideoInfo item) {
+        startActivityForResult(LiveDateZh.startPlay(item, this), 100);
     }
 
     /*关注我的--我的粉丝*/
@@ -266,7 +289,11 @@ public class MailListActivity extends LiveBaseActivity {
     /*我的关注*/
     private void getWodGz() {
         showLoad();
-        toGoAnima(mMailTxltwoo);
+        if (is_user) {
+            toGoAnima(mMailTxlonee);
+        } else {
+            toGoAnima(mMailTxltwoo);
+        }
         mMailTvNodata.setVisibility(View.GONE);
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getMyAttention(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
             @Override

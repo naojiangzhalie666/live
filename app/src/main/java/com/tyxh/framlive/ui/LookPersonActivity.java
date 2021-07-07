@@ -331,7 +331,9 @@ public class LookPersonActivity extends LiveBaseActivity {
             @Override
             public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
                 mOffset = offset / 2;
-                parallax.setTranslationY(mOffset - mScrollY);
+                parallax.setTranslationY((mOffset - mScrollY)*1.8f);
+//                parallax.setScaleX((mOffset - mScrollY)<=1.0f?1.0f: ((1.0f+0.01f*(mOffset - mScrollY))>=2?2.0f:(1.0f+0.01f*(mOffset - mScrollY))));
+//                parallax.setScaleY((mOffset - mScrollY)<=1.0f?1.0f: ((1.0f+0.01f*(mOffset - mScrollY))>=2?2.0f:(1.0f+0.01f*(mOffset - mScrollY))));
             }
 
             @Override
@@ -393,7 +395,9 @@ public class LookPersonActivity extends LiveBaseActivity {
                 if (lastScrollY < h) {
                     scrollY = Math.min(h, scrollY);
                     mScrollY = scrollY > h ? h : scrollY;
-                    parallax.setTranslationY(mOffset - mScrollY);
+                    parallax.setTranslationY((mOffset - mScrollY)*1.8f);
+//                    parallax.setScaleX((mOffset - mScrollY)<=1.0f?1.0f: ((1.0f+0.01f*(mOffset - mScrollY))>=2?2.0f:(1.0f+0.01f*(mOffset - mScrollY))));
+//                    parallax.setScaleY((mOffset - mScrollY)<=1.0f?1.0f: ((1.0f+0.01f*(mOffset - mScrollY))>=2?2.0f:(1.0f+0.01f*(mOffset - mScrollY))));
                 }
                 lastScrollY = scrollY;
             }

@@ -60,6 +60,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
 import static com.tencent.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout.DATA_CHANGE_TYPE_REFRESH;
+import static com.tyxh.framlive.bean.EventMessage.ATTEN_SUCCESS;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -496,6 +497,10 @@ public class ChathelfFragment extends BaseFragment {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
+                BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
+                if(baseBean.getRetCode() ==0 ){
+                    EventBus.getDefault().post(new EventMessage(ATTEN_SUCCESS));
+                }
             }
 
             @Override

@@ -7,7 +7,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_goods_con"
-        android:layout_width="@dimen/dp_115"
+        android:layout_width="@dimen/dp_125"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
         android:paddingRight="@dimen/dp_8"

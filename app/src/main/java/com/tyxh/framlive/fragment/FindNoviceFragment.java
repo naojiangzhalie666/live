@@ -187,7 +187,6 @@ public class FindNoviceFragment extends Fragment {
                 }else{
                     mFragNoviceNote.setVisibility(View.VISIBLE);
                     mFragNoviceNote.setText("每日凌晨00：00重置");
-                    mFragNoviceNote.setTextColor(getResources().getColor(R.color.nineninenine));
                     state = 1;
                 }
                 break;
@@ -196,7 +195,6 @@ public class FindNoviceFragment extends Fragment {
                 mFragNoviceDayrenwu.setTextSize(12);
                 mFragNoviceNote.setVisibility(View.VISIBLE);
                 mFragNoviceNote.setText("每日凌晨00：00重置");
-                mFragNoviceNote.setTextColor(getResources().getColor(R.color.nineninenine));
                 state = 1;
                 break;
             case R.id.frag_novice_dayshouyi:
@@ -204,7 +202,6 @@ public class FindNoviceFragment extends Fragment {
                 mFragNoviceDayshouyi.setTextSize(12);
                 mFragNoviceNote.setVisibility(View.VISIBLE);
                 mFragNoviceNote.setText("每日凌晨00：00重置");
-                mFragNoviceNote.setTextColor(getResources().getColor(R.color.nineninenine));
                 state = 2;
                 break;
             case R.id.frag_novice_monthshouyi:
@@ -213,7 +210,6 @@ public class FindNoviceFragment extends Fragment {
                 mFragNoviceNote.setVisibility(View.VISIBLE);
                 mFragNoviceImgvNote.setVisibility(View.VISIBLE);
                 mFragNoviceNote.setText("每月1日凌晨00:00重置");
-                mFragNoviceNote.setTextColor(getResources().getColor(R.color.home_txt));
                 state = 3;
                 break;
         }
@@ -221,12 +217,12 @@ public class FindNoviceFragment extends Fragment {
     }
 
     private void getData(int type) {
-        mLoadDialog.show();
+//        mLoadDialog.show();
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserTask(token, type), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                mLoadDialog.dismiss();
+//                mLoadDialog.dismiss();
                 if (mFragNoviceSmart != null)
                     mFragNoviceSmart.finishRefresh();
                 TaskBean bean = new Gson().fromJson(result.toString(), TaskBean.class);
@@ -244,7 +240,7 @@ public class FindNoviceFragment extends Fragment {
             @Override
             public void onErrorLIstener(String error) {
                 super.onErrorLIstener(error);
-                mLoadDialog.dismiss();
+//                mLoadDialog.dismiss();
                 mFragNoviceSmart.finishRefresh();
             }
         });

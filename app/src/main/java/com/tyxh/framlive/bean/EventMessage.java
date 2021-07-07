@@ -2,6 +2,7 @@ package com.tyxh.framlive.bean;
 
 public class EventMessage {
     public static final int PAY_SUCCESS =513;
+    public static final int ATTEN_SUCCESS =98513;
     private String message ="";
     private int code;
 

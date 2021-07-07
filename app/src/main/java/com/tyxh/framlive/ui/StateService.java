@@ -140,8 +140,13 @@ public class StateService extends Service {
         if (mWebSocketClient != null) {
             Map<String, Object> map = new HashMap<>();
             map.put("state", "4");//离线
-            mWebSocketClient.send(new Gson().toJson(map));
-            mWebSocketClient.close();
+            try {
+                mWebSocketClient.send(new Gson().toJson(map));
+                mWebSocketClient.close();
+            } catch (Exception e) {
+                Log.e(TAG, "run: "+e.toString() );
+            }
+
         }
         mHandler_socket.removeCallbacks(heartBeatRunnable);
     }

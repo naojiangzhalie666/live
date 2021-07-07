@@ -10,7 +10,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/showgoods_re">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -199,6 +199,7 @@
                         android:enabled="false"
                         android:textColor="@color/threethree"
                         android:textSize="11sp"
+                        android:hint="请输入针对人群"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/textView71"

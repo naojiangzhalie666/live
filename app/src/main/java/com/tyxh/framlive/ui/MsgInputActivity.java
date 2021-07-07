@@ -161,7 +161,7 @@ public class MsgInputActivity extends LiveBaseActivity {
 
     /*获取用户信息*/
     private void getUserInfo() {
-        EventBus.getDefault().post(new EventMessage(LIVE_UPDATE_CODE));
+//        EventBus.getDefault().post(new EventMessage(LIVE_UPDATE_CODE));
         DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ApiService.class).getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new CommonObserver<UserInfoBean>() {
             @Override
             public void onResult(UserInfoBean userInfoBean) {

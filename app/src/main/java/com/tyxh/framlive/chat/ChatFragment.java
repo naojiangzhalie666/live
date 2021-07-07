@@ -637,10 +637,10 @@ public class ChatFragment extends BaseFragment {
             Glide.with(getActivity()).load(user.getIco()).error(R.drawable.live_defaultimg).placeholder(R.drawable.live_defaultimg).into(mimgv_head);
             String interest = "";
             if(mType==1){//被聊人为普通用户---关注方向
-                mtv_content.setText("关注方向");
+                mtv_content.setText("关注方向:");
                 interest = user.getInterests();
             }else{//擅长方向---机构没有添加擅长方向的位置
-                mtv_content.setText("擅长方向");
+                mtv_content.setText("擅长方向:");
                 if(mType ==2){
                     List<UserDetailBean.RetDataBean.CounselorBeansBean> counselorBeans = data.getCounselorBeans();
                     if (counselorBeans != null && counselorBeans.size() > 0) {

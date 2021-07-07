@@ -143,6 +143,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 import static com.ljy.devring.http.support.throwable.HttpThrowable.HTTP_ERROR;
+import static com.tyxh.framlive.bean.EventMessage.ATTEN_SUCCESS;
 import static com.tyxh.framlive.bean.EventMessage.PAY_SUCCESS;
 import static com.tyxh.xzb.utils.TCConstants.IMCMD_CONTACT;
 import static com.tyxh.xzb.utils.TCConstants.IMCMD_DISCONTACT;
@@ -653,11 +654,12 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
                 mBgImageView.setVisibility(View.GONE);
                 mLiveRoom.sendRoomCustomMsg(String.valueOf(TCConstants.IMCMD_ENTER_LIVE), "", null);
-                    getLiveDate();
+                getLiveDate();
             }
         });
         mPlaying = true;
     }
+
     /*是否连麦检测*/
     private void getLiveDate() {
         Map<String, Object> map = new HashMap<>();
@@ -692,7 +694,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 mPuserLxUserid = pushers.get(1).userID;
                 onRecvRoomCustomMsg("", "", "", mPuserLxAvatar, String.valueOf(IMCMD_CONTACT), mPuserLxUserid);
                 mBtnLinkMic.setVisibility(View.GONE);
-            }else{
+            } else {
                 mBtnLinkMic.setVisibility(View.VISIBLE);
             }
         }
@@ -777,6 +779,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             }
         });
     }
+
     /*连麦成功后--加入推流*/
     private void joinPusher() {
 //        TCVideoView videoView = mVideoViewMgr.getFirstRoomView();
@@ -834,6 +837,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             }
         });
     }
+
     /*断开连麦*/
     private void stopLinkMic() {
         if (!mIsBeingLinkMic) return;
@@ -884,6 +888,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
 
     /**
      * 主播连麦成功后发送该自定义消息
+     *
      * @param is_lm true = 连麦中   false==中断连麦
      */
     private void sendContactMsg(boolean is_lm, String userid) {
@@ -994,6 +999,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     public void onAudienceExit(AudienceInfo audienceInfo) {
 
     }
+
     /*主播主动邀请连麦时的处理--回调方法*/
     @Override
     public void onRequestJoinAnchor(AnchorInfo pusherInfo, String reason) {
@@ -1059,6 +1065,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         TCSimpleUserInfo userInfo = new TCSimpleUserInfo(userID, userName, userAvatar);
         handleTextMsg(userInfo, message);
     }
+
     /*接收各种消息的回调*/
     @Override
     public void onRecvRoomCustomMsg(String roomID, String userID, String userName, String userAvatar, String cmd, String message) {
@@ -1153,8 +1160,10 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         stopLinkMic();
         showErrorAndQuit("10010");//10010代表房间已解散--直播已结束
     }
+
     /*处理意外Error的方法--被挤下去or主播意外断开直播*/
     JxqDialog mJxqDialog;
+
     @Override
     public void onError(int errorCode, String errorMessage, Bundle extraInfo) {
         if (errorCode == MLVBCommonDef.LiveRoomErrorCode.ERROR_IM_FORCE_OFFLINE) { // IM 被强制下线。
@@ -1990,6 +1999,8 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 mCarDialog.getMineAsset();
             }
             getMineAsset();
+        } else if (message.getCode() == ATTEN_SUCCESS) {//半屏聊天关注成功
+            isAttention();
         } else if (message.getCode() == 1005) {
             ToastUtil.showToast(this, "登录过期，请重新登录!");
             finish();
