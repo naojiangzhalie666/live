@@ -4,10 +4,12 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.StyleSpan;
@@ -40,6 +42,8 @@ import com.tyxh.framlive.utils.keyboard.NumberKeyboard;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,16 +75,23 @@ public class WithdrawalActivity extends LiveBaseActivity {
     ImageView mImgv_wechat;
     @BindView(R.id.tx_imgv_zfb)
     ImageView mImage_zfb;
+    @BindView(R.id.withdrawal_ptmoney)
+    TextView mImage_ptMoney;
+    @BindView(R.id.withdrawal_gsmoney)
+    TextView mImage_gsMoney;
+    @BindView(R.id.withdrawal_sjmoney)
+    TextView mImage_sjMoney;
 
 
     private KeyboardManager keyboardManagerNumber;
     private NumberKeyboard numberKeyboard;
     private double now_money = 0;
     private String now_mmey = "0";
-    private String text_twofive = "2. 审核成功后资金将在3个工作日内尽快转账，审核通过后3个工作日未到账，可向平台工作人员   反馈>";
+    private String text_twofive = "2. 本平台提现审核需3个工作日，审核成功后资金将在3个工作日内尽快转账，审核通过后3个工作日未到账，可向平台工作人员  反馈>";
     private String text_twoeight = "5. 微信提现需确保打开相关功能，请看详情";
     private int select_what = 1;//  1  微信  2支付宝
     private GuideDialog mGuideDig_kf, mGuideDig_wechat;
+    private double tx_lowermoney =30;
 
 
     @Override
@@ -97,6 +108,37 @@ public class WithdrawalActivity extends LiveBaseActivity {
         setTextContent();
         getMineAsset();
 //        initKeyBoard();
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!TextUtils.isEmpty(charSequence)){
+                    DecimalFormat d_for = new DecimalFormat("0.00");
+                    BigDecimal tx_exp = new BigDecimal(charSequence.toString());
+                    BigDecimal bg_pt =new BigDecimal("0.001");//平台手续费
+                    BigDecimal bg_sf =new BigDecimal("0.1");//个人税率
+                    BigDecimal pt_money = tx_exp.multiply(bg_pt);
+                    BigDecimal sf_money = tx_exp.subtract(pt_money).multiply(bg_sf);
+                    mImage_ptMoney.setText(d_for.format(pt_money)+"元");
+                    mImage_gsMoney.setText(d_for.format(sf_money)+"元");
+                    mImage_sjMoney.setText(d_for.format(tx_exp.subtract(pt_money).subtract(sf_money))+"元");
+                }else{
+                    mImage_ptMoney.setText("0.00元");
+                    mImage_gsMoney.setText("0.00元");
+                    mImage_sjMoney.setText("0.00元");
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
     }
 
@@ -115,12 +157,16 @@ public class WithdrawalActivity extends LiveBaseActivity {
                 select_what = 1;
                 mImage_zfb.setImageResource(R.drawable.tx_nse);
                 mImgv_wechat.setImageResource(R.drawable.tx_se);
+                mEdt_name.setHint("请输入您微信绑定的身份证姓名");
+                mEdt_zhanghao.setHint("请输入您的手机号");
                 break;
             case R.id.tx_imgv_zfb:
             case R.id.tx_tv_zfb:
                 select_what = 2;
                 mImage_zfb.setImageResource(R.drawable.tx_se);
                 mImgv_wechat.setImageResource(R.drawable.tx_nse);
+                mEdt_name.setHint("请输入您支付宝绑定的身份证姓名");
+                mEdt_zhanghao.setHint("请输入您的支付宝账号");
                 break;
             case R.id.button:
                 toWithDraw();
@@ -129,22 +175,26 @@ public class WithdrawalActivity extends LiveBaseActivity {
     }
 
     /*申请提现
-    * select_what 1:微信  2：支付宝
-    * */
+     * select_what 1:微信  2：支付宝
+     * */
     private void toWithDraw() {
         String money = mEditText.getText().toString();
         String zhangh = mEdt_zhanghao.getText().toString();
         String name = mEdt_name.getText().toString();
-        if (TextUtils.isEmpty(money)||Double.parseDouble(money)==0) {
+        if (TextUtils.isEmpty(money) || Double.parseDouble(money) == 0) {
             ToastShow("请输入提现金额");
             return;
         }
+        if(Double.parseDouble(money)<tx_lowermoney){
+            ToastShow("最低提现不能少于30元");
+            return;
+        }
         if (TextUtils.isEmpty(zhangh)) {
-            ToastShow("请输入帐号");
+            ToastShow( select_what == 1 ? "请输入您的手机号" : "请输入您的支付宝账号");//select_what 1:微信  2：支付宝
             return;
         }
         if (TextUtils.isEmpty(name)) {
-            ToastShow("请输入您的真实姓名");
+            ToastShow( select_what == 1 ? "请输入您微信绑定的身份证姓名" : "请输入您支付宝绑定的身份证姓名");//select_what 1:微信  2：支付宝
             return;
         }
         Map<String, Object> map = new HashMap<>();
@@ -160,11 +210,11 @@ public class WithdrawalActivity extends LiveBaseActivity {
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
                 hideLoad();
-                BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
-                if(baseBean.getRetCode() ==0){
+                BaseBean baseBean = new Gson().fromJson(result.toString(), BaseBean.class);
+                if (baseBean.getRetCode() == 0) {
                     getMineAsset();
                     Toast.makeText(WithdrawalActivity.this, "提现申请已提交,将在3个工作日内尽快转账", Toast.LENGTH_LONG).show();
-                }else {
+                } else {
                     ToastShow(baseBean.getRetMsg());
                 }
             }
@@ -219,7 +269,7 @@ public class WithdrawalActivity extends LiveBaseActivity {
             @Override
             public void updateDrawState(@NonNull TextPaint drawState) {
                 super.updateDrawState(drawState);
-                drawState.setColor(Color.parseColor("#0DACF6"));
+                drawState.setColor(Color.parseColor("#0A57AF"));
                 drawState.setUnderlineText(false);
                 drawState.clearShadowLayer();
             }
@@ -241,7 +291,7 @@ public class WithdrawalActivity extends LiveBaseActivity {
             @Override
             public void updateDrawState(@NonNull TextPaint drawState) {
                 super.updateDrawState(drawState);
-                drawState.setColor(Color.parseColor("#0DACF6"));
+                drawState.setColor(Color.parseColor("#0A57AF"));
                 drawState.setUnderlineText(false);
                 drawState.clearShadowLayer();
             }

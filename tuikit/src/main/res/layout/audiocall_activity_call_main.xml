@@ -24,8 +24,8 @@
         android:id="@+id/group_inviting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="tv_inviting_tag,ll_img_container"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:constraint_referenced_ids="tv_inviting_tag,ll_img_container" />
 
     <TextView
         android:id="@+id/tv_inviting_tag"
@@ -139,11 +139,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.98084813" />
+
     <include
         android:id="@+id/audience_include"
         layout="@layout/dig_lm_note"
+        android:layout_width="111dp"
+        android:layout_height="wrap_content"
         android:visibility="gone"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

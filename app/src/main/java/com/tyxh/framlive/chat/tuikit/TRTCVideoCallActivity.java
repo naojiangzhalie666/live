@@ -3,6 +3,7 @@ package com.tyxh.framlive.chat.tuikit;
 import android.Manifest;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -582,6 +583,16 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
         mSponsorGroup = (Group) findViewById(R.id.group_sponsor);
         view_include = findViewById(R.id.audience_include);
         mDigLmTm = findViewById(R.id.dig_lm_tm);
+        mDigCz = findViewById(com.tyxh.framlive.R.id.textView143);
+        mDigCz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mUseWhatDialog!=null){
+                    getUseData(false/*true,true*/);
+                }
+//                startActivity(new Intent(TCAudienceActivity.this, BuyzActivity.class));
+            }
+        });
     }
 
 
@@ -790,7 +801,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     private UserInfoBean mUserInfo;
     private String mToken;
     private View view_include;               //充值提醒
-    TextView mDigLmTm;
+    TextView mDigLmTm,mDigCz;
     private int mPower;
 
     /*获取可用于连麦的列表--卡、包、钻*/
@@ -833,6 +844,14 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                                     joinPusher();
                                 }
                             }*/
+                        }
+                    });
+                    mUseWhatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            if(!is_bed&& select_bean == null){
+                                view_include.setVisibility(View.VISIBLE);
+                            }
                         }
                     });
                 }else{
@@ -1033,14 +1052,24 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                         Toast.makeText(TRTCVideoCallActivity.this, "已断开连线", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if (mLeft_second - mSecond == 60) {
-                        view_include.setVisibility(View.GONE);
+
+                    if (mLeft_second - mSecond == 60) {//60秒进行充值提醒
                         getUseData(false/*true,true*/);
+                    }else if(mLeft_second - mSecond <= 60 && select_bean == null) {
+                        if(mUseWhatDialog!=null&&!mUseWhatDialog.isShowing())
+                            view_include.setVisibility(View.VISIBLE);
+                    } else {
+                        view_include.setVisibility(View.GONE);
+                    }
+
+                   /* if (mLeft_second - mSecond == 60) {
+                        view_include.setVisibility(View.GONE);
+                        getUseData(false*//*true,true*//*);
                     } else if (mLeft_second - mSecond <= 30 && proType == 4&&select_bean==null) {//30秒且为钻石消耗时进行充值提醒
                         view_include.setVisibility(View.VISIBLE);
                     }else {
                         view_include.setVisibility(View.GONE);
-                    }
+                    }*/
                 }
             });
         }

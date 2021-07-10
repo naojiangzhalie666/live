@@ -74,11 +74,13 @@ color input_title_line_color
 color item_split_color
 color line
 color list_bottom_text_bg
+color login_txt
 color navigation_bar_color
 color negative_text
 color partTranslucent
 color positive_text
 color read_dot_bg
+color setin_se
 color slide_bar_hint_color
 color split_lint_color
 color status_bar_color
@@ -133,6 +135,8 @@ drawable add_group_member
 drawable alert_bg
 drawable arrow_right
 drawable bg_button_border
+drawable bg_corner_home
+drawable bg_corner_homea_child
 drawable bg_divider
 drawable bg_handsfree
 drawable bg_mute_mic
@@ -311,7 +315,6 @@ id dialog_content
 id dialog_editor
 id dialog_sure_btn
 id dialog_title
-id dig_lm_imgv
 id dig_lm_tm
 id edit_content_et
 id edit_title_bar

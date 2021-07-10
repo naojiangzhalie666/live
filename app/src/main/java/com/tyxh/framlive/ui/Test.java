@@ -1,6 +1,7 @@
 package com.tyxh.framlive.ui;
 
-import java.util.Random;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class Test {
     private static int pushId = 9;
@@ -11,7 +12,15 @@ public class Test {
 //        System.out.println(pushId+"");
 //        System.out.println(""+ formatSeconds(66));
 //        System.out.println(Integer.valueOf(now_time));
-        System.out.println(new Random(1).nextInt(51));
+//        System.out.println(new Random(1).nextInt(51));
+        String str = "你好";
+        try {
+            String result = URLEncoder.encode(str, "utf-8");
+            System.out.println(result);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

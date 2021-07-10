@@ -17,7 +17,6 @@ import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.LiveCotctBean;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.chat.BaseChatActivity;
-import com.tyxh.framlive.pop_dig.BuyzActivity;
 import com.tyxh.framlive.pop_dig.UseWhatDialog;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.TitleUtils;
@@ -93,7 +92,7 @@ public class TestTwoActivity extends BaseChatActivity {
     }
 
 
-    @OnClick({R.id.textView58, R.id.textView129, R.id.dig_lm_imgv})
+    @OnClick({R.id.textView58, R.id.textView129})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textView58:
@@ -101,9 +100,6 @@ public class TestTwoActivity extends BaseChatActivity {
                 break;
             case R.id.textView129:
                 getUseData();
-                break;
-            case R.id.dig_lm_imgv:
-                startActivity(new Intent(this, BuyzActivity.class));
                 break;
         }
     }

@@ -99,6 +99,7 @@ public interface ApiService {
 
     /**
      * 直播列表
+     *
      * @param mtoken 自己的TOKEN
      * @return
      */
@@ -108,6 +109,7 @@ public interface ApiService {
 
     /**
      * 获取要观看的直播数据
+     *
      * @param mtoken 自己的TOKEN
      * @return
      */
@@ -115,8 +117,9 @@ public interface ApiService {
     @POST("liveController/getRoomInfo")
     Observable<JSONObject> getRoomData(@Header("Authorization") String mtoken, @Body RequestBody body);
 
-  /**
+    /**
      * 观众观看直播时调用--累计人数
+     *
      * @param mtoken 自己的TOKEN
      * @return
      */
@@ -359,7 +362,7 @@ public interface ApiService {
     Observable<JSONObject> patchCouimg(@Header("Authorization") String token, @Body RequestBody body);
 
     /**
-     * 收益兑钻时候的钻石列表
+     * 充值列表
      *
      * @param token
      * @param page     页码
@@ -369,6 +372,16 @@ public interface ApiService {
      */
     @GET("diamondBagController/getDiamondFe/{page}/{size}/{platform}")
     Observable<JSONObject> getDiamaond(@Header("Authorization") String token, @Path("page") String page, @Path("size") String size, @Path("platform") String platform);
+
+    /**
+     * 收益兑钻时候的钻石列表
+     *
+     * @param token
+     * @param platform 1 ios  2 android
+     * @return
+     */
+    @GET("diamondBagController/getNonFirstCharge")
+    Observable<JSONObject> getNonFirstCharge(@Header("Authorization") String token, @Query("platform") String platform);
 
     /**
      * 收益兑钻
@@ -411,6 +424,7 @@ public interface ApiService {
 
     /**
      * 获取支付订单
+     *
      * @param token
      * @param body  diamondId-钻石包id  remark--备注。。。 购买一元活动礼包时传actId =1 其它时候不传
      * @return

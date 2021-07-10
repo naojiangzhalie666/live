@@ -12,14 +12,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import com.tyxh.xzb.Constantc;
-import com.tyxh.xzb.utils.http.HttpRequests;
-import com.tyxh.xzb.utils.http.HttpResponse;
-import com.tyxh.xzb.utils.im.IMMessageMgr;
-import com.tyxh.xzb.utils.roomutil.AnchorInfo;
-import com.tyxh.xzb.utils.roomutil.AudienceInfo;
-import com.tyxh.xzb.utils.roomutil.LoginInfo;
-import com.tyxh.xzb.utils.roomutil.RoomInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.imsdk.TIMUserProfile;
@@ -35,13 +27,23 @@ import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.TXLivePushConfig;
 import com.tencent.rtmp.TXLivePusher;
 import com.tencent.rtmp.ui.TXCloudVideoView;
+import com.tyxh.xzb.Constantc;
+import com.tyxh.xzb.utils.http.HttpRequests;
+import com.tyxh.xzb.utils.http.HttpResponse;
+import com.tyxh.xzb.utils.im.IMMessageMgr;
+import com.tyxh.xzb.utils.roomutil.AnchorInfo;
+import com.tyxh.xzb.utils.roomutil.AudienceInfo;
+import com.tyxh.xzb.utils.roomutil.LoginInfo;
+import com.tyxh.xzb.utils.roomutil.RoomInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -374,7 +376,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
      * @param callback 创建房间的结果回调
      */
     @Override
-    public void createRoom(final String roomID, final String roomInfo, final IMLVBLiveRoomListener.CreateRoomCallback callback) {
+    public void createRoom(final String roomID, final String roomInfo,final String title, final IMLVBLiveRoomListener.CreateRoomCallback callback) {
         TXCLog.i(TAG, "API -> createRoom:" + roomID + ":" + roomInfo);
         mSelfRoleType = LIVEROOM_ROLE_PUSHER;
 
@@ -386,7 +388,13 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             @Override
             public void onResponse(int retcode, String retmsg, HttpResponse.PushUrl data) {
                 if (retcode == HttpResponse.CODE_OK && data != null && data.pushURL != null) {
-                    data.pushURL+="&type=1";
+                    String title_result = "";
+                    try {
+                        title_result = URLEncoder.encode(title, "utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        Log.e(TAG, "onResponse: title 编码错误");
+                    }
+                    data.pushURL+="&type=1&title="+title_result;
                     final String pushURL = data.pushURL;
                     mSelfPushUrl = data.pushURL;
                     mSelfAccelerateURL = data.accelerateURL;

@@ -23,18 +23,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/title"
-            android:paddingTop="@dimen/title_top"
-            android:paddingRight="@dimen/dp_20"
             android:layout_alignBottom="@+id/title"
             android:paddingLeft="@dimen/dp_12"
+            android:paddingTop="@dimen/title_top"
+            android:paddingRight="@dimen/dp_20"
             app:srcCompat="@drawable/back" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:paddingTop="@dimen/title_top"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/title_top"
             android:text="提现"
             android:textColor="@color/black"
             android:textSize="@dimen/titile_size" />
@@ -50,8 +50,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-          >
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/con_one"
@@ -81,9 +80,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:layout_marginBottom="15dp"
                     android:src="@drawable/tx_se"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tx_imgv_zfb"
@@ -147,18 +146,17 @@
                 android:paddingBottom="@dimen/dp_15"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/con_one"
->
+                app:layout_constraintTop_toBottomOf="@+id/con_one">
 
                 <TextView
                     android:id="@+id/textView75"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="19dp"
+                    android:layout_marginStart="@dimen/dp_10"
                     android:layout_marginTop="32dp"
                     android:text="提现金额"
                     android:textColor="@color/black_oneeight"
-                    android:textSize="11sp"
+                    android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -166,55 +164,88 @@
                     android:id="@+id/textView76"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="16dp"
                     android:text="￥"
                     android:textColor="@color/black"
-                    android:textSize="33sp"
+                    android:textSize="35sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/textView75"
-                    app:layout_constraintTop_toTopOf="@+id/withdra_edt" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView75" />
 
                 <EditText
                     android:id="@+id/withdra_edt"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="34dp"
                     android:background="@null"
-                    android:hint="提现金额"
+                    android:hint="请输入您想提现的金额"
+                    android:inputType="number|numberDecimal"
                     android:lines="1"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_5"
                     android:textColor="@color/black"
                     android:textColorHint="@color/efiveefive"
-                    android:inputType="number|numberDecimal"
-                    android:textSize="40sp"
-                    android:textStyle="bold"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView76"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView76"
-                    app:layout_constraintTop_toBottomOf="@+id/textView75" />
+                    app:layout_constraintStart_toEndOf="@+id/textView76" />
 
                 <View
                     android:id="@+id/textView78"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_1"
-                    android:layout_marginStart="34dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="34dp"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
                     android:background="@color/ftwo"
                     android:text="TextView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/withdra_edt" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView76" />
 
                 <TextView
                     android:id="@+id/withdrawal_nowmoney"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_8"
                     android:textColor="@color/nineninenine"
                     android:textSize="11sp"
                     app:layout_constraintStart_toStartOf="@+id/textView78"
                     app:layout_constraintTop_toBottomOf="@+id/textView78"
                     tools:text="当前零钱余额14863.22元，" />
+
+                <TextView
+                    android:id="@+id/withdrawal_nowmoney2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:text="平台手续费 "
+                    android:textColor="@color/nineninenine"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toStartOf="@+id/textView78"
+                    app:layout_constraintTop_toBottomOf="@+id/withdrawal_nowmoney" />
+
+                <TextView
+                    android:id="@+id/withdrawal_nowmoney3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:text="个税费用 "
+                    android:textColor="@color/nineninenine"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toStartOf="@+id/textView78"
+                    app:layout_constraintTop_toBottomOf="@+id/withdrawal_nowmoney2" />
+
+                <TextView
+                    android:id="@+id/withdrawal_nowmoney4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:text="实际到账 "
+                    android:textColor="@color/nineninenine"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toStartOf="@+id/textView78"
+                    app:layout_constraintTop_toBottomOf="@+id/withdrawal_nowmoney3" />
 
                 <TextView
                     android:id="@+id/withdrawal_alltix"
@@ -227,6 +258,52 @@
                     android:textStyle="bold"
                     app:layout_constraintBaseline_toBaselineOf="@+id/withdrawal_nowmoney"
                     app:layout_constraintStart_toEndOf="@+id/withdrawal_nowmoney" />
+
+                <TextView
+                    android:id="@+id/withdrawal_ptmoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_4"
+                    android:text="0.00元"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="11sp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/withdrawal_nowmoney2"
+                    app:layout_constraintStart_toEndOf="@+id/withdrawal_nowmoney2" />
+
+                <TextView
+                    android:id="@+id/withdrawal_gsmoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_4"
+                    android:text="0.00元"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="11sp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/withdrawal_nowmoney3"
+                    app:layout_constraintStart_toEndOf="@+id/withdrawal_nowmoney3" />
+
+                <TextView
+                    android:id="@+id/withdrawal_sjmoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_4"
+                    android:text="0.00元"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="11sp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/withdrawal_nowmoney4"
+                    app:layout_constraintStart_toEndOf="@+id/withdrawal_nowmoney4" />
+
+                <TextView
+                    android:id="@+id/withdrawal_tx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="最低提现金额30元"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:textColor="@color/nineninenine"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toStartOf="@+id/withdrawal_nowmoney4"
+                    app:layout_constraintTop_toBottomOf="@+id/withdrawal_nowmoney4" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -246,7 +323,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="19dp"
-                    android:layout_marginTop="22dp"
+                    android:paddingTop="@dimen/dp_22"
                     android:text="账号："
                     android:textColor="@color/sixsixsix"
                     android:textSize="13sp"
@@ -257,7 +334,7 @@
                     android:id="@+id/textView74"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="19dp"
+                    android:paddingTop="@dimen/dp_19"
                     android:text="真实姓名："
                     android:textColor="@color/sixsixsix"
                     android:textSize="13sp"
@@ -280,27 +357,31 @@
                 <EditText
                     android:id="@+id/witdraw_zhangh"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:background="@null"
-                    android:hint="帐号"
+                    android:hint="请输入您的手机号"
+                    android:paddingTop="@dimen/dp_22"
                     android:textColor="@color/black"
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView72"
                     app:layout_constraintEnd_toEndOf="@+id/textView77"
-                    app:layout_constraintStart_toStartOf="@+id/witdraw_name" />
+                    app:layout_constraintStart_toStartOf="@+id/witdraw_name"
+                    app:layout_constraintTop_toTopOf="@+id/textView72" />
 
                 <EditText
                     android:id="@+id/witdraw_name"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginStart="16dp"
                     android:background="@null"
-                    android:hint="请输入您的真实姓名"
+                    android:hint="请输入您微信绑定的身份证姓名"
+                    android:paddingTop="@dimen/dp_19"
                     android:textColor="@color/black"
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView74"
                     app:layout_constraintEnd_toEndOf="@+id/textView77"
-                    app:layout_constraintStart_toEndOf="@+id/textView74" />
+                    app:layout_constraintStart_toEndOf="@+id/textView74"
+                    app:layout_constraintTop_toTopOf="@+id/textView74" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
@@ -323,8 +404,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_28"
-                android:paddingBottom="@dimen/dp_20"
                 android:layout_marginRight="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button">
@@ -360,10 +441,10 @@
                     android:lineSpacingExtra="@dimen/dp_4"
                     android:textColor="@color/nineninenine"
                     android:textSize="11sp"
-                    tools:text="2."
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView124" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView124"
+                    tools:text="2." />
 
                 <TextView
                     android:id="@+id/textView126"
@@ -384,7 +465,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:lineSpacingExtra="@dimen/dp_4"
-                    android:text="4. 提现将收取0.10%服务费。"
+                    android:text="4. 本平台提现将收取0.10%服务费，10%的个人所得税。"
                     android:textColor="@color/nineninenine"
                     android:textSize="11sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -399,10 +480,10 @@
                     android:lineSpacingExtra="@dimen/dp_4"
                     android:textColor="@color/nineninenine"
                     android:textSize="11sp"
-                    tools:text="5."
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView127" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView127"
+                    tools:text="5." />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -107,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dp_6"
-        android:text="充值代表已阅读并同意"
+        android:text="重置前请您先阅读并同意"
         android:textColor="@color/nineninenine"
         android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@+id/login_cbxieyi"

@@ -151,9 +151,10 @@ public abstract class MLVBLiveRoom {
      *
      * @param roomID 房间标识，推荐做法是用主播的 userID 作为房间的 roomID，这样省去了后台映射的成本。room ID 可以填空，此时由后台生成。
      * @param roomInfo 房间信息（非必填），用于房间描述的信息，比如房间名称，允许使用 JSON 格式作为房间信息。
+     * @param title 房间标题
      * @param callback 创建房间的结果回调
      */
-    public abstract void createRoom(final String roomID, final String roomInfo, final IMLVBLiveRoomListener.CreateRoomCallback callback);
+    public abstract void createRoom(final String roomID, final String roomInfo,final String title, final IMLVBLiveRoomListener.CreateRoomCallback callback);
 
     /**
      * 进入房间（观众调用）

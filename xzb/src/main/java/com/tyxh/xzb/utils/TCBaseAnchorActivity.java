@@ -354,7 +354,7 @@ public class TCBaseAnchorActivity extends Activity implements IMLVBLiveRoomListe
             roomInfo = mTitle;
         }
 
-        mLiveRoom.createRoom("", roomInfo, new IMLVBLiveRoomListener.CreateRoomCallback() {
+        mLiveRoom.createRoom("", roomInfo,"", new IMLVBLiveRoomListener.CreateRoomCallback() {
             @Override
             public void onSuccess(String roomId) {
                 Log.w(TAG, String.format("创建直播间%s成功", roomId));

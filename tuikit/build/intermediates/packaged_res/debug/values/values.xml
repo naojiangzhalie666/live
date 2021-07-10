@@ -336,9 +336,11 @@
     <color name="item_split_color">#cccccc</color>
     <color name="line">#DDDDDD</color>
     <color name="list_bottom_text_bg">#999999</color>
+    <color name="login_txt">#F7D4B6</color>
     <color name="navigation_bar_color">#F6F6F6</color>
     <color name="partTranslucent">#39000000</color>
     <color name="read_dot_bg">#f74c31</color>
+    <color name="setin_se">#417F77</color>
     <color name="slide_bar_hint_color">#CCCCCC</color>
     <color name="split_lint_color">#D9D9D9</color>
     <color name="status_bar_color">#EDEDED</color>

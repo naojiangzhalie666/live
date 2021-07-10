@@ -2,6 +2,7 @@ package com.tyxh.framlive.live;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -292,7 +293,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             user_jigou = intent.getStringExtra(Constant.LIVE_JGNAME);
         }
         mUserId = TCUserMgr.getInstance().getUserId();
-        mNickname = TCUserMgr.getInstance().getNickname();
+        mNickname = mUserInfo.getRetData().getNickname();
 //        mAvatar = TCUserMgr.getInstance().getAvatar();
         mAvatar = mUserInfo.getRetData().getIco();
         mCoverUrl = getIntent().getStringExtra(TCConstants.COVER_PIC);
@@ -389,7 +390,10 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         mDigCz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(TCAudienceActivity.this, BuyzActivity.class));
+                if(mUseWhatDialog!=null){
+                    getUseData(true, true, null);
+                }
+//                startActivity(new Intent(TCAudienceActivity.this, BuyzActivity.class));
             }
         });
     }
@@ -2052,6 +2056,14 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                             }
                         }
                     });
+                    mUseWhatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            if(is_twice&& select_bean == null){
+                                view_include.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
                 } else {
                     ToastUtil.showToast(TCAudienceActivity.this, bean.getRetMsg());
                 }
@@ -2254,14 +2266,23 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                         Toast.makeText(TCAudienceActivity.this, "已断开连线", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if (mLeft_second - mSecond == 60) {
+                   if (mLeft_second - mSecond == 60) {//60秒进行充值提醒
+                        getUseData(true, true, null);
+                    }else if(mLeft_second - mSecond <= 60 && select_bean == null) {
+                       if(mUseWhatDialog!=null&&!mUseWhatDialog.isShowing())
+                       view_include.setVisibility(View.VISIBLE);
+                   } else {
+                        view_include.setVisibility(View.GONE);
+                    }
+                  /*  //30秒且为钻石消耗时进行充值提醒
+                  if (mLeft_second - mSecond == 60) {
                         view_include.setVisibility(View.GONE);
                         getUseData(true, true, null);
                     } else if (mLeft_second - mSecond <= 30 && proType == 4 && select_bean == null) {//30秒且为钻石消耗时进行充值提醒
                         view_include.setVisibility(View.VISIBLE);
                     } else {
                         view_include.setVisibility(View.GONE);
-                    }
+                    }*/
                 }
             });
         }

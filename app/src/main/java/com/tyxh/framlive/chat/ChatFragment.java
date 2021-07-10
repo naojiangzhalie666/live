@@ -140,7 +140,8 @@ public class ChatFragment extends BaseFragment {
         mService_strs = new ArrayList<>();
 
         mSjbg_strs = new ArrayList<>();
-
+        TUIKitConfigs.getConfigs().getGeneralConfig().setUserNickname(mUserInfo.getRetData().getNickname());
+        TUIKitConfigs.getConfigs().getGeneralConfig().setUserFaceUrl(mUserInfo.getRetData().getIco());
         mcon_tp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -17,6 +17,7 @@ import com.tyxh.framlive.base.LiveBaseActivity;
 import com.tyxh.framlive.bean.AssetBean;
 import com.tyxh.framlive.bean.BaseBean;
 import com.tyxh.framlive.bean.DiamondBean;
+import com.tyxh.framlive.bean.DiamondNewBean;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.UserInfoBean;
 import com.tyxh.framlive.pop_dig.RemindDialog;
@@ -124,14 +125,14 @@ public class ExchangeActivity extends LiveBaseActivity {
     }
 
     private void getData() {
-        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getDiamaond(token, "1", "100", "2"), new HttpBackListener() {
+        LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getNonFirstCharge(token, "2"), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
-                DiamondBean bean = new Gson().fromJson(result.toString(), DiamondBean.class);
+                DiamondNewBean bean = new Gson().fromJson(result.toString(), DiamondNewBean.class);
                 if (bean.getRetCode() == 0) {
                     mStringList.clear();
-                    mStringList.addAll(bean.getRetData().getList());
+                    mStringList.addAll(bean.getRetData());
                     mExchangeAdapter.notifyDataSetChanged();
                 } else {
                     ToastShow(bean.getRetMsg());
