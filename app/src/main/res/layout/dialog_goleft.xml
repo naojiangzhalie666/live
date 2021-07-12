@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/goleft_constr"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/goleft_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="刚刚有人连麦成功了哦"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingLeft="@dimen/dp_18"
+        android:paddingRight="@dimen/dp_18"
+        android:textSize="16sp"
+        android:textColor="@color/home_txt"
+        android:background="@drawable/personal_grad"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

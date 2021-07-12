@@ -152,16 +152,15 @@ public class MailListActivity extends LiveBaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(mMailTxlthreee.getVisibility()==View.VISIBLE){
+        if (mMailTxlthreee.getVisibility() == View.VISIBLE) {
             getZxsList();
-        }else if(mMailTxlonee.getVisibility() ==View.VISIBLE){
+        } else if (mMailTxlonee.getVisibility() == View.VISIBLE) {
             if (is_user) {
                 getWodGz();
             } else {
                 getGzmine();
             }
-            toGoAnima(mMailTxlonee);
-        }else{
+        } else {
             getWodGz();
         }
 
@@ -257,6 +256,7 @@ public class MailListActivity extends LiveBaseActivity {
     /*关注我的--我的粉丝*/
     private void getGzmine() {
         showLoad();
+        toGoAnima(mMailTxlonee);
         list_gzmine.clear();
         mMailTvNodata.setVisibility(View.GONE);
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getAttentionMe(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {

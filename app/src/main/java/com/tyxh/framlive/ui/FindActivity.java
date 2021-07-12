@@ -119,6 +119,11 @@ public class FindActivity extends LiveBaseActivity {
                     case 1:
                     case 3:
                     case 4:
+                        String id = user_Info.getRetData().getId();
+                        if (id.equals(listBean.getUser_id() + "")) {
+                            ToastShow("不能和自己聊天");
+                            return;
+                        }
                         startChatActivity(listBean.getName(), listBean.getUser_id() + "");
                         break;
                 }
@@ -156,7 +161,7 @@ public class FindActivity extends LiveBaseActivity {
                 hideLoad();
                 LiveOneBean bean = new Gson().fromJson(result.toString(), LiveOneBean.class);
                 if (bean.getRetCode() == 0) {
-                    toGoLive( LiveDateZh.getMineVideo(bean.getRetData()));
+                    toGoLive(LiveDateZh.getMineVideo(bean.getRetData()));
                 } else {
                     Toast.makeText(FindActivity.this, bean.getRetMsg(), Toast.LENGTH_LONG).show();
                 }
@@ -170,12 +175,12 @@ public class FindActivity extends LiveBaseActivity {
         });
     }
 
-    private void toGoLive(MineTCVideoInfo item){
-        startActivityForResult(LiveDateZh.startPlay(item,this), 100);
+    private void toGoLive(MineTCVideoInfo item) {
+        startActivityForResult(LiveDateZh.startPlay(item, this), 100);
     }
 
 
-    @OnClick({R.id.find_back,R.id.find_type, R.id.find_state})
+    @OnClick({R.id.find_back, R.id.find_type, R.id.find_state})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.find_back:
@@ -293,11 +298,19 @@ public class FindActivity extends LiveBaseActivity {
         mPicker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int index, String item) {
-                switch (index){
-                    case 0: query_state ="3";break;
-                    case 1:query_state ="2";break;
-                    case 2:query_state="1";break;
-                    case 3:query_state="4";break;
+                switch (index) {
+                    case 0:
+                        query_state = "3";
+                        break;
+                    case 1:
+                        query_state = "2";
+                        break;
+                    case 2:
+                        query_state = "1";
+                        break;
+                    case 3:
+                        query_state = "4";
+                        break;
                 }
                 select_pos = index;
                 view_nodata.setVisibility(View.GONE);

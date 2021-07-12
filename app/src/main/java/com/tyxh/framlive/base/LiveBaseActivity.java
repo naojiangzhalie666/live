@@ -2,13 +2,16 @@ package com.tyxh.framlive.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.ljy.devring.DevRing;
 import com.superc.yyfflibrary.base.BaseActivity;
 import com.superc.yyfflibrary.utils.ToastUtil;
+import com.tyxh.framlive.R;
 import com.tyxh.framlive.bean.EventMessage;
 import com.tyxh.framlive.bean.UserInfoBean;
+import com.tyxh.framlive.pop_dig.GoleftPopWindow;
 import com.tyxh.framlive.pop_dig.JxqDialog;
 import com.tyxh.framlive.pop_dig.LoadDialog;
 import com.tyxh.framlive.ui.LoginActivity;
@@ -31,6 +34,7 @@ public abstract class LiveBaseActivity extends BaseActivity implements IMLVBLive
     public String token = "";
     public UserInfoBean user_Info;
     private JxqDialog mJxqDialog;
+    private GoleftPopWindow mGoleftPopWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +46,11 @@ public abstract class LiveBaseActivity extends BaseActivity implements IMLVBLive
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
 
+    }
+
+    public void showPop() {
+        mGoleftPopWindow = GoleftPopWindow.getInstance(this, LayoutInflater.from(this).inflate(R.layout.dialog_goleft, null));
+        mGoleftPopWindow.show("刚刚有个人连麦成功了哦");
     }
 
     @Override
