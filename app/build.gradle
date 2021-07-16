@@ -19,8 +19,8 @@ android {
         applicationId "com.tyxh.framlive"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 9
-        versionName "1.0.8"
+        versionCode 11
+        versionName "1.0.11"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

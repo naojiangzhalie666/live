@@ -51,7 +51,6 @@
         android:layout_height="@dimen/dp_55"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginTop="@dimen/dp_10"
-        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_cz_title"
         app:srcCompat="@drawable/man_se" />

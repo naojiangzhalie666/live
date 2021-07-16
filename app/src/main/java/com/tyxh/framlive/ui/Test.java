@@ -1,7 +1,9 @@
 package com.tyxh.framlive.ui;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import com.tyxh.framlive.utils.Common.util.DateUtils;
+import com.tyxh.framlive.utils.LiveDateUtil;
+
+import java.util.Date;
 
 public class Test {
     private static int pushId = 9;
@@ -13,14 +15,18 @@ public class Test {
 //        System.out.println(""+ formatSeconds(66));
 //        System.out.println(Integer.valueOf(now_time));
 //        System.out.println(new Random(1).nextInt(51));
-        String str = "你好";
-        try {
-            String result = URLEncoder.encode(str, "utf-8");
-            System.out.println(result);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
+//        String str = "你好";
+//        try {
+//            String result = URLEncoder.encode(str, "utf-8");
+//            System.out.println(result);
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+        Date st_da= DateUtils.parseDate("2021-07-16 11:05:12");
+        Date ed_da =new Date();
+        long second = ed_da.getTime()-st_da.getTime();
+        String time = LiveDateUtil.formatSeconds(second/1000);
+        System.out.println("秒钟："+second/1000+"  时间"+time);
     }
 
 

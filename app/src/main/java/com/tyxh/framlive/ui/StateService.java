@@ -18,12 +18,13 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tyxh.framlive.base.Constant.URL_DEFAULT;
 import static com.tyxh.framlive.base.Constant.USER_STATE;
 
 public class StateService extends Service {
     private static final String TAG = "StateService";
     private String mUserId;
-    private String state_soc = "wss://appshop.bkxinli.com/portal/websocket/";
+    private String state_soc = "wss:"+URL_DEFAULT+"portal/websocket/";
 
     public StateService() {
     }

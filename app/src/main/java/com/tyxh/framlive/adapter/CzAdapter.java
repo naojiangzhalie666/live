@@ -8,9 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.bean.OrderBean;
 
@@ -60,13 +58,13 @@ public class CzAdapter extends RecyclerView.Adapter<CzAdapter.ViewHolder> {
         }*/
         OrderBean.RetDataBean.ListBean.DiamondBagBean diamondBag = bean.getDiamondBag();
         RoundedCorners roundedCorners = new RoundedCorners(15);
-        Glide.with(mContext).load(R.drawable.live_defaultimg).apply(new RequestOptions().transform(new CenterCrop(), roundedCorners)).into(vh.mItemCzHead);
-        vh.mItemCzZsnum.setText("钻石数量：" + diamondBag.getProNum());
+        Glide.with(mContext).load(R.drawable.order_zuans).into(vh.mItemCzHead);
+        vh.mItemCzZsnum.setText("钻石数量：" + bean.getSourceNum());
         vh.mItemCzTitle.setText(diamondBag.getProName()+(bean.getOrderType()==2?"收益兑钻":""));
         int discountType = diamondBag.getDiscountType();
         switch (discountType) {//1:加赠;2:折扣;3:特价)
             case 1:
-                vh.mItemCzZsnum.setText("钻石数量：" + diamondBag.getProNum() + "+" + bean.getGiveNum());
+                vh.mItemCzZsnum.setText("钻石数量：" + bean.getSourceNum() + "+" + bean.getGiveNum());
                 break;
             case 2:
                 break;

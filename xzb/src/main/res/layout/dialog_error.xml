@@ -46,8 +46,8 @@
             android:layout_weight="1"
             android:background="@drawable/bg_corner_gra"
             android:gravity="center"
-            android:padding="6dp"
-            android:visibility="invisible"
+            android:padding="8dp"
+            android:visibility="gone"
             tools:visibility="visible"
             android:text="取消"
             android:textColor="@color/colorGray3" />
@@ -61,7 +61,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_circle_red"
             android:gravity="center"
-            android:padding="6dp"
+            android:padding="8dp"
             android:text="确定"
             android:textColor="@color/white" />
 

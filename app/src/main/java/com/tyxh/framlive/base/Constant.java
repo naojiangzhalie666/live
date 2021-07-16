@@ -3,22 +3,24 @@ package com.tyxh.framlive.base;
 import com.tyxh.xzb.Constantc;
 
 public class Constant {
-
     /*app信息 */
     /*
      * 正式地址  ：https://appshop.bkxinli.com/portal/
      * 测试地址  ：http://172.16.66.225:9091/
+     * 戴鑫地址  ：http://172.16.66.177:8081/
      * */
-    public static final String BASE_URL = "https://appshop.bkxinli.com/portal/";
-    public static final String BASE_WEB = "https://appshop.bkxinli.com/bkapp/";//各种web页拼接地址
+    public static final String URL_DEFAULT = "//appshop.bkxinli.com/";
+    public static final String BASE_URL = "https:"+URL_DEFAULT+"portal/";
+    public static final String BASE_WEB = "https:"+URL_DEFAULT+"bkapp/";//各种web页拼接地址
     public static final boolean IS_DEBUG = true;
     /**
      * Socket地址：
      * 正式地址   ：https://appshop.bkxinli.com/portal/socket/
      * 测试地址   ：http://172.16.66.225:9091/socket/
      * 云龙地址   ：http://172.16.3.235:8081/socket/
+     * 戴鑫地址   ：http://172.16.66.177:8081/
      */
-    public static final String SOCKET_URL = "wss://appshop.bkxinli.com/portal/socket/";
+    public static final String SOCKET_URL = "wss:"+URL_DEFAULT+"portal/socket/";
     /*分享公共*/
     public static final String SHARE_URL = "https://a.app.qq.com/o/simple.jsp?pkgname=com.tyxh.framlive";
     public static final String SHARE_NAME = "你专属的心理咨询师";

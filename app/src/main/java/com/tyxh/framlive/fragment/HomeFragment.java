@@ -168,6 +168,9 @@ public class HomeFragment extends Fragment {
     private boolean checkPublishPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
             List<String> permissions = new ArrayList<>();
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
             if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO)) {
                 permissions.add(Manifest.permission.RECORD_AUDIO);
             }
@@ -175,13 +178,32 @@ public class HomeFragment extends Fragment {
                 permissions.add(Manifest.permission.CAMERA);
             }
             if (permissions.size() != 0) {
-                ActivityCompat.requestPermissions(getActivity(), permissions.toArray(new String[0]), TCConstants.WRITE_PERMISSION_REQ_CODE);
+               requestPermissions(permissions.toArray(new String[0]), TCConstants.WRITE_PERMISSION_REQ_CODE);
                 Toast.makeText(mMainActivity, "需要相机以及音频权限才能使用该功能", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
         return true;
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case TCConstants.WRITE_PERMISSION_REQ_CODE:
+                for (int ret : grantResults) {
+                    if (ret != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                }
+                if(!is_cliclpush)
+                    startPublish();
+                is_cliclpush =true;
+                break;
+            default:
+                break;
+        }
+    }
+
 
     private void startChatActivity(String title, String userid) {
         ChatInfo chatInfo = new ChatInfo();

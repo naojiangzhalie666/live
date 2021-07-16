@@ -2,6 +2,7 @@ package com.tyxh.framlive.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -80,7 +81,11 @@ public abstract class LiveBaseActivity extends BaseActivity implements IMLVBLive
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         //销毁时--关闭正在进行的网络访问
-        DevRing.httpManager().stopRequestByTag(TAG);
+        try {
+            DevRing.httpManager().stopRequestByTag(TAG);
+        } catch (Exception e) {
+            Log.e(TAG, "onDestroy: DevRing not init :"+e.toString() );
+        }
     }
 
     public void showLoad() {

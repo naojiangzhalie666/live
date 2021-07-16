@@ -252,6 +252,8 @@ public class FindFragment extends Fragment {
                 getChildFragmentManager().beginTransaction().show(mFindNoviceFragment);
             }
             setArguments(null);
+        }else if(mFindNoviceFragment.isVisible()){
+            mFindNoviceFragment.onResume();
         }
 
     }
@@ -262,4 +264,6 @@ public class FindFragment extends Fragment {
         unbinder.unbind();
         EventBus.getDefault().unregister(this);
     }
+
+
 }

@@ -2,11 +2,15 @@ package com.tyxh.framlive.ui;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
+import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 import com.tyxh.framlive.R;
 import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.base.LiveBaseActivity;
@@ -18,8 +22,6 @@ import com.tyxh.framlive.utils.CacheDataManager;
 import com.tyxh.framlive.utils.LiveShareUtil;
 import com.tyxh.framlive.utils.httputil.HttpBackListener;
 import com.tyxh.framlive.utils.httputil.LiveHttp;
-import com.google.gson.Gson;
-import com.superc.yyfflibrary.utils.titlebar.TitleUtils;
 
 import androidx.annotation.Nullable;
 import butterknife.BindView;
@@ -138,16 +140,19 @@ public class SetActivity extends LiveBaseActivity {
     }
 
     private void toDh(String code) {
+        Toast toast =Toast.makeText(SetActivity.this,"",Toast.LENGTH_SHORT);
         LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().exchangeCode(token,code, user_Info.getRetData().getId()), new HttpBackListener() {
             @Override
             public void onSuccessListener(Object result) {
                 super.onSuccessListener(result);
                 BaseBean baseBean =new Gson().fromJson(result.toString(),BaseBean.class);
                 if(baseBean.getRetCode() ==0){
-                    ToastShow("兑换成功");
+                    toast.setText("兑换成功");
                 }else {
-                    ToastShow(baseBean.getRetMsg());
+                    toast.setText(baseBean.getRetMsg());
                 }
+                toast.setGravity(Gravity.CENTER,0,0);
+                toast.show();
 
             }
 

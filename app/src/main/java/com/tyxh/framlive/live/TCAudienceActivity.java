@@ -1,5 +1,6 @@
 package com.tyxh.framlive.live;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
@@ -9,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -137,6 +139,7 @@ import java.util.TimerTask;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import master.flame.danmaku.controller.IDanmakuView;
@@ -259,6 +262,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private UserInfoBean mUserInfo;
     private String mToken;
     private int dm_count = 0;
+    private BaseDialog mDig;
 
 
     @Override
@@ -728,6 +732,23 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             mLiveRoom.setListener(null);
         }
     }
+    /**
+     * 动态权限检查相关  zhudong--true 主动连麦  false主播邀请
+     */
+    private boolean checkPublishPermission(boolean zhudong) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            List<String> permissions = new ArrayList<>();
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (permissions.size() != 0) {
+                ActivityCompat.requestPermissions(this, permissions.toArray(new String[0]), zhudong?100:101);
+//                Toast.makeText(this, "该功能需存储权限才能使用", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
+    }
 
     /*开始连麦*/
     private void startLinkMic() {
@@ -1007,10 +1028,11 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     /*主播主动邀请连麦时的处理--回调方法*/
     @Override
     public void onRequestJoinAnchor(AnchorInfo pusherInfo, String reason) {
-        BaseDialog dig = new BaseDialog.BaseBuild().setSure("接受").setCancel("拒绝").setTitle(pusherInfo.userName + "向您发起连麦请求").build(this);
-        dig.setOnItemClickListener(new BaseDialog.OnItemClickListener() {
+        mDig = new BaseDialog.BaseBuild().setSure("接受").setCancel("拒绝").setTitle(pusherInfo.userName + "向您发起连麦请求").build(this);
+        mDig.setOnItemClickListener(new BaseDialog.OnItemClickListener() {
             @Override
             public void onSureClickListener() {
+
                 getUseData(false, false, pusherInfo);
             }
 
@@ -1033,16 +1055,19 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                     mLiveRoom.responseJoinAnchor(pusherInfo.userID, false, "连麦人数超过最大限制");
                     return;
                 }
-                dig.show();
-                mPendingRequest = true;
 
                 mMainHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dig.dismiss();
+                        mDig.dismiss();
                         mPendingRequest = false;
                     }
                 }, 10000);
+                if(!checkPublishPermission(false)){
+                    return;
+                }
+                mDig.show();
+                mPendingRequest = true;
             }
         });
     }
@@ -1103,6 +1128,10 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                     mRelativeLayout.setBackground(getResources().getDrawable(R.drawable.live_contact_bg));
                     mfram_layout.setVisibility(View.VISIBLE);
                     mBtnLinkMic.setVisibility(View.GONE);
+                    if(mUseWhatDialog!=null&&mUseWhatDialog.isShowing()){
+//                        mUseWhatDialog.dismiss();
+                    }
+
                 }
                 Log.i(TAG, "onRecvRoomCustomMsg:开始连麦userID =  " + message);
                 break;
@@ -1365,6 +1394,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
      */
     private void showErrorAndQuit(String errorMsg) {
         EventBus.getDefault().post(new EventMessage("chathelf_finish"));
+        stopLinkMic();
         stopPlay();
 // TODO: 2021/4/9 需要最后进行接入时放开，播放错误时的跳转以及标识设置
       /*  Intent rstData = new Intent();
@@ -1731,7 +1761,21 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                         return;
                     }
                 }
+                if(!checkPublishPermission(true)){
+                    return;
+                }
                 startLinkMic();
+                break;
+            case 101:
+                for (int ret : grantResults) {
+                    if (ret != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                }
+                if(mDig!=null) {
+                    mDig.show();
+                    mPendingRequest = true;
+                }
                 break;
             default:
                 break;
@@ -2035,6 +2079,9 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                     if (mUseWhatDialog == null) {
                         mUseWhatDialog = new UseWhatDialog(TCAudienceActivity.this, TCAudienceActivity.this, bean.getRetData());
                     } else {
+                        if(!mIsBeingLinkMic){
+                            mUseWhatDialog.reset();
+                        }
                         mUseWhatDialog.setDataBeans(bean.getRetData());
                     }
                     mUseWhatDialog.show();
@@ -2174,6 +2221,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                         map.put("tipsType", "2");//1开始计时  2心跳开始
 //                        map.put("proType",select_bean.getProType());
                         mWebSocketClient.send(new Gson().toJson(map));
+                        Log.i(TAG, new Gson().toJson(map));
                     }
                 } else {//长连接处于连接状态
                     initSocket();

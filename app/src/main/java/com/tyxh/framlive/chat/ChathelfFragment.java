@@ -109,6 +109,7 @@ public class ChathelfFragment extends BaseFragment {
         }
 
         mService_strs = new ArrayList<>();
+        mSjbg_strs = new ArrayList<>();
 //        getDetail(mChatInfo.getId());
 
     }

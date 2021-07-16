@@ -55,14 +55,17 @@ public class SjAdapter extends RecyclerView.Adapter<SjAdapter.ViewHolder> {
         int type = bean.getType();//连线类型[1:视频；2:语音]
 //        vh.mItemSjTitle.setText(bean.getTitle());
         vh.mItemSjTitle.setText(type == 1 ? "视频连线" : "语音连线");
-        String time = LiveDateUtil.formatSeconds(DateUtils.calculateDifference
-                (DateUtils.parseDate(bean.getStartDate()), TextUtils.isEmpty(bean.getEndDate()) ? new Date() : DateUtils.parseDate(bean.getEndDate()), DateUtils.Second));
+        Date st_da= DateUtils.parseDate(bean.getStartDate());
+        Date ed_da =TextUtils.isEmpty(bean.getEndDate()) ? new Date() : DateUtils.parseDate(bean.getEndDate());
+        long second = ed_da.getTime()-st_da.getTime();
+        String time = LiveDateUtil.formatSeconds(second/1000);
+
         vh.mItemSjZsnum.setText("咨询时长：" + time);
         vh.mItemSjCreattime.setText("创建时间：" + bean.getCreateDate());
         vh.mItemSjCode.setText("订单编号：" + bean.getUuId());
         RoundedCorners roundedCorners = new RoundedCorners(16);
-        Glide.with(mContext).load(R.drawable.live_defaultimg).apply(new RequestOptions().transform(new CenterCrop(), roundedCorners)).error(R.drawable.live_defaultimg)
-                .placeholder(R.drawable.live_defaultimg).into(vh.mItemSjHead);
+        Glide.with(mContext).load(type == 1?R.drawable.home_media:R.drawable.home_yuyin).apply(new RequestOptions().transform(new CenterCrop(), roundedCorners))/*.error(R.drawable.live_defaultimg)
+                .placeholder(R.drawable.live_defaultimg)*/.into(vh.mItemSjHead);
         int star = bean.getStar();
         if (star <= 0) {
             vh.mItemSjState.setText("待评价");

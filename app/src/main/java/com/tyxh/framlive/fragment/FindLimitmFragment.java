@@ -26,7 +26,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 首充
  */
 public class FindLimitmFragment extends Fragment {
 

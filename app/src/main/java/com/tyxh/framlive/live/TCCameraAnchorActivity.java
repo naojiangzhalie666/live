@@ -456,9 +456,13 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
         sendContactMsg(false, "");
         stopTimer();
     }
-
+    private boolean mIsLm =false;
     @Override
     public void onRequestJoinAnchor(final AnchorInfo pusherInfo, String reason) {
+        if (mIsLm) {
+            mLiveRoom.responseJoinAnchor(pusherInfo.userID, false, "主播端连麦人数超过最大限制");
+            return;
+        }
         BaseDialog dig = new BaseDialog.BaseBuild().setSure("接受").setCancel("拒绝").setTitle(pusherInfo.userName + "向您发起连麦请求").build(this);
         dig.setOnItemClickListener(new BaseDialog.OnItemClickListener() {
             @Override
@@ -510,6 +514,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
      */
 
     private void sendContactMsg(boolean is_lm, String userid) {
+        mIsLm =is_lm;
         Constant.USER_STATE = is_lm ? "3" : "2";
         mLiveRoom.sendRoomCustomMsg(String.valueOf(is_lm ? IMCMD_CONTACT : IMCMD_DISCONTACT), userid, new SendRoomCustomMsgCallback() {
             @Override

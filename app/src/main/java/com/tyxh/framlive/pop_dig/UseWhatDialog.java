@@ -46,6 +46,7 @@ public class UseWhatDialog extends Dialog {
     private List<LiveCotctBean.RetDataBean> mDataBeans;
     private int diamond_num = 0;
     private int select_what = -1;
+    private int old_select = -1;
     private LiveCotctBean.RetDataBean bean_zuan = new LiveCotctBean.RetDataBean(),
             bean_card= new LiveCotctBean.RetDataBean(),bean_back= new LiveCotctBean.RetDataBean(),bean_select;
 
@@ -58,6 +59,17 @@ public class UseWhatDialog extends Dialog {
 
     public void setOnSureClickListener(OnSureClickListener onSureClickListener) {
         mOnSureClickListener = onSureClickListener;
+    }
+
+    public void reset() {
+        this.old_select = -1;
+        this.select_what = -1;
+        mDigUsewhatImgvone.setImageResource(R.drawable.dig_use_unse);
+        mDigUsewhatImgvtwo.setImageResource(R.drawable.dig_use_unse);
+        mDigUsewhatImgvthree.setImageResource(R.drawable.dig_use_unse);
+        mDigUsewhatDiamond.setTextColor(mContext.getResources().getColor(R.color.black));
+        mDigUsewhatFuwubao.setTextColor(mContext.getResources().getColor(R.color.black));
+        mDigUsewhatCard.setTextColor(mContext.getResources().getColor(R.color.black));
     }
 
     public void setDataBeans(List<LiveCotctBean.RetDataBean> dataBeans) {
@@ -119,6 +131,10 @@ public class UseWhatDialog extends Dialog {
                     Toast.makeText(mContext, "请先进行选择", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(select_what ==old_select){
+                    Toast.makeText(mContext, "不能重复选择同一种消费方式", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 switch (select_what) {
                     //卡
                     case 2: bean_select =bean_card;break;
@@ -141,6 +157,7 @@ public class UseWhatDialog extends Dialog {
                 }
              /*  bean_select.setDiaNum(40);
                bean_select.setDuration(65);*/
+                old_select =select_what;
                 if (mOnSureClickListener != null) {
                     mOnSureClickListener.onSureClickListener(bean_select);
                 }

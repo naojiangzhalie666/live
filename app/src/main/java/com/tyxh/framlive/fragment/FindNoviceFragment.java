@@ -359,4 +359,10 @@ public class FindNoviceFragment extends Fragment {
         EventBus.getDefault().unregister(this);
         DevRing.httpManager().stopRequestByTag(LiveHttp.TAG);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData(state + 1);
+    }
 }
