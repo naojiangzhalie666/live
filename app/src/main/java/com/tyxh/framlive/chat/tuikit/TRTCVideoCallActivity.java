@@ -951,7 +951,9 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             if (System.currentTimeMillis() - sendTime >= HEART_BEAT_RATE) {
                 if (mWebSocketClient != null) {//长连接已断开
                     if (mWebSocketClient.isClosed()) {
-                        reconnectWs();
+//                        reconnectWs();
+                        Toast.makeText(TRTCVideoCallActivity.this, "您的网络状态不好,已断开连线", Toast.LENGTH_SHORT).show();
+                        stopVideoLx();
                     } else {
                         Map<String, Object> map = new HashMap<>();
 //                        map.put("userId",mUserId);

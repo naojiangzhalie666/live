@@ -2214,7 +2214,9 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             if (System.currentTimeMillis() - sendTime >= HEART_BEAT_RATE) {
                 if (mWebSocketClient != null) {//长连接已断开
                     if (mWebSocketClient.isClosed()) {
-                        reconnectWs();
+//                        reconnectWs();
+                        ToastUtil.showToast(TCAudienceActivity.this,"您的网络状态不好,已断开连线");
+                        stopLinkMic();
                     } else {
                         Map<String, Object> map = new HashMap<>();
 //                        map.put("userId",mUserId);
