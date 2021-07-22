@@ -158,6 +158,7 @@ public class OranizeActivity extends LiveBaseActivity {
     private String jigou_id = "";               //机构   -id
     private String mNickname = "";              //机构   -名称
     private BtPopupWindow mBtPopupWindow;
+    private int mAuditState; //审核状态(0:未申请1:待审核;2:通过;3:驳回)--咨询师/咨询机构认证
 
 
     @Override
@@ -178,6 +179,7 @@ public class OranizeActivity extends LiveBaseActivity {
         mPersonalJigou.setEnabled(false);
         mBtPopupWindow = new BtPopupWindow(this);
         mPower = LiveShareUtil.getInstance(this).getPower();
+        mAuditState = user_Info.getRetData().getAuditState();
         Intent intent = getIntent();
         if (intent != null) {
             is_user = intent.getBooleanExtra("is_user", true);
@@ -192,8 +194,8 @@ public class OranizeActivity extends LiveBaseActivity {
             mPersonalFiveedt.setVisibility(View.GONE);
             mCons_bt.setVisibility(View.VISIBLE);
 //            if(mPower ==Constant.POWER_NORMAL) {
-                mImgvMore.setVisibility(View.VISIBLE);
-                mImgvShare.setVisibility(View.GONE);
+            mImgvMore.setVisibility(View.VISIBLE);
+            mImgvShare.setVisibility(View.GONE);
 //            }else{
 //                mImgvShare.setVisibility(View.VISIBLE);
 //                mImgvMore.setVisibility(View.GONE);
@@ -314,9 +316,10 @@ public class OranizeActivity extends LiveBaseActivity {
         mBtPopupWindow.setOnItemClickListener(new BtPopupWindow.OnItemClickListener() {
             @Override
             public void onRuzhuClickListener() {
-                if(mPower>=2){
+                if (mPower >= 2) {
                     mShareDialog.show();
-                }else {
+                } else {
+                    Constant.IS_SHENHEING = mAuditState == 1 ? true : false;
                     startActivity(new Intent(OranizeActivity.this, SetInActivity.class));
                 }
             }
@@ -330,9 +333,11 @@ public class OranizeActivity extends LiveBaseActivity {
             }
         });
     }
+
     private int mOffset = 0;
     private int mScrollY = 0;
-    private void initScroll(){
+
+    private void initScroll() {
         mPersonalSmart.setEnablePureScrollMode(true);//是否启用纯滚动模式
         mPersonalSmart.setEnableNestedScroll(true);//是否启用嵌套滚动;
         mPersonalSmart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
@@ -397,7 +402,8 @@ public class OranizeActivity extends LiveBaseActivity {
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             private int lastScrollY = 0;
             private int h = SmartUtil.dp2px(170);
-            private int color = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)&0x00ffffff;
+            private int color = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary) & 0x00ffffff;
+
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (lastScrollY < h) {
@@ -409,7 +415,8 @@ public class OranizeActivity extends LiveBaseActivity {
             }
         });
     }
-    @OnClick({R.id.personal_back, R.id.personal_share,R.id.personal_more, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt,
+
+    @OnClick({R.id.personal_back, R.id.personal_share, R.id.personal_more, R.id.personal_oneedt, R.id.personal_onesure, R.id.showgoods_edt, R.id.showgoods_edtsure, R.id.personal_threeedt,
             R.id.personal_threesure, R.id.personal_fouredt, R.id.personal_foursure, R.id.personal_fiveedt, R.id.personal_fivesure, R.id.look_btshare, R.id.look_bttalk})
     public void onClick(View view) {
         switch (view.getId()) {

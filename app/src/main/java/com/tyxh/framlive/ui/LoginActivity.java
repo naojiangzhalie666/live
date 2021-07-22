@@ -1,12 +1,10 @@
 package com.tyxh.framlive.ui;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
-import android.telephony.TelephonyManager;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -140,7 +138,7 @@ public class LoginActivity extends LiveBaseActivity {
     }
 
 
-    @OnClick({R.id.login_loginthis, R.id.login_loginother, R.id.ll_wx, R.id.login_rela, R.id.ll_zi,R.id.login_cbxieyi})
+    @OnClick({R.id.login_loginthis, R.id.login_loginother, R.id.ll_wx, R.id.login_rela, R.id.ll_zi,R.id.login_cbxieyi,R.id.login_vvvv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_loginthis://一键登录
@@ -175,6 +173,7 @@ public class LoginActivity extends LiveBaseActivity {
                 break;
             case R.id.login_rela://协议
             case R.id.login_cbxieyi:
+            case R.id.login_vvvv:
                 if (mLoginImgv.getVisibility() == View.VISIBLE) {
                     mLoginImgv.setVisibility(View.GONE);
                 } else {
@@ -319,57 +318,6 @@ public class LoginActivity extends LiveBaseActivity {
                 Log.e(TAG, "onError: " + throwable.toString());
             }
         }, TAG);
-
-
-
-        /*LiveHttp.getInstance().toGetData(LiveHttp.getInstance().getApiService().getUserInfo(LiveShareUtil.getInstance(LiveApplication.getmInstance()).getToken()), new HttpBackListener() {
-            @Override
-            public void onSuccessListener(Object result) {
-                super.onSuccessListener(result);
-                Log.e(TAG, "onSuccessListener: " + result.toString());
-                UserInfoBean userInfoBean = new Gson().fromJson(result.toString(), UserInfoBean.class);
-                if (userInfoBean.getRetCode() == 0) {
-                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERID, userInfoBean.getRetData().getId());
-                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERNAME, userInfoBean.getRetData().getNickname());
-                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERHEAD, userInfoBean.getRetData().getIco());
-                    LiveShareUtil.getInstance(LoginActivity.this).put(LiveShareUtil.APP_USERCOVER, userInfoBean.getRetData().getIco());
-                    LiveShareUtil.getInstance(LoginActivity.this).put("user", new Gson().toJson(userInfoBean));//保存用户信息
-                    LiveShareUtil.getInstance(LoginActivity.this).putPower(userInfoBean.getRetData().getType());//用户类型
-//                    LiveShareUtil.getInstance(LoginActivity.this).putPower(1);//用户类型
-                    Log.e(TAG, "onSuccessListener: " + userInfoBean.getRetData().getId());
-                    thisLogin(userInfoBean.getRetData().getId(), userInfoBean.getRetData());
-                    String interest = userInfoBean.getRetData().getInterest();
-                    String mobile = userInfoBean.getRetData().getMobile();
-                    if (TextUtils.isEmpty(interest)) {
-                        isNeedUpmsg = true;
-                    } else {
-                        isNeedUpmsg = false;
-                    }
-                    if (TextUtils.isEmpty(mobile)) {
-                        isNeedUpMobile = true;
-                    } else {
-                        isNeedUpMobile = false;
-                    }
-                    if (isNeedUpMobile) {
-                        Intent intent = new Intent(LoginActivity.this, BindPhoneActivity.class);
-                        intent.putExtra("other", 1);
-                        intent.putExtra("needUp", isNeedUpmsg);
-                        startActivity(intent);
-                    } else if (isNeedUpmsg) {
-                        statActivity(MsgInputActivity.class);
-                    }
-                } else {
-                    ToastShow(userInfoBean.getRetMsg());
-                    hideLoad();
-                }
-            }
-
-            @Override
-            public void onErrorLIstener(String error) {
-                super.onErrorLIstener(error);
-                hideLoad();
-            }
-        });*/
     }
 
     /*获取直播的sign*/
@@ -499,25 +447,6 @@ public class LoginActivity extends LiveBaseActivity {
         });*/
     }
 
-    /*一键登录*/
-    private void toYjLogin() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-                TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-                String telphone = tm.getLine1Number();//获取本机号码
-                if (!TextUtils.isEmpty(telphone)) {
-//                    mLoginPhonenum.setText(telphone);
-                } else {
-                    Log.e(TAG, "getPhoneNum:未获取到手机号 ");
-                }
-                return;
-            } else {
-                requestPermission();
-            }
-        }
-
-
-    }
 
     private String mToken, mCarrier;
 
@@ -673,23 +602,6 @@ public class LoginActivity extends LiveBaseActivity {
             req.scope = "snsapi_userinfo";
             req.state = "live_login_request_please";
             api.sendReq(req);
-        }
-
-    }
-
-    private void getPhoneNum() {
-        //获取手机号码
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-//                TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-//                String telphone = tm.getLine1Number();//获取本机号码
-//                if (!TextUtils.isEmpty(telphone)) {
-//                    mLoginPhonenum.setText(telphone);
-//                } else {
-//                    Log.e(TAG, "getPhoneNum:未获取到手机号 ");
-//                }
-                return;
-            }
         }
 
     }

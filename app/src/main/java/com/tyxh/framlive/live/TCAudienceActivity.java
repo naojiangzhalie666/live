@@ -1495,6 +1495,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 TXLivePushConfig config = mTxLivePusher.getConfig();
                 //设置推送到主播端的垫片--图片
                 config.setPauseImg(mbit_def == null ? BitmapFactory.decodeResource(getResources(), R.drawable.bg) : mbit_def);
+                config.setPauseImg(86400,5);
                 config.setPauseFlag(TXLiveConstants.PAUSE_FLAG_PAUSE_VIDEO);
                 mTxLivePusher.setConfig(config);
                 mimgv_camera.setImageResource(R.drawable.audience_closecamear);
@@ -2351,8 +2352,12 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         all_Second = 0;
         is_lmfirst = true;
         Constant.USER_STATE = "1";
-        if (mWebSocketClient != null)
+        if (mWebSocketClient != null) {
             mWebSocketClient.close();
+        }
+        if(mUseWhatDialog!=null&&mUseWhatDialog.isShowing()){
+            mUseWhatDialog.dismiss();
+        }
         mHandler_socket.removeCallbacks(heartBeatRunnable);
         //直播时间
         if (null != mBroadcastTimer) {

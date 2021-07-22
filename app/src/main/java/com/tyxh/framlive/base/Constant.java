@@ -10,7 +10,8 @@ public class Constant {
      * 戴鑫地址  ：http://172.16.66.177:8081/
      * */
     public static final String URL_DEFAULT = "//appshop.bkxinli.com/";
-    public static final String BASE_URL = "https:"+URL_DEFAULT+"portal/";
+    public static final String BASE_URL = "https:"+URL_DEFAULT+(Constantc.is_debug?"portalTest/":"portal/");
+//    public static final String BASE_URL = "http://172.16.3.235:8081/";
     public static final String BASE_WEB = "https:"+URL_DEFAULT+"bkapp/";//各种web页拼接地址
     public static final boolean IS_DEBUG = true;
     /**
@@ -20,7 +21,8 @@ public class Constant {
      * 云龙地址   ：http://172.16.3.235:8081/socket/
      * 戴鑫地址   ：http://172.16.66.177:8081/
      */
-    public static final String SOCKET_URL = "wss:"+URL_DEFAULT+"portal/socket/";
+    public static final String SOCKET_URL = "wss:"+URL_DEFAULT+(Constantc.is_debug?"portalTest/socket/":"portal/socket/");
+//    public static final String SOCKET_URL = "ws://172.16.3.235:8081/socket/";
     /*分享公共*/
     public static final String SHARE_URL = "https://a.app.qq.com/o/simple.jsp?pkgname=com.tyxh.framlive";
     public static final String SHARE_NAME = "你专属的心理咨询师";

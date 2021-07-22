@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.tyxh.framlive.base.LiveApplication;
 import com.tyxh.framlive.utils.LiveShareUtil;
+import com.tyxh.xzb.Constantc;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -24,7 +25,7 @@ import static com.tyxh.framlive.base.Constant.USER_STATE;
 public class StateService extends Service {
     private static final String TAG = "StateService";
     private String mUserId;
-    private String state_soc = "wss:"+URL_DEFAULT+"portal/websocket/";
+    private String state_soc = "wss:"+URL_DEFAULT+(Constantc.is_debug?"portalTest/websocket/":"portal/websocket/");
 
     public StateService() {
     }

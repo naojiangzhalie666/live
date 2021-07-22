@@ -156,6 +156,7 @@ public class LookPersonActivity extends LiveBaseActivity {
     private String query_userid = "";
     private String zxs_id = "";
     private String mNickname;
+    private int mAuditState; //审核状态(0:未申请1:待审核;2:通过;3:驳回)--咨询师/咨询机构认证
 
 
     @Override
@@ -172,6 +173,7 @@ public class LookPersonActivity extends LiveBaseActivity {
         initShare();
         initScroll();
         mPower = LiveShareUtil.getInstance(this).getPower();
+        mAuditState = user_Info.getRetData().getAuditState();
         mBtPopupWindow = new BtPopupWindow(this);
         mReportDialog = new ReportDialog(this);
         mPersonalGeren.setEnabled(false);
@@ -303,6 +305,7 @@ public class LookPersonActivity extends LiveBaseActivity {
                 if(mPower>=2){
                     mShareDialog.show();
                 }else {
+                    Constant.IS_SHENHEING = mAuditState == 1 ? true : false;
                     startActivity(new Intent(LookPersonActivity.this, SetInActivity.class));
                 }
             }

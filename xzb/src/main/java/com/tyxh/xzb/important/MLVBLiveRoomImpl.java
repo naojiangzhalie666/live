@@ -59,67 +59,67 @@ import androidx.annotation.Nullable;
 public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.HeartBeatCallback, IMMessageMgr.IMMessageListener {
 
     protected static final String TAG = MLVBLiveRoomImpl.class.getName();
-    protected static final int              LIVEROOM_ROLE_NONE      = 0;
-    protected static final int              LIVEROOM_ROLE_PUSHER    = 1;
-    protected static final int              LIVEROOM_ROLE_PLAYER    = 2;
+    protected static final int LIVEROOM_ROLE_NONE = 0;
+    protected static final int LIVEROOM_ROLE_PUSHER = 1;
+    protected static final int LIVEROOM_ROLE_PLAYER = 2;
 
-    protected static MLVBLiveRoomImpl       mInstance = null;
-    protected static final String           mServerDomain = "https://liveroom.qcloud.com/weapp/live_room"; //RoomService后台域名
+    protected static MLVBLiveRoomImpl mInstance = null;
+    protected static final String mServerDomain = "https://liveroom.qcloud.com/weapp/live_room"; //RoomService后台域名
 
-    protected Context                       mAppContext = null;
-    protected IMLVBLiveRoomListener         mListener = null;
-    protected int                           mSelfRoleType           = LIVEROOM_ROLE_NONE;
+    protected Context mAppContext = null;
+    protected IMLVBLiveRoomListener mListener = null;
+    protected int mSelfRoleType = LIVEROOM_ROLE_NONE;
 
-    protected boolean                       mJoinPusher             = false;
+    protected boolean mJoinPusher = false;
 
-    protected boolean                       mBackground             = false;
+    protected boolean mBackground = false;
 
     protected TXLivePlayer mTXLivePlayer;
 
     protected TXLivePlayConfig mTXLivePlayConfig;
-    protected Handler                       mListenerHandler = null;
-    protected HttpRequests                  mHttpRequest = null;           //HTTP CGI请求相关
+    protected Handler mListenerHandler = null;
+    protected HttpRequests mHttpRequest = null;           //HTTP CGI请求相关
     protected IMMessageMgr mIMMessageMgr;          //IM SDK相关
     protected LoginInfo mSelfAccountInfo;
-    protected StreamMixturer                mStreamMixturer; //混流类
-    protected HeartBeatThread               mHeartBeatThread;       //心跳
-    protected String                        mCurrRoomID;
-    protected int                           mRoomStatusCode = 0;
-    protected ArrayList<RoomInfo>           mRoomList = new ArrayList<>();
+    protected StreamMixturer mStreamMixturer; //混流类
+    protected HeartBeatThread mHeartBeatThread;       //心跳
+    protected String mCurrRoomID;
+    protected int mRoomStatusCode = 0;
+    protected ArrayList<RoomInfo> mRoomList = new ArrayList<>();
     protected TXLivePusher mTXLivePusher;
-    protected TXLivePushListenerImpl        mTXLivePushListener;
-    protected String                        mSelfPushUrl;
-    protected String                        mSelfAccelerateURL;
-    protected HashMap<String, PlayerItem>   mPlayers = new LinkedHashMap<>();
-    protected HashMap<String, AnchorInfo>   mPushers = new LinkedHashMap<>();
+    protected TXLivePushListenerImpl mTXLivePushListener;
+    protected String mSelfPushUrl;
+    protected String mSelfAccelerateURL;
+    protected HashMap<String, PlayerItem> mPlayers = new LinkedHashMap<>();
+    protected HashMap<String, AnchorInfo> mPushers = new LinkedHashMap<>();
     private IMLVBLiveRoomListener.RequestJoinAnchorCallback mJoinAnchorCallback;
-    private Runnable                        mJoinAnchorTimeoutTask;
+    private Runnable mJoinAnchorTimeoutTask;
     private IMLVBLiveRoomListener.RequestRoomPKCallback mRequestPKCallback = null;
-    private Runnable                        mRequestPKTimeoutTask = null;
-    private AnchorInfo                      mPKAnchorInfo = null;
+    private Runnable mRequestPKTimeoutTask = null;
+    private AnchorInfo mPKAnchorInfo = null;
 
     //观众列表最大长度
-    private static final int                MAX_MEMBER_SIZE = 20;
+    private static final int MAX_MEMBER_SIZE = 20;
     //更新观众列表的频率，防止观众进房太多导致的刷新频率太高
-    private static final int                REFRESH_AUDIENCE_INTERVAL_MS = 2000;
-    private long                            mLastEnterAudienceTimeMS = 0;
-    private long                            mLastExitAudienceTimeMS = 0;
+    private static final int REFRESH_AUDIENCE_INTERVAL_MS = 2000;
+    private long mLastEnterAudienceTimeMS = 0;
+    private long mLastExitAudienceTimeMS = 0;
     //观众列表
     private LinkedHashMap<String/*userID*/, AudienceInfo> mAudiences = null;
 
 
-    private static final int                LIVEROOM_CAMERA_PREVIEW = 0;
-    private static final int                LIVEROOM_SCREEN_PREVIEW = 1;
-    private int                             mPreviewType = LIVEROOM_CAMERA_PREVIEW;
+    private static final int LIVEROOM_CAMERA_PREVIEW = 0;
+    private static final int LIVEROOM_SCREEN_PREVIEW = 1;
+    private int mPreviewType = LIVEROOM_CAMERA_PREVIEW;
 
-    protected boolean                       mScreenAutoEnable       = true;
-    private boolean                         mHasAddAnchor = false;
+    protected boolean mScreenAutoEnable = true;
+    private boolean mHasAddAnchor = false;
 
-    private static final int                STREAM_MIX_MODE_JOIN_ANCHOR = 0;
-    private static final int                STREAM_MIX_MODE_PK = 1;
-    private int                             mMixMode = STREAM_MIX_MODE_JOIN_ANCHOR;
+    private static final int STREAM_MIX_MODE_JOIN_ANCHOR = 0;
+    private static final int STREAM_MIX_MODE_PK = 1;
+    private int mMixMode = STREAM_MIX_MODE_JOIN_ANCHOR;
 
-    private long                            mTimeDiff = 0; //客户端和服务器时间差，用户连麦和PK请求超时处理
+    private long mTimeDiff = 0; //客户端和服务器时间差，用户连麦和PK请求超时处理
 
     public static MLVBLiveRoom sharedInstance(Context context) {
         synchronized (MLVBLiveRoomImpl.class) {
@@ -141,7 +141,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 设置回调接口
-     *
+     * <p>
      * 您可以通过 IMLVBLiveRoomListener 获得 MLVBLiveRoom 的各种状态通知
      *
      * @param listener 回调接口
@@ -278,7 +278,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 获取房间列表
-     *
+     * <p>
      * 该接口支持分页获取房间列表，可以用 index 和 count 两个参数控制列表分页的逻辑，
      * - index = 0 & count = 10 代表获取第一页的10个房间。
      * - index = 11 & count = 10 代表获取第二页的10个房间。
@@ -298,9 +298,9 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         mHttpRequest.getRoomList(index, count, new HttpRequests.OnResponseCallback<HttpResponse.RoomList>() {
             @Override
             public void onResponse(final int retcode, final String retmsg, HttpResponse.RoomList data) {
-                if (retcode != HttpResponse.CODE_OK || data == null || data.rooms == null){
+                if (retcode != HttpResponse.CODE_OK || data == null || data.rooms == null) {
                     callbackOnThread(callback, "onError", retcode, "[LiveRoom] getRoomList 失败[" + retmsg + "]");
-                }else {
+                } else {
                     final ArrayList<RoomInfo> arrayList = new ArrayList<>(data.rooms.size());
                     arrayList.addAll(data.rooms);
                     mRoomList = arrayList;
@@ -309,13 +309,14 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             }
         });
     }
+
     public void setRoomList(ArrayList<RoomInfo> roomList) {
         mRoomList = roomList;
     }
 
     /**
      * 获取观众列表
-     *
+     * <p>
      * 当有观众进房时，后台会将其信息加入到指定房间的观众列表中，调入该函数即可返回指定房间的观众列表
      *
      * @param callback 获取观众列表的结果回调。
@@ -366,7 +367,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 创建房间（主播调用）
-     *
+     * <p>
      * 主播开播的正常调用流程是：
      * 1.【主播】调用 startLocalPreview() 打开摄像头预览，此时可以调整美颜参数。
      * 2.【主播】调用 createRoom 创建直播间，房间创建成功与否会通过 {@link IMLVBLiveRoomListener.CreateRoomCallback} 通知给主播。
@@ -376,7 +377,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
      * @param callback 创建房间的结果回调
      */
     @Override
-    public void createRoom(final String roomID, final String roomInfo,final String title, final IMLVBLiveRoomListener.CreateRoomCallback callback) {
+    public void createRoom(final String roomID, final String roomInfo, final String title, final IMLVBLiveRoomListener.CreateRoomCallback callback) {
         TXCLog.i(TAG, "API -> createRoom:" + roomID + ":" + roomInfo);
         mSelfRoleType = LIVEROOM_ROLE_PUSHER;
 
@@ -394,7 +395,10 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                     } catch (UnsupportedEncodingException e) {
                         Log.e(TAG, "onResponse: title 编码错误");
                     }
-                    data.pushURL+="&type=1&title="+title_result;
+                    if (Constantc.is_debug) {
+                        data.pushURL = data.pushURL.replaceAll("141536.livepush.myqcloud.com", "bkpush.bkxinli.com");
+                    }
+                    data.pushURL += "&type=1&title=" + title_result;
                     final String pushURL = data.pushURL;
                     mSelfPushUrl = data.pushURL;
                     mSelfAccelerateURL = data.accelerateURL;
@@ -470,8 +474,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                         }
                     });
 
-                }
-                else {
+                } else {
                     callbackOnThread(callback, "onError", retcode, "[LiveRoom] 创建房间失败[获取推流地址失败]");
                 }
             }
@@ -480,7 +483,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 进入房间（观众调用）
-     *
+     * <p>
      * 观众观看直播的正常调用流程是：
      * 1.【观众】调用 getRoomList() 刷新最新的直播房间列表，并通过 {@link IMLVBLiveRoomListener.GetRoomListCallback} 回调拿到房间列表。
      * 2.【观众】选择一个直播间以后，调用 enterRoom() 进入该房间。
@@ -651,7 +654,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
         mJoinPusher = false;
         mSelfRoleType = LIVEROOM_ROLE_NONE;
-        mCurrRoomID   = "";
+        mCurrRoomID = "";
         mPushers.clear();
 
         mStreamMixturer.resetMergeState();
@@ -661,16 +664,15 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 设置自定义信息
-     *
+     * <p>
      * 有时候您可能需要为房间产生一些额外的信息，此接口可以将这些信息缓存到服务器。
      *
-     * @param op 执行动作，定义请查看 {@link MLVBCommonDef.CustomFieldOp}
-     * @param key 自定义键
+     * @param op    执行动作，定义请查看 {@link MLVBCommonDef.CustomFieldOp}
+     * @param key   自定义键
      * @param value 数值
-     *
      * @note op 为 {@link MLVBCommonDef.CustomFieldOp#SET} 时，value 可以是 String 或者 Integer 类型
-     *       op 为 {@link MLVBCommonDef.CustomFieldOp#INC} 时，value 是 Integer 类型
-     *       op 为 {@link MLVBCommonDef.CustomFieldOp#DEC} 时，value 是 Integer 类型
+     * op 为 {@link MLVBCommonDef.CustomFieldOp#INC} 时，value 是 Integer 类型
+     * op 为 {@link MLVBCommonDef.CustomFieldOp#DEC} 时，value 是 Integer 类型
      */
     public void setCustomInfo(final MLVBCommonDef.CustomFieldOp op, final String key, final Object value, final IMLVBLiveRoomListener.SetCustomInfoCallback callback) {
         TXCLog.i(TAG, "API -> setCustomInfo:" + op + ":" + key);
@@ -726,7 +728,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 观众请求连麦
-     *
+     * <p>
      * 主播和观众的连麦流程可以简单描述为如下几个步骤：
      * 1. 【观众】调用 requestJoinAnchor() 向主播发起连麦请求。
      * 2. 【主播】会收到 {@link IMLVBLiveRoomListener#onRequestJoinAnchor(AnchorInfo, String)} 的回调通知。
@@ -781,7 +783,8 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             //10秒收不到主播同意/拒绝连麦的响应，则回调超时
             mListenerHandler.postDelayed(mJoinAnchorTimeoutTask, 10 * 1000);
 
-            String content = new Gson().toJson(request, new TypeToken<CommonJson<JoinAnchorRequest>>(){}.getType());
+            String content = new Gson().toJson(request, new TypeToken<CommonJson<JoinAnchorRequest>>() {
+            }.getType());
             String toUserID = getRoomCreator(mCurrRoomID);
             IMMessageMgr imMessageMgr = mIMMessageMgr;
             if (imMessageMgr != null) {
@@ -806,15 +809,14 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 });
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /*自定义主播邀请观众进行连麦*/
     @Override
-    public void requestJoinUserAnchor(String reason,String toUserid, IMLVBLiveRoomListener.RequestJoinAnchorCallback callback) {
+    public void requestJoinUserAnchor(String reason, String toUserid, IMLVBLiveRoomListener.RequestJoinAnchorCallback callback) {
         TXCLog.i(TAG, "API -> requestJoinAnchor:" + reason);
         try {
             CommonJson<JoinAnchorRequest> request = new CommonJson<>();
@@ -848,7 +850,8 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
             mListenerHandler.removeCallbacks(mJoinAnchorTimeoutTask);
             mListenerHandler.postDelayed(mJoinAnchorTimeoutTask, 10 * 1000);
-            String content = new Gson().toJson(request, new TypeToken<CommonJson<JoinAnchorRequest>>(){}.getType());
+            String content = new Gson().toJson(request, new TypeToken<CommonJson<JoinAnchorRequest>>() {
+            }.getType());
             String toUserID = toUserid;
             IMMessageMgr imMessageMgr = mIMMessageMgr;
             if (imMessageMgr != null) {
@@ -873,8 +876,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 });
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -882,13 +884,12 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 主播处理连麦请求
-     *
+     * <p>
      * 主播在收到 {@link IMLVBLiveRoomListener#onRequestJoinAnchor(AnchorInfo, String)} 回调之后会需要调用此接口来处理观众的连麦请求。
      *
      * @param userID 观众ID
      * @param agree  true：同意；false：拒绝
      * @param reason 同意/拒绝连麦的原因描述
-     *
      * @return 0：响应成功；非0：响应失败
      */
     @Override
@@ -906,11 +907,12 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             response.cmd = "linkmic";
             response.data = new JoinAnchorResponse();
             response.data.type = "response";
-            response.data.result = agree?"accept":"reject";
+            response.data.result = agree ? "accept" : "reject";
             response.data.reason = reason;
             response.data.roomID = mCurrRoomID;
             response.data.timestamp = System.currentTimeMillis() - mTimeDiff;
-            String content = new Gson().toJson(response, new TypeToken<CommonJson<JoinAnchorResponse>>(){}.getType());
+            String content = new Gson().toJson(response, new TypeToken<CommonJson<JoinAnchorResponse>>() {
+            }.getType());
             IMMessageMgr imMessageMgr = mIMMessageMgr;
             if (imMessageMgr != null) {
                 imMessageMgr.sendC2COnlineCustomMessage(userID, content, new IMMessageMgr.Callback() {
@@ -925,8 +927,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                     }
                 });
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
@@ -934,7 +935,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 观众进入连麦状态
-     *
+     * <p>
      * 进入连麦成功后，主播和其他连麦观众会收到 {@link IMLVBLiveRoomListener#onAnchorEnter(AnchorInfo)} 通知
      *
      * @param callback 进入连麦的结果回调
@@ -971,7 +972,10 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             @Override
             public void onResponse(int retcode, String retmsg, final HttpResponse.PushUrl data) {
                 if (retcode == HttpResponse.CODE_OK && data != null && data.pushURL != null) {
-                    data.pushURL+="&type=2";
+                    if (Constantc.is_debug) {
+                        data.pushURL = data.pushURL.replaceAll("141536.livepush.myqcloud.com", "bkpush.bkxinli.com");
+                    }
+                    data.pushURL += "&type=2";
                     mSelfPushUrl = data.pushURL;
                     mSelfAccelerateURL = data.accelerateURL;
                     //5. 开始推流
@@ -1012,7 +1016,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 观众退出连麦
-     *
+     * <p>
      * 退出连麦成功后，主播和其他连麦观众会收到 {@link IMLVBLiveRoomListener#onAnchorExit(AnchorInfo)} 通知
      *
      * @param callback 退出连麦的结果回调
@@ -1079,7 +1083,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 主播踢除连麦观众
-     *
+     * <p>
      * 主播调用此接口踢除连麦观众后，被踢连麦观众会收到 {@link IMLVBLiveRoomListener#onKickoutJoinAnchor()} 回调通知
      *
      * @param userID 连麦观众ID
@@ -1095,7 +1099,8 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             response.data.type = "kickout";
             response.data.roomID = mCurrRoomID;
             response.data.timestamp = System.currentTimeMillis() - mTimeDiff;
-            String content = new Gson().toJson(response, new TypeToken<CommonJson<KickoutResponse>>(){}.getType());
+            String content = new Gson().toJson(response, new TypeToken<CommonJson<KickoutResponse>>() {
+            }.getType());
             IMMessageMgr imMessageMgr = mIMMessageMgr;
             if (imMessageMgr != null) {
                 imMessageMgr.sendC2COnlineCustomMessage(userID, content, new IMMessageMgr.Callback() {
@@ -1110,15 +1115,14 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                     }
                 });
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * 请求跨房PK
-     *
+     * <p>
      * 主播和主播之间可以跨房间 PK，两个正在直播中的主播 A 和 B，他们之间的跨房 PK 流程如下：
      * 1. 【主播 A】调用 requestRoomPK() 向主播 B 发起连麦请求。
      * 2. 【主播 B】会收到 {@link IMLVBLiveRoomListener#onRequestRoomPK(AnchorInfo)} 回调通知。
@@ -1172,7 +1176,8 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
             mPKAnchorInfo = new AnchorInfo(userID, "", "", "");
 
-            String content = new Gson().toJson(request, new TypeToken<CommonJson<PKRequest>>(){}.getType());
+            String content = new Gson().toJson(request, new TypeToken<CommonJson<PKRequest>>() {
+            }.getType());
             IMMessageMgr imMessageMgr = mIMMessageMgr;
             if (imMessageMgr != null) {
                 imMessageMgr.sendC2CCustomMessage(userID, content, new IMMessageMgr.Callback() {
@@ -1187,21 +1192,19 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                     }
                 });
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * 响应跨房 PK 请求
-     *
+     * <p>
      * 主播响应其他房间主播的 PK 请求，发起 PK 请求的主播会收到 {@link IMLVBLiveRoomListener.RequestRoomPKCallback} 回调通知。
      *
      * @param userID 发起 PK 请求的主播 ID
      * @param agree  true：同意；false：拒绝
      * @param reason 同意/拒绝PK的原因描述
-     *
      * @return 0：响应成功；非0：响应失败
      */
     @Override
@@ -1219,13 +1222,14 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             response.cmd = "pk";
             response.data = new PKResponse();
             response.data.type = "response";
-            response.data.result = agree?"accept":"reject";
-            response.data.reason= reason;
+            response.data.result = agree ? "accept" : "reject";
+            response.data.reason = reason;
             response.data.roomID = mCurrRoomID;
             response.data.accelerateURL = mSelfAccelerateURL;
             response.data.timestamp = System.currentTimeMillis() - mTimeDiff;
 
-            String content = new Gson().toJson(response, new TypeToken<CommonJson<PKResponse>>(){}.getType());
+            String content = new Gson().toJson(response, new TypeToken<CommonJson<PKResponse>>() {
+            }.getType());
             IMMessageMgr imMessageMgr = mIMMessageMgr;
             if (imMessageMgr != null) {
                 imMessageMgr.sendC2CCustomMessage(userID, content, new IMMessageMgr.Callback() {
@@ -1240,8 +1244,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                     }
                 });
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
@@ -1249,7 +1252,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 退出跨房 PK
-     *
+     * <p>
      * 当两个主播中的任何一个退出跨房 PK 状态后，另一个主播会收到 {@link IMLVBLiveRoomListener#onQuitRoomPK(AnchorInfo)} 回调通知。
      *
      * @param callback 退出跨房 PK 的结果回调
@@ -1271,7 +1274,8 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 request.data.accelerateURL = "";
                 request.data.timestamp = System.currentTimeMillis() - mTimeDiff;
 
-                String content = new Gson().toJson(request, new TypeToken<CommonJson<PKRequest>>() {}.getType());
+                String content = new Gson().toJson(request, new TypeToken<CommonJson<PKRequest>>() {
+                }.getType());
                 IMMessageMgr imMessageMgr = mIMMessageMgr;
                 if (imMessageMgr != null) {
                     imMessageMgr.sendC2CCustomMessage(mPKAnchorInfo.userID, content, new IMMessageMgr.Callback() {
@@ -1289,8 +1293,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             } else {
                 TXCLog.e(TAG, "获取不到 PK 主播信息，请确认是否已经跨房 PK");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1332,7 +1335,6 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
      * @param anchorInfo 对方的用户信息
      * @param view       承载视频画面的控件
      * @param callback   播放器监听器
-     *
      * @note 在 onUserVideoAvailable 回调时，调用这个接口
      */
     @Override
@@ -1397,8 +1399,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                                 }
                             }*/
                             callbackOnThread(callback, "onBegin");
-                        }
-                        else if (event == TXLiveConstants.PLAY_EVT_PLAY_END || event == TXLiveConstants.PLAY_ERR_NET_DISCONNECT){
+                        } else if (event == TXLiveConstants.PLAY_EVT_PLAY_END || event == TXLiveConstants.PLAY_ERR_NET_DISCONNECT) {
                             callbackOnThread(callback, "onError", event, "[LivePlayer] 播放异常[" + param.getString(TXLiveConstants.EVT_DESCRIPTION) + "]");
 
                             //结束播放
@@ -1408,8 +1409,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 //                                item.destroy();
 //                            }
 //                        }
-                        }
-                        else {
+                        } else {
                             callbackOnThread(callback, "onEvent", event, param);
                         }
                     }
@@ -1421,7 +1421,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 });
 
                 int result = player.startPlay(anchorInfo.accelerateURL, TXLivePlayer.PLAY_TYPE_LIVE_RTMP_ACC);
-                if (result != 0){
+                if (result != 0) {
                     TXCLog.e(TAG, String.format("[BaseRoom] 播放成员 {%s} 地址 {%s} 失败", anchorInfo.userID, anchorInfo.accelerateURL));
                 }
             }
@@ -1443,7 +1443,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (mPlayers.containsKey(anchorInfo.userID)){
+                if (mPlayers.containsKey(anchorInfo.userID)) {
                     PlayerItem pusherPlayer = mPlayers.remove(anchorInfo.userID);
                     pusherPlayer.destroy();
                 }
@@ -1475,7 +1475,6 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 启动录屏。
-     *
      */
     public synchronized void startScreenCapture() {
         TXCLog.i(TAG, "API -> startScreenCapture");
@@ -1488,7 +1487,6 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 结束录屏。
-     *
      */
     public synchronized void stopScreenCapture() {
         TXCLog.i(TAG, "API -> stopScreenCapture");
@@ -1528,7 +1526,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
      */
     @Override
     public void muteRemoteAudio(String userID, boolean mute) {
-        if (mPlayers.containsKey(userID)){
+        if (mPlayers.containsKey(userID)) {
             PlayerItem pusherPlayer = mPlayers.get(userID);
             pusherPlayer.player.setMute(mute);
         } else if (userID == getRoomCreator(mCurrRoomID)) {
@@ -1566,7 +1564,6 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
      * 设置摄像头缩放因子（焦距）
      *
      * @param distance 取值范围 1 - 5 ，当为1的时候为最远视角（正常镜头），当为5的时候为最近视角（放大镜头），这里最大值推荐为5，超过5后视频数据会变得模糊不清
-     *
      * @return false：调用失败；true：调用成功
      */
     @Override
@@ -1581,7 +1578,6 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
      * 开关闪光灯
      *
      * @param enable true：开启；false：关闭
-     *
      * @return false：调用失败；true：调用成功
      */
     @Override
@@ -1594,7 +1590,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 主播屏蔽摄像头期间需要显示的等待图片
-     *
+     * <p>
      * 当主播屏蔽摄像头，或者由于 App 切入后台无法使用摄像头的时候，我们需要使用一张等待图片来提示观众“主播暂时离开，请不要走开”。
      *
      * @param bitmap 位图
@@ -1611,7 +1607,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 主播屏蔽摄像头期间需要显示的等待图片
-     *
+     * <p>
      * 当主播屏蔽摄像头，或者由于 App 切入后台无法使用摄像头的时候，我们需要使用一张等待图片来提示观众“主播暂时离开，请不要走开”。
      *
      * @param id 设置默认显示图片的资源文件
@@ -1678,10 +1674,10 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     /**
      * 添加水印，height 不用设置，sdk 内部会根据水印宽高比自动计算 height
      *
-     * @param image      水印图片 null 表示清除水印
-     * @param x          归一化水印位置的 X 轴坐标，取值[0,1]
-     * @param y          归一化水印位置的 Y 轴坐标，取值[0,1]
-     * @param width      归一化水印宽度，取值[0,1]
+     * @param image 水印图片 null 表示清除水印
+     * @param x     归一化水印位置的 X 轴坐标，取值[0,1]
+     * @param y     归一化水印位置的 Y 轴坐标，取值[0,1]
+     * @param width 归一化水印宽度，取值[0,1]
      */
     @Override
     public void setWatermark(Bitmap image, float x, float y, float width) {
@@ -1706,13 +1702,12 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 设置绿幕文件
-     *
+     * <p>
      * 目前图片支持jpg/png，视频支持mp4/3gp等Android系统支持的格式
      *
      * @param file 绿幕文件位置，支持两种方式：
      *             1.资源文件放在assets目录，path直接取文件名
      *             2.path取文件绝对路径
-     *
      * @return false：调用失败；true：调用成功
      * @note API要求18
      */
@@ -1811,7 +1806,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     /**
      * 发送文本消息
      *
-     * @param message 文本消息
+     * @param message  文本消息
      * @param callback 发送消息的结果回调
      * @see {@link IMLVBLiveRoomListener#onRecvRoomTextMsg(String, String, String, String, String)}
      */
@@ -1838,8 +1833,8 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     /**
      * 发送自定义文本消息
      *
-     * @param cmd     命令字，由开发者自定义，主要用于区分不同消息类型
-     * @param message 文本消息
+     * @param cmd      命令字，由开发者自定义，主要用于区分不同消息类型
+     * @param message  文本消息
      * @param callback 发送消息的结果回调
      * @see {@link IMLVBLiveRoomListener#onRecvRoomCustomMsg(String, String, String, String, String, String)}
      */
@@ -1849,14 +1844,15 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         customMessage.cmd = "CustomCmdMsg";
         customMessage.data = new CustomMessage();
         customMessage.data.userName = mSelfAccountInfo.userName;
-        if(!TextUtils.isEmpty(cmd)&&Integer.parseInt(cmd)==7){
+        if (!TextUtils.isEmpty(cmd) && Integer.parseInt(cmd) == 7) {
             customMessage.data.userAvatar = Constantc.LX_HEAD;
-        }else {
+        } else {
             customMessage.data.userAvatar = mSelfAccountInfo.userAvatar;
         }
         customMessage.data.cmd = cmd;
-        customMessage.data.msg = message ;
-        final String content = new Gson().toJson(customMessage, new TypeToken<CommonJson<CustomMessage>>(){}.getType());
+        customMessage.data.msg = message;
+        final String content = new Gson().toJson(customMessage, new TypeToken<CommonJson<CustomMessage>>() {
+        }.getType());
         IMMessageMgr imMessageMgr = mIMMessageMgr;
         if (imMessageMgr != null) {
             imMessageMgr.sendGroupCustomMessage(content, new IMMessageMgr.Callback() {
@@ -1941,7 +1937,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     @Override
     public void setMicVolumeOnMixing(int volume) {
         if (mTXLivePusher != null) {
-            mTXLivePusher.setMicVolume(volume/100.0f);
+            mTXLivePusher.setMicVolume(volume / 100.0f);
         }
     }
 
@@ -1953,7 +1949,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     @Override
     public void setBGMVolume(int volume) {
         if (mTXLivePusher != null) {
-            mTXLivePusher.setBGMVolume(volume/100.0f);
+            mTXLivePusher.setBGMVolume(volume / 100.0f);
         }
     }
 
@@ -1961,13 +1957,13 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
      * 设置混响效果
      *
      * @param reverbType 混响类型，详见
-     *                      {@link TXLiveConstants#REVERB_TYPE_0 } (关闭混响)
-     *                      {@link TXLiveConstants#REVERB_TYPE_1 } (KTV)
-     *                      {@link TXLiveConstants#REVERB_TYPE_2 } (小房间)
-     *                      {@link TXLiveConstants#REVERB_TYPE_3 } (大会堂)
-     *                      {@link TXLiveConstants#REVERB_TYPE_4 } (低沉)
-     *                      {@link TXLiveConstants#REVERB_TYPE_5 } (洪亮)
-     *                      {@link TXLiveConstants#REVERB_TYPE_6 } (磁性)
+     *                   {@link TXLiveConstants#REVERB_TYPE_0 } (关闭混响)
+     *                   {@link TXLiveConstants#REVERB_TYPE_1 } (KTV)
+     *                   {@link TXLiveConstants#REVERB_TYPE_2 } (小房间)
+     *                   {@link TXLiveConstants#REVERB_TYPE_3 } (大会堂)
+     *                   {@link TXLiveConstants#REVERB_TYPE_4 } (低沉)
+     *                   {@link TXLiveConstants#REVERB_TYPE_5 } (洪亮)
+     *                   {@link TXLiveConstants#REVERB_TYPE_6 } (磁性)
      */
     @Override
     public void setReverbType(int reverbType) {
@@ -1990,7 +1986,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     /**
      * 设置背景音乐的音调。
-     *
+     * <p>
      * 该接口用于混音处理,比如将背景音乐与麦克风采集到的声音混合后播放。
      *
      * @param pitch 音调，0为正常音量，范围是 -1 - 1。
@@ -2004,12 +2000,10 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     /**
      * 指定背景音乐的播放位置
      *
-     * @note 请尽量避免频繁地调用该接口，因为该接口可能会再次读写 BGM 文件，耗时稍高。
-     *       例如：当配合进度条使用时，请在进度条拖动完毕的回调中调用，而避免在拖动过程中实时调用。
-     *
      * @param position 背景音乐的播放位置，单位ms。
-     *
      * @return 结果是否成功，true：成功；false：失败。
+     * @note 请尽量避免频繁地调用该接口，因为该接口可能会再次读写 BGM 文件，耗时稍高。
+     * 例如：当配合进度条使用时，请在进度条拖动完毕的回调中调用，而避免在拖动过程中实时调用。
      */
     public boolean setBGMPosition(int position) {
         if (mTXLivePusher != null) {
@@ -2069,8 +2063,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     }
 
 
-
-    protected void startPushStream(final String url, final int videoQuality, final StandardCallback callback){
+    protected void startPushStream(final String url, final int videoQuality, final StandardCallback callback) {
         //在主线程开启推流
         Handler handler = new Handler(mAppContext.getMainLooper());
         handler.post(new Runnable() {
@@ -2085,18 +2078,20 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                     if (ret == -5) {
                         String msg = "[LiveRoom] 推流失败[license 校验失败]";
                         TXCLog.e(TAG, msg);
-                        if (callback != null) callback.onError(MLVBCommonDef.LiveRoomErrorCode.ERROR_LICENSE_INVALID, msg);
+                        if (callback != null)
+                            callback.onError(MLVBCommonDef.LiveRoomErrorCode.ERROR_LICENSE_INVALID, msg);
                     }
                 } else {
                     String msg = "[LiveRoom] 推流失败[TXLivePusher未初始化，请确保已经调用startLocalPreview]";
                     TXCLog.e(TAG, msg);
-                    if (callback != null) callback.onError(MLVBCommonDef.LiveRoomErrorCode.ERROR_PUSH, msg);
+                    if (callback != null)
+                        callback.onError(MLVBCommonDef.LiveRoomErrorCode.ERROR_PUSH, msg);
                 }
             }
         });
     }
 
-    protected void doCreateRoom(final String roomID, String roomInfo, final StandardCallback callback){
+    protected void doCreateRoom(final String roomID, String roomInfo, final StandardCallback callback) {
         mHttpRequest.createRoom(roomID, mSelfAccountInfo.userID, roomInfo,
                 new HttpRequests.OnResponseCallback<HttpResponse.CreateRoom>() {
                     @Override
@@ -2154,7 +2149,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         }
     }
 
-    protected void jionIMGroup(final String roomID, final StandardCallback callback){
+    protected void jionIMGroup(final String roomID, final StandardCallback callback) {
         IMMessageMgr imMessageMgr = mIMMessageMgr;
         if (imMessageMgr != null) {
             imMessageMgr.jionGroup(roomID, new IMMessageMgr.Callback() {
@@ -2179,7 +2174,8 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         msg.cmd = "notifyPusherChange";
         msg.data = new AnchorInfo();
         msg.data.userID = mSelfAccountInfo.userID;
-        String content = new Gson().toJson(msg, new TypeToken<CommonJson<AnchorInfo>>(){}.getType());
+        String content = new Gson().toJson(msg, new TypeToken<CommonJson<AnchorInfo>>() {
+        }.getType());
         IMMessageMgr imMessageMgr = mIMMessageMgr;
         if (imMessageMgr != null) {
             imMessageMgr.sendGroupCustomMessage(content, new IMMessageMgr.Callback() {
@@ -2205,7 +2201,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         }
     }
 
-    protected void updateAnchors(final boolean excludeRoomCreator, final UpdateAnchorsCallback callback){
+    protected void updateAnchors(final boolean excludeRoomCreator, final UpdateAnchorsCallback callback) {
         mHttpRequest.getPushers(mCurrRoomID, new HttpRequests.OnResponseCallback<HttpResponse.PusherList>() {
             @Override
             public void onResponse(final int retcode, String retmsg, final HttpResponse.PusherList data) {
@@ -2305,8 +2301,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             }
 
             mPushers = mergedAnchors;
-        }
-        else {
+        } else {
             TXCLog.e(TAG, "更新主播列表返回空数据");
             if (callback != null) {
                 callback.onUpdateAnchors(-1, null, null, null, null);
@@ -2314,7 +2309,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         }
     }
 
-    protected void mergerAnchors(List<AnchorInfo> anchors, List<AnchorInfo> addAnchors, List<AnchorInfo> delAnchors, HashMap<String, AnchorInfo> mergedAnchors){
+    protected void mergerAnchors(List<AnchorInfo> anchors, List<AnchorInfo> addAnchors, List<AnchorInfo> delAnchors, HashMap<String, AnchorInfo> mergedAnchors) {
         if (anchors == null) {
             //主播列表为空，意味着所有主播都已经退房
             if (delAnchors != null) {
@@ -2328,7 +2323,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         }
 
         for (AnchorInfo member : anchors) {
-            if (member.userID != null && (!member.userID.equals(mSelfAccountInfo.userID))){
+            if (member.userID != null && (!member.userID.equals(mSelfAccountInfo.userID))) {
                 if (!mPushers.containsKey(member.userID)) {
                     if (addAnchors != null) {
                         addAnchors.add(member);
@@ -2376,7 +2371,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     }
 
     protected String getRoomCreator(String roomID) {
-        for (RoomInfo item: mRoomList) {
+        for (RoomInfo item : mRoomList) {
             if (roomID.equalsIgnoreCase(item.roomID)) {
                 return item.roomCreator;
             }
@@ -2510,8 +2505,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 }
                 return;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -2559,8 +2553,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                             }
                         });
                         return;
-                    }
-                    else if (result.equalsIgnoreCase("reject")) {
+                    } else if (result.equalsIgnoreCase("reject")) {
                         callbackOnThread(new Runnable() {
                             @Override
                             public void run() {
@@ -2584,8 +2577,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 });
                 return;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -2620,6 +2612,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     // IMMessageMgr.IMMessageListener
     //
     //////////////////////////////////////////
+
     /**
      * IM连接成功
      */
@@ -2676,7 +2669,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
      */
     @Override
     public void onGroupCustomMessage(final String groupID, final String senderID, String message) {
-        final CustomMessage customMessage =  new Gson().fromJson(message, CustomMessage.class);
+        final CustomMessage customMessage = new Gson().fromJson(message, CustomMessage.class);
         callbackOnThread(mListener, "onRecvRoomCustomMsg", groupID, senderID, customMessage.userName, customMessage.userAvatar, customMessage.cmd, customMessage.msg);
     }
 
@@ -2691,8 +2684,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     public void onC2CCustomMessage(String sendID, String cmd, String message) {
         if (cmd.equalsIgnoreCase("linkmic")) {
             onRecvLinkMicMessage(message);
-        }
-        else if (cmd.equalsIgnoreCase("pk")) {
+        } else if (cmd.equalsIgnoreCase("pk")) {
             onRecvPKMessage(message);
         }
     }
@@ -2770,17 +2762,17 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
     }
 
     private class StreamMixturer {
-        private String              mMainStreamId = "";
-        private String              mPKStreamId   = "";
+        private String mMainStreamId = "";
+        private String mPKStreamId = "";
         private Vector<String> mSubStreamIds = new Vector<String>();
-        private int                 mMainStreamWidth = 540;
-        private int                 mMainStreamHeight = 960;
+        private int mMainStreamWidth = 540;
+        private int mMainStreamHeight = 960;
 
         public StreamMixturer() {
 
         }
 
-        public void setMainVideoStream(String  streamUrl) {
+        public void setMainVideoStream(String streamUrl) {
             mMainStreamId = getStreamIDByStreamUrl(streamUrl);
 
             Log.e(TAG, "MergeVideoStream: setMainVideoStream " + mMainStreamId);
@@ -2793,7 +2785,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             }
         }
 
-        public void addSubVideoStream(String  streamUrl) {
+        public void addSubVideoStream(String streamUrl) {
             if (mSubStreamIds.size() > 3) {
                 return;
             }
@@ -2806,7 +2798,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 return;
             }
 
-            for (String item: mSubStreamIds) {
+            for (String item : mSubStreamIds) {
                 if (item.equalsIgnoreCase(streamId)) {
                     return;
                 }
@@ -2816,13 +2808,13 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             sendStreamMergeRequest(5);
         }
 
-        public void delSubVideoStream(String  streamUrl) {
+        public void delSubVideoStream(String streamUrl) {
             String streamId = getStreamIDByStreamUrl(streamUrl);
 
             Log.e(TAG, "MergeVideoStream: delSubVideoStream " + streamId);
 
             boolean bExist = false;
-            for (String item: mSubStreamIds) {
+            for (String item : mSubStreamIds) {
                 if (item.equalsIgnoreCase(streamId)) {
                     bExist = true;
                     break;
@@ -2873,7 +2865,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
             mSubStreamIds.clear();
             mMainStreamId = null;
-            mPKStreamId   = null;
+            mPKStreamId = null;
             mMainStreamWidth = 540;
             mMainStreamHeight = 960;
         }
@@ -2898,8 +2890,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                     if (runImmediately == false) {
                         try {
                             sleep(2000, 0);
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -2918,8 +2909,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
                                 if (result != null && result.code == 0 && result.merge_code == 0) {
                                     return;
-                                }
-                                else {
+                                } else {
                                     int tempRetryIndex = retryIndex - 1;
                                     if (tempRetryIndex > 0) {
                                         internalSendRequest(tempRetryIndex, false, requestParam);
@@ -2952,11 +2942,11 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                     inputStreamList.put(mainStream);
                 }
 
-                int subWidth  = 160;
+                int subWidth = 160;
                 int subHeight = 240;
                 int offsetHeight = 90;
                 if (mMainStreamWidth < 540 || mMainStreamHeight < 960) {
-                    subWidth  = 120;
+                    subWidth = 120;
                     subHeight = 180;
                     offsetHeight = 60;
                 }
@@ -2999,8 +2989,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 requestParam.put("timestamp", System.currentTimeMillis() / 1000);
                 requestParam.put("eventId", System.currentTimeMillis() / 1000);
                 requestParam.put("interface", interfaceObj);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -3019,7 +3008,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 // input_stream_list
                 JSONArray inputStreamList = new JSONArray();
 
-                if (mPKStreamId != null && mPKStreamId.length() > 0){
+                if (mPKStreamId != null && mPKStreamId.length() > 0) {
                     // 画布
                     {
                         JSONObject layoutParam = new JSONObject();
@@ -3066,8 +3055,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
                         inputStreamList.put(mainStream);
                     }
-                }
-                else {
+                } else {
                     JSONObject layoutParam = new JSONObject();
                     layoutParam.put("image_layer", 1);
 
@@ -3096,8 +3084,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 requestParam.put("timestamp", System.currentTimeMillis() / 1000);
                 requestParam.put("eventId", System.currentTimeMillis() / 1000);
                 requestParam.put("interface", interfaceObj);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -3177,7 +3164,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             }
         };
 
-        public void startHeartbeat(){
+        public void startHeartbeat() {
             synchronized (this) {
                 if (handler != null && handler.getLooper() != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
@@ -3193,7 +3180,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             }
         }
 
-        public void stopHeartbeat(){
+        public void stopHeartbeat() {
             synchronized (this) {
                 if (handler != null) {
                     handler.removeCallbacks(heartBeatRunnable);
@@ -3230,11 +3217,11 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                 callbackOnThread(mCallback, "onError", event, msg);
             } else if (event == TXLiveConstants.PUSH_ERR_NET_DISCONNECT || event == TXLiveConstants.PUSH_ERR_INVALID_ADDRESS) {
                 String msg = "推流失败[网络断开]";
-                TXCLog.e(TAG,msg);
+                TXCLog.e(TAG, msg);
                 callbackOnThread(mCallback, "onError", event, msg);
             } else if (event == TXLiveConstants.PUSH_ERR_SCREEN_CAPTURE_START_FAILED) {
                 String msg = "推流失败[录屏启动失败]";
-                TXCLog.e(TAG,msg);
+                TXCLog.e(TAG, msg);
                 callbackOnThread(mCallback, "onError", event, msg);
             }
 //            else if (event == TXLiveConstants.PUSH_WARNING_NET_BUSY) {
@@ -3284,7 +3271,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
                                 method.invoke(object, args);
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
-                            }catch (IllegalArgumentException e) {
+                            } catch (IllegalArgumentException e) {
                                 e.printStackTrace();
                             } catch (InvocationTargetException e) {
                                 e.printStackTrace();
@@ -3310,9 +3297,9 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         });
     }
 
-    private  class PlayerItem {
+    private class PlayerItem {
         public TXCloudVideoView view;
-        public AnchorInfo       anchorInfo;
+        public AnchorInfo anchorInfo;
         public TXLivePlayer player;
 
         public PlayerItem(TXCloudVideoView view, AnchorInfo anchorInfo, TXLivePlayer player) {
@@ -3321,15 +3308,15 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
             this.player = player;
         }
 
-        public void resume(){
+        public void resume() {
             this.player.resume();
         }
 
-        public void pause(){
+        public void pause() {
             this.player.pause();
         }
 
-        public void destroy(){
+        public void destroy() {
             this.player.stopPlay(true);
             this.view.onDestroy();
         }
@@ -3337,7 +3324,8 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
 
     protected class CommonJson<T> {
         public String cmd;
-        public T      data;
+        public T data;
+
         public CommonJson() {
         }
     }
@@ -3386,7 +3374,7 @@ public class MLVBLiveRoomImpl extends MLVBLiveRoom implements HttpRequests.Heart
         public long timestamp;
     }
 
-    protected class CustomMessage{
+    protected class CustomMessage {
         public String userName;
         public String userAvatar;
         public String cmd;

@@ -5,11 +5,13 @@ public class Constantc {
     /*直播跟im聊天用相同的SDKAPPID  签名使用同一个*/
     //有连麦功能的 1400188366  小直播的appid
     //现在用的 1400522274       正式的appid
-    public static final int SDKAPPID =1400522274;//原  正式
-    public static final String SECRETKEY = "5f0edf244ede892ff43f701c0cfab05085ced7c5eef4265c54e3ed07558a87d8";
+    public static final boolean is_debug = true;  //true：测试  false：正式
+    public static final int SDKAPPID = is_debug ? 1400532861 : 1400522274;
+    public static final String SECRETKEY = is_debug ? "d861ed6966ddb7a241fd9de3b78592f1b8e06263a98de464460d27d146172119" :
+            "5f0edf244ede892ff43f701c0cfab05085ced7c5eef4265c54e3ed07558a87d8";
     public static final long test_sdkAppID = SDKAPPID;
 
-    public static  String LX_HEAD = "";             //连线时观众的头像
+    public static String LX_HEAD = "";             //连线时观众的头像
     public static boolean mlvb_login = false;       //MLVB是否登录成功
 
 
@@ -28,11 +30,11 @@ public class Constantc {
     public static  String USER_CoverPic= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg1001.pocoimg.cn%2Fimage%2Fpoco%2Fworks%2F79%2F2012%2F0322%2F20%2F62853829201203222023101923154827283_004_62853829.jpg&refer=http%3A%2F%2Fimg1001.pocoimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622345814&t=cf97ed5f962610d54eb0e4d8b7a011b5";*/
 
     /*红米*/
-    public static  String USER_NAME = "别致的熊猫";
-    public static  String test_USERID = "11114";
-    public static  String test_userSig = "eJxtzEFPgzAYxvHv0usWLS22xWSHhZCBUUkDmuClwbaQyoSuVicu**6yyW6*x*ef93cA5X1xVVtrlKi9wE6BWxCEEAaMYULA8q9LOXz2XvjR6qljwgiak1G696Yx2p0epwvn8KE6cXb-A715P0EBQYjRKMJ43vW3NU6LuvFnD91ECEJ4EU07bQ-JU5zxGHXPefl6N1JHK6XT4We0nMtIbjIVvi0q07oy33y9pE3cZm3FFv0uJHhbNJbjzCWP3Z4zHJPEFTSn11s8yJTu9o6vV*D4Cw3pUY0_";
-    public static  String USER_UserAvatar= "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01a9d85ecf6bdba80120662104b791.jpg%402o.jpg&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622345766&t=4df91a816a2c89c918c956b34a392052";
-    public static  String USER_CoverPic= "https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/0824ab18972bd40797d8db1179899e510fb3093a.jpg";
+    public static String USER_NAME = "别致的熊猫";
+    public static String test_USERID = "11114";
+    public static String test_userSig = "eJxtzEFPgzAYxvHv0usWLS22xWSHhZCBUUkDmuClwbaQyoSuVicu**6yyW6*x*ef93cA5X1xVVtrlKi9wE6BWxCEEAaMYULA8q9LOXz2XvjR6qljwgiak1G696Yx2p0epwvn8KE6cXb-A715P0EBQYjRKMJ43vW3NU6LuvFnD91ECEJ4EU07bQ-JU5zxGHXPefl6N1JHK6XT4We0nMtIbjIVvi0q07oy33y9pE3cZm3FFv0uJHhbNJbjzCWP3Z4zHJPEFTSn11s8yJTu9o6vV*D4Cw3pUY0_";
+    public static String USER_UserAvatar = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01a9d85ecf6bdba80120662104b791.jpg%402o.jpg&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622345766&t=4df91a816a2c89c918c956b34a392052";
+    public static String USER_CoverPic = "https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/0824ab18972bd40797d8db1179899e510fb3093a.jpg";
 
     /*小米*/
    /* public static  String USER_NAME = "xiaomi";

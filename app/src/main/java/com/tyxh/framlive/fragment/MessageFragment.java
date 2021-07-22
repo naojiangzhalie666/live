@@ -72,7 +72,9 @@ public class MessageFragment extends BaseFragment {
     }
 
 
-    private void initView() {
+    public void initView() {
+        if(mBaseView==null)
+            return;
         Log.e(TAG, "initView: ");
         // 从布局文件中获取会话列表面板
         mConversationLayout = mBaseView.findViewById(R.id.conversation_layout);
