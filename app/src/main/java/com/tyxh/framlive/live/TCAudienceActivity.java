@@ -1059,6 +1059,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 mMainHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if(!isDestroyed())
                         mDig.dismiss();
                         mPendingRequest = false;
                     }
@@ -1414,7 +1415,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 public void run() {
-                    if (mRemindDialog != null)
+                    if (mRemindDialog != null&&!isDestroyed())
                         mRemindDialog.dismiss();
                     TCAudienceActivity.this.finish();
                 }
@@ -2107,7 +2108,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                     mUseWhatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialogInterface) {
-                            if(is_twice&& select_bean == null){
+                            if(is_twice&& select_bean == null&&mIsBeingLinkMic){
                                 view_include.setVisibility(View.VISIBLE);
                             }
                         }
@@ -2357,7 +2358,8 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
         if (mWebSocketClient != null) {
             mWebSocketClient.close();
         }
-        if(mUseWhatDialog!=null&&mUseWhatDialog.isShowing()){
+        view_include.setVisibility(View.GONE);
+        if(mUseWhatDialog!=null&&mUseWhatDialog.isShowing()&&!isDestroyed()){
             mUseWhatDialog.dismiss();
         }
         mHandler_socket.removeCallbacks(heartBeatRunnable);

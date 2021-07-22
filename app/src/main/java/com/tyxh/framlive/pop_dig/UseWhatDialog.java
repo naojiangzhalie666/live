@@ -20,6 +20,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Constraints;
+import androidx.constraintlayout.widget.Group;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,6 +41,12 @@ public class UseWhatDialog extends Dialog {
     ImageView mDigUsewhatImgvtwo;
     @BindView(R.id.dig_usewhat_imgvthree)
     ImageView mDigUsewhatImgvthree;
+    @BindView(R.id.id_one)
+    Group mDigUseGpOne;
+    @BindView(R.id.id_two)
+    Group mDigUseGpTwo;
+    @BindView(R.id.id_three)
+    Group mDigUseGpThree;
     private OnSureClickListener mOnSureClickListener;
     private Context mContext;
     private Activity mActivity;
@@ -48,12 +55,12 @@ public class UseWhatDialog extends Dialog {
     private int select_what = -1;
     private int old_select = -1;
     private LiveCotctBean.RetDataBean bean_zuan = new LiveCotctBean.RetDataBean(),
-            bean_card= new LiveCotctBean.RetDataBean(),bean_back= new LiveCotctBean.RetDataBean(),bean_select;
+            bean_card = new LiveCotctBean.RetDataBean(), bean_back = new LiveCotctBean.RetDataBean(), bean_select;
 
-    public UseWhatDialog(@NonNull Context context,Activity activity, List<LiveCotctBean.RetDataBean> beans) {
+    public UseWhatDialog(@NonNull Context context, Activity activity, List<LiveCotctBean.RetDataBean> beans) {
         super(context);
         mContext = context;
-        mActivity =activity;
+        mActivity = activity;
         mDataBeans = beans;
     }
 
@@ -93,7 +100,7 @@ public class UseWhatDialog extends Dialog {
     }
 
     @OnClick({R.id.dig_usewhat_diamond, R.id.dig_usewhat_fuwubao, R.id.dig_usewhat_card, R.id.dig_usewhat_sure, R.id.dig_usewhat_imgvone,
-            R.id.dig_usewhat_imgvtwo, R.id.dig_usewhat_imgvthree,R.id.dig_usewhat_buy})
+            R.id.dig_usewhat_imgvtwo, R.id.dig_usewhat_imgvthree, R.id.dig_usewhat_buy})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.dig_usewhat_diamond:
@@ -131,33 +138,34 @@ public class UseWhatDialog extends Dialog {
                     Toast.makeText(mContext, "请先进行选择", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(select_what ==old_select){
+                if (select_what == old_select) {
                     Toast.makeText(mContext, "不能重复选择同一种消费方式", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 switch (select_what) {
-                    //卡
-                    case 2: bean_select =bean_card;break;
-                    //包
-                    case 3: bean_select = bean_back;break;
-                    //钻
-                    case 4:
-                        if(diamond_num<30){
+                    case 2: //卡
+                        bean_select = bean_card;
+                        break;
+                    case 3: //包
+                        bean_select = bean_back;
+                        break;
+                    case 4: //钻
+                        if (diamond_num < 30) {
                             Toast.makeText(mContext, "余额不足，请充值", Toast.LENGTH_SHORT).show();
                             mActivity.startActivity(new Intent(mActivity, BuyzActivity.class));
                             return;
                         }
-                        bean_select =bean_zuan;
+                        bean_select = bean_zuan;
                         break;
                 }
                 // TODO: 2021/6/2 测试用  下方两行需要去掉   并放开注释
-                if(bean_select.getDuration()<=0){
+                if (bean_select.getDuration() <= 0) {
                     Toast.makeText(mContext, "可用时间不足，请重新选择", Toast.LENGTH_SHORT).show();
                     return;
                 }
              /*  bean_select.setDiaNum(40);
                bean_select.setDuration(65);*/
-                old_select =select_what;
+                old_select = select_what;
                 if (mOnSureClickListener != null) {
                     mOnSureClickListener.onSureClickListener(bean_select);
                 }
@@ -169,26 +177,49 @@ public class UseWhatDialog extends Dialog {
     }
 
     private void setData() {
+        mDigUseGpOne.setVisibility(View.GONE);
+        mDigUseGpTwo.setVisibility(View.GONE);
+        mDigUseGpThree.setVisibility(View.GONE);
         if (mDataBeans != null) {
             for (int i = 0; i < mDataBeans.size(); i++) {
                 LiveCotctBean.RetDataBean retDataBean = mDataBeans.get(i);
                 int proType = retDataBean.getProType();
                 switch (proType) {
                     case 2://道具
-                        bean_card =retDataBean;
+                        mDigUseGpThree.setVisibility(View.VISIBLE);
+                        bean_card = retDataBean;
                         mDigUsewhatCard.setText("使用咨询卡（时长：" + LiveDateUtil.formatSeconds(retDataBean.getDuration()) + "）");
                         break;
                     case 3://服务包
-                        bean_back =retDataBean;
+                        mDigUseGpTwo.setVisibility(View.VISIBLE);
+                        bean_back = retDataBean;
                         mDigUsewhatFuwubao.setText("使用服务包（时长：" + LiveDateUtil.formatSeconds(retDataBean.getDuration()) + "）");
                         break;
                     case 4://钻石
+                        mDigUseGpOne.setVisibility(View.VISIBLE);
                         bean_zuan = retDataBean;
                         diamond_num = retDataBean.getDiaNum();
                         mDigUsewhatDiamond.setText("使用钻石（余额：" + diamond_num + ")");
                         break;
                 }
             }
+        }
+        switch (select_what) {
+            case 2:
+                if(mDigUseGpThree.getVisibility() ==View.GONE){
+                    select_what = -1;
+                }
+                break;
+            case 3:
+                if(mDigUseGpTwo.getVisibility() ==View.GONE){
+                    select_what = -1;
+                }
+                break;
+            case 4:
+                if(mDigUseGpOne.getVisibility() ==View.GONE){
+                    select_what = -1;
+                }
+                break;
         }
     }
 

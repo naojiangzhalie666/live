@@ -42,7 +42,7 @@
         android:text="使用服务包"
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/dig_usewhat_imgvtwo"
-        app:layout_constraintStart_toStartOf="@+id/dig_usewhat_diamond"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView132" />
 
     <View
@@ -65,7 +65,7 @@
         android:text="使用咨询卡"
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/dig_usewhat_imgvthree"
-        app:layout_constraintStart_toStartOf="@+id/dig_usewhat_diamond"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView140" />
 
     <View
@@ -142,4 +142,22 @@
         app:layout_constraintBottom_toBottomOf="@+id/dig_usewhat_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dig_usewhat_card" />
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="@dimen/dp_0"
+        app:constraint_referenced_ids="dig_usewhat_diamond,dig_usewhat_imgvone,textView132"
+        android:visibility="gone"
+        android:id="@+id/id_one"
+        android:layout_height="@dimen/dp_0"/>
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="@dimen/dp_0"
+        app:constraint_referenced_ids="dig_usewhat_fuwubao,dig_usewhat_imgvtwo,textView140"
+        android:visibility="gone"
+        android:id="@+id/id_two"
+        android:layout_height="@dimen/dp_0"/>
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="@dimen/dp_0"
+        app:constraint_referenced_ids="dig_usewhat_card,dig_usewhat_imgvthree,textView142"
+        android:visibility="gone"
+        android:id="@+id/id_three"
+        android:layout_height="@dimen/dp_0"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

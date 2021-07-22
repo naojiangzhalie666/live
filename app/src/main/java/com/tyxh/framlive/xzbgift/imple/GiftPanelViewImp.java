@@ -384,7 +384,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
         if (is_lw) {
             if(giftInfoList_left!=null)
             initGiftData(giftInfoList_left);
-            if (mGiftController.getSelectGiftInfo() != null && mGiftController.getSelectGiftInfo().price > Double.parseDouble(money_zuan)) {
+            if (mGiftController!=null&&mGiftController.getSelectGiftInfo() != null && mGiftController.getSelectGiftInfo().price > Double.parseDouble(money_zuan)) {
                 mtv_cz.setText("充值");
                 is_chongz = true;
                 return;
@@ -403,7 +403,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
                 giftInfoList_back.add(giftInfo);
             }*/
             initGiftData(giftInfoList_back);
-            if (mGiftController_bb.getSelectGiftInfo() != null) {
+            if (mGiftController_bb!=null&&mGiftController_bb.getSelectGiftInfo() != null) {
                 is_chongz = false;
                 mtv_cz.setText("发送");
             }
