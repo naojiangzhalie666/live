@@ -867,6 +867,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
     private void stopLinkMic() {
         if (!mIsBeingLinkMic) return;
         ll_conline.setVisibility(View.GONE);
+        mHandler_socket.removeCallbacks(heartBeatRunnable);
         stopTimer();
         mIsBeingLinkMic = false;
         is_open = true;
@@ -2216,6 +2217,7 @@ public class TCAudienceActivity extends Activity implements IMLVBLiveRoomListene
                 if (mWebSocketClient != null) {//长连接已断开
                     if (mWebSocketClient.isClosed()) {
 //                        reconnectWs();
+                        if(!isDestroyed()&&all_Second!=0)
                         ToastUtil.showToast(TCAudienceActivity.this,"您的网络状态不好,已断开连线");
                         stopLinkMic();
                     } else {

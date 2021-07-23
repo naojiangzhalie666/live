@@ -206,7 +206,7 @@ public class MineFragment extends Fragment implements ViewPager.OnPageChangeList
                     startActivity(intent);
                 } else {//咨询机构--子咨询师
                     intent = new Intent(getActivity(), OranizeActivity.class);
-                    intent.putExtra("is_user", mPower == Constant.POWER_ZIXUNJIGOU ? false : true);
+                    intent.putExtra("is_user", false );
                     intent.putExtra("query_id", mUserInfo.getRetData().getId());
                     startActivity(intent);
                 }

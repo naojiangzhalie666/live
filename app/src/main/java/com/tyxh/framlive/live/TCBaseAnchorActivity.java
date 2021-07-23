@@ -1240,12 +1240,12 @@ public abstract class TCBaseAnchorActivity extends Activity implements IMLVBLive
                 public void onMoreClickListener() {
                     if (user_type > 2) {
                         Intent int_orgi = new Intent(TCBaseAnchorActivity.this, OranizeActivity.class);
-                        int_orgi.putExtra("is_user", true);
+                        int_orgi.putExtra("is_user", false);
                         int_orgi.putExtra("query_id", mUserId);
                         startActivity(int_orgi);//咨询机构页面
                     } else {
                         Intent int_person = new Intent(TCBaseAnchorActivity.this, LookPersonActivity.class);
-                        int_person.putExtra("is_user", true);
+                        int_person.putExtra("is_user", false);
                         int_person.putExtra("query_id", mUserId);
                         startActivity(int_person);//咨询师页面
                     }

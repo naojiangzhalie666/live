@@ -235,7 +235,7 @@ public class TCCameraAnchorActivity extends TCBaseAnchorActivity {
                     intent.putExtra("is_user", false);
                 } else {
                     intent = new Intent(TCCameraAnchorActivity.this, OranizeActivity.class);
-                    intent.putExtra("is_user", mPower == Constant.POWER_ZIXUNJIGOU ? false : true);
+                    intent.putExtra("is_user",false);
                 }
                 intent.putExtra("query_id", mUserId);
                 startActivity(intent);
